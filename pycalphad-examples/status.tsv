@@ -1,0 +1,18 @@
+notebook	status	wall_s	note
+BinaryExamples	OK	28	
+TernaryExamples	OK	53	
+MappingExamples	OK	93	
+ChargedPhases	OK	109	
+PhaseCompositions	OK	6	
+GibbsAtConcentration	OK	4	
+CementiteAnalysis	OK	17	
+EquilibriumWithOrdering	OK	5	
+ViscosityModel	OK	2	
+LegacyEnergySurface	OK	3	
+HighThroughputCalculations	OK	13	
+UsingCalculationResults	OK	2	
+ScreeningPhaseStability	OK	11	
+ReferenceStateExamples	OK	5	
+Metastability	OK	10	
+PlotActivity	OK	3	
+LegacyReferenceState	OK	2	

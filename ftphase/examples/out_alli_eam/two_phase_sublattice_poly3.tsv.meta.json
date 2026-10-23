@@ -1,0 +1,6 @@
+{
+ "label": "sublattice_poly3",
+ "fit": "poly3",
+ "b32_config": "sublattice",
+ "T_step": 2.0
+}

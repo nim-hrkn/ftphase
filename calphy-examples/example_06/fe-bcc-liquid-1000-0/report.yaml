@@ -1,0 +1,19 @@
+average:
+  density: 0.07799989930613857
+  vol_atom: 12.820246410726249
+input:
+  concentration: '1.0'
+  element: Fe
+  lattice: bcc
+  pressure: 0.0
+  temperature: 1000
+results:
+  com_correction: 0.0
+  dissipation: 0.05431122858486459
+  einstein_crystal: 0.0
+  error: 0.0
+  free_energy: -4.591397402728471
+  pv: 0.0
+  reference_system: 1.6789589871900081
+  unit: eV/atom
+  work: 5.2908138414350745

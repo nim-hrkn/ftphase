@@ -1,0 +1,102 @@
+2026-10-21 15:49:47,133 calphy.helpers INFO     Dynamic Clausius-Clapeyron integration from the coexistence point T = 1340.00 K, P = 0.00 bar towards P = 1500000.00 bar
+2026-10-21 15:49:47,133 calphy.helpers INFO     Sweep of 100 blocks x 1000 steps (n_switching_steps 100000), corrector euler
+2026-10-21 15:49:47,133 calphy.helpers INFO     Master random seed is 2020174371 (md.seed)
+2026-10-21 15:49:47,133 calphy.helpers INFO     The solid and the liquid cell run one after the other, each with 4 cores
+2026-10-21 15:49:47,134 calphy.helpers WARNING  mode dcci: enabling melt detection with tolerance.solid_fraction = 0.7 (the default of 0 makes the check unreachable). Set tolerance.solid_fraction explicitly to override.
+2026-10-21 15:49:47,134 calphy.helpers WARNING  mode dcci: enabling solidification detection with tolerance.liquid_fraction = 0.05 (the default of 1 makes the check unreachable). Set tolerance.liquid_fraction explicitly to override.
+2026-10-21 15:49:47,424 calphy.helpers WARNING  mode dcci: enabling melt detection with tolerance.solid_fraction = 0.7 (the default of 0 makes the check unreachable). Set tolerance.solid_fraction explicitly to override.
+2026-10-21 15:49:47,424 calphy.helpers WARNING  mode dcci: enabling solidification detection with tolerance.liquid_fraction = 0.05 (the default of 1 makes the check unreachable). Set tolerance.liquid_fraction explicitly to override.
+2026-10-21 15:49:47,677 calphy.helpers INFO     Cells: solid /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_13/high-dcci-fcc-solid-1340-0/solid/high-dcci-high-dcci-fcc-solid-1340-0.0.data-solid-1340-0.0.data (500 atoms), liquid /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_13/high-dcci-fcc-solid-1340-0/liquid/high-dcci-high-dcci-fcc-solid-1340-0.0.data-liquid-1340-0.0.data (500 atoms)
+2026-10-21 15:49:47,677 calphy.helpers INFO     Equilibrating the solid cell at 1340.00 K, 0.00 bar
+2026-10-21 15:49:56,384 calphy.helpers INFO     At count 1 mean pressure is -3.09 bar, std 813.62, vol/atom 12.7669
+2026-10-21 15:49:56,384 calphy.helpers INFO     Pressure within tolerance
+2026-10-21 15:49:56,384 calphy.helpers INFO     finalized vol/atom 12.766908 at pressure -3.093484
+2026-10-21 15:49:56,384 calphy.helpers INFO     Avg box dimensions x: 18.550000, y: 18.550000, z:18.550000
+2026-10-21 15:50:03,290 calphy.helpers INFO     At count 1 mean k is 1.237203 std is 0.020000
+2026-10-21 15:50:03,290 calphy.helpers INFO     finalized sprint constants
+2026-10-21 15:50:03,290 calphy.helpers INFO     [np.float64(1.2372028469222718)]
+2026-10-21 15:50:08,636 calphy.helpers INFO     solid cell: 12.7669 A^3/atom
+2026-10-21 15:50:08,636 calphy.helpers INFO     Equilibrating the liquid cell at 1340.00 K, 0.00 bar
+2026-10-21 15:50:08,636 calphy.helpers INFO     Starting melting cycle with thigh temp 2680.000000, factor 1.000000
+2026-10-21 15:50:13,529 calphy.helpers INFO     fraction of solids found: 0.000000
+2026-10-21 15:50:19,603 calphy.helpers INFO     At count 1 mean pressure is 10.17 bar, std 792.74, vol/atom 13.4023
+2026-10-21 15:50:24,102 calphy.helpers INFO     At count 2 mean pressure is -8.99 bar, std 685.56, vol/atom 13.4189
+2026-10-21 15:50:24,102 calphy.helpers INFO     Pressure within tolerance
+2026-10-21 15:50:24,102 calphy.helpers INFO     finalized vol/atom 13.418917 at pressure -8.988046
+2026-10-21 15:50:24,102 calphy.helpers INFO     Avg box dimensions x: 18.861000, y: 18.861000, z:18.861000
+2026-10-21 15:50:32,158 calphy.helpers INFO     liquid cell: 13.4189 A^3/atom
+2026-10-21 15:50:32,158 calphy.helpers INFO     forward sweep (iteration 1): P_RS 0.00 -> 1500000.00 bar in 100 blocks of 1000 steps, starting at lambda = 1.000000 (T = 1340.00 K)
+2026-10-21 15:50:32,158 calphy.helpers INFO     forward sweep (iteration 1), solid cell: equilibration of 10000 steps at lambda = 1.000000, P_RS = 0.00 bar
+2026-10-21 15:50:32,158 calphy.helpers INFO     forward sweep (iteration 1), liquid cell: equilibration of 10000 steps at lambda = 1.000000, P_RS = 0.00 bar
+2026-10-21 15:50:41,341 calphy.helpers INFO     forward block 1/100: T = 1406.11 K, P = 15740.1 bar (P_RS 15000.0, lambda 0.952981), du = 0.1238 eV/atom, dv = 0.6216 A^3/atom, dP/dT = 243.67 bar/K
+2026-10-21 15:50:46,907 calphy.helpers INFO     forward block 2/100: T = 1476.22 K, P = 33049.8 bar (P_RS 30000.0, lambda 0.907721), du = 0.1210 eV/atom, dv = 0.5849 A^3/atom, dP/dT = 246.67 bar/K
+2026-10-21 15:50:52,473 calphy.helpers INFO     forward block 3/100: T = 1551.26 K, P = 52094.6 bar (P_RS 45000.0, lambda 0.863813), du = 0.1170 eV/atom, dv = 0.5489 A^3/atom, dP/dT = 253.63 bar/K
+2026-10-21 15:50:58,060 calphy.helpers INFO     forward block 4/100: T = 1630.64 K, P = 73013.8 bar (P_RS 60000.0, lambda 0.821762), du = 0.1158 eV/atom, dv = 0.5203 A^3/atom, dP/dT = 263.28 bar/K
+2026-10-21 15:51:03,638 calphy.helpers INFO     forward block 5/100: T = 1714.37 K, P = 95953.5 bar (P_RS 75000.0, lambda 0.781628), du = 0.1214 eV/atom, dv = 0.5205 A^3/atom, dP/dT = 273.71 bar/K
+2026-10-21 15:51:09,221 calphy.helpers INFO     forward block 6/100: T = 1802.15 K, P = 121039.8 bar (P_RS 90000.0, lambda 0.743557), du = 0.1195 eV/atom, dv = 0.4859 A^3/atom, dP/dT = 285.48 bar/K
+2026-10-21 15:51:14,810 calphy.helpers INFO     forward block 7/100: T = 1896.53 K, P = 148608.3 bar (P_RS 105000.0, lambda 0.706555), du = 0.1227 eV/atom, dv = 0.4849 A^3/atom, dP/dT = 291.94 bar/K
+2026-10-21 15:51:20,401 calphy.helpers INFO     forward block 8/100: T = 1995.04 K, P = 178660.5 bar (P_RS 120000.0, lambda 0.671665), du = 0.1170 eV/atom, dv = 0.4361 A^3/atom, dP/dT = 304.70 bar/K
+2026-10-21 15:51:25,997 calphy.helpers INFO     forward block 9/100: T = 2098.92 K, P = 211458.8 bar (P_RS 135000.0, lambda 0.638422), du = 0.1147 eV/atom, dv = 0.4073 A^3/atom, dP/dT = 315.44 bar/K
+2026-10-21 15:51:31,599 calphy.helpers INFO     forward block 10/100: T = 2207.41 K, P = 247097.7 bar (P_RS 150000.0, lambda 0.607047), du = 0.1231 eV/atom, dv = 0.4124 A^3/atom, dP/dT = 328.19 bar/K
+2026-10-21 15:51:37,204 calphy.helpers INFO     forward block 11/100: T = 2318.64 K, P = 285504.4 bar (P_RS 165000.0, lambda 0.577924), du = 0.1208 eV/atom, dv = 0.3758 A^3/atom, dP/dT = 344.83 bar/K
+2026-10-21 15:51:42,811 calphy.helpers INFO     forward block 12/100: T = 2436.67 K, P = 327313.5 bar (P_RS 180000.0, lambda 0.549931), du = 0.1248 eV/atom, dv = 0.3730 A^3/atom, dP/dT = 354.01 bar/K
+2026-10-21 15:51:48,427 calphy.helpers INFO     forward block 13/100: T = 2555.96 K, P = 371948.9 bar (P_RS 195000.0, lambda 0.524266), du = 0.1273 eV/atom, dv = 0.3489 A^3/atom, dP/dT = 373.66 bar/K
+2026-10-21 15:51:54,046 calphy.helpers INFO     forward block 14/100: T = 2681.44 K, P = 420225.2 bar (P_RS 210000.0, lambda 0.499732), du = 0.1299 eV/atom, dv = 0.3404 A^3/atom, dP/dT = 384.47 bar/K
+2026-10-21 15:51:59,672 calphy.helpers INFO     forward block 15/100: T = 2813.09 K, P = 472346.9 bar (P_RS 225000.0, lambda 0.476345), du = 0.1391 eV/atom, dv = 0.3476 A^3/atom, dP/dT = 395.63 bar/K
+2026-10-21 15:52:05,438 calphy.helpers INFO     forward block 16/100: T = 2945.27 K, P = 527510.6 bar (P_RS 240000.0, lambda 0.454967), du = 0.1342 eV/atom, dv = 0.3065 A^3/atom, dP/dT = 416.81 bar/K
+2026-10-21 15:52:11,306 calphy.helpers INFO     forward block 17/100: T = 3078.64 K, P = 585860.1 bar (P_RS 255000.0, lambda 0.435257), du = 0.1302 eV/atom, dv = 0.2741 A^3/atom, dP/dT = 437.02 bar/K
+2026-10-21 15:52:17,231 calphy.helpers INFO     forward block 18/100: T = 3215.31 K, P = 647860.1 bar (P_RS 270000.0, lambda 0.416757), du = 0.1348 eV/atom, dv = 0.2663 A^3/atom, dP/dT = 453.28 bar/K
+2026-10-21 15:52:23,245 calphy.helpers INFO     forward block 19/100: T = 3357.35 K, P = 714062.7 bar (P_RS 285000.0, lambda 0.399125), du = 0.1477 eV/atom, dv = 0.2781 A^3/atom, dP/dT = 465.80 bar/K
+2026-10-21 15:52:29,179 calphy.helpers INFO     forward block 20/100: T = 3500.33 K, P = 783655.5 bar (P_RS 300000.0, lambda 0.382821), du = 0.1515 eV/atom, dv = 0.2639 A^3/atom, dP/dT = 486.27 bar/K
+2026-10-21 15:52:35,134 calphy.helpers INFO     forward block 21/100: T = 3647.45 K, P = 857422.7 bar (P_RS 315000.0, lambda 0.367380), du = 0.1607 eV/atom, dv = 0.2651 A^3/atom, dP/dT = 501.09 bar/K
+2026-10-21 15:52:40,957 calphy.helpers INFO     forward block 22/100: T = 3792.46 K, P = 933965.2 bar (P_RS 330000.0, lambda 0.353332), du = 0.1480 eV/atom, dv = 0.2221 A^3/atom, dP/dT = 527.26 bar/K
+2026-10-21 15:52:46,702 calphy.helpers INFO     forward block 23/100: T = 3939.71 K, P = 1014328.0 bar (P_RS 345000.0, lambda 0.340127), du = 0.1595 eV/atom, dv = 0.2249 A^3/atom, dP/dT = 545.42 bar/K
+2026-10-21 15:52:52,535 calphy.helpers INFO     forward block 24/100: T = 4086.31 K, P = 1097814.0 bar (P_RS 360000.0, lambda 0.327924), du = 0.1546 eV/atom, dv = 0.2015 A^3/atom, dP/dT = 569.02 bar/K
+2026-10-21 15:52:58,259 calphy.helpers INFO     forward block 25/100: T = 4238.00 K, P = 1186006.8 bar (P_RS 375000.0, lambda 0.316187), du = 0.1613 eV/atom, dv = 0.2023 A^3/atom, dP/dT = 581.17 bar/K
+2026-10-21 15:53:03,942 calphy.helpers INFO     forward block 26/100: T = 4394.59 K, P = 1279021.7 bar (P_RS 390000.0, lambda 0.304921), du = 0.1714 eV/atom, dv = 0.2063 A^3/atom, dP/dT = 593.76 bar/K
+2026-10-21 15:53:09,720 calphy.helpers INFO     forward block 27/100: T = 4550.61 K, P = 1375371.2 bar (P_RS 405000.0, lambda 0.294466), du = 0.1827 eV/atom, dv = 0.2041 A^3/atom, dP/dT = 617.09 bar/K
+2026-10-21 15:53:15,725 calphy.helpers INFO     forward block 28/100: T = 4702.83 K, P = 1474021.4 bar (P_RS 420000.0, lambda 0.284935), du = 0.1813 eV/atom, dv = 0.1845 A^3/atom, dP/dT = 647.53 bar/K
+2026-10-21 15:53:21,824 calphy.helpers INFO     forward block 29/100: T = 4858.42 K, P = 1577173.7 bar (P_RS 435000.0, lambda 0.275810), du = 0.1937 eV/atom, dv = 0.1888 A^3/atom, dP/dT = 662.72 bar/K
+2026-10-21 15:53:21,824 calphy.helpers INFO     forward sweep: real pressure 1577173.7 bar reached the target 1500000.0 bar after 29 of 100 blocks; stopping
+2026-10-21 15:53:32,503 calphy.helpers INFO     forward sweep (iteration 1) done: T = 4858.42 K, P = 1577173.7 bar
+2026-10-21 15:53:32,503 calphy.helpers INFO     backward sweep (iteration 1): P_RS 435000.00 -> 0.00 bar in 29 blocks of 1000 steps, starting at lambda = 0.275810 (T = 4858.42 K)
+2026-10-21 15:53:32,504 calphy.helpers INFO     backward sweep (iteration 1), solid cell: equilibration of 10000 steps at lambda = 0.275810, P_RS = 435000.00 bar
+2026-10-21 15:53:32,504 calphy.helpers INFO     backward sweep (iteration 1), liquid cell: equilibration of 10000 steps at lambda = 0.275810, P_RS = 435000.00 bar
+2026-10-21 15:53:43,940 calphy.helpers INFO     backward block 1/29: T = 4706.59 K, P = 1475198.5 bar (P_RS 420000.0, lambda 0.284707), du = 0.1864 eV/atom, dv = 0.1771 A^3/atom, dP/dT = 666.02 bar/K
+2026-10-21 15:53:50,025 calphy.helpers INFO     backward block 2/29: T = 4550.11 K, P = 1375218.8 bar (P_RS 405000.0, lambda 0.294499), du = 0.1801 eV/atom, dv = 0.1883 A^3/atom, dP/dT = 638.43 bar/K
+2026-10-21 15:53:55,963 calphy.helpers INFO     backward block 3/29: T = 4394.27 K, P = 1278928.9 bar (P_RS 390000.0, lambda 0.304943), du = 0.1812 eV/atom, dv = 0.2022 A^3/atom, dP/dT = 617.54 bar/K
+2026-10-21 15:54:01,940 calphy.helpers INFO     backward block 4/29: T = 4245.77 K, P = 1188182.1 bar (P_RS 375000.0, lambda 0.315608), du = 0.1739 eV/atom, dv = 0.1981 A^3/atom, dP/dT = 610.99 bar/K
+2026-10-21 15:54:07,752 calphy.helpers INFO     backward block 5/29: T = 4096.86 K, P = 1100649.5 bar (P_RS 360000.0, lambda 0.327080), du = 0.1481 eV/atom, dv = 0.1814 A^3/atom, dP/dT = 587.44 bar/K
+2026-10-21 15:54:13,517 calphy.helpers INFO     backward block 6/29: T = 3947.08 K, P = 1016226.4 bar (P_RS 345000.0, lambda 0.339491), du = 0.1597 eV/atom, dv = 0.2117 A^3/atom, dP/dT = 563.23 bar/K
+2026-10-21 15:54:19,248 calphy.helpers INFO     backward block 7/29: T = 3799.36 K, P = 935663.1 bar (P_RS 330000.0, lambda 0.352691), du = 0.1618 eV/atom, dv = 0.2281 A^3/atom, dP/dT = 545.04 bar/K
+2026-10-21 15:54:24,927 calphy.helpers INFO     backward block 8/29: T = 3651.22 K, P = 858308.1 bar (P_RS 315000.0, lambda 0.367001), du = 0.1520 eV/atom, dv = 0.2324 A^3/atom, dP/dT = 521.73 bar/K
+2026-10-21 15:54:30,586 calphy.helpers INFO     backward block 9/29: T = 3504.54 K, P = 784599.6 bar (P_RS 300000.0, lambda 0.382361), du = 0.1601 eV/atom, dv = 0.2627 A^3/atom, dP/dT = 502.17 bar/K
+2026-10-21 15:54:36,249 calphy.helpers INFO     backward block 10/29: T = 3364.02 K, P = 715482.4 bar (P_RS 285000.0, lambda 0.398333), du = 0.1500 eV/atom, dv = 0.2559 A^3/atom, dP/dT = 491.65 bar/K
+2026-10-21 15:54:42,166 calphy.helpers INFO     backward block 11/29: T = 3222.06 K, P = 649221.5 bar (P_RS 270000.0, lambda 0.415883), du = 0.1464 eV/atom, dv = 0.2745 A^3/atom, dP/dT = 466.26 bar/K
+2026-10-21 15:54:48,074 calphy.helpers INFO     backward block 12/29: T = 3083.81 K, P = 586844.7 bar (P_RS 255000.0, lambda 0.434527), du = 0.1393 eV/atom, dv = 0.2774 A^3/atom, dP/dT = 450.86 bar/K
+2026-10-21 15:54:54,057 calphy.helpers INFO     backward block 13/29: T = 2947.90 K, P = 527982.1 bar (P_RS 240000.0, lambda 0.454561), du = 0.1340 eV/atom, dv = 0.2868 A^3/atom, dP/dT = 432.71 bar/K
+2026-10-21 15:55:00,011 calphy.helpers INFO     backward block 14/29: T = 2814.32 K, P = 472554.5 bar (P_RS 225000.0, lambda 0.476136), du = 0.1392 eV/atom, dv = 0.3208 A^3/atom, dP/dT = 414.56 bar/K
+2026-10-21 15:55:05,920 calphy.helpers INFO     backward block 15/29: T = 2683.90 K, P = 420611.5 bar (P_RS 210000.0, lambda 0.499273), du = 0.1353 eV/atom, dv = 0.3344 A^3/atom, dP/dT = 397.89 bar/K
+2026-10-21 15:55:11,815 calphy.helpers INFO     backward block 16/29: T = 2558.40 K, P = 372304.6 bar (P_RS 195000.0, lambda 0.523765), du = 0.1293 eV/atom, dv = 0.3383 A^3/atom, dP/dT = 384.61 bar/K
+2026-10-21 15:55:17,493 calphy.helpers INFO     backward block 17/29: T = 2438.71 K, P = 327587.3 bar (P_RS 180000.0, lambda 0.549472), du = 0.1200 eV/atom, dv = 0.3295 A^3/atom, dP/dT = 373.33 bar/K
+2026-10-21 15:55:23,194 calphy.helpers INFO     backward block 18/29: T = 2323.20 K, P = 286065.6 bar (P_RS 165000.0, lambda 0.576791), du = 0.1118 eV/atom, dv = 0.3262 A^3/atom, dP/dT = 359.15 bar/K
+2026-10-21 15:55:28,916 calphy.helpers INFO     backward block 19/29: T = 2207.64 K, P = 247124.0 bar (P_RS 150000.0, lambda 0.606983), du = 0.1297 eV/atom, dv = 0.4182 A^3/atom, dP/dT = 336.46 bar/K
+2026-10-21 15:55:34,583 calphy.helpers INFO     backward block 20/29: T = 2099.87 K, P = 211554.0 bar (P_RS 135000.0, lambda 0.638135), du = 0.1181 eV/atom, dv = 0.3930 A^3/atom, dP/dT = 329.88 bar/K
+2026-10-21 15:55:40,240 calphy.helpers INFO     backward block 21/29: T = 1995.06 K, P = 178662.5 bar (P_RS 120000.0, lambda 0.671657), du = 0.1192 eV/atom, dv = 0.4267 A^3/atom, dP/dT = 313.45 bar/K
+2026-10-21 15:55:45,881 calphy.helpers INFO     backward block 22/29: T = 1895.49 K, P = 148527.3 bar (P_RS 105000.0, lambda 0.706941), du = 0.1223 eV/atom, dv = 0.4608 A^3/atom, dP/dT = 302.37 bar/K
+2026-10-21 15:55:51,490 calphy.helpers INFO     backward block 23/29: T = 1802.00 K, P = 121029.9 bar (P_RS 90000.0, lambda 0.743618), du = 0.1195 eV/atom, dv = 0.4683 A^3/atom, dP/dT = 293.91 bar/K
+2026-10-21 15:55:57,082 calphy.helpers INFO     backward block 24/29: T = 1713.05 K, P = 95879.8 bar (P_RS 75000.0, lambda 0.782229), du = 0.1226 eV/atom, dv = 0.5055 A^3/atom, dP/dT = 282.47 bar/K
+2026-10-21 15:56:02,672 calphy.helpers INFO     backward block 25/29: T = 1629.34 K, P = 72955.7 bar (P_RS 60000.0, lambda 0.822417), du = 0.1117 eV/atom, dv = 0.4796 A^3/atom, dP/dT = 273.64 bar/K
+2026-10-21 15:56:08,263 calphy.helpers INFO     backward block 26/29: T = 1549.84 K, P = 52047.0 bar (P_RS 45000.0, lambda 0.864604), du = 0.1212 eV/atom, dv = 0.5460 A^3/atom, dP/dT = 262.74 bar/K
+2026-10-21 15:56:13,855 calphy.helpers INFO     backward block 27/29: T = 1474.61 K, P = 33013.6 bar (P_RS 30000.0, lambda 0.908716), du = 0.1242 eV/atom, dv = 0.5850 A^3/atom, dP/dT = 252.75 bar/K
+2026-10-21 15:56:19,443 calphy.helpers INFO     backward block 28/29: T = 1403.91 K, P = 15715.4 bar (P_RS 15000.0, lambda 0.954480), du = 0.1306 eV/atom, dv = 0.6383 A^3/atom, dP/dT = 244.46 bar/K
+2026-10-21 15:56:25,038 calphy.helpers INFO     backward block 29/29: T = 1336.49 K, P = 0.0 bar (P_RS 0.0, lambda 1.002629), du = 0.1292 eV/atom, dv = 0.6643 A^3/atom, dP/dT = 232.83 bar/K
+2026-10-21 15:56:35,653 calphy.helpers INFO     backward sweep (iteration 1) done: T = 1336.49 K, P = 0.0 bar
+2026-10-21 15:56:35,653 calphy.helpers INFO     dcci cycle 1 finished in 363.495557 s
+2026-10-21 15:56:35,654 calphy.helpers INFO     Coexistence line from 0.0 to 1577173.7 bar written to coexistence_line.dat (30 points)
+2026-10-21 15:56:35,654 calphy.helpers INFO     Round trip misses the starting temperature by -3.51 K (tolerance 5.00 K)
+2026-10-21 15:56:35,654 calphy.helpers INFO     STATE: T_coex = 4858.42 K at 1577173.7 bar (from 1340.00 K at 0.0 bar)
+2026-10-21 15:56:35,655 calphy.helpers INFO     Report written in /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_13/high-dcci-fcc-solid-1340-0/report.yaml
+2026-10-21 15:56:35,655 calphy.helpers INFO     Please cite the following publications:
+2026-10-21 15:56:35,655 calphy.helpers INFO     - 10.1063/1.1420486
+2026-10-21 15:56:35,655 calphy.helpers INFO     - 10.1103/PhysRevLett.83.3973

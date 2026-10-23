@@ -1,0 +1,109 @@
+{
+ "runs": [
+  {
+   "phase": "fcc_x0",
+   "x": 0.0,
+   "n_T": 41,
+   "G_cpu_800K_eV": -3.711483972482354,
+   "G_gpu_800K_eV": -3.709064395817577,
+   "dG_gpu_minus_cpu_800K_meV": 2.41957666477699,
+   "max_abs_dG_meV": 3.2152460514014436,
+   "mean_dG_meV": 2.803388514333715,
+   "G_err_cpu_meV": 0.0,
+   "G_err_gpu_meV": 0.0,
+   "wall_cpu_s": 412.0,
+   "wall_gpu_s": 125.0
+  },
+  {
+   "phase": "fcc_x0.1",
+   "x": 0.1015625,
+   "n_T": 41,
+   "G_cpu_800K_eV": -3.5462458476195295,
+   "G_gpu_800K_eV": -3.5475993605604237,
+   "dG_gpu_minus_cpu_800K_meV": -1.3535129408941415,
+   "max_abs_dG_meV": 1.9507190439451705,
+   "mean_dG_meV": -1.696757555867084,
+   "G_err_cpu_meV": 0.0,
+   "G_err_gpu_meV": 0.0,
+   "wall_cpu_s": 380.0,
+   "wall_gpu_s": 135.0
+  },
+  {
+   "phase": "lqd_x0",
+   "x": 0.0,
+   "n_T": 41,
+   "G_cpu_800K_eV": -3.6990138599029847,
+   "G_gpu_800K_eV": -3.6964881148884507,
+   "dG_gpu_minus_cpu_800K_meV": 2.5257450145339533,
+   "max_abs_dG_meV": 2.946312644700022,
+   "mean_dG_meV": 2.74333836261865,
+   "G_err_cpu_meV": 0.0,
+   "G_err_gpu_meV": 0.0,
+   "wall_cpu_s": 338.0,
+   "wall_gpu_s": 141.0
+  },
+  {
+   "phase": "lqd_x0.1",
+   "x": 0.1015625,
+   "n_T": 41,
+   "G_cpu_800K_eV": -3.5622084743551983,
+   "G_gpu_800K_eV": -3.563533645623425,
+   "dG_gpu_minus_cpu_800K_meV": -1.3251712682267325,
+   "max_abs_dG_meV": 1.554292461161566,
+   "mean_dG_meV": -1.3442126360251248,
+   "G_err_cpu_meV": 0.0,
+   "G_err_gpu_meV": 0.0,
+   "wall_cpu_s": 337.0,
+   "wall_gpu_s": 149.0
+  }
+ ],
+ "repeats": [
+  {
+   "phase": "fcc_x0",
+   "gpu_minus_cpu_meV_800_900_1000": [
+    2.41957666477699,
+    2.8467132846308196,
+    3.1559253427690948
+   ],
+   "cpu_repeat_minus_cpu_meV_800_900_1000": [
+    0.827555995746021,
+    1.0123585956072212,
+    1.1454110431219355
+   ],
+   "gpu_repeat_minus_cpu_meV_800_900_1000": [
+    -0.2718917494934914,
+    -0.2918094860997478,
+    -0.051511280317662056
+   ]
+  },
+  {
+   "phase": "lqd_x0",
+   "gpu_minus_cpu_meV_800_900_1000": [
+    2.5257450145339533,
+    2.7422282238376283,
+    2.946312644700022
+   ],
+   "cpu_repeat_minus_cpu_meV_800_900_1000": [
+    0.42993319870632263,
+    0.7601562612036261,
+    0.6102034196202588
+   ],
+   "gpu_repeat_minus_cpu_meV_800_900_1000": [
+    1.5991568835049819,
+    2.5031677989959533,
+    2.1170746818821584
+   ]
+  }
+ ],
+ "Tm_K": {
+  "cpu": 904.460611227213,
+  "gpu": 903.205881590973,
+  "cpu_repeat": 902.0882944272302,
+  "gpu_repeat": 926.9249461480488
+ },
+ "G_900K_std_meV_fcc_x0": 1.4180337302068309,
+ "G_900K_n_samples_fcc_x0": 4,
+ "G_900K_std_meV_lqd_x0": 1.3350203049533071,
+ "G_900K_n_samples_lqd_x0": 4,
+ "note": "CPU: LAMMPS 22Jul2025, 4 MPI ranks; GPU: LAMMPS 30Sep2026 KOKKOS/CUDA sm_86, 1 rank + RTX 3060, pace product. Different random seeds, so dG is the run-to-run statistical spread, not a GPU/CPU numerical difference (the single-point energies agree to all printed digits)."
+}

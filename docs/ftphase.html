@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ftphase パッケージ：設計・検証・実行結果</title>
+<style>body{font-family:system-ui,sans-serif;line-height:1.8;max-width:1100px;margin:2em auto;padding:0 1.2em;color:#172838}h1,h2,h3{line-height:1.4}table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.95em}th,td{border:1px solid #ccd5dd;padding:.5em .6em;text-align:left;vertical-align:top}th{background:#edf3f8}pre{background:#edf3f8;padding:1em;overflow:auto}code{font-family:monospace}.note{border-left:4px solid #3777a2;padding:.6em 1em;background:#f3f7fa}.warn{border-left:4px solid #c0392b;padding:.6em 1em;background:#fbf1ef}img{max-width:100%}</style></head><body>
+<h1>ftphase パッケージ：設計・検証・実行結果</h1>
+<p>作成日：2026-10-21。<a href="workflow.html">相図計算 workflow</a> ／ <a href="examples.html">実行済みの例と工程の対応</a> ／ <a href="public-sources.html">欠けている工程を補う公開ソース</a> ／ <a href="migration.html">移行手順</a> ／ <a href="../skills/phase-diagram/SKILL.md">phase-diagram スキル</a>（要約は <a href="../skills/phase-diagram/references/ftphase.md">references/ftphase.md</a>）。パッケージ本体は <code>ftphase/</code>（<code>README.md</code> に導入と使い方）。</p>
+<p class="note">依頼（2026-10-21）：「Python package を作成せよ。出典を明らかにして、ソースコードを利用。必要パッケージのインストールを行ってよい。有限温度相図作成のコード生成・検証を行え。期限明日 8 時 AM」。本ページはその成果の記録です。数値はすべて教材用のポテンシャル（workshop の Al–Li EAM と ACE）と小さなセル・短い MD で得たもので、対象系の結果ではありません。</p>
+
+<h2>1. 何を作ったか</h2>
+<p><code>ftphase</code>（version 0.1.0、MIT、src レイアウト、pytest 35 件）は、<a href="examples.html">examples.html</a> で「公開例に無い」とした工程を、<a href="public-sources.html">public-sources.html</a> で挙げた公開コードの上に実装したものです。1 行 = (相, 組成, T, P, G) の表 <code>FreeEnergyTable</code> を中心に、どの経路で得た自由エネルギーも同じ列（単位、基準状態、方法、配置項の有無、量子／古典、出典）に揃えてから凸包を取る設計にしました。</p>
+<table><thead><tr><th>工程</th><th>モジュール</th><th>実装</th><th>依拠した公開コード（出典）</th></tr></thead><tbody>
+<tr><td>01</td><td><code>validate</code></td><td>ASE で位置とセルを緩和し spglib の空間群が変わったら <code>transformed</code> を立てる。0 K 凸包（生成エネルギー、単調鎖）。既知基底状態との照合は「on hull / above hull / MLIP ground state not in known list」で報告し、候補から黙って外さない。Vinet EOS。calphy の融点探索入力。</td><td>ASE、spglib、pymatgen <code>PhaseDiagram</code>（Ong et al. 2013）で相互検証</td></tr>
+<tr><td>02A</td><td><code>structures</code></td><td>整数原子数のランダム置換系列（seed、実組成、副格子ごとの占有数を <code>SeriesMember</code> に保持）、空孔系列（原子を削除し元のサイト数を保持）、icet の SQS（<code>generate_sqs_by_enumeration</code> / <code>generate_sqs</code>、副格子と空孔 <code>X</code>、クラスターベクトルの残差 (B4)）、LAMMPS data 出力（元素順を固定）。</td><td>icet（Ångqvist et al. 2019）、sqsgenerator（Gehringer et al. 2023）</td></tr>
+<tr><td>03A</td><td><code>qha</code></td><td>式 (D1) の調和自由エネルギー（量子・古典、零点、虚振動は既定で例外、<code>imaginary='drop'</code> は明示）、Vinet / Birch–Murnaghan / 多項式 EOS、式 (D2) の QHA（各 T で E₀+F_vib+PV を EOS フィットして最小化、最小が走査範囲外なら例外）、phonopy＋任意の ASE 計算器の体積走査、anphon <code>.thermo</code> の読み込み（Ry → eV、基本胞あたり）。</td><td>phonopy（Togo 2023）、ALAMODE（Tadano et al. 2014）・aiida-alamode</td></tr>
+<tr><td>03B</td><td><code>calphy_io</code></td><td>calphy 2.x の <code>calculations:</code> ブロック生成（Slurm queue 込み）、<code>gather_results</code> による読み込み。固相は古典・配置項なし、液相（UFM）は古典・<code>liquid-ti</code> とフラグ化。</td><td>calphy（Menon et al. 2021）</td></tr>
+<tr><td>04A</td><td><code>configurational</code></td><td>理想混合 (E1)/(E14)、厳密数え上げ (E9)、副格子モデル (E10)–(E12)（空孔、原子／式単位／サイト基準）、B32 反サイトモデルのヘルパー、状態密度からの F_conf と S (E13)（icet / smol の Wang–Landau 出力の受け口）。</td><td>pycalphad の CEF 規約（Otis & Liu 2017）、icet mchammer、smol</td></tr>
+<tr><td>04B</td><td><code>quantum</code></td><td>同じ振動数から F_q − F_cl を計算し、古典 TI を量子側へ、または QHA を古典側へそろえる。高温極限を Wigner–Kirkwood 項 Σ(ħω)²/(24k_BT) で検証。</td><td>—（式は標準的）</td></tr>
+<tr><td>05</td><td><code>records</code>, <code>assemble</code></td><td>必須列と <code>check()</code>（圧力・基準状態・量子／古典の混在、点相の組成、配置項フラグの混在）、純元素基準 (G1)、配置項の加算（二重計上は <code>ValueError</code>）、温度補間（外挿しない）、フィット残差、calphy <code>PhaseDiagram.from_df</code> への受け渡し（→ <code>to_tdb</code>）、pycalphad での再計算。</td><td>calphy 2.3 <code>phase_diagram.py</code>、pycalphad</td></tr>
+<tr><td>06</td><td><code>equilibrium</code></td><td>点相と限定組成相を含む全相の下側凸包（単調鎖、同じ x の点は最も低い相だけ）、式 (H3) の共通接線を fsolve で精密化（曲線–曲線、点–曲線）、同一相の混和ギャップ検出、化学ポテンシャル (H4)、てこの法則 (H5)、対称正則溶体の binodal の解析解。</td><td>pyiron workshop <code>helpers.find_common_tangent</code> の一般化、Andrew 1979</td></tr>
+<tr><td>07</td><td><code>diagram</code></td><td>温度走査、共存相の組の変化で不変反応を挟み込む、Monte Carlo による G 不確かさの伝播（相ごとのオフセットと傾き）、温度ごとの帯で描く T–x 図、TSV + JSON の記録。</td><td>—</td></tr>
+</tbody></table>
+<p>環境 <code>env/ftphase</code>：conda-forge の LAMMPS 2025.07.22（KOKKOS/CUDA、OpenMPI、pace/mliap/snap/hdnnp/mlip）、calphy 2.3.0（GitHub 67caa5b）、phonopy 4.8.3、pymatgen 2026.10、icet 4.0、sqsgenerator 0.5.6、pycalphad 0.11.2、spglib、ase 3.29。再現コマンドは <code>ftphase/README.md</code>。</p>
+
+<h2>2. 検証（pytest 39 件、約 10 秒）</h2>
+<table><thead><tr><th>対象</th><th>検査</th></tr></thead><tbody>
+<tr><td>配置項</td><td>workflow の数値例 (E3)–(E8)（Al₀.₉Li₀.₁：2.80135×10⁻⁵ eV/(atom K)、−28.0 meV/atom at 1000 K）、(E15)–(E17)（等原子 4 元：k_B ln 4）。厳密数え上げ (E9) が N=10⁵ で Stirling に 10⁻³ で収束し、32 原子では小さい。副格子モデルが単一副格子で理想混合に一致、B32 反サイトモデルが全格子点理想混合の 1/2（y = x/0.5 で評価）、化学量論で 0。空孔を含む組成換算 (E11) と原子基準 (E12)。2 準位系の状態密度から F と S（高温で k_B ln 2）。</td></tr>
+<tr><td>QHA・量子補正</td><td>Einstein 結晶の量子・古典 F の解析式、S = −dF/dT、T=0 で零点、虚振動の例外と明示的除外。Vinet 係数の回復（V₀, E₀, B₀, B′）、最小が範囲外なら例外。E₀ = K/2 (V−V₀)²、F_vib = cT(V−V₀) に対する G(T) = −(cT)²/2K と V(T)、圧力項 dG/dP = V。anphon <code>.thermo</code>（PbTe、MatterSim）の F(0) = U(0)、F 単調減少、S = (U−F)/T。phonopy の F が基本胞と立方胞で原子あたり一致（2 meV 以内）し、重みの和が 3N。F_q − F_cl が T→0 で零点エネルギー、高温で Wigner–Kirkwood 項に 2 % 以内。</td></tr>
+<tr><td>相平衡</td><td>対称正則溶体（Ω = 0.1 eV、T_c = 580 K）の混和ギャップが解析解の binodal に 10⁻⁶ で一致、T_c 以上で消える。点相への接線条件 g′(x) = (g₀−g(x))/(x₀−x)。限定組成相が区間外に出ない。同じ x に複数相があるときの凸包。共晶型の温度走査と不変反応の検出。Monte Carlo 感度の標準偏差が正。描画。</td></tr>
+<tr><td>表・橋渡し</td><td>スキーマと TSV 往復、基準状態の混在検出、不正な kind の拒否、純元素基準で端点が 0、理想混合項の加算値、二重計上の拒否、化学量論点相の副格子項が 0、温度補間（範囲外は落とす）、calphy <code>PhaseDiagram.from_df</code> への受け渡し。</td></tr>
+<tr><td>構造・検証・入出力</td><td>整数原子数の系列（29 Al + 3 Li）、seed 再現性、空孔の占有率、icet SQS（fcc 16 原子、x = 0.25）、LAMMPS data、EMT Al の緩和（空間群保持）と EOS、0 K 凸包と既知相照合（pymatgen と一致）、calphy 入力の往復（calphy の検証パーサ）、<code>calphy-examples/example_03</code> の読み込み。</td></tr>
+</tbody></table>
+
+<h2>3. 実行結果</h2>
+<h3>3.1 Al–Li EAM（workshop の 18 本の calphy 結果）：04A → 05 → 06 → 07</h3>
+<p><code>ftphase/examples/alli_eam_workshop.py</code> → <code>out_alli_eam/</code>。6 組成 × 3 温度（800/900/1000 K）の同じデータを、B32 の配置項（全格子点理想混合＝チュートリアル／副格子反サイト＝workflow 第 4 節）と fit（3 次多項式／スプライン）で 2×2 に処理。組成は整数原子数の実組成（チュートリアルは公称組成。公称組成に戻すと 800 K の fcc+B32 が 0.193/0.255 となりチュートリアルの値を再現する）。</p>
+<table><thead><tr><th>変種</th><th>800 K の fcc+B32</th><th>液相が最初に現れる T</th><th>不変反応の挟み込み</th></tr></thead><tbody>
+<tr><td>理想混合・poly3</td><td>0.158–0.222</td><td>906 K</td><td>904–906 K：B32+fcc → B32+液, fcc+液（共晶型）</td></tr>
+<tr><td>理想混合・spline</td><td>0.139–0.250</td><td>820 K</td><td>818–820 K</td></tr>
+<tr><td>副格子・poly3</td><td>なし（液相が fcc と B32 の間に入る）</td><td>800 K（範囲下端）</td><td>なし</td></tr>
+<tr><td>副格子・spline</td><td>なし</td><td>800 K</td><td>816–818 K：液+B32 が消える</td></tr>
+</tbody></table>
+<p>2 meV/atom の G 不確かさ（20 サンプル）で境界は x で ±0.02〜0.04、fit の形だけで共晶温度が約 85 K 動きます。fit 残差は poly3 で 2.5〜3.0 meV/atom。<strong>6 点の組成格子と 5 ps のスイッチングでは共晶温度は決まらない</strong>という結論自体が、workflow 第 8 節（境界付近の細分化、fit 誤差の評価）の要請を数値で示しています。B32 を副格子で扱うと、この EAM データでは 800 K で既に液相が安定で、共晶は 800 K 未満です。calphy 2.3 の <code>PhaseDiagram</code> に同じ表を渡した相図を <code>calphy_phase_diagram_crosscheck.png</code> に出力しました。</p>
+
+<h3>3.2 Al–Li ACE（実際の MLIP）：01、02A、03A、04B</h3>
+<p><code>ftphase/examples/alli_ace_validate_qha.py</code> → <code>out_alli_ace/</code>。workshop の <code>AlLi-6gen-18May.yace</code>（Menon et al. 2024 の ACE）を LAMMPS <code>pair_style pace</code> で ASE から呼ぶ。CPU で約 10 秒。</p>
+<ul>
+<li><strong>01</strong>：fcc Al E = −3.4789 eV/atom、V = 16.54 Å³/atom；bcc Li −1.7561；fcc Li −1.7556；B32 AlLi E_form = −0.179 eV/atom；L1₂ Al₃Li −0.094。緩和で空間群は保持。<strong>ACE では Al₃Li が凸包上</strong>（fcc–B32 の弦より 4.6 meV/atom 下）。照合表は Al₃Li を「MLIP ground state not in known list」と報告（Menon 2024 は Al₃Li を準安定としている。相図計算では候補に残し、結果に明記する）。pymatgen の e_above_hull との差は fcc-Li/bcc-Li のタイ処理による 0.55 meV 以内。Vinet：V₀ = 16.55 Å³、B₀ = 81.8 GPa（実験約 76）、B′ = 4.75。</li>
+<li><strong>02A</strong>：32 原子ランダム Al₀.₈₇₅Li₀.₁₂₅（seed 0, 1）の未緩和 E = −3.2850 / −3.2847 eV/atom。icet の列挙 SQS（16 原子、cutoff 7.0/5.0 Å）はクラスターベクトル残差 0.203、E = −3.2879 eV/atom（<code>sqs_Al0.875Li0.125.vasp</code>）。</li>
+<li><strong>03A</strong>：phonopy 2×2×2、9 体積（長さ −3 %〜+5 %）、Vinet。fcc Al：V(0 K) = 16.69、V(1000 K) = 18.13 Å³/atom、B(300 K) = 72.7 GPa、300–900 K の平均線膨張 32 ppm/K（実験 23–30、QHA と ACE の両方の誤差を含む）。B32 AlLi：V(0 K) = 16.36 → 17.51 Å³/atom、B(300 K) = 43.5 GPa。±3 % の走査では 1000 K の最小が範囲外になり例外で止まった（設計どおり）。</li>
+<li><strong>04B</strong>：F_q − F_cl（調和）は fcc Al で 3.40 meV/atom（300 K）、1.03（1000 K）、B32 で 5.27 / 1.61 meV/atom。</li>
+</ul>
+
+<h3>3.3 ACE Al の融点：calphy TI（古典）と QHA（量子）の整合（03B → 04B → 05 → 06）</h3>
+<p><code>ftphase/examples/calphy_ace/input_ace_ts.yaml</code> を本パッケージで生成（fcc Al 256 原子と Al₀.₉Li₀.₁、固相 Einstein／液相 UFM、800–1000 K reversible scaling、5000+5000 ステップ、Slurm 4 コア）し投入。<code>alli_ace_melting.py</code> が (a) calphy 固相 vs calphy 液相（ともに古典）、(b) QHA 固相（量子）vs calphy 液相、(c) QHA を F_q − F_cl で古典側へ下げたもの vs calphy 液相、の融点を比べます。</p>
+<div id="melting-result">
+<table><thead><tr><th>比較</th><th>融点（ACE Al、0 GPa）</th><th>備考</th></tr></thead><tbody>
+<tr><td>(a) calphy 固相 vs calphy 液相（ともに古典）</td><td>904 K</td><td>この ACE ポテンシャルの古典融点。実験 933.5 K。calphy の 1 反復では error = 0 と報告される。別 seed の再実行（3.4）では 902–927 K</td></tr>
+<tr><td>(b) QHA 固相（量子）vs calphy 液相（古典）</td><td>864 K</td><td>量子と古典を混ぜた不整合な比較。900 K で F_q − F_cl = 1.14 meV/atom</td></tr>
+<tr><td>(c) QHA を F_q − F_cl で古典側へ下げた固相 vs calphy 液相</td><td>874 K</td><td>整合させた比較。(a) との残差 30 K は、900 K で QHA（古典化後）が calphy の Einstein 結晶 TI より 3.7 meV/atom 高いことによる＝QHA に含まれない非調和項と TI の統計誤差の大きさ</td></tr>
+</tbody></table>
+<p>同じ入力で計算した x_Li = 0.1016（256 原子ランダム置換）の fcc と液相は、900 K で fcc が液相より 29.7 meV/atom 高い（古典同士、<code>melting_ace.json</code>）。</p>
+<p>図 <code>out_alli_ace/melting_ace.png</code>、数値 <code>melting_ace.json</code>。量子／古典の取り違えは融点を 10 K、QHA と TI の差は 30 K 動かす、というのがこの系での目安です。workflow 04B の「固相 QHA と古典液相 MD を組み合わせる場合は零点振動・核量子効果の扱いを明示する」の数値的な根拠になります。</p>
+</div>
+
+<h3>3.4 GPU と CPU の calphy 比較（03B、2026-10-22）</h3>
+<p>GPU 復旧後、例 3 と同じ 4 本を <code>calphy_ace_gpu/make_input.py</code> が書いた GPU 入力（<code>env/lammps-gpu/bin/lmp_gpu</code> = LAMMPS 30 Sep 2026 KOKKOS/CUDA、<code>pace product</code>、MPI 1 ランク、<code>--gres=gpu:1</code>）で再実行し、純 Al の 2 本は CPU・GPU とも別 seed で繰り返した（<code>alli_ace_gpu_compare.py</code> → <code>out_alli_ace/gpu_vs_cpu.{json,png}</code>）。</p>
+<table><thead><tr><th>項目</th><th>結果</th></tr></thead><tbody>
+<tr><td>1 本の所要時間</td><td>CPU 4 ランク 235–412 s、GPU 1 ランク 125–149 s（1.7〜3.3 倍）</td></tr>
+<tr><td>1 点のエネルギー・圧力（ti/spring、hybrid/scaled、hybrid/scaled + ufm）</td><td>GPU と CPU で全桁一致</td></tr>
+<tr><td>G(T) の差 GPU − CPU（別 seed）</td><td>−1.4〜+3.2 meV/atom。GPU 再実行は −0.3、CPU 再実行は +0.4〜+1.1 なので系統差ではない</td></tr>
+<tr><td>900 K の G の標準偏差（4 サンプル）</td><td>fcc 1.4、液相 1.3 meV/atom</td></tr>
+<tr><td>純 Al の融点（4 通りの組合せ）</td><td>902–927 K。例 3 の 904 K には ±10 K 程度の統計不確かさが付く（<code>n_iterations: 1</code> では calphy の誤差は 0 と報告される）</td></tr>
+</tbody></table>
+<p><strong>注意点：GPU 1 枚ではジョブが直列になるため、総スループットは CPU 8 コアと同程度です。利点は 1 本の待ち時間短縮と、CPU を QHA に空けられることです。</strong>（CPU 8 コア = 4 ランク × 2 本同時。この結論はジョブが 1 本あたり 2〜7 分の 256 原子系での測定に基づく）</p>
+
+<h3>3.5 01 から出発した T–x 図：ACE Al–Li、Slurm + GPU（2026-10-22）</h3>
+<p><code>ftphase/examples/alli_ace_txdiagram/</code>。<code>pipeline.py</code> の 4 段（prepare / solids / calphy / assemble）を <code>run_pipeline.sh</code> が Slurm に投入する。固相 QHA は CPU ジョブ、液相 calphy は GPU ジョブ 6 本（calphy が自分で sbatch）、組立は <code>--dependency=afterany</code> で全部を待つ。投入後はセッションに依存しない。途中でマシンが再起動した（15:34）が、待機中のジョブは Slurm が再起動後に流し、止まった 1 本と凝固で止まった 1 本は <code>run_resume.sh</code> が未完了の組成だけを再投入して組立をやり直した。</p>
+<table><thead><tr><th>段</th><th>内容</th><th>時間</th></tr></thead><tbody>
+<tr><td>01/02A/02B</td><td>4 候補相の緩和と 0 K 凸包（全部凸包上）。fcc 32 原子 x = 0.0625–0.25 × 2 配置、B32 反サイト 7/16・1/2・9/16、液相 256 原子 x = 0–0.5</td><td>15 s（ログインノード）</td></tr>
+<tr><td>03A</td><td>13 セルの QHA（9 体積、2×2×2 または 3×3×3 超格子）</td><td>149 s（CPU 4 コア）</td></tr>
+<tr><td>03B</td><td>calphy ts 1100→700 K（x = 0.1 は 800 K まで：700 K で凝固検出）、UFM、3 反復、<code>lmp_gpu</code></td><td>485–517 s/本、GPU 直列で 51 分</td></tr>
+<tr><td>04–07</td><td>F_q − F_cl で古典水準へ、理想混合（fcc）・副格子（B32）、表、凸包、不変反応、Monte Carlo 誤差帯、図</td><td>5 s</td></tr>
+</tbody></table>
+<table><thead><tr><th>特徴</th><th>ACE（古典水準、0 GPa）</th><th>実験</th></tr></thead><tbody>
+<tr><td>共晶</td><td>760–770 K、液相 x ≈ 0.30–0.31、fcc 0.157 + B32 0.480</td><td>873 K、x ≈ 0.30、fcc ≈ 0.14</td></tr>
+<tr><td>純 Al 融点</td><td>860–870 K（例 3 の (c) 874 K と整合）</td><td>933.5 K</td></tr>
+<tr><td>B32 側の液相線の終わり（x = 0.5）</td><td>840–850 K</td><td>973 K</td></tr>
+<tr><td>Al₃Li</td><td>700 K 以上で不安定（誤差サンプル 30 回中 1 回）</td><td>準安定 δ'</td></tr>
+<tr><td>誤差帯（固相 2、液相 1.4 meV/atom）</td><td>fcc 固溶限 ±0.01、800 K の液相側境界 ±0.03–0.05、共晶温度 ±15 K 程度</td><td>—</td></tr>
+</tbody></table>
+<p>図 <code>out/07_phase_diagram.png</code>。組成の特徴は実験と合い、温度は約 100 K 低い。候補：ポテンシャル、32 原子セルの配置ノイズ（最大 2.6 meV/atom）、古典水準、短い切り替え。液相の標本は x ≤ 0.5 なので、その端で出る見かけの B32+液相帯は除外した（<code>summary.json</code> の edge_segments_dropped）。</p>
+
+<h3>3.6 全組成の T–x 図と配置ノイズ低減（例 6、2026-10-22 16:42 投入、最終組立 2026-10-23 01:22）</h3>
+<p><code>alli_ace_txdiagram/pipeline_full.py</code> + <code>run_pipeline_full.sh</code>。例 5 の 2 つの改良を一度に行う：fcc 固溶体を 64 原子 icet SQS（固定超格子の MC、<code>sqs_icet(method='supercells')</code>）にして配置ノイズを下げる、Li 側（bcc 固溶体 x = 0.75–1 の 64 原子 SQS、液相 x = 0.6–1.0 の GPU calphy）を加えて 0 ≤ x ≤ 1 の図にする。Al 側の液相は例 5 を再利用。Slurm job 22546（固相 CPU）、22547–22551（液相 GPU）、22552（組立、afterany）。<strong>結果は <code>out_full/REPORT.md</code>（主要数値、誤差帯、例 5 との G の差）と <code>out_full/07_phase_diagram.png</code> に自動で書かれる。</strong></p>
+<p>結果（<strong>最終組立 2026-10-23 01:22</strong>、Slurm 22620；REPORT.md の文面は 08:18 に再生成；格子 650–1100 K）。固相 16 セルは密度メッシュ 60 Å の QHA（Slurm 22619）、液相は 11 組成 × 3–4 run（seed 違いの 1100 → 700 K 3 本 + 700 → 650/500 K の掃引、計 32 本、Slurm 22553–22584・22622）を (x, T) で平均。ユーザー提供の Al₂Li₃（mp-16506）と Al₄Li₉（mp-568404）は <code>addsolid</code> で点相、液相は理想混合 + 4 項 Redlich–Kister。</p>
+<table><thead><tr><th>特徴</th><th>ACE 例 6（最終）</th><th>中間組立（10-22 20:45、[4,4,4]、液相 1 本）</th><th>例 5（32 原子ランダム）</th><th>実験</th></tr></thead><tbody>
+<tr><td>共晶（Al 側）</td><td>760–770 K、液相 x ≈ 0.31–0.32、fcc 0.15 ± 0.02 + B32 0.482</td><td>760–770 K、0.31、fcc 0.11</td><td>760–770 K、0.30、fcc 0.157</td><td>873 K、0.30、fcc ≈ 0.14</td></tr>
+<tr><td>純 Al 融点</td><td>890–900 K</td><td>850–860 K</td><td>860–870 K</td><td>933.5 K</td></tr>
+<tr><td>B32 の合致溶融</td><td>850–860 K</td><td>840–850 K</td><td>—</td><td>973 K</td></tr>
+<tr><td>Al₂Li₃</td><td>安定、710–720 K で B32 + 液相に分解</td><td>限界的</td><td>—</td><td>約 790 K まで</td></tr>
+<tr><td>Al₄Li₉</td><td>安定、670–680 K で Al₂Li₃ + 液相に分解</td><td>700 K 以上で不安定</td><td>—</td><td>約 600 K まで</td></tr>
+<tr><td>Li 側（650 K）</td><td>Al₄Li₉(0.69) + 液相(0.78)；bcc Li は格子内に現れない</td><td>B32 + 液相のみ</td><td>—</td><td>Li 融点 453 K</td></tr>
+<tr><td>64 原子 SQS − 32 原子ランダム平均（fcc、800 K）</td><td>−0.9、−0.9、+0.5、−2.9 meV/atom</td><td>同左</td><td>半幅 0–1.7 meV/atom</td><td>—</td></tr>
+</tbody></table>
+<p>メッシュ収束の効果：fcc Al の QHA F は [4,4,4]（基本胞で 64 q 点）→ 60 Å で 700 K −6.0、900 K −8.8 meV/atom（bcc Li −1.7/−3.4、B32 −0.3）。これで Al 融点が 850 → 890 K に上がり、calphy の固液 TI だけの例 4（902–927 K）と整合。液相の run 間のばらつきは 0.1–0.2 meV/atom（最大 0.55）で、Monte Carlo の σ は下限 1.4 meV/atom。誤差帯（30 サンプル）：770 K の fcc + 液相は fcc 0.11 ± 0.03・液相 0.29 ± 0.02、850 K は 0.04 ± 0.02・0.13 ± 0.05。液相の下側凸包に出る幅 0.007（x = 0.47–0.48）と幅 0.02–0.10（x = 0.88–0.98、650–750 K）の liquid+liquid 区間は Monte Carlo で位置が動かず、統計ノイズによる fit の曲率（相境界ではない）。格子が 650 K で止まるのは液相の run が全組成にある温度だけを使うため。配置ノイズを下げても共晶温度は変わらず、温度が実験より約 100 K 低い主因はポテンシャルと古典水準側にある。REPORT.md の誤差帯節が空だった不具合（感度解析の温度が格子 1 つ飛ばしで 720/800/900 K が無い）は最寄り温度を使うよう直した。</p>
+
+<h3>3.7 Ni–Al（組成幅を持つ規則相）：Mishin 2009 EAM、mygardenx1（例 7、2026-10-22）</h3>
+<p><code>ftphase/examples/nial_eam/</code>。B2 NiAl の三重欠陥（Ni 反サイト + Ni 空孔）と L1₂ Ni₃Al の反サイトを副格子モデルで扱い、fcc は 64 原子 SQS、液相は 11 組成 × 3 run の calphy。固相は QHA と calphy TI の両方で計算し、組立は TI を使う。mygardenx1（64 コア）で第 1 段 12 分、第 2 段 11 分。</p>
+<table><thead><tr><th>特徴</th><th>EAM（古典）</th><th>実験</th></tr></thead><tbody>
+<tr><td>B2 合致溶融</td><td>1880–1890 K</td><td>1911 K</td></tr>
+<tr><td>Ni 融点 / Al 融点</td><td>1740–1750 K / 921 K</td><td>1728 K / 933.5 K</td></tr>
+<tr><td>L1₂ の消失（B2 + L1₂ → B2 + 液相）</td><td>1690–1700 K</td><td>包晶 1668 K</td></tr>
+<tr><td>B2 の幅</td><td>0.50–0.611（Ni 側は標本の端、Al 側は空孔による幅がほぼ出ない）</td><td>0.45–0.60</td></tr>
+<tr><td>L1₂ の幅</td><td>0.762–0.778（1000 K）</td><td>0.73–0.77</td></tr>
+<tr><td>(Ni) の固溶限</td><td>x_Ni 0.92 → 0.89（1000 → 1700 K）</td><td>0.79–0.87</td></tr>
+<tr><td>Al 側</td><td>liquid + B2（NiAl₃・Ni₂Al₃ は凸包の 60–120 meV/atom 上）</td><td>NiAl₃、Ni₂Al₃</td></tr>
+</tbody></table>
+<p>第 3 段で B2・L1₂ の欠陥セルを増やし、副格子エントロピーを解析的に分離して欠陥エネルギーを枝ごとに線形 fit する <code>entropy_models</code> を導入した。これで標本ノイズ由来の偽の B2+B2 二相域が消えた。残る化学量論組成の尖点（幅 ≤ 0.01）は単一欠陥種モデルの限界で、熱的欠陥対を含む Wagner–Schottky 型が次の改良点。</p>
+<p><strong>最も重要な知見：</strong>融点付近では準調和の固相自由エネルギーが calphy TI より 20–45 meV/atom 高い（fcc Ni 1500 K で +43、L1₂ +36、B2 +8–16）。第 1 段（QHA 固相）では Ni 融点が 1500 K を切り B2 合致溶融が 1739 K だった。うち約 18 meV は phonopy の自動基本胞と固定 [4,4,4] メッシュで純元素・規則相の q 点が 64 個に減っていたこと（密度指定 60 Å に変更）、残りは非調和性。T_m の 0.8 倍以上では固相も TI で評価する（workflow の補助経路）。</p>
+
+<h2>4. 実装中に見つかった落とし穴（修正済み）</h2>
+<ul>
+<li>phonopy の固定メッシュ <code>[4,4,4]</code> は <code>primitive_matrix='auto'</code> で基本胞が小さい純元素・規則相では q 点 64 個しかなく、1500 K の F が 18 meV/atom ずれた（例 7）。メッシュは長さ（密度）で指定する（<code>mesh=60.0</code>）。</li>
+<li>phonopy を <code>primitive_matrix='auto'</code> で使うと振動数は基本胞あたり。入力セル（立方胞）あたりに換算しないと F_vib が 4 倍小さくなり、量子補正も 0.85 meV/atom と出た（正しくは 3.4）。回帰テスト <code>test_phonopy_free_energy_is_per_input_cell</code>。</li>
+<li>凸包で同じ x に複数相の点があると、単調鎖がより高い点を残すことがある。同じ x は最も低い相だけを残す。</li>
+<li>QHA の走査範囲：Al は 1000 K で体積が +9 % を超える。±3 %（長さ）では最小が範囲外。例外で止めて走査を広げる（外挿しない）。</li>
+<li>3 次多項式を G そのものに当てると x ln x の端点の形を再現できず、標本ノイズから偽の二相域（fcc+fcc、liquid+liquid）が出る（例 5）。<code>PhaseCurve.from_points(ideal_T=T)</code> で理想混合項を解析的に分離して過剰項だけをフィットする。<code>builder_from_table</code> は config_entropy が ideal / liquid-ti の相に自動で適用（正則溶体の解析解で検証）。</li>
+<li>3 次多項式 fit は端点（B32 の x = 0.5）で 46 meV/atom ずれることがある（副格子項を入れた B32 系列）。<code>fit_residuals</code> で確認し、スプラインか組成点の追加で対処。</li>
+<li>calphy の <code>gather_results(extract_phase_prefix=True)</code> は本パッケージの <code>folder_prefix</code> 形式から相名を取り出せない。読み込み側でフォルダ名の先頭から補う。</li>
+<li>GPU で ACE（2026-10-22、GPU 復旧後、結果は 3.4）：conda-forge の LAMMPS 22 Jul 2025（KOKKOS/CUDA ビルド）には <code>pace/kk</code> はあるが <code>hybrid/scaled/kk</code> が無い。calphy は固相 Frenkel–Ladd の <code>fe</code> 以外のすべて（reversible scaling、液相 UFM、alchemy、dcci）で <code>pair_style hybrid/scaled</code> を使うので、<code>-k on</code> を付けると "Must use pair_style hybrid/scaled/kk with Kokkos" で止まる。また <code>pace/kk</code> は <code>pace product</code> しか受け付けない。対処：<code>env/lammps-gpu/build.sh</code> で LAMMPS stable 30 Sep 2026（<code>hybrid/scaled/kk</code> あり）を KOKKOS/CUDA sm_86 + ML-PACE でビルドし、<code>calculation_block(gpu=True, lammps_executable=…)</code> が <code>md.cmdargs</code>・<code>pace product</code>・<code>queue.cores=1</code>・<code>--gres=gpu:1</code> を書き、<code>gpu_capability</code> で走らせられないモードを入力生成時に拒否する。</li>
+<li>calphy 2.3.0 の CLI 既定では融解・凝固検出が無効（<code>tolerance.solid_fraction = 0</code>、<code>liquid_fraction = 1</code>）。pyiron 経由では有効だったため examples.md の記述を訂正。<code>calculation_block</code> は既定で 0.7 / 0.05 を書く。</li>
+</ul>
+
+<h2>5. 未実装・制限</h2>
+<ul>
+<li>二元系のみ。三元以上は calphy <code>to_tdb</code> → pycalphad の経路（<code>check_with_pycalphad</code> は簡易比較のみ）。</li>
+<li>CE の学習と MC 実行（icet / smol）はラップしていない。状態密度 → F_conf の受け口だけ。</li>
+<li>04B の補正は調和近似で、液相側の量子効果は扱わない。</li>
+<li>誤差伝播は相ごとの一様オフセット（＋任意の傾き）。組成依存の誤差は未対応。</li>
+<li><code>sqs_sqsgenerator</code> は未テスト（icet 経路を使う）。</li>
+</ul>
+
+<h2>6. 出典</h2>
+<ul>
+<li>calphy: S. Menon, Y. Lysogorskiy, J. Rogal, R. Drautz, Phys. Rev. Mater. 5, 103801 (2021); <a href="https://github.com/ICAMS/calphy">github.com/ICAMS/calphy</a>（Academic Software Licence）</li>
+<li>pyiron potentials-workshop-2022: <a href="https://github.com/pyiron/potentials-workshop-2022">github.com/pyiron/potentials-workshop-2022</a>；S. Menon et al., npj Comput. Mater. 10, 261 (2024)</li>
+<li>phonopy: A. Togo, J. Phys. Soc. Jpn. 92, 012001 (2023)；<a href="https://phonopy.github.io/phonopy/qha.html">QHA</a></li>
+<li>ALAMODE: T. Tadano, Y. Gohda, S. Tsuneyuki, J. Phys.: Condens. Matter 26, 225402 (2014)</li>
+<li>icet: M. Ångqvist et al., Adv. Theory Simul. 2, 1900015 (2019); <a href="https://icet.materialsmodeling.org">icet.materialsmodeling.org</a></li>
+<li>sqsgenerator: D. Gehringer, M. Friák, D. Holec, Comput. Phys. Commun. 286, 108664 (2023)</li>
+<li>pycalphad: R. Otis, Z.-K. Liu, J. Open Res. Softw. 5, 1 (2017)</li>
+<li>pymatgen: S. P. Ong et al., Comput. Mater. Sci. 68, 314 (2013)</li>
+<li>smol: L. Barroso-Luque et al., JOSS 7, 4504 (2022)</li>
+<li>A. M. Andrew, Inf. Process. Lett. 9, 216 (1979)</li>
+</ul>
+</body></html>

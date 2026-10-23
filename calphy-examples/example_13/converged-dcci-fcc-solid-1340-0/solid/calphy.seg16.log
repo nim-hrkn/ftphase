@@ -1,0 +1,76 @@
+LAMMPS (22 Jul 2025 - Update 6)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread.
+  using 1 OpenMP thread(s) per MPI task
+units metal
+atom_style atomic
+timestep 0.001
+read_restart calphy.restart
+Reading restart file ...
+  restart file = 22 Jul 2025, LAMMPS = 22 Jul 2025
+  restoring atom style atomic from restart
+  orthogonal box = (0.16161446 0.16161446 0.16161446) to (18.388386 18.388386 18.388386)
+  1 by 2 by 2 MPI processor grid
+  pair style hybrid/scaled stores no restart info
+  500 atoms
+  read_restart CPU = 0.000 seconds
+pair_style hybrid/scaled v_lam eam/alloy
+pair_coeff * * eam/alloy /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Cu01.eam.alloy Cu
+mass 1 63.546
+variable lam equal 0.794202489627+(0.0013526638897)*(step-7500)/500
+variable u_real equal pe/atoms/v_lam
+variable vol_atom equal vol/atoms
+fix f1 all npt temp 1340.000000 1340.000000 0.100000 iso 77500.000000 0.000000 0.100000
+Resetting global fix info from restart file:
+  fix style: npt, fix ID: f1
+fix fav all ave/time 1 500 500 v_u_real v_vol_atom v_lam title1 "# block averages of the dcci backward sweep, solid cell" title2 "# step u_real[eV/atom] vol[A^3/atom] lambda" file dcci.blocks.backward_1.dat.seg16
+thermo_style custom step pe press vol v_lam
+thermo 500
+echo log
+variable lam equal 0.79554305314+(0.0013405635126)*(step-8000)/500
+run 500 start 0 stop 77500
+All restart file global fix info was re-assigned
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.506786
+  ghost atom cutoff = 7.506786
+  binsize = 3.753393, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eam/alloy, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.383 | 3.383 | 3.384 Mbytes
+   Step         PotEng         Press          Volume         v_lam     
+      8000  -1320.0894      65027.41       6055.2101      0.79554305   
+      8500  -1323.3235      71022.887      6016.6202      0.79688362   
+Loop time of 0.0878394 on 4 procs for 500 steps with 500 atoms
+
+Performance: 491.807 ns/day, 0.049 hours/ns, 5692.207 timesteps/s, 2.846 Matom-step/s
+99.5% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.071451   | 0.071881   | 0.072063   |   0.1 | 81.83
+Neigh   | 0.0012582  | 0.0013087  | 0.0013435  |   0.1 |  1.49
+Comm    | 0.00732    | 0.0075484  | 0.0079545  |   0.3 |  8.59
+Output  | 8.429e-06  | 2.4856e-05 | 3.0866e-05 |   0.0 |  0.03
+Modify  | 0.0062558  | 0.0063089  | 0.0063764  |   0.1 |  7.18
+Other   |            | 0.0007676  |            |       |  0.87
+
+Nlocal:            125 ave         133 max         119 min
+Histogram: 1 0 1 0 0 1 0 0 0 1
+Nghost:         1650.5 ave        1661 max        1633 min
+Histogram: 1 0 0 0 0 1 0 0 0 2
+Neighs:        9195.75 ave        9834 max        8783 min
+Histogram: 1 0 1 1 0 0 0 0 0 1
+
+Total # of neighbors = 36783
+Ave neighs/atom = 73.566
+Neighbor list builds = 7
+Dangerous builds = 0
+write_restart calphy.restart
+System init for write_restart ...
+Total wall time: 0:00:00

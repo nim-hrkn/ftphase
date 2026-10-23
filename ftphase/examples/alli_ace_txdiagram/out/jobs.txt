@@ -1,0 +1,20 @@
+launch 2026-10-22 15:00:08
+tx_solids 22535
+calphy_liquid 22536:22537:22538:22539:22540:22541
+tx_assemble 22542 (dependency afterany:22535:22536:22537:22538:22539:22540:22541)
+  JOBID                   NAME     STATE     TIME TRES_PER_NOD NODELIST(REASON)
+  22542            tx_assemble   PENDING     0:00          N/A (Dependency)
+  22541 lqdx050tslqdx050256dat   PENDING     0:00   gres/gpu:1 (Priority)
+  22540 lqdx040tslqdx040256dat   PENDING     0:00   gres/gpu:1 (Priority)
+  22539 lqdx030tslqdx030256dat   PENDING     0:00   gres/gpu:1 (Priority)
+  22538 lqdx020tslqdx020256dat   PENDING     0:00   gres/gpu:1 (Priority)
+  22537 lqdx010tslqdx010256dat   PENDING     0:00   gres/gpu:1 (Resources)
+  22535              tx_solids   RUNNING     0:05          N/A mygarden5
+  22536 lqdx000tslqdx000256dat   RUNNING     0:05   gres/gpu:1 mygarden5
+resume 2026-10-22 16:01:39
+calphy_liquid resume (lqd_x0.10 lqd_x0.40) 22543:22544
+tx_assemble 22545 (dependency afterany:22543:22544)
+  JOBID                   NAME     STATE     TIME TRES_PER_NOD NODELIST(REASON)
+  22544 lqdx040tslqdx040256dat   PENDING     0:00   gres/gpu:1 (Resources)
+  22545            tx_assemble   PENDING     0:00          N/A (Dependency)
+  22543 lqdx010tslqdx010256dat   RUNNING     0:05   gres/gpu:1 mygarden5

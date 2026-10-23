@@ -1,0 +1,67 @@
+calculations:
+- element: Cu
+  equilibration_control: berendsen
+  mass: 63.546
+  md:
+    timestep: 0.001
+  melting_temperature:
+    step: 400
+  mode: ts
+  n_equilibration_steps: 10000
+  n_iterations: 1
+  n_print_steps: 100
+  n_switching_steps: 25000
+  pair_coeff: '* * ../potentials/Cu01.eam.alloy Cu'
+  pair_style: eam/alloy
+  queue:
+    commands:
+    - source /home/kino/miniforge3/etc/profile.d/conda.sh && conda activate /home/kino/kino/Claude/Projects/PhaseDiagram/env/calphy
+    cores: 4
+    memory: 8GB
+    queuename: debug
+    scheduler: slurm
+    walltime: '48:00:00'
+  reference_phase: solid
+  repeat:
+  - 10
+  - 10
+  - 10
+  temperature:
+  - 1261
+  - 2061
+  tolerance:
+    liquid_fraction: 0.05
+    solid_fraction: 0.7
+- element: Cu
+  equilibration_control: berendsen
+  mass: 63.546
+  md:
+    timestep: 0.001
+  melting_temperature:
+    step: 400
+  mode: ts
+  n_equilibration_steps: 10000
+  n_iterations: 1
+  n_print_steps: 100
+  n_switching_steps: 25000
+  pair_coeff: '* * ../potentials/Cu01.eam.alloy Cu'
+  pair_style: eam/alloy
+  queue:
+    commands:
+    - source /home/kino/miniforge3/etc/profile.d/conda.sh && conda activate /home/kino/kino/Claude/Projects/PhaseDiagram/env/calphy
+    cores: 4
+    memory: 8GB
+    queuename: debug
+    scheduler: slurm
+    walltime: '48:00:00'
+  reference_phase: liquid
+  repeat:
+  - 10
+  - 10
+  - 10
+  temperature:
+  - 1261
+  - 2061
+  tolerance:
+    liquid_fraction: 0.05
+    solid_fraction: 0.7

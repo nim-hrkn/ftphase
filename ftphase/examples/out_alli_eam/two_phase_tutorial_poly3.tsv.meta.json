@@ -1,0 +1,6 @@
+{
+ "label": "tutorial_poly3",
+ "fit": "poly3",
+ "b32_config": "ideal",
+ "T_step": 2.0
+}

@@ -1,0 +1,128 @@
+[14:46:52] submit example_02/input.yaml
+Total number of 2 calculations found
+submitting tsbccsolid5000
+submitting tsfccsolid1000
+[14:46:54] submit example_03/input.yaml
+Total number of 2 calculations found
+submitting tsfccsolid12000
+submitting tsfccliquid12000
+[14:46:56] submit example_04/input.1.yaml
+Total number of 1 calculations found
+submitting meltingtemperature00
+[14:46:58] submit example_05/1.input.1.yaml
+Total number of 1 calculations found
+submitting tsfccsolid1600100000
+[14:47:00] submit example_05/1.input.2.yaml
+Total number of 1 calculations found
+submitting tsfccliquid1600100000
+[14:47:02] submit example_05/2.input.1.yaml
+Total number of 1 calculations found
+submitting tsfccsolid2700500000
+[14:47:04] submit example_05/2.input.2.yaml
+Total number of 1 calculations found
+submitting tsfccliquid2700500000
+[14:47:06] submit example_05/3.input.1.yaml
+Total number of 1 calculations found
+submitting tsfccsolid37001000000
+[14:47:07] submit example_05/3.input.2.yaml
+Total number of 1 calculations found
+submitting tsfccliquid37001000000
+[14:47:09] submit example_05/4.input.1.yaml
+Total number of 1 calculations found
+submitting tsfccsolid46001500000
+[14:47:11] submit example_05/4.input.2.yaml
+Total number of 1 calculations found
+submitting tsfccliquid46001500000
+[14:47:13] submit example_05/5.input.1.yaml
+Total number of 1 calculations found
+submitting tsfccsolid53002000000
+[14:47:15] submit example_05/5.input.2.yaml
+Total number of 1 calculations found
+submitting tsfccliquid53002000000
+[14:47:17] submit example_06/2.input.1.yaml
+Total number of 1 calculations found
+submitting febccsolid10000
+[14:47:19] submit example_06/2.input.2.yaml
+Total number of 1 calculations found
+submitting febccliquid10000
+[14:47:21] submit example_07/input.1.yaml
+Total number of 1 calculations found
+submitting alchemyfccsolid6000
+[14:47:23] submit example_08/input.1.yaml
+Total number of 2 calculations found
+submitting tsfccsolid12000
+submitting tscalefccsolid12000
+[14:47:25] submit example_09/input1.yaml
+Total number of 3 calculations found
+submitting fefccsolid12000
+submitting fefccsolid12005000
+submitting fefccsolid120010000
+[14:47:27] submit example_09/input2.yaml
+Total number of 1 calculations found
+submitting pscalefccsolid12000
+[14:47:29] submit example_10/input-direct-1.yaml
+Total number of 1 calculations found
+submitting fezrcudatasolid8000
+[14:47:32] submit example_10/input-direct-2.yaml
+Total number of 1 calculations found
+submitting fezrcusubstitutiondatasolid8000
+[14:47:34] submit example_10/input-composition.yaml
+Total number of 1 calculations found
+submitting compositionscalingzrcudatasolid8000
+[14:47:36] submit example_10/input-substitution.yaml
+Total number of 1 calculations found
+submitting subcompositionscalingzrcudatasolid8000
+[14:47:37] submit example_12/input.yaml
+Total number of 1 calculations found
+submitting tsfccsolid4000
+[14:47:40] submit example_13/tm.input.0kbar.yaml
+Total number of 1 calculations found
+submitting meltingtemperaturefcc13400
+[14:47:42] submit example_13/tm.input.50kbar.yaml
+Total number of 1 calculations found
+submitting meltingtemperaturefcc154050000
+[14:47:44] submit example_13/input.yaml
+Total number of 1 calculations found
+submitting dccifcc13400
+[14:47:46] submit example_13/input_converged.yaml
+Total number of 1 calculations found
+submitting dccifcc13400
+[14:47:48] submit example_13/input_high.yaml
+Total number of 1 calculations found
+submitting dccifcc13400
+== queue after submission
+JOBID NAME STATE CPUS TIME NODELIST(REASON)
+22481 tsfccsolid12000 PENDING 4 0:00 (Resources)
+22482 tsfccliquid12000 PENDING 4 0:00 (Priority)
+22483 meltingtemperature00 PENDING 4 0:00 (Priority)
+22484 tsfccsolid1600100000 PENDING 4 0:00 (Priority)
+22485 tsfccliquid1600100000 PENDING 4 0:00 (Priority)
+22486 tsfccsolid2700500000 PENDING 4 0:00 (Priority)
+22487 tsfccliquid2700500000 PENDING 4 0:00 (Priority)
+22488 tsfccsolid37001000000 PENDING 4 0:00 (Priority)
+22489 tsfccliquid37001000000 PENDING 4 0:00 (Priority)
+22490 tsfccsolid46001500000 PENDING 4 0:00 (Priority)
+22491 tsfccliquid46001500000 PENDING 4 0:00 (Priority)
+22492 tsfccsolid53002000000 PENDING 4 0:00 (Priority)
+22493 tsfccliquid53002000000 PENDING 4 0:00 (Priority)
+22494 febccsolid10000 PENDING 4 0:00 (Priority)
+22495 febccliquid10000 PENDING 4 0:00 (Priority)
+22496 alchemyfccsolid6000 PENDING 4 0:00 (Priority)
+22497 tsfccsolid12000 PENDING 4 0:00 (Priority)
+22498 tscalefccsolid12000 PENDING 4 0:00 (Priority)
+22512 dccifcc13400 PENDING 4 0:00 (None)
+22511 dccifcc13400 PENDING 4 0:00 (None)
+22510 dccifcc13400 PENDING 4 0:00 (Priority)
+22509 meltingtemperaturefcc154050000 PENDING 4 0:00 (Priority)
+22508 meltingtemperaturefcc13400 PENDING 4 0:00 (Priority)
+22507 tsfccsolid4000 PENDING 4 0:00 (Priority)
+22506 subcompositionscalingzrcudatasolid8000 PENDING 4 0:00 (Priority)
+22505 compositionscalingzrcudatasolid8000 PENDING 4 0:00 (Priority)
+22504 fezrcusubstitutiondatasolid8000 PENDING 4 0:00 (Priority)
+22503 fezrcudatasolid8000 PENDING 4 0:00 (Priority)
+22502 pscalefccsolid12000 PENDING 4 0:00 (Priority)
+22501 fefccsolid120010000 PENDING 4 0:00 (Priority)
+22500 fefccsolid12005000 PENDING 4 0:00 (Priority)
+22499 fefccsolid12000 PENDING 4 0:00 (Priority)
+22479 tsbccsolid5000 RUNNING 8 0:57 mygarden5
+22480 tsfccsolid1000 RUNNING 8 0:57 mygarden5

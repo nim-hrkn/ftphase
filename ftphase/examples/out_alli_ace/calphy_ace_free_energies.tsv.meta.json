@@ -1,0 +1,4 @@
+{
+ "reader": "ftphase.calphy_io.read_calphy_results",
+ "folder": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/calphy_ace"
+}

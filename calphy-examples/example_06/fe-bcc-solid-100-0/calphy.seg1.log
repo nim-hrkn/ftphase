@@ -1,0 +1,83 @@
+LAMMPS (22 Jul 2025 - Update 6)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread.
+  using 1 OpenMP thread(s) per MPI task
+units metal
+atom_style atomic
+timestep 0.001
+read_restart calphy.restart
+Reading restart file ...
+  restart file = 22 Jul 2025, LAMMPS = 22 Jul 2025
+  restoring atom style atomic from restart
+  orthogonal box = (-0.0090091437 -0.0090091437 -0.0090091437) to (14.430009 14.430009 14.430009)
+  1 by 2 by 2 MPI processor grid
+  pair style eam stores no restart info
+  250 atoms
+  read_restart CPU = 0.000 seconds
+pair_style eam
+pair_coeff * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Fe.eam
+mass 1 55.845
+variable mvol equal vol
+variable mlx equal lx
+variable mly equal ly
+variable mlz equal lz
+variable mpress equal press
+variable mpe equal pe/atoms
+variable metotal equal etotal/atoms
+variable mtemp equal temp
+fix nh1 all npt temp 100.000000 100.000000 0.100000 iso 0.000000 0.000000 0.100000
+Resetting global fix info from restart file:
+  fix style: npt, fix ID: nh1
+fix 2 all ave/time 10 10 100 v_mlx v_mly v_mlz v_mpress v_mpe v_metotal v_mtemp title2 "# TimeStep lx[A] ly[A] lz[A] press[bar] pe[eV/atom] etotal[eV/atom] temp[K]" file avg.dat.seg1
+thermo_style custom step pe press vol etotal temp lx ly lz
+thermo 10
+unfix nh1
+unfix 2
+dump 2 all custom 1 traj.equilibration_stage1.dat id type mass x y z vx vy vz
+run 0
+WARNING: No fixes with time integration, atoms won't move
+For more information see https://docs.lammps.org/err0028 (src/verlet.cpp:60)
+All restart file global fix info was re-assigned
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6.409104
+  ghost atom cutoff = 6.409104
+  binsize = 3.204552, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eam, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.341 | 3.342 | 3.342 Mbytes
+   Step         PotEng         Press          Volume         TotEng          Temp            Lx             Ly             Lz      
+     20000  -1069.3143     -6524.8094      3010.3223     -1066.3172      93.118894      14.439018      14.439018      14.439018    
+Loop time of 1.37825e-06 on 4 procs for 0 steps with 250 atoms
+
+54.4% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 1.378e-06  |            |       |100.00
+
+Nlocal:           62.5 ave          67 max          59 min
+Histogram: 1 0 0 2 0 0 0 0 0 1
+Nghost:          868.5 ave         872 max         864 min
+Histogram: 1 0 0 0 0 0 2 0 0 1
+Neighs:        2874.75 ave        3184 max        2736 min
+Histogram: 2 1 0 0 0 0 0 0 0 1
+
+Total # of neighbors = 11499
+Ave neighs/atom = 45.996
+Neighbor list builds = 0
+Dangerous builds = 0
+undump 2
+write_restart calphy.restart
+System init for write_restart ...
+Total wall time: 0:00:00

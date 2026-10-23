@@ -1,0 +1,86 @@
+[16:30:23] START BinaryExamples
+[NbConvertApp] Converting notebook BinaryExamples.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 511912 bytes to executed/BinaryExamples.ipynb
+[16:30:51] END BinaryExamples OK (28 s)
+[16:30:51] START TernaryExamples
+[NbConvertApp] Converting notebook TernaryExamples.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 1023981 bytes to executed/TernaryExamples.ipynb
+[16:31:44] END TernaryExamples OK (53 s)
+[16:31:44] START MappingExamples
+[NbConvertApp] Converting notebook MappingExamples.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 875311 bytes to executed/MappingExamples.ipynb
+[16:33:17] END MappingExamples OK (93 s)
+[16:33:17] START ChargedPhases
+[NbConvertApp] Converting notebook ChargedPhases.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 373559 bytes to executed/ChargedPhases.ipynb
+[16:35:06] END ChargedPhases OK (109 s)
+[16:35:06] START PhaseCompositions
+[NbConvertApp] Converting notebook PhaseCompositions.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 155851 bytes to executed/PhaseCompositions.ipynb
+[16:35:12] END PhaseCompositions OK (6 s)
+[16:35:12] START GibbsAtConcentration
+[NbConvertApp] Converting notebook GibbsAtConcentration.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 92488 bytes to executed/GibbsAtConcentration.ipynb
+[16:35:16] END GibbsAtConcentration OK (4 s)
+[16:35:16] START CementiteAnalysis
+[NbConvertApp] Converting notebook CementiteAnalysis.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 32749 bytes to executed/CementiteAnalysis.ipynb
+[16:35:33] END CementiteAnalysis OK (17 s)
+[16:35:33] START EquilibriumWithOrdering
+[NbConvertApp] Converting notebook EquilibriumWithOrdering.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 444304 bytes to executed/EquilibriumWithOrdering.ipynb
+[16:35:38] END EquilibriumWithOrdering OK (5 s)
+[16:35:38] START ViscosityModel
+[NbConvertApp] Converting notebook ViscosityModel.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 141990 bytes to executed/ViscosityModel.ipynb
+[16:35:40] END ViscosityModel OK (2 s)
+[16:35:40] START LegacyEnergySurface
+[NbConvertApp] Converting notebook LegacyEnergySurface.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 445978 bytes to executed/LegacyEnergySurface.ipynb
+[16:35:43] END LegacyEnergySurface OK (3 s)
+[16:35:43] START HighThroughputCalculations
+[NbConvertApp] Converting notebook HighThroughputCalculations.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 41254 bytes to executed/HighThroughputCalculations.ipynb
+[16:35:56] END HighThroughputCalculations OK (13 s)
+[16:35:56] START UsingCalculationResults
+[NbConvertApp] Converting notebook UsingCalculationResults.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 146416 bytes to executed/UsingCalculationResults.ipynb
+[16:35:58] END UsingCalculationResults OK (2 s)
+[16:35:58] START ScreeningPhaseStability
+[NbConvertApp] Converting notebook ScreeningPhaseStability.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 303227 bytes to executed/ScreeningPhaseStability.ipynb
+[16:36:09] END ScreeningPhaseStability OK (11 s)
+[16:36:09] START ReferenceStateExamples
+[NbConvertApp] Converting notebook ReferenceStateExamples.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 167542 bytes to executed/ReferenceStateExamples.ipynb
+[16:36:14] END ReferenceStateExamples OK (5 s)
+[16:36:14] START Metastability
+[NbConvertApp] Converting notebook Metastability.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 215994 bytes to executed/Metastability.ipynb
+[16:36:24] END Metastability OK (10 s)
+[16:36:24] START PlotActivity
+[NbConvertApp] Converting notebook PlotActivity.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 63582 bytes to executed/PlotActivity.ipynb
+[16:36:27] END PlotActivity OK (3 s)
+[16:36:27] START LegacyReferenceState
+[NbConvertApp] Converting notebook LegacyReferenceState.ipynb to notebook
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+[NbConvertApp] Writing 230496 bytes to executed/LegacyReferenceState.ipynb
+[16:36:29] END LegacyReferenceState OK (2 s)
+ALL DONE

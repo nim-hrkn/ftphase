@@ -1,0 +1,9 @@
+{
+ "example": "nial_eam",
+ "potential": "Mishin-Ni-Al-2009.eam.alloy (EAM, Purja Pun & Mishin 2009)",
+ "fit": "{'fccAl': 'poly', 'fccNi': 'poly', 'liquid': 'rk', 'B2': 'spline', 'L12': 'spline'}",
+ "hull": "{'min_width': 0.005, 'gap_tol': 2.5}",
+ "T_step": 10.0,
+ "level": "classical (QHA lowered by F_q-F_cl)",
+ "liquid": "calphy ts 2000.0 K -> T_stop(x), UFM, 3 iterations, 3 runs"
+}

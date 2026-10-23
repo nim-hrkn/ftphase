@@ -1,0 +1,127 @@
+LAMMPS (22 Jul 2025 - Update 6)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread.
+  using 1 OpenMP thread(s) per MPI task
+units metal
+boundary p p p
+atom_style atomic
+timestep 0.001
+echo log
+variable lam equal 0.865437949853
+pair_style hybrid/scaled v_lam eam/alloy
+read_data /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_13/dcci-fcc-solid-1340-0/liquid/conf.dcci.forward_1.data
+Reading data file ...
+  orthogonal box = (0.12763899 0.12763899 0.12763899) to (18.726361 18.726361 18.726361)
+  1 by 2 by 2 MPI processor grid
+  reading atoms ...
+  500 atoms
+  reading velocities ...
+  500 velocities
+  read_data CPU = 0.001 seconds
+pair_coeff * * eam/alloy /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Cu01.eam.alloy Cu
+mass 1 63.546
+fix f1 all npt temp 1340.000000 1340.000000 0.100000 iso 44166.666667 44166.666667 0.100000
+thermo_style custom step pe press vol v_lam
+thermo 500
+run 10000
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.506786
+  ghost atom cutoff = 7.506786
+  binsize = 3.753393, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eam/alloy, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.369 | 3.369 | 3.37 Mbytes
+   Step         PotEng         Press          Volume         v_lam     
+         0  -1391.692       43786.534      6433.5297      0.86543795   
+       500  -1391.7231      44407.875      6414.3188      0.86543795   
+      1000  -1385.378       53753.763      6418.453       0.86543795   
+      1500  -1387.7756      43013.392      6444.8298      0.86543795   
+      2000  -1390.1703      42093.786      6453.8732      0.86543795   
+      2500  -1382.7148      54027.982      6409.3919      0.86543795   
+      3000  -1385.4119      53342.206      6407.3184      0.86543795   
+      3500  -1388.7703      29616.807      6527.4973      0.86543795   
+      4000  -1393.3604      41227.896      6424.7961      0.86543795   
+      4500  -1388.6949      57084.066      6361.8338      0.86543795   
+      5000  -1387.4732      39806.452      6467.39        0.86543795   
+      5500  -1385.5232      39354.997      6483.8949      0.86543795   
+      6000  -1390.7975      47757.232      6408.6748      0.86543795   
+      6500  -1391.8687      44841.27       6415.2047      0.86543795   
+      7000  -1391.9379      37033.536      6465.1446      0.86543795   
+      7500  -1388.314       52304.144      6388.0273      0.86543795   
+      8000  -1386.9595      45317.517      6439.1991      0.86543795   
+      8500  -1388.346       34584.938      6501.4045      0.86543795   
+      9000  -1390.5804      44118.669      6433.8407      0.86543795   
+      9500  -1388.921       48337.632      6407.2736      0.86543795   
+     10000  -1390.0521      42395.265      6443.6587      0.86543795   
+Loop time of 1.32315 on 4 procs for 10000 steps with 500 atoms
+
+Performance: 652.985 ns/day, 0.037 hours/ns, 7557.694 timesteps/s, 3.779 Matom-step/s
+99.4% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 1.0415     | 1.046      | 1.0508     |   0.3 | 79.05
+Neigh   | 0.025864   | 0.025968   | 0.026122   |   0.1 |  1.96
+Comm    | 0.16215    | 0.16711    | 0.17189    |   0.9 | 12.63
+Output  | 0.00013641 | 0.0001435  | 0.00015848 |   0.0 |  0.01
+Modify  | 0.068499   | 0.069031   | 0.06985    |   0.2 |  5.22
+Other   |            | 0.01495    |            |       |  1.13
+
+Nlocal:            125 ave         130 max         120 min
+Histogram: 1 0 0 0 0 2 0 0 0 1
+Nghost:        1406.25 ave        1410 max        1401 min
+Histogram: 1 0 0 0 1 0 0 0 1 1
+Neighs:        8536.75 ave        8958 max        8222 min
+Histogram: 1 0 1 0 1 0 0 0 0 1
+
+Total # of neighbors = 34147
+Ave neighs/atom = 68.294
+Neighbor list builds = 147
+Dangerous builds = 0
+unfix f1
+reset_timestep 0
+fix f1 all npt temp 1340.000000 1340.000000 0.100000 iso 44166.666667 0.000000 0.100000
+variable u_real equal pe/atoms/v_lam
+variable vol_atom equal vol/atoms
+fix fav all ave/time 1 500 500 v_u_real v_vol_atom v_lam title1 "# block averages of the dcci backward sweep, liquid cell" title2 "# step u_real[eV/atom] vol[A^3/atom] lambda" file dcci.blocks.backward_1.dat
+variable lam equal 0.865437949853+(0)*(step-0)/500
+run 500 start 0 stop 26500
+Per MPI rank memory allocation (min/avg/max) = 3.369 | 3.37 | 3.37 Mbytes
+   Step         PotEng         Press          Volume         v_lam     
+         0  -1390.0521      42395.265      6443.6587      0.86543795   
+       500  -1388.9707      47863.221      6411.4176      0.86543795   
+Loop time of 0.0815947 on 4 procs for 500 steps with 500 atoms
+
+Performance: 529.446 ns/day, 0.045 hours/ns, 6127.848 timesteps/s, 3.064 Matom-step/s
+99.5% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.066792   | 0.066942   | 0.067018   |   0.0 | 82.04
+Neigh   | 0.001195   | 0.0012243  | 0.0012624  |   0.1 |  1.50
+Comm    | 0.0065246  | 0.0066054  | 0.006731   |   0.1 |  8.10
+Output  | 7.545e-06  | 2.1985e-05 | 2.6891e-05 |   0.0 |  0.03
+Modify  | 0.0060059  | 0.0060422  | 0.0060916  |   0.0 |  7.41
+Other   |            | 0.0007585  |            |       |  0.93
+
+Nlocal:            125 ave         132 max         119 min
+Histogram: 1 0 0 1 1 0 0 0 0 1
+Nghost:        1431.75 ave        1448 max        1420 min
+Histogram: 1 0 0 2 0 0 0 0 0 1
+Neighs:        8681.75 ave        9265 max        8216 min
+Histogram: 1 0 1 0 1 0 0 0 0 1
+
+Total # of neighbors = 34727
+Ave neighs/atom = 69.454
+Neighbor list builds = 7
+Dangerous builds = 0
+write_restart calphy.restart
+System init for write_restart ...
+Total wall time: 0:00:01

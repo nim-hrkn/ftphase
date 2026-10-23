@@ -1,0 +1,1058 @@
+calculations:
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.00_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 850.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.00
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: &id001
+    - source /home/kino/miniforge3/etc/profile.d/conda.sh && conda activate /home/kino/kino/Claude/Projects/PhaseDiagram/env/ftphase
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.00_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 850.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.00_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.00_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 850.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.00_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.10_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 850.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.10
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.10_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 850.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.10_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.10_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 850.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.10_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.20_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 950.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.20
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.20_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 950.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.20_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.20_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 950.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.20_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.30_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1100.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.30
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.30_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1100.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.30_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.30_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1100.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.30_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.40_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1300.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.40
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.40_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1300.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.40_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.40_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1300.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.40_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.50_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1500.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.50
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.50_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1500.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.50_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.50_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1500.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.50_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.60_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1450.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.60
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.60_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1450.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.60_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.60_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1450.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.60_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.70_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1350.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.70
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.70_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1350.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.70_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.70_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1350.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.70_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.80_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1400.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.80
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.80_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1400.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.80_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.80_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1400.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.80_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.90_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1450.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.90
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.90_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1450.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.90_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.90_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1450.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x0.90_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x1.00_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1500.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x1.00
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x1.00_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1500.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x1.00_r1
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x1.00_256.data
+  reference_phase: liquid
+  temperature:
+  - 2000.0
+  - 1500.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: lqd_x1.00_r2
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001

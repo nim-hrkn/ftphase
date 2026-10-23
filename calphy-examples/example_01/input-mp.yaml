@@ -1,0 +1,34 @@
+calculations:
+- element: Fe
+  lattice: mp-13
+  mass: 55.845
+  md:
+    barostat_damping: 0.1
+    thermostat_damping: 0.1
+    timestep: 0.001
+  equilibration_control: nose_hoover
+  mode: fe
+  n_equilibration_steps: 10000
+  n_iterations: 1
+  n_switching_steps: 25000
+  pair_coeff: '* * ../potentials/Fe.eam'
+  pair_style: eam
+  pressure: 0.0
+  queue:
+    queuename: debug
+    memory: 8GB
+    walltime: '48:00:00'
+    commands:
+    - source /home/kino/miniforge3/etc/profile.d/conda.sh && conda activate /home/kino/kino/Claude/Projects/PhaseDiagram/env/calphy
+    cores: 4
+    scheduler: slurm
+  reference_phase: solid
+  repeat:
+  - 5
+  - 5
+  - 5
+  temperature: 100.0
+  tolerance:
+    pressure: 1
+  materials_project:
+    api_key: MP_API_KEY

@@ -1,0 +1,20 @@
+average:
+  vol_atom_liquid: 13.404467247920154
+  vol_atom_solid: 12.760025368342822
+input:
+  element: Cu
+  lattice: fcc
+  n_block_steps: 500
+  n_iterations: 1
+  pressure: 0.0
+  pressure_stop: 50000.0
+  temperature: 1340.0
+results:
+  coexistence_line: coexistence_line.dat
+  error_at_pressure_reached: 0.0
+  hysteresis: 0.5181199999999535
+  hysteresis_high: false
+  n_blocks_used: 53
+  pressure_reached: 51033.89177
+  temperature_at_pressure_reached: 1548.349018
+  unit: K, bar

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>別計算機への移行・計算再開</title>
+<style>body{font-family:system-ui,sans-serif;line-height:1.8;max-width:1050px;margin:2em auto;padding:0 1.2em;color:#172838}h1,h2{line-height:1.4}table{border-collapse:collapse;width:100%;margin:1em 0}th,td{border:1px solid #ccd5dd;padding:.6em;text-align:left}th{background:#edf3f8}pre{background:#edf3f8;padding:1em;overflow:auto}code{font-family:monospace}.note{border-left:4px solid #3777a2;padding:.6em 1em;background:#f3f7fa}</style></head><body>
+<h1>別の大規模計算機への移行・計算再開</h1>
+<p>更新日：2026-10-21。<a href="workflow.html">相図計算workflow</a> ／ <a href="examples.html">実行済みの例と工程の対応</a> ／ <a href="../skills/phase-diagram/SKILL.md">phase-diagramスキル</a></p>
+<p><strong>移行先にはALAMODEとMLIPが導入済みです。</strong>既存環境を利用し、利用方法・モデル・計算資源を確認してから小規模検証へ進みます。本資料は移行の手順書であり、転送・接続・ジョブ投入はまだ行っていません。相図計算の完成済みプログラムや実計算済み相図を引き継ぐものではありません。</p>
+<h2>1. 引き継ぐファイルと現在の方針</h2>
+<table><thead><tr><th>対象</th><th>役割</th></tr></thead><tbody>
+<tr><td>CLAUDE.md</td><td>参照資料の保全、単位・仮定・検証記録の規約。</td></tr>
+<tr><td>docs/ 全体</td><td>workflow.html、workflow.svg、本手順書。相対リンクを保つためフォルダ構成を維持する。</td></tr>
+<tr><td>skills/phase-diagram/ 全体</td><td>SKILL.mdとreferences/を含む計算判断・再開手順。SKILL.mdだけを切り離さない。</td></tr>
+<tr><td>資料/ 全体</td><td>論文PDFとaiida-alamode入門HTMLなどの原資料。原本は変更しない。</td></tr>
+<tr><td>計算入力・モデル・既存結果（別に保持している場合）</td><td>既知構造、0 Kエネルギー、MLIP重み・設定、モデル識別子、SQS・乱数シード、TDB、ジョブ入力、結果を別途追加する。モデルが移行先に存在する場合はパスとハッシュを照合する。</td></tr>
+</tbody></table>
+<p>既知の0 K安定構造を出発点に、固相の振動自由エネルギーはMLIP＋ALAMODEのphonon/QHA、配置統計は理想混合またはCE＋MC、液相はcalphyによるTIまたは既存CALPHADモデルで評価します。line phase、組成幅を持つ規則相、不規則固溶体、液相を区別し、共通基準へそろえて全相のGibbs自由エネルギーを最小化します。詳細と式はworkflow.htmlを参照してください。</p>
+<h2>2. 転送例</h2>
+<p>以下はLinux/WSLでの例です。元のプロジェクト直下で実行します。USER、HOST、TRANSFER_DIRは利用する接続先に置き換えます。現在の文書・スキル・資料を固める例であり、別の場所にあるモデルや計算データは含みません。</p>
+<pre><code># 元の計算機：プロジェクト直下
+ tar -czf ../phasediagram-handoff.tar.gz CLAUDE.md docs skills 資料
+ sha256sum ../phasediagram-handoff.tar.gz &gt; ../phasediagram-handoff.tar.gz.sha256
+ scp ../phasediagram-handoff.tar.gz ../phasediagram-handoff.tar.gz.sha256 USER@HOST:TRANSFER_DIR/</code></pre>
+<p>展開先には空の専用ディレクトリを使います。既存の計算結果と混ぜず、Windows側の絶対パスは移行先のパスに置き換えます。Python/Conda環境や実行バイナリはコピーせず、導入済み環境を有効化します。</p>
+<pre><code># 移行先：転送先のディレクトリ内
+ sha256sum -c phasediagram-handoff.tar.gz.sha256
+ mkdir phasediagram-handoff
+ tar -xzf phasediagram-handoff.tar.gz -C phasediagram-handoff
+ cd phasediagram-handoff</code></pre>
+<p>docs/workflow.htmlを開き、SVG・ローカルPDF・スキルへのリンクを確認します。計算ノードにブラウザは必須ではなく、文書は手元でも参照できます。移行先のエージェントにはプロジェクト直下を作業ディレクトリとして、CLAUDE.mdとskills/phase-diagram/SKILL.mdを明示的に読ませます。スキルの自動検出は移行先の設定に依存します。</p>
+<h2>3. 導入済み環境で確認する事項</h2>
+<table><thead><tr><th>項目</th><th>記録・確認する内容</th></tr></thead><tbody>
+<tr><td>ALAMODE</td><td>実行ファイルのパス・版、起動方法、MPI/OpenMP対応、必要な環境有効化。力データ入力と結果の単位を確認する。</td></tr>
+<tr><td>MLIP</td><td>モデル名・版・重みのパスとSHA-256、対応元素、精度設定、Python/APIまたはLAMMPS等の呼び出し方。導入済みというだけでは対象系での精度やTI対応は確定しない。</td></tr>
+<tr><td>計算資源</td><td>スケジューラの種類、キュー、アカウント、CPU/GPU種類、メモリ、制限時間、MPIランクとスレッド数、scratchと保存先。施設の既存ジョブ例を使う。</td></tr>
+<tr><td>実行環境</td><td>module/Conda等の有効化手順、Pythonと依存ライブラリ、GPUドライバ・ランタイム。ログインノードで重い計算を実行せず、施設の運用に従う。</td></tr>
+<tr><td>追加ツール</td><td>選んだ経路に必要なものだけ確認する。SQSにはicet/mcsqs等、CE＋MCには相応の計算環境、液相TIにはcalphy＋MLIP対応LAMMPS、CALPHAD経路にはTDBと平衡計算ソフト。</td></tr>
+<tr><td>AiiDA・MCP</td><td>ALAMODEの導入とは別に、aiida-alamode、AiiDAプロファイル・DB・ストレージ・daemon、computer/code設定、MCP接続を確認する。元のプロファイル名やPK、絶対パスをそのまま使わない。</td></tr>
+</tbody></table>
+<p class="note">AiiDA/MCPがない場合も、ALAMODEとMLIPを直接呼び出す経路で計算を設計できます。AiiDAの計算履歴を引き継ぐ場合は、対象データのアーカイブexport/import等を導入版で確認します。プロジェクトフォルダの転送だけではAiiDAのDB・履歴は移りません。既存のラッパースクリプトも、入門資料に記載があるだけで移行先に存在するとは仮定しません。</p>
+<p>ホスト情報が未確定のため、具体的なsbatch/qsub、MPIランチャー、GPU指定、ALAMODE・MLIPの実行コマンドはここでは固定しません。移行先で動く既存例をもとに、環境有効化と投入コマンドを保存してから本計算へ進みます。</p>
+<h2>4. 小規模検証から本計算へ</h2>
+<ol>
+<li><strong>入力条件を確定：</strong>対象元素系、構造、組成、温度・圧力範囲、MLIPモデル、必要な相を一覧にする。本資料のAl–Li等の数値例を実際の計算対象と決めつけない。</li>
+<li><strong>MLIP単点評価：</strong>小さな既知構造でエネルギー・力・応力を計算する。元の計算結果があれば同じ構造・モデル・精度で照合し、なければ新しい基準結果として保存する。元素順序と単位を確認する。</li>
+<li><strong>固相の最小経路：</strong>一つの構造・体積で変位生成→MLIP力評価→ALAMODE力定数フィット→phononを通す。単一体積の動作確認をQHA完成としない。虚振動・音響モード・スーパーセル等を確認後、体積系列へ広げる。</li>
+<li><strong>採用経路の追加確認：</strong>SQS/CE＋MCを使うなら組成・配置・周期・乱数と結果保存を確認する。液相TIを使うなら通常MDだけでなく、λ=0、0.5、1でスケーリングされたエネルギー・力・ビリアルを確認し、小規模TIを実行する。LAMMPSへのMLIP接続がなければその経路は未準備として扱う。</li>
+<li><strong>規模を拡大：</strong>構造・組成・体積・変位・温度・反復の独立計算をジョブ配列等に分配する。CPU/GPU当たりの性能とメモリを小規模測定し、MPIとスレッドの過剰割当を避ける。</li>
+<li><strong>統合：</strong>原子数規格化、電子・配置・振動の寄与、元素参照を統一し、相平衡へ渡す。配置寄与の二重計上と不適切な相の外挿を確認する。</li>
+</ol>
+<h2>5. 再現・再開のための記録</h2>
+<p>各ジョブについて入力・構造・モデルハッシュ、コードと環境の版、実行コマンド、ジョブスクリプト、ジョブID、乱数、出力、終了状態を残します。結果はphase、composition、T、P、G、uncertainty、volume、method、reference_state、配置項の有無を記録します。入力と中間データをscratchだけに残さず、完了結果を永続領域へ保存します。未実行・実行中・成功・失敗を分け、再開時に未完了の仕事を特定できるようにします。</p>
+<h2>6. 移行先のエージェントへの引き継ぎ文</h2>
+<pre><code>このプロジェクトのCLAUDE.md、skills/phase-diagram/SKILL.md、
+skills/phase-diagram/references/migration.md、docs/migration.htmlを読む。
+ALAMODEとMLIPはこの計算機に導入済み。既存環境を確認して利用する。
+まず実行パス・モデル・スケジューラ・計算条件・既存入力を調べ、
+確認済み事項と不足事項をまとめる。docs/workflow.htmlは設計資料であり、
+記載例を実計算結果とは扱わない。計算を依頼された場合は、
+小規模な単点評価とALAMODE接続確認から始め、検証後に規模を広げる。</code></pre>
+</body></html>

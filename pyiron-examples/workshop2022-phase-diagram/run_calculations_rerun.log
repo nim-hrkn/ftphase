@@ -1,0 +1,12 @@
+2 jobs, 4 concurrent x 4 cores, phase checks OFF
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+[18:35:16] xp_alli    finished                75.9 s
+[18:35:16] x3_lqd     finished                71.2 s
+The job x3_lqd was saved and received the ID: x3_lqd
+Job None is running!
+The job xp_alli was saved and received the ID: xp_alli
+Job None is running!
+ALL DONE

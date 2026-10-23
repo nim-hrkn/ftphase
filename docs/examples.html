@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>実行済みの例とworkflow工程の対応</title>
+<style>body{font-family:system-ui,sans-serif;line-height:1.8;max-width:1100px;margin:2em auto;padding:0 1.2em;color:#172838}h1,h2,h3{line-height:1.4}table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.95em}th,td{border:1px solid #ccd5dd;padding:.5em .6em;text-align:left;vertical-align:top}th{background:#edf3f8}pre{background:#edf3f8;padding:1em;overflow:auto}code{font-family:monospace}.note{border-left:4px solid #3777a2;padding:.6em 1em;background:#f3f7fa}.warn{border-left:4px solid #c0392b;padding:.6em 1em;background:#fbf1ef}</style></head><body>
+<h1>実行済みの例と workflow 工程の対応</h1>
+<p>更新日：2026-10-21。<a href="workflow.html">相図計算 workflow</a>（工程 01–07 と別経路の定義）／ <a href="public-sources.html">欠けている工程を補う公開ソース</a> ／ <a href="ftphase.html">ftphase パッケージ</a> ／ <a href="migration.html">移行手順</a> ／ <a href="../skills/phase-diagram/SKILL.md">phase-diagram スキル</a>（要約は <a href="../skills/phase-diagram/references/examples.md">references/examples.md</a>）</p>
+<p class="note">本資料は、このホスト（mygarden5）で 2026-10-21 に実際に導入・実行した calphy、pycalphad、pyiron の例を、<a href="workflow.html">workflow.html</a> の工程番号に対応付けたものです。各例の数値は教材設定（小さなセル・短い MD・EAM）で得たもので、対象系の相図の結果ではありません。</p>
+
+<h2>1. 工程の記号</h2>
+<table><thead><tr><th>記号</th><th>工程（workflow.svg の箱）</th></tr></thead><tbody>
+<tr><td>01</td><td>候補相・計算条件・MLIP の検証</td></tr>
+<tr><td>02A</td><td>固相の組成・配置系列（line phase、SQS／ランダム配置、副格子・空孔）</td></tr>
+<tr><td>02B</td><td>液相の組成系列（MLIP で溶融・平衡化、または既存 CALPHAD 液相）</td></tr>
+<tr><td>03A</td><td>固相の振動自由エネルギー：aiida-alamode の phonon/QHA。補助経路として calphy の固相 TI</td></tr>
+<tr><td>03B</td><td>液相：calphy + LAMMPS + MLIP の熱力学積分</td></tr>
+<tr><td>04A</td><td>固相の配置自由エネルギー（理想混合／副格子モデル／CE+MC）</td></tr>
+<tr><td>04B</td><td>液相の熱力学基準の整合（混合エントロピーの重複禁止、量子／古典）</td></tr>
+<tr><td>05</td><td>全相の G を同じ基準にそろえる（単位・圧力・元素参照・配置項・量子補正）</td></tr>
+<tr><td>06</td><td>各温度で全相の下側凸包・共通接線 → 共存組成・固溶幅</td></tr>
+<tr><td>07</td><td>T–x 相図・誤差・再現可能な記録</td></tr>
+<tr><td>DB</td><td>別経路：既存 CALPHAD / TDB</td></tr>
+</tbody></table>
+
+<h2>2. calphy 本体の examples/（13 例、Slurm で全例完走）</h2>
+<p>環境 <code>env/calphy</code>（calphy 2.3.0 GitHub 版 + conda-forge LAMMPS 2025.07.22）。コピーと結果は <code>calphy-examples/</code>、数値一覧は <code>calphy-examples/results_summary.tsv</code>。全例が古典 EAM で、MLIP は使っていません。</p>
+<table><thead><tr><th>例</th><th>mode</th><th>内容</th><th>対応工程</th><th>今回の結果・注意</th></tr></thead><tbody>
+<tr><td>01, 06</td><td>fe</td><td>bcc-Fe 100 K の自由エネルギー（Einstein 結晶参照）</td><td>03A 補助経路</td><td>G = −4.263 eV/atom。ローカルと Slurm で一致</td></tr>
+<tr><td>02</td><td>ts</td><td>Fe の bcc / fcc を温度走査し固固変態点</td><td>03A 補助、06 の退化形（純元素なので凸包不要、G(T) の交点）</td><td>完了</td></tr>
+<tr><td>03</td><td>ts</td><td>Cu 固相・液相を 1200–1400 K で走査し融点</td><td>03A 補助 + 03B、06 退化形</td><td>1200 K で固相 −4.066、液相 −4.059 eV/atom</td></tr>
+<tr><td>04</td><td>melting_temperature</td><td>Cu 融点の自動探索（4000 原子）</td><td>03A/03B、06 退化形</td><td>Tm = 1383 K（実験 1358 K）。「散逸が許容値超えで信頼できない」警告付き。既定の 1 反復では収束しない</td></tr>
+<tr><td>05</td><td>ts</td><td>Cu の P–T 相図（100 kbar–2 Mbar、5 点）</td><td>03A/03B、07 の P–T 版</td><td>10 本すべて完了</td></tr>
+<tr><td>07</td><td>alchemy</td><td>二つのポテンシャル間の ΔG</td><td>05（参照状態の付け替え操作）</td><td>ΔG = −0.254 eV/atom</td></tr>
+<tr><td>08, 09, 12</td><td>ts / tscale / fe / pscale</td><td>G の温度・圧力依存、比熱</td><td>03A 補助</td><td>ts と tscale、fe と pscale が 1 meV 以内で一致</td></tr>
+<tr><td>10</td><td>composition_scaling / fe</td><td>ZrCu の組成を変えた固相 G（data ファイルから開始）</td><td>02A の組成系列、04A の入口（組成方向に G を伸ばす。配置エントロピー項は含まない）</td><td>4 本完了。唯一の多元系例</td></tr>
+<tr><td>13</td><td>dcci / melting_temperature</td><td>動的 Clausius–Clapeyron 積分で Cu の融解線</td><td>03B、07 の P–T 版</td><td>Tm 0 bar 1352 K、50 kbar 1547 K。dcci は 100 kbar で 1730 K（参照 1749–1776 K）。3 入力が同じフォルダ名を生成するため <code>folder_prefix</code> が必要</td></tr>
+</tbody></table>
+<p><strong>calphy 本体の例に無い工程</strong>：01（候補相と MLIP の検証）、02A の SQS／副格子生成、04A の配置項の加算、05 の基準統一、06 の多相凸包。二元 x–T 相図を組む <code>calphy.phase_diagram.PhaseDiagram</code> クラスは本体にあり、限定組成相（<code>composition_intervals</code>）、line compound を含む TDB 出力（<code>to_tdb</code>）、理想混合項の on/off まで持ちます（2026-10-21 確認。以前ここに書いた「二元限定・line phase 非対応」は誤りでした）。ただし examples/ にも docs/ にも入力例がありません（詳細は <a href="public-sources.html">公開ソースの調査</a>）。</p>
+
+<h2>3. pycalphad の examples/（17 notebook、すべて完走）</h2>
+<p>環境 <code>env/pycalphad</code>（pycalphad 0.11.2、PyPI 版。conda-forge は 0.10.1 止まりで mapping API が無い）。実行済み notebook は <code>pycalphad-examples/executed/</code>、図 50 枚は <code>pycalphad-examples/figures/</code>。入力は常に既成の TDB で、原子論計算（01–03）は含みません。</p>
+<table><thead><tr><th>notebook</th><th>内容</th><th>対応工程</th></tr></thead><tbody>
+<tr><td>1_BinaryExamples, 3_MappingExamples</td><td>binplot と Mapping API による二元 x–T 相図（Al–Zn, Al–Mg, Al–Ni, Al–Fe, Nb–Re）、step 図、isopleth</td><td>DB → 06 → 07</td></tr>
+<tr><td>2_TernaryExamples, 4_ChargedPhases</td><td>三元等温断面、荷電種（Fe–O）</td><td>DB → 06 → 07（三元・イオン系への拡張）</td></tr>
+<tr><td>2_PhaseCompositions, 2_GibbsAtConcentration</td><td>温度に対する相分率と相組成、固定組成での各相の G</td><td>06（固定組成相を点として扱う比較）、MLIP 由来 G との照合の入口</td></tr>
+<tr><td>2_EquilibriumWithOrdering</td><td>Al–Fe / Al–Ni の規則化度とサイト分率</td><td>04A の副格子モデル（式 (E) 群の複数副格子）を CALPHAD 側で表した例</td></tr>
+<tr><td>2_ViscosityModel</td><td>独自パラメータを TDB パーサと Model に追加</td><td>05 の「MLIP による補完・再フィット」で独自項を TDB に載せる手本</td></tr>
+<tr><td>3_HighThroughput, 3_ScreeningPhaseStability</td><td>多数点の平衡計算、fcc 単相域／fcc+hcp 二相域の抽出</td><td>06（固溶幅＝競合相との G 比較で決まる、の実装例）</td></tr>
+<tr><td>4_ReferenceStateExamples, 4_LegacyReferenceState, 4_PlotActivity</td><td>参照状態、混合・生成エネルギー、活量</td><td>05（元素参照状態の統一）、04B</td></tr>
+<tr><td>4_Metastability</td><td>各相の G 曲線の表出力、駆動力、T0 線</td><td>06/07 の検証（境界付近の自由エネルギー差の感度）</td></tr>
+</tbody></table>
+
+<h2>4. pyiron の相図例（2 例）</h2>
+<p>環境 <code>env/pyiron</code>（pyiron_base / pyiron_atomistics GitHub HEAD、calphy 2.3.0、conda-forge LAMMPS）。設定は <code>~/.pyiron</code> ではなく環境変数（<code>PYIRONRESOURCEPATHS</code>, <code>PYIRONDISABLE</code> または <code>PYIRONSQLFILE</code>, <code>PYIRONPROJECTCHECKENABLED</code>）で与えています。</p>
+<h3>4.1 potentials-workshop-2022 tutorial_2（Al–Li、workshop の EAM）— 実計算で再現</h3>
+<p><code>pyiron-examples/workshop2022-phase-diagram/</code>。18 本の Calphy ジョブ（純 Al の fcc／液相／B32 格子、x<sub>Li</sub> = 0.1–0.5 の fcc・液相・B32、800–1000 K の reversible scaling、5000+5000 ステップ）を実行し、<code>analyze_phase_diagram.py</code> で解析。これが <strong>02A → 03 → 04A → 05 → 06 → 07 を一通り通した唯一の例</strong>です。</p>
+<table><thead><tr><th>工程</th><th>tutorial_2 での実装</th><th>workflow の要求との差</th></tr></thead><tbody>
+<tr><td>01</td><td>無し。ポテンシャルは与えられたものを使う</td><td>純元素融点や既知境界での検証は行っていない</td></tr>
+<tr><td>02A</td><td>fcc の Al をランダムに Li へ置換、B32 の Li をランダムに Al へ置換（整数原子数の実組成）</td><td>SQS ではなく単一のランダム配置。B32 を x=0 まで外挿する系列は物理的な相ではない</td></tr>
+<tr><td>02B</td><td>固相と同じセルを calphy の溶融サイクルで液化</td><td>溶融・平衡化の判定は calphy 内部に任せている</td></tr>
+<tr><td>03A（補助）/ 03B</td><td>pyiron の Calphy ジョブ（library mode）で固相は Einstein 結晶、液相は UFM を参照に TI</td><td>phonon/QHA は使わない。振動と非調和は TI に含まれる</td></tr>
+<tr><td>04A</td><td>fcc と B32 に理想混合項 −T·S<sub>conf</sub>（式 (E2)）を加算。液相には加えない</td><td>B32 に全格子点の理想混合式を適用しており、workflow.md 第 4 節が戒める近似。副格子ごとの占有率は使っていない</td></tr>
+<tr><td>05</td><td>全相 eV/atom、同じ EAM、液相端点を結ぶ直線を差し引いて共通基準化</td><td>単一ポテンシャル内なので参照状態の問題は生じない</td></tr>
+<tr><td>06</td><td>3 次多項式フィット + fsolve の共通接線（チュートリアル）、3 相の下側凸包（本プロジェクトで追加）</td><td>線形相・限定組成相の扱いは無し</td></tr>
+<tr><td>07</td><td>T–x 図を 5 K 刻みで作図、二相域を tsv に保存</td><td>誤差評価は無し（1 反復、error = 0）</td></tr>
+</tbody></table>
+<p>結果：共晶 ≈ 863 K、x<sub>Li</sub> ≈ 0.22。その下に fcc+B32 二相域 x = 0.19–0.25、上に fcc+液相と B32+液相。実験の共晶は約 870 K、x<sub>Li</sub> ≈ 0.26。純 Al の fcc／液相交点は 900–1000 K（実験 933 K）。</p>
+<p class="warn">calphy 2.3.0 では B32 格子上の純 Al（融解）と x=0.4 の液相（凝固）が <code>MeltedError</code> / <code>SolidifiedError</code> で中断します。workshop 当時の calphy 1.0.3 にこのチェックは無く、チュートリアルはこの準安定状態の値をフィットの端点として使っています。再現のため該当 2 本だけ <code>tolerance.solid_fraction = 0</code>、<code>liquid_fraction = 1</code> で再実行しました。</p>
+<h3>4.2 Menon ほか 2024（Al–Li、EAM）の公開データセット — 後処理のみ</h3>
+<p><code>pyiron-examples/menon2024-alli-eam/</code>。edmond の公開アーカイブ（Calphy ジョブ 84 本）を pyiron HEAD で unpack し、calphy 2.3.0 の <code>phase_diagram</code> モジュール（<code>get_phase_free_energy</code> → <code>get_free_energy_mixing</code> → <code>get_common_tangents</code> → <code>plot_phase_diagram</code>）で相図化。対応工程は 04A（理想混合、B32 は <code>entropy_correction=0.5</code>）、05–07。この EAM では 700 K でも x<sub>Li</sub> &gt; 0.16 で液相が fcc より低く、fcc+液相の二相域が下まで続きます。生の自由エネルギーで確認済みで後処理の誤りではなく、<strong>01 の「ポテンシャルを検証してから相図へ進む」の必要性を示す例</strong>です。</p>
+
+<h2>5. 対応表（工程 × 例）</h2>
+<table><thead><tr><th>工程</th><th>calphy 本体</th><th>pycalphad</th><th>pyiron</th><th>本プロジェクトで自作が必要な部分</th></tr></thead><tbody>
+<tr><td>01</td><td>—</td><td>—</td><td>—（Menon EAM は反面教師）</td><td>候補相の列挙、MLIP の凸包・融点検証</td></tr>
+<tr><td>02A</td><td>10（composition_scaling）</td><td>—</td><td>workshop（ランダム置換）</td><td>SQS（icet/mcsqs）、副格子・空孔の系列</td></tr>
+<tr><td>02B</td><td>03, 04, 05, 13（溶融サイクル）</td><td>DB 経路の全例</td><td>workshop</td><td>溶融・拡散・定常性の明示的な確認</td></tr>
+<tr><td>03A</td><td>01, 02, 06, 08, 09, 12（補助経路の固相 TI）</td><td>—</td><td>workshop（固相 TI）</td><td>aiida-alamode の phonon/QHA 本線（環境は本ホストに有り）</td></tr>
+<tr><td>03B</td><td>03, 04, 05, 06, 13</td><td>—</td><td>workshop</td><td>MLIP の hybrid/scaled 互換性検証</td></tr>
+<tr><td>04A</td><td>—</td><td>EquilibriumWithOrdering（副格子）</td><td>workshop, Menon（理想混合）</td><td>副格子モデル、必要なら CE+MC</td></tr>
+<tr><td>04B</td><td>—</td><td>ReferenceState 群</td><td>—</td><td>量子固相と古典液相の扱いの明記</td></tr>
+<tr><td>05</td><td>07（alchemy）</td><td>ReferenceState, Metastability, ViscosityModel</td><td>workshop（端点直線の規格化）</td><td>MLIP の G を TDB 参照状態へ変換</td></tr>
+<tr><td>06</td><td>02–04, 13（純元素の交点）</td><td>Binary, Mapping, Screening, GibbsAtConcentration</td><td>workshop（fsolve + 凸包）, Menon（calphy.phase_diagram）</td><td>二元は calphy <code>PhaseDiagram</code> で可（例は無い）。三元以上は TDB → pycalphad。<a href="public-sources.html">公開ソース</a>参照</td></tr>
+<tr><td>07</td><td>05, 13（P–T 版）</td><td>Binary, Ternary, Metastability（T0）</td><td>workshop, Menon</td><td>境界の誤差感度、AiiDA pk 等の記録</td></tr>
+<tr><td>DB</td><td>—</td><td>全例</td><td>—</td><td>対象系の TDB 選定と適用範囲の確認</td></tr>
+</tbody></table>
+
+<h2>6. 環境と実行の記録</h2>
+<table><thead><tr><th>環境</th><th>内容</th><th>再現</th></tr></thead><tbody>
+<tr><td><code>env/calphy</code></td><td>calphy 2.3.0（GitHub 67caa5b）、LAMMPS 2025.07.22（OpenMPI, KOKKOS/CUDA, pace/mliap/snap/hdnnp/mlip/m3gnet）、pyscal3 4.1</td><td>CLAUDE.md の手順</td></tr>
+<tr><td><code>env/pycalphad</code></td><td>pycalphad 0.11.2、symengine 0.13、jupyter</td><td>同上</td></tr>
+<tr><td><code>env/pyiron</code></td><td>pyiron_base / pyiron_atomistics HEAD、calphy 2.3.0、同じ LAMMPS</td><td>同上</td></tr>
+<tr><td>conda env <code>alamode</code>（既存）</td><td>aiida-core 2.9.2、aiida-alamode 1.1.0、MatterSim、SevenNet、ALAMODE <code>~/bin/alamode</code>。プロファイル alamode_pg、computer mygarden5（Slurm）</td><td>既存</td></tr>
+<tr><td>Slurm</td><td>単一ノード mygarden5、partition debug、16 論理 CPU、時間制限なし。calphy は <code>scheduler: slurm</code> で投入、pyiron は library mode でローカル実行</td><td>—</td></tr>
+<tr><td>GPU</td><td>RTX 3060 は 2026-09-30 の GSP クラッシュ以来「要リセット」。さらに 10-21 にドライバが 595.99 へ更新されモジュール 595.84 と不整合。再起動が必要</td><td>—</td></tr>
+</tbody></table>
+
+<h2>7. 今回分かった落とし穴</h2>
+<ul>
+<li>calphy の <code>--validate</code> は dry run ではなくジョブを投入する。パースだけなら <code>calphy.input.read_inputfile(path, validate=True)</code>。</li>
+<li>calphy は <code>&lt;mode&gt;-conf.data-…data</code> をカレントディレクトリに書く。並列ジョブは作業ディレクトリを分ける。</li>
+<li>同じ条件の入力はフォルダ名が衝突する。<code>folder_prefix</code> で区別する。</li>
+<li>calphy 2 系は融解・凝固を検出して中断する（<code>tolerance.solid_fraction</code> / <code>liquid_fraction</code> で無効化可）。準安定端点が必要な設計では意図して無効化し、記録する。</li>
+<li>calphy 2.1.x は pyscal3 &lt; 4、2.2 以降は pyscal3 ≥ 4。conda-forge は 2.1.2 止まり。</li>
+<li>pyiron の unpack は現行版では <code>archive/{export.csv, &lt;project path&gt;}</code> の配置と sqlite DB を要求する。</li>
+<li>calphy 2.3.0 の <code>plot_phase_diagram</code> は tangent_types と phases を要求し、<code>get_phase_free_energy</code> はデータ外を値 1.0 で埋める。凸包はそのまま取れるが、境界 x=0, 0.5 で幅ゼロの偽セグメントが出る。</li>
+<li>相図の T–x 図を <code>fill_betweenx</code> で一括描画すると温度ごとに不連続な領域が線で結ばれる。温度ごとに帯を描く。</li>
+<li>GPU で calphy（ACE）を回す場合（2026-10-22、<a href="ftphase.html">ftphase</a> 3.4）：注意点：GPU 1 枚ではジョブが直列になるため、総スループットは CPU 8 コアと同程度です。利点は 1 本の待ち時間短縮と、CPU を QHA に空けられることです。</li>
+</ul>
+</body></html>

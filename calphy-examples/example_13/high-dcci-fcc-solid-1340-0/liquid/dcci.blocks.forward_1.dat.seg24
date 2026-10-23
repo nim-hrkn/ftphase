@@ -1,0 +1,3 @@
+# block averages of the dcci forward sweep, liquid cell
+# step u_real[eV/atom] vol[A^3/atom] lambda
+25000 -2.23619 8.99741 0.321817

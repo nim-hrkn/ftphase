@@ -1,0 +1,26 @@
+2026-10-21 15:49:47,423 calphy.helpers INFO     Master random seed is 2020174371 (md.seed; recorded in input_file.yaml)
+2026-10-21 15:49:47,423 calphy.helpers INFO     Temperature start: 1340.000000 K, temperature stop: 1340.000000 K, pressure: 0.000000 bar
+2026-10-21 15:49:47,423 calphy.helpers INFO     Pressure adjusted in iso
+2026-10-21 15:49:47,423 calphy.helpers INFO     Reference phase is solid
+2026-10-21 15:49:47,423 calphy.helpers INFO     Melt detection enabled at tolerance.solid_fraction = 0.7
+2026-10-21 15:49:47,423 calphy.helpers INFO     Thermostat/Barostat combo for equilibration cycle is not explicitely specified
+2026-10-21 15:49:47,423 calphy.helpers INFO     Thermostat/Barostat combo for equilibration cycle can be specified using keyword equilibration_control
+2026-10-21 15:49:47,423 calphy.helpers INFO     Nose-Hoover thermostat damping is 0.100000
+2026-10-21 15:49:47,423 calphy.helpers INFO     Nose-Hoover barostat damping is 0.100000
+2026-10-21 15:49:47,423 calphy.helpers INFO     These values can be tuned by adding in the input file:
+2026-10-21 15:49:47,423 calphy.helpers INFO     nose_hoover:
+2026-10-21 15:49:47,423 calphy.helpers INFO        thermostat_damping: <float>
+2026-10-21 15:49:47,423 calphy.helpers INFO        barostat_damping: <float>
+2026-10-21 15:49:47,423 calphy.helpers INFO     Integration stage is done using Nose-Hoover thermostat and barostat when needed
+2026-10-21 15:49:47,423 calphy.helpers INFO     Thermostat damping is 0.100000
+2026-10-21 15:49:47,423 calphy.helpers INFO     Barostat damping is 0.100000
+2026-10-21 15:49:47,423 calphy.helpers INFO     500 atoms in 125 cells on 4 cores
+2026-10-21 15:49:47,423 calphy.helpers INFO     pair_style: eam/alloy
+2026-10-21 15:49:47,423 calphy.helpers INFO     pair_coeff: * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Cu01.eam.alloy Cu
+2026-10-21 15:49:56,384 calphy.helpers INFO     At count 1 mean pressure is -3.09 bar, std 813.62, vol/atom 12.7669
+2026-10-21 15:49:56,384 calphy.helpers INFO     Pressure within tolerance
+2026-10-21 15:49:56,384 calphy.helpers INFO     finalized vol/atom 12.766908 at pressure -3.093484
+2026-10-21 15:49:56,384 calphy.helpers INFO     Avg box dimensions x: 18.550000, y: 18.550000, z:18.550000
+2026-10-21 15:50:03,290 calphy.helpers INFO     At count 1 mean k is 1.237203 std is 0.020000
+2026-10-21 15:50:03,290 calphy.helpers INFO     finalized sprint constants
+2026-10-21 15:50:03,290 calphy.helpers INFO     [np.float64(1.2372028469222718)]

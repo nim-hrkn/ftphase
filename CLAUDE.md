@@ -1,0 +1,102 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## What this project is
+
+A design-and-documentation project for computing finite-temperature phase diagrams (solid solutions, line phases, ordered phases with composition width, liquid) starting from known 0 K crystal structures, using MLIP + ALAMODE phonon/QHA for solid vibrational free energy, ideal mixing or CE+MC for configurational entropy, and calphy thermodynamic integration or an existing CALPHAD TDB for the liquid. Working language of all documents is Japanese.
+
+The only application code is the `ftphase/` package (see its section below; tests: `./env/ftphase/bin/python -m pytest ftphase/tests -q`). Everything else is documentation, conda environments and executed upstream examples. Do not invent other build/test commands.
+
+## Installed environment: calphy (project-local conda env)
+
+`env/calphy/` is a conda prefix environment (do not commit it if git is initialised). calphy itself is the **GitHub version 2.3.0** (commit 67caa5b, 2026-10-09), installed with pip on top of conda-forge LAMMPS, because conda-forge stops at 2.1.2 and lacks mode `dcci`, the reversible-scaling pressure fixes and the pyscal 4 port. Recreate with:
+
+```bash
+mamba create -p ./env/calphy -c conda-forge python=3.12 \
+  "lammps=2025.07.22=cuda129*mpi_openmpi*" "pyscal3>=4.0" ase pylammpsmpi \
+  "cuda-cudart>=12.9,<13" mendeleev pydantic tqdm pyyaml scipy pandas matplotlib-base
+./env/calphy/bin/pip install --no-deps "git+https://github.com/ICAMS/calphy.git@67caa5b"
+```
+
+Contents verified: calphy 2.3.0, pyscal3 4.1.0, ase 3.29, LAMMPS 22 Jul 2025 (Python module + `lmp_mpi`, OpenMPI, KOKKOS/CUDA build) with `hybrid/scaled`, `ufm`, `pace`, `mliap`, `snap`, `hdnnp`, `mlip`, `m3gnet` pair styles. No `mace`/`e3gnn` styles; a different LAMMPS build is needed for those MLIPs.
+
+- **Always put `env/calphy/bin` on PATH** (`mamba activate ./env/calphy`) before running `calphy -i input.yaml`. The CLI submits a background `calphy_kernel` job via a `.sub` script and silently fails with "command not found" otherwise. With `scheduler: local` the CLI returns immediately; wait for `<job>/report.yaml`. The upstream examples do this with `queue.commands: [conda activate calphy]`; replace it with the prefix path here.
+- `--validate` is **not a dry run**: it does stricter input parsing and then submits the job. To only parse, call `calphy.input.read_inputfile(path, validate=True)` from Python.
+- calphy refuses to overwrite an existing job folder; delete `<job>/` before rerunning.
+- Version pairing: calphy >= 2.2 needs `pyscal3 >= 4`; calphy 2.1.x needs `pyscal3 < 4`. `cuda-cudart` must be added explicitly or `liblammps.so` fails to load.
+- calphy 2.x input format: `element`, `mass`, `queue` etc. all go **inside** each `calculations:` block. `lambda_schedule` was removed in 2.2.
+- Smoke test that passed on 2.3.0: fcc Cu, Cu_u3.eam (download from the LAMMPS repo; `share/lammps/potentials` in the env is empty), 4x4x4, 1200 K, `n_equilibration_steps: 2000`, `n_switching_steps: 2000`, 4 cores, about 20 s, G = -4.083 eV/atom. Upstream examples use 10,000 / 25,000-50,000 steps.
+- GPU: usable again since the reboot on 2026-10-22 (driver 595.99.02, kernel 7.0.0-38, CUDA 13.2). Verified: `lmp_mpi -k on g 1 -sf kk -pk kokkos newton on neigh half` runs LJ (32k atoms, 8.6x faster than 1 CPU rank) and the Al-Li ACE potential; `pace/kk` on the GPU requires `pair_style pace product` (otherwise "Must use 'product' algorithm"), gives energies identical to the CPU run, and was about 2.3x faster than 4 MPI ranks for 2048 atoms. Slurm exposes `Gres=gpu:1` (`srun --gres=gpu:1`), and torch in the `alamode` env sees the device. Before 2026-10-22 the card was stuck in "GPU requires reset" after an Xid 120 GSP crash; if that recurs, check `nvidia-smi -q | grep -i reset` and reboot.
+- **Slurm is available on this host** (single node `mygarden5`, partition `debug`, 16 logical CPUs = 8 cores with `ThreadsPerCore=2`, no time limit, 1 GPU). Use `queue: {scheduler: slurm, queuename: debug, cores: 4, memory: 8GB, commands: [source /home/kino/miniforge3/etc/profile.d/conda.sh && conda activate <abs path>/env/calphy]}`; calphy writes `--hint=nomultithread`, so a 4-task job takes 8 logical CPUs and two such jobs run concurrently. Outputs land in `<job>.sub.slurm.{out,err}`.
+- `calphy-examples/` is a local copy of the upstream examples converted to Slurm (see its README). Submission order and job ids are in `calphy-examples/submit_slurm.log`.
+- Upstream examples (13 example inputs incl. `dcci`, EAM potentials for Cu/Fe/Ti/ZrCu, `examples/complete_test.sh`) are only in the git repo: https://github.com/ICAMS/calphy. Licence is Academic Software Licence (non-commercial).
+
+## Installed environment: pycalphad (project-local conda env)
+
+`env/pycalphad/` holds pycalphad 0.11.2 (pip, because conda-forge stops at 0.10.1 and the upstream examples need the 0.11 mapping API) on conda-forge deps (python 3.12, python-symengine 0.13, xarray, pint, jupyter/nbconvert). Recreate:
+
+```bash
+mamba create -p ./env/pycalphad -c conda-forge python=3.12 "python-symengine>=0.9.2,<0.14" numpy scipy matplotlib xarray pint pyparsing tinydb runtype typing_extensions setuptools_scm pytest pytest-cov jupyter nbconvert ipykernel pandas
+./env/pycalphad/bin/pip install --no-deps pycalphad==0.11.2
+```
+
+`pycalphad-examples/` is the upstream `examples/` at tag 0.11.2 (17 notebooks, 10 TDBs); executed copies go to `pycalphad-examples/executed/`, status in `status.tsv`. Run a notebook headless with `jupyter nbconvert --to notebook --execute <nb>.ipynb` (do not set `MPLBACKEND=Agg`: it suppresses the inline figures in the executed copy). The high-throughput notebook reads `COST507.tdb` from `pycalphad.tests.databases` inside the installed package.
+
+## Installed environment: pyiron (project-local conda env)
+
+`env/pyiron/` = conda-forge deps + GitHub HEAD of pyiron_base and pyiron_atomistics (pip `--no-deps`), calphy 2.3.0 (GitHub), the same conda-forge LAMMPS build as `env/calphy`, pyscal3 4.1. pyiron_atomistics HEAD pins pyscal3 3.3.2 / pandas 2 / pint 0.25 in its metadata but imports and runs with the newer ones; `pip check` complaints about those pins are expected. Extra pip deps that conda-forge lacks: assyst, vaspparser, lammpsparser, sphinx-parser.
+
+Configuration is per project directory through env vars, not `~/.pyiron`: `PYIRONRESOURCEPATHS=<dir>/resources` (holds `lammps/potentials/potentials_lammps.csv` + files), `PYIRONPROJECTCHECKENABLED=False`, and either `PYIRONDISABLE=True` (file-based, fine for running jobs) or `PYIRONSQLFILE=<dir>/pyiron.db` (needed for `pr.unpack`). Boolean env values must be Python literals (`False`, not `false`).
+
+Calphy jobs in pyiron run calphy in library mode (LAMMPS Python module, no `lmp` binary). calphy writes `<mode>-conf.data-<phase>-<T>-<P>.<i>.data` into the **current directory**, so concurrent jobs need separate cwds (see `pyiron-examples/workshop2022-phase-diagram/run_calculations.py`).
+
+`pyiron-examples/` holds two phase-diagram examples, each with a README: `workshop2022-phase-diagram/` (pyiron potentials-workshop-2022 tutorial_2, Al-Li EAM, 18 calphy jobs run here) and `menon2024-alli-eam/` (Menon et al. 2024 published dataset, post-processing only).
+
+## Installed environment: ftphase (project package + conda env)
+
+`ftphase/` is the project's own Python package (MIT, `src/ftphase`, pytest suite in `tests/`, worked examples in `examples/`) that implements the workflow stages no upstream example covers: 0 K validation (01), composition/sublattice/vacancy series and icet SQS (02A), phonopy/ALAMODE QHA (03A), calphy input/output (03B), ideal/sublattice/DOS configurational terms (04A), quantum-classical harmonic correction (04B), one free-energy table with reference-state and flag checks plus calphy `PhaseDiagram`/TDB export (05), multi-phase lower convex hull with point and limited-range phases (06), T-x scan, invariants and Monte Carlo error propagation (07). Read `ftphase/README.md` (Japanese) and `docs/ftphase.html`.
+
+`env/ftphase/` is its conda prefix env: the same LAMMPS build and calphy 2.3.0 as `env/calphy`, plus phonopy 4.8, pymatgen, icet 4.0, sqsgenerator 0.5.6, pycalphad 0.11.2 (pip), spglib. Recreate with the command in `ftphase/README.md`, then `./env/ftphase/bin/pip install -e ./ftphase`. Run tests with `./env/ftphase/bin/python -m pytest ftphase/tests -q` (39 tests, ~10 s). The examples write to `ftphase/examples/out_*`; `examples/calphy_ace/` holds calphy jobs submitted to Slurm from package-generated input (ACE Al-Li potential from the pyiron workshop resources).
+
+GPU (2026-10-22): `env/lammps-gpu/` holds a source build of LAMMPS stable_30Sep2026 (`build.sh`, KOKKOS/CUDA sm_86 + ML-PACE, toolchain from env/ftphase: cuda-nvcc 12.9, gxx 14, OpenMPI 5) because the conda-forge 22Jul2025 build lacks `hybrid/scaled/kk`, which calphy needs for every run except the solid Frenkel-Ladd `fe` step. `ftphase.calphy_io.calculation_block(gpu=True, lammps_executable=<env/lammps-gpu/bin/lmp_gpu>)` writes `md.cmdargs`, `pace product`, `queue.cores=1`, `--gres=gpu:1` and checks the binary with `gpu_capability`. GPU runs: `ftphase/examples/calphy_ace_gpu/` (+ `calphy_ace_repeat/`, `calphy_ace_gpu_repeat/` with new seeds), compared by `examples/alli_ace_gpu_compare.py`: GPU 1 rank is 1.7-3.3x faster than CPU 4 ranks, energies/pressures identical, run-to-run spread 1.3-1.4 meV/atom (melting point 902-927 K across seeds).
+
+End-to-end example (2026-10-22): `ftphase/examples/alli_ace_txdiagram/` runs stages 01-07 for ACE Al-Li (x_Li <= 0.5) as a Slurm chain (`run_pipeline.sh`: CPU solids job, 6 GPU calphy liquid jobs submitted by calphy, assembly job with `--dependency=afterany`; `run_resume.sh` reruns only unfinished liquids after a crash/reboot and re-assembles). About 1 h wall, dominated by the serial GPU liquids (8.5 min each). Result: eutectic 760-770 K at x~0.30, fcc solvus 0.157, Al melting 860-870 K (classical level), about 100 K below experiment with the right composition features. Pitfall found there: a polynomial fitted to G that contains k_B T x ln x invents miscibility gaps; `PhaseCurve.from_points(ideal_T=T)` / `builder_from_table(ideal_excess_fit=True)` fit only the excess.
+
+Example 6 (submitted 2026-10-22 16:42, Slurm 22546-22552): `pipeline_full.py` / `run_pipeline_full.sh` in the same folder, full range 0 <= x_Li <= 1 with 64-atom SQS solids (fcc, bcc) and Li-side GPU liquids; results land in `out_full/REPORT.md` and `out_full/07_phase_diagram.png` without any session. If it is unfinished, check `squeue` and `out_full/jobs.txt`; `run_resume_full.sh` reruns only what is missing. Finished 17:22; Al2Li3/Al4Li9 (user-supplied MP CIFs in `structures/`) added afterwards with `pipeline_full.py addsolid`, liquid fitted as ideal + Redlich-Kister (`fits={'liquid':'rk'}`, `poly_orders`). Results in README section 6 / docs/ftphase.html 3.6: eutectic 760-770 K at x~0.31, Al melting 850-860 K, B32 congruent 840-850 K, Al2Li3 marginal, Al4Li9 unstable above 700 K; narrow liquid+liquid hull segments are fit noise (flagged in REPORT.md). Extra liquids submitted 20:54 (Slurm 22553-22584, assemble 22585, ~4.3 h): sweeps below 700 K (to 650/500 K) and 2 independent repeats per composition; `assemble` averages runs per (x, T), uses the measured spread as sigma and extends the grid to 500-1100 K where the liquid covers 0..1. Final assembly 2026-10-23 01:22 (Slurm 22620, after the mesh-converged solids 22619): grid 650-1100 K, eutectic 760-770 K at x~0.31 (fcc 0.15), Al melting 890-900 K (the [4,4,4] mesh had fcc Al 8.8 meV/atom too high at 900 K), B32 congruent 850-860 K, Al2Li3 stable to 710-720 K, Al4Li9 to 670-680 K; liquid run-to-run spread only 0.1-0.5 meV/atom. Numbers are in README section 6 / docs/ftphase.html 3.6; `write_report` was fixed on 10-23 (error-band section picked grid temperatures that the every-2nd-point sensitivity scan did not contain).
+
+Example 7 (submitted 2026-10-22 22:06 on mygardenx1, Slurm 14138-14172): `ftphase/examples/nial_eam/` = Ni-Al with the NIST Purja Pun & Mishin 2009 EAM (`potentials/nial/`), the test of ordered phases with composition width: B2 with Ni anti-sites and Ni vacancies (`configurational.b2_triple_defect_site_fractions`), L1_2 with anti-sites, fcc SQS, 33 calphy liquid runs (2000 K -> T_stop(x), 3 runs per composition). Results land in `out/REPORT.md` on mygardenx1 (not synced back automatically; `scp`/`rsync` them). `run_resume.sh` there resumes. This EAM puts NiAl3/Ni2Al3 60-120 meV/atom above the hull (expected limitation). Stage 2 (22:35) used calphy TI for the solids: B2 congruent 1900 K (expt 1911), Ni 1745 K, L1_2+liquid 1560-1700 K; QHA solids were 20-45 meV/atom too high near T_m (anharmonic + the [4,4,4] mesh being only 64 q-points for small primitive cells: use `mesh=60.0` length). Stage 3 (22:50, final): wider B2/L1_2 defect sampling and `builder_from_table(entropy_models=...)` (analytic sublattice entropy + per-branch linear defect energy): B2 congruent 1885 K, L1_2 to 1695 K, B2 width 0.50-0.611 (Ni-rich edge = sampled limit). REPORT.md on mygardenx1 is the record; copies in `out_mygardenx1/`, `calphy_liquid_mygardenx1/`, `calphy_solid_mygardenx1/` (report/sweep files only). Example 6 solids were also resubmitted with the converged mesh (Slurm 22619, assemble 22620).
+
+Pitfall fixed on 2026-10-21: phonopy with `primitive_matrix='auto'` returns free energies per primitive cell; `ftphase.qha.phonopy_free_energy` rescales to the input cell (regression test `test_phonopy_free_energy_is_per_input_cell`).
+
+## Compute host mygardenx1 (CPU only, set up 2026-10-22)
+
+Remote host `mygardenx1` (ssh, AMD EPYC 9554 64 cores, 377 GB, no GPU, Slurm single node `localhost` partition `debug`, conda at `/home/kino/miniconda3`). Same project path as here; `env/ftphase` there is the CPU twin of the local env (`setup_env_mygardenx1.sh`, LAMMPS `cpu_py312*mpi_openmpi*` with `pace`, `grace/fs`, `mliap`, `hybrid/scaled`; plus tensorpotential for GRACE). Sync code with `ftphase/tools/sync_to_host.sh mygardenx1` (excludes outputs and job folders); run pipelines there over ssh with the same `run_*.sh` (they and `calphy_io.slurm_queue` locate conda.sh automatically; `CONDA_SH` overrides). Use the conda OpenMPI only (do not put Intel MPI or apt openmpi on PATH). Verified: pytest 38 passed, LJ 16 ranks 0.60 s, calphy fe fcc-Al ACE 800 K with 16 ranks in 53 s, G = -3.7119 eV/atom (matches mygarden5). `gpu=True` blocks cannot run there.
+
+## Installed environment: aiida-alamode (pre-existing, conda env `alamode`)
+
+Checked 2026-10-21 on this host: `/home/kino/miniforge3/envs/alamode` holds aiida-core 2.9.2, aiida-alamode 1.1.0 (editable install from `~/kino/Claude/Projects/ALAMODE/aiida-alamode`), phonopy 4.5, ase, pymatgen, MatterSim 1.2.3, SevenNet, torch 2.14. ALAMODE binaries are `~/bin/alamode/{alm,anphon}`. AiiDA profile `alamode_pg` (PostgreSQL + RabbitMQ) is the default and its daemon runs. Computer `mygarden5` = this host via core.local + core.slurm, work dir `~/aiida_run/`, 8 procs/machine; codes include alm, anphon, displace, mattersim, ase_runner. Other computers (laurel, mygarden6, mygardenx1/x2) are remote. Use `verdi` from that env; the `aiida-alamode` skill covers the workflows. This env is separate from `env/calphy`; do not mix them.
+
+## Layout and how the pieces relate
+
+- `skills/phase-diagram/SKILL.md` — the decision rules for phase-diagram work (method choice per phase type, thermodynamic must-dos). Read it before any phase-diagram question. It links to six references that must stay together with it:
+  - `references/workflow.md` — the step-by-step calculation workflow with the key equations (QHA G(T,P), ideal-mixing S_conf, sublattice S_conf, UFM-based liquid TI, common-tangent condition).
+  - `references/sources.md` — official docs consulted (calphy, LAMMPS hybrid/scaled, icet/mcsqs, ALAMODE, pycalphad) plus caveats about the Al–Li literature example and what the Saengdeejing PDF does and does not say.
+  - `references/migration.md` — verification order when resuming on another machine.
+  - `references/examples.md` — which upstream example (calphy / pycalphad / pyiron) covers which workflow stage, what none of them cover, and the run-time pitfalls found on 2026-10-21.
+  - `references/ftphase.md` — module map, decision notes and verified facts for the project's `ftphase` package.
+  - `references/public-sources.md` — public codes that can fill the uncovered stages (icet, sqsgenerator, matcalc, phonopy QHA, smol, ESPEI, exaPD) and the fact that the installed calphy 2.3.0 `calphy.phase_diagram.PhaseDiagram` already does CALPHAD-surface fitting, limited-range phases and TDB export (no upstream example).
+- `docs/workflow.html` (+ `workflow.svg`) — the full design document with numbered stages 01→06 (02A/02B structure series, 03A solid QHA / 03B liquid TI, 04A configurational term, 05 common reference, 06 equilibrium) and equations labelled `eq-A1`…`eq-J2`. The skill references point here by relative path, so keep the `docs/`, `skills/`, `資料/` folder structure intact.
+- `docs/examples.html` — the executed examples mapped onto stages 01–07 with results, environments and pitfalls (Japanese; long form of `references/examples.md`).
+- `docs/ftphase.html` — design, verification and worked results of the `ftphase` package (Japanese; long form of `references/ftphase.md`).
+- `docs/public-sources.html` — survey (2026-10-21) of public source code for the stages no example covers, with licences, what was verified locally, and a recommended combination (long form of `references/public-sources.md`).
+- `docs/migration.html` — handoff procedure to the destination HPC (tarball + sha256 example, checklist of what to verify there).
+- `資料/` — source PDFs and the aiida-alamode intro HTML. Never modify the originals; write extracted text or analysis as separate files.
+
+## Conventions that matter here
+
+- Numerical examples in `docs/workflow.html` (e.g. fcc-Al0.9Li0.1 S_conf) are illustrations, not computed results for any user system. Keep "not yet executed" clearly separate from measured results in anything you write.
+- Cite PDF page numbers when reporting content from `資料/`.
+- State units, reference states, composition basis (atom vs formula unit), and pressure explicitly; the skill forbids mixing eV/atom with J/mol or double-counting vibrational/configurational/ideal-mixing terms.
+- Migration status: the destination machine has ALAMODE and MLIP installed (user-confirmed 2026-10-21). Nothing has been transferred or submitted yet. Do not assume AiiDA/MCP, calphy/LAMMPS, icet, or TDB tooling exist there; check first, and start with the small-scale connectivity checks in `references/migration.md` before scaling up.
+- Using the skill does not by itself authorize long computations or environment changes; confirm how far the request goes (survey, design, run, plot).

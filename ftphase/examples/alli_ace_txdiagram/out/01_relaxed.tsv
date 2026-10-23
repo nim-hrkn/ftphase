@@ -1,0 +1,5 @@
+name	x	e	V	sg_before	sg_after	converged	transformed
+fcc-Al	0.0	-3.4788775828490524	16.54021187746642	Fm-3m (225)	Fm-3m (225)	True	False
+bcc-Li	1.0	-1.7561206356924566	20.403788763066	Im-3m (229)	Im-3m (229)	True	False
+B32-AlLi	0.5	-2.796382539633555	16.132333653704066	Fd-3m (227)	Fd-3m (227)	True	False
+L12-Al3Li	0.25	-3.1422579246476072	16.257004728105734	Pm-3m (221)	Pm-3m (221)	True	False

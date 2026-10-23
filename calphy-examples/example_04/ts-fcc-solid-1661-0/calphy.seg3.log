@@ -1,0 +1,89 @@
+LAMMPS (22 Jul 2025 - Update 6)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread.
+  using 1 OpenMP thread(s) per MPI task
+units metal
+atom_style atomic
+timestep 0.001
+read_restart calphy.restart
+Reading restart file ...
+  restart file = 22 Jul 2025, LAMMPS = 22 Jul 2025
+  restoring atom style atomic from restart
+  orthogonal box = (-0.30182688 -0.30182688 -0.30182688) to (36.401827 36.401827 36.401827)
+  1 by 2 by 2 MPI processor grid
+  pair style eam/alloy stores no restart info
+  4000 atoms
+  read_restart CPU = 0.001 seconds
+pair_style eam/alloy
+pair_coeff * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Cu01.eam.alloy Cu
+mass 1 63.546
+group g1 type 1
+4000 atoms in group g1
+compute c1 g1 msd com yes
+Resetting peratom fix info from restart file:
+  fix style: STORE/ATOM, fix ID: c1_COMPUTE_STORE
+variable mvol equal vol
+variable mlx equal lx
+variable mly equal ly
+variable mlz equal lz
+variable mpress equal press
+variable mpe equal pe/atoms
+variable metotal equal etotal/atoms
+variable mtemp equal temp
+variable msd1 equal c_c1[4]
+fix 3 all nvt temp 1661.000000 1661.000000 0.100000
+Resetting global fix info from restart file:
+  fix style: nvt, fix ID: 3
+fix 4 all ave/time 10 10 100 v_msd1 title2 "# TimeStep msd1[A^2]" file msd.dat.seg3
+thermo_style custom step pe press vol etotal temp lx ly lz
+thermo 10
+unfix 3
+dump 2 all custom 1 traj.equilibration_stage2.dat id type mass x y z vx vy vz
+run 0
+WARNING: No fixes with time integration, atoms won't move
+For more information see https://docs.lammps.org/err0028 (src/verlet.cpp:60)
+All restart file global fix info was re-assigned
+All restart file peratom fix info was re-assigned
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.506786
+  ghost atom cutoff = 7.506786
+  binsize = 3.753393, bins = 10 10 10
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eam/alloy, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.868 | 3.868 | 3.869 Mbytes
+   Step         PotEng         Press          Volume         TotEng          Temp            Lx             Ly             Lz      
+     30000  -13230.159      58550.336      49445.628     -12370.396      1663.27        36.703654      36.703654      36.703654    
+Loop time of 2.47825e-06 on 4 procs for 0 steps with 4000 atoms
+
+30.3% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.478e-06  |            |       |100.00
+
+Nlocal:           1000 ave        1007 max         982 min
+Histogram: 1 0 0 0 0 0 0 0 1 2
+Nghost:        3909.25 ave        3939 max        3888 min
+Histogram: 2 0 0 0 0 0 1 0 0 1
+Neighs:        71889.5 ave       75181 max       69836 min
+Histogram: 1 0 2 0 0 0 0 0 0 1
+
+Total # of neighbors = 287558
+Ave neighs/atom = 71.8895
+Neighbor list builds = 0
+Dangerous builds = 0
+undump 2
+write_restart calphy.restart
+System init for write_restart ...
+Total wall time: 0:00:00

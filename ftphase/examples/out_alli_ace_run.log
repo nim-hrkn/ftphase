@@ -1,0 +1,73 @@
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/src/ftphase/qha.py:307: PrimitiveMatrixAutoDefaultWarning: primitive_matrix defaulted to 'auto' and was resolved to a non-identity matrix:
+  [ 0.00000,  0.50000,  0.50000]
+  [ 0.50000, -0.00000,  0.50000]
+  [ 0.50000,  0.50000,  0.00000]
+This differs from phonopy v3, whose default was the identity matrix. Pass primitive_matrix='P' (or --pa P on the command line) to restore the v3 behaviour.
+  ph = Phonopy(unit, supercell_matrix=supercell_matrix, primitive_matrix="auto", symprec=symprec)
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/src/ftphase/qha.py:307: PrimitiveMatrixAutoDefaultWarning: primitive_matrix defaulted to 'auto' and was resolved to a non-identity matrix:
+  [-0.00000,  0.50000,  0.50000]
+  [ 0.50000,  0.00000,  0.50000]
+  [ 0.50000,  0.50000,  0.00000]
+This differs from phonopy v3, whose default was the identity matrix. Pass primitive_matrix='P' (or --pa P on the command line) to restore the v3 behaviour.
+  ph = Phonopy(unit, supercell_matrix=supercell_matrix, primitive_matrix="auto", symprec=symprec)
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/src/ftphase/qha.py:307: PrimitiveMatrixAutoDefaultWarning: primitive_matrix defaulted to 'auto' and was resolved to a non-identity matrix:
+  [-0.00000,  0.50000,  0.50000]
+  [ 0.50000, -0.00000,  0.50000]
+  [ 0.50000,  0.50000,  0.00000]
+This differs from phonopy v3, whose default was the identity matrix. Pass primitive_matrix='P' (or --pa P on the command line) to restore the v3 behaviour.
+  ph = Phonopy(unit, supercell_matrix=supercell_matrix, primitive_matrix="auto", symprec=symprec)
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/src/ftphase/qha.py:307: PrimitiveMatrixAutoDefaultWarning: primitive_matrix defaulted to 'auto' and was resolved to a non-identity matrix:
+  [ 0.00000,  0.50000,  0.50000]
+  [ 0.50000,  0.00000,  0.50000]
+  [ 0.50000,  0.50000, -0.00000]
+This differs from phonopy v3, whose default was the identity matrix. Pass primitive_matrix='P' (or --pa P on the command line) to restore the v3 behaviour.
+  ph = Phonopy(unit, supercell_matrix=supercell_matrix, primitive_matrix="auto", symprec=symprec)
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/src/ftphase/qha.py:307: PrimitiveMatrixAutoDefaultWarning: primitive_matrix defaulted to 'auto' and was resolved to a non-identity matrix:
+  [ 0.00000,  0.50000,  0.50000]
+  [ 0.50000, -0.00000,  0.50000]
+  [ 0.50000,  0.50000, -0.00000]
+This differs from phonopy v3, whose default was the identity matrix. Pass primitive_matrix='P' (or --pa P on the command line) to restore the v3 behaviour.
+  ph = Phonopy(unit, supercell_matrix=supercell_matrix, primitive_matrix="auto", symprec=symprec)
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/src/ftphase/qha.py:307: PrimitiveMatrixAutoDefaultWarning: primitive_matrix defaulted to 'auto' and was resolved to a non-identity matrix:
+  [-0.00000,  0.50000,  0.50000]
+  [ 0.50000,  0.00000,  0.50000]
+  [ 0.50000,  0.50000, -0.00000]
+This differs from phonopy v3, whose default was the identity matrix. Pass primitive_matrix='P' (or --pa P on the command line) to restore the v3 behaviour.
+  ph = Phonopy(unit, supercell_matrix=supercell_matrix, primitive_matrix="auto", symprec=symprec)
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/src/ftphase/qha.py:307: PrimitiveMatrixAutoDefaultWarning: primitive_matrix defaulted to 'auto' and was resolved to a non-identity matrix:
+  [ 0.00000,  0.50000,  0.50000]
+  [ 0.50000,  0.00000,  0.50000]
+  [ 0.50000,  0.50000,  0.00000]
+This differs from phonopy v3, whose default was the identity matrix. Pass primitive_matrix='P' (or --pa P on the command line) to restore the v3 behaviour.
+  ph = Phonopy(unit, supercell_matrix=supercell_matrix, primitive_matrix="auto", symprec=symprec)
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/src/ftphase/qha.py:307: PrimitiveMatrixAutoDefaultWarning: primitive_matrix defaulted to 'auto' and was resolved to a non-identity matrix:
+  [-0.00000,  0.50000,  0.50000]
+  [ 0.50000, -0.00000,  0.50000]
+  [ 0.50000,  0.50000, -0.00000]
+This differs from phonopy v3, whose default was the identity matrix. Pass primitive_matrix='P' (or --pa P on the command line) to restore the v3 behaviour.
+  ph = Phonopy(unit, supercell_matrix=supercell_matrix, primitive_matrix="auto", symprec=symprec)
+[01] fcc-Al     E=-3.47888 eV/atom V=16.540 A3  Fm-3m (225) -> Fm-3m (225)
+[01] bcc-Li     E=-1.75612 eV/atom V=20.404 A3  Im-3m (229) -> Im-3m (229)
+[01] fcc-Li     E=-1.75557 eV/atom V=20.320 A3  Fm-3m (225) -> Fm-3m (225)
+[01] B32-AlLi   E=-2.79638 eV/atom V=16.132 A3  Fd-3m (227) -> Fd-3m (227)
+[01] L12-Al3Li  E=-3.14226 eV/atom V=16.257 A3  Pm-3m (221) -> Pm-3m (221)
+     name    x        e   e_form  on_hull  e_above_hull
+   fcc-Al 0.00 -3.47888  0.00000     True           0.0
+L12-Al3Li 0.25 -3.14226 -0.09407     True           0.0
+ B32-AlLi 0.50 -2.79638 -0.17888     True           0.0
+   bcc-Li 1.00 -1.75612  0.00000     True           0.0
+   fcc-Li 1.00 -1.75557  0.00055     True           0.0
+     name                              status  e_above_hull
+   fcc-Al                             on hull           0.0
+   bcc-Li                             on hull           0.0
+ B32-AlLi                             on hull           0.0
+L12-Al3Li MLIP ground state not in known list           0.0
+[01] pymatgen cross-check max |diff| e_above_hull: 0.0005520219304413487
+[01] fcc Al Vinet: V0=16.552 A3/atom, B0=81.8 GPa (expt. ~76 GPa), B'=4.75
+[02A] random 32-atom cells, x_Li=0.125, unrelaxed E (eV/atom): [-3.28505 -3.28468]
+[02A] icet SQS: {'n_atoms': 16, 'cluster_vector_deviation': 0.2031250000000001, 'E_unrelaxed_eV_per_atom': -3.287919984224114}
+[03A] fcc-Al: QHA done in 1 s; G(300K)=-3.48204 eV/atom, V(0K)=16.688, V(1000K)=18.127 A3/atom, B(300K)=72.7 GPa
+[04B] fcc-Al: F_q - F_cl = 3.40 meV/atom at 300 K, 1.03 meV/atom at 1000 K (ZPE-dominated at low T)
+[03A] B32-AlLi: QHA done in 2 s; G(300K)=-2.78456 eV/atom, V(0K)=16.361, V(1000K)=17.507 A3/atom, B(300K)=43.5 GPa
+[04B] B32-AlLi: F_q - F_cl = 5.27 meV/atom at 300 K, 1.61 meV/atom at 1000 K (ZPE-dominated at low T)
+done in 10 s

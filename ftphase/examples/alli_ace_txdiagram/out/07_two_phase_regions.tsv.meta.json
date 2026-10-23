@@ -1,0 +1,9 @@
+{
+ "example": "alli_ace_txdiagram",
+ "fit": "{'fcc': 'poly', 'liquid': 'poly', 'B32': 'spline'} (poly = cubic excess over analytic ideal mixing)",
+ "hull": "{'min_width': 0.005, 'gap_tol': 2.5}",
+ "T_step": 10.0,
+ "level": "classical (QHA lowered by F_q-F_cl)",
+ "liquid": "calphy ts GPU, UFM, 3 iterations",
+ "solids": "QHA 9 volumes, 32/108/128-atom supercells"
+}

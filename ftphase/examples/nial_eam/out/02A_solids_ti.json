@@ -1,0 +1,362 @@
+[
+ {
+  "id": 0,
+  "tag": "sol00_fccAl_x0p0000",
+  "phase": "fccAl",
+  "kind": "solution",
+  "x": 0.0,
+  "n_atoms": 256,
+  "repeat": [
+   2,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol00_fccAl_x0p0000.data",
+  "T_sweep": [
+   700.0,
+   950.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": ""
+ },
+ {
+  "id": 1,
+  "tag": "sol01_fccAl_x0p0156",
+  "phase": "fccAl",
+  "kind": "solution",
+  "x": 0.015625,
+  "n_atoms": 256,
+  "repeat": [
+   2,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol01_fccAl_x0p0156.data",
+  "T_sweep": [
+   700.0,
+   950.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": ""
+ },
+ {
+  "id": 2,
+  "tag": "sol02_fccAl_x0p0312",
+  "phase": "fccAl",
+  "kind": "solution",
+  "x": 0.03125,
+  "n_atoms": 256,
+  "repeat": [
+   2,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol02_fccAl_x0p0312.data",
+  "T_sweep": [
+   700.0,
+   950.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": ""
+ },
+ {
+  "id": 3,
+  "tag": "sol03_fccNi_x1p0000",
+  "phase": "fccNi",
+  "kind": "solution",
+  "x": 1.0,
+  "n_atoms": 256,
+  "repeat": [
+   2,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol03_fccNi_x1p0000.data",
+  "T_sweep": [
+   900.0,
+   1750.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": ""
+ },
+ {
+  "id": 4,
+  "tag": "sol04_fccNi_x0p9375",
+  "phase": "fccNi",
+  "kind": "solution",
+  "x": 0.9375,
+  "n_atoms": 256,
+  "repeat": [
+   2,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol04_fccNi_x0p9375.data",
+  "T_sweep": [
+   900.0,
+   1750.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": ""
+ },
+ {
+  "id": 5,
+  "tag": "sol05_fccNi_x0p8750",
+  "phase": "fccNi",
+  "kind": "solution",
+  "x": 0.875,
+  "n_atoms": 256,
+  "repeat": [
+   2,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol05_fccNi_x0p8750.data",
+  "T_sweep": [
+   900.0,
+   1750.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": ""
+ },
+ {
+  "id": 6,
+  "tag": "sol06_fccNi_x0p8125",
+  "phase": "fccNi",
+  "kind": "solution",
+  "x": 0.8125,
+  "n_atoms": 256,
+  "repeat": [
+   2,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol06_fccNi_x0p8125.data",
+  "T_sweep": [
+   900.0,
+   1750.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": ""
+ },
+ {
+  "id": 7,
+  "tag": "sol07_fccNi_x0p7500",
+  "phase": "fccNi",
+  "kind": "solution",
+  "x": 0.75,
+  "n_atoms": 256,
+  "repeat": [
+   2,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol07_fccNi_x0p7500.data",
+  "T_sweep": [
+   900.0,
+   1750.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": ""
+ },
+ {
+  "id": 8,
+  "tag": "sol08_B2_x0p5000",
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.5,
+  "n_atoms": 216,
+  "repeat": [
+   2,
+   1,
+   2
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol08_B2_x0p5000.data",
+  "T_sweep": [
+   900.0,
+   1900.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": "none"
+ },
+ {
+  "id": 9,
+  "tag": "sol09_B2_x0p5185",
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.5185185185185185,
+  "n_atoms": 216,
+  "repeat": [
+   2,
+   1,
+   2
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol09_B2_x0p5185.data",
+  "T_sweep": [
+   900.0,
+   1900.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": "1 Ni anti-site(s)"
+ },
+ {
+  "id": 10,
+  "tag": "sol10_B2_x0p5370",
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.5370370370370371,
+  "n_atoms": 216,
+  "repeat": [
+   2,
+   1,
+   2
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol10_B2_x0p5370.data",
+  "T_sweep": [
+   900.0,
+   1900.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": "2 Ni anti-site(s)"
+ },
+ {
+  "id": 11,
+  "tag": "sol11_B2_x0p4906",
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.49056603773584906,
+  "n_atoms": 212,
+  "repeat": [
+   2,
+   1,
+   2
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol11_B2_x0p4906.data",
+  "T_sweep": [
+   900.0,
+   1900.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": "1 Ni vacancy(ies)"
+ },
+ {
+  "id": 12,
+  "tag": "sol12_B2_x0p4808",
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.4807692307692308,
+  "n_atoms": 208,
+  "repeat": [
+   2,
+   1,
+   2
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol12_B2_x0p4808.data",
+  "T_sweep": [
+   900.0,
+   1900.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": "2 Ni vacancy(ies)"
+ },
+ {
+  "id": 13,
+  "tag": "sol13_L12_x0p7500",
+  "phase": "L12",
+  "kind": "limited",
+  "x": 0.75,
+  "n_atoms": 216,
+  "repeat": [
+   1,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol13_L12_x0p7500.data",
+  "T_sweep": [
+   900.0,
+   1700.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": "none"
+ },
+ {
+  "id": 14,
+  "tag": "sol14_L12_x0p7593",
+  "phase": "L12",
+  "kind": "limited",
+  "x": 0.7592592592592593,
+  "n_atoms": 216,
+  "repeat": [
+   1,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol14_L12_x0p7593.data",
+  "T_sweep": [
+   900.0,
+   1700.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": "1 Ni anti-site"
+ },
+ {
+  "id": 15,
+  "tag": "sol15_L12_x0p7407",
+  "phase": "L12",
+  "kind": "limited",
+  "x": 0.7407407407407407,
+  "n_atoms": 216,
+  "repeat": [
+   1,
+   2,
+   1
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol15_L12_x0p7407.data",
+  "T_sweep": [
+   900.0,
+   1700.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": "1 Al anti-site"
+ },
+ {
+  "id": 16,
+  "tag": "sol16_Ni2Al3_x0p4000",
+  "phase": "Ni2Al3",
+  "kind": "point",
+  "x": 0.4,
+  "n_atoms": 240,
+  "repeat": [
+   4,
+   4,
+   3
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol16_Ni2Al3_x0p4000.data",
+  "T_sweep": [
+   900.0,
+   1500.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": ""
+ },
+ {
+  "id": 17,
+  "tag": "sol17_NiAl3_x0p2500",
+  "phase": "NiAl3",
+  "kind": "point",
+  "x": 0.25,
+  "n_atoms": 288,
+  "repeat": [
+   3,
+   2,
+   3
+  ],
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/sol17_NiAl3_x0p2500.data",
+  "T_sweep": [
+   700.0,
+   1300.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid",
+  "defect": ""
+ }
+]

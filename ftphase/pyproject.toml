@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ftphase"
+version = "0.1.0"
+description = "Finite-temperature phase diagrams from MLIP free energies: the stages that calphy / pycalphad / pyiron examples do not cover (validation, SQS and sublattice series, QHA, configurational and quantum terms, multi-phase convex hull, T-x diagram with error sensitivity)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "PhaseDiagram project (kino)"}]
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "pandas>=2.0",
+  "ase>=3.22",
+  "pyyaml",
+  "matplotlib",
+]
+
+[project.optional-dependencies]
+phonon = ["phonopy>=2.20"]
+sqs = ["icet>=3.0"]
+calphad = ["pycalphad>=0.10"]
+ti = ["calphy>=2.2"]
+hull = ["pymatgen"]
+io = ["pyarrow"]
+test = ["pytest"]
+
+[project.scripts]
+ftphase = "ftphase.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: takes more than a few seconds"]

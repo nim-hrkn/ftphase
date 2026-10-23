@@ -1,0 +1,524 @@
+[
+ {
+  "tag": "lqd_x0.00",
+  "x_target": 0.0,
+  "x_actual": 0.0,
+  "counts": {
+   "Al": 256
+  },
+  "seed": 100,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.00_256.data",
+  "T_sweep": [
+   2000.0,
+   850.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.00_r1",
+  "x_target": 0.0,
+  "x_actual": 0.0,
+  "counts": {
+   "Al": 256
+  },
+  "seed": 100,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.00_256.data",
+  "T_sweep": [
+   2000.0,
+   850.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.00_r2",
+  "x_target": 0.0,
+  "x_actual": 0.0,
+  "counts": {
+   "Al": 256
+  },
+  "seed": 100,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.00_256.data",
+  "T_sweep": [
+   2000.0,
+   850.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.10",
+  "x_target": 0.1,
+  "x_actual": 0.1015625,
+  "counts": {
+   "Al": 230,
+   "Ni": 26
+  },
+  "seed": 101,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.10_256.data",
+  "T_sweep": [
+   2000.0,
+   850.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.10_r1",
+  "x_target": 0.1,
+  "x_actual": 0.1015625,
+  "counts": {
+   "Al": 230,
+   "Ni": 26
+  },
+  "seed": 101,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.10_256.data",
+  "T_sweep": [
+   2000.0,
+   850.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.10_r2",
+  "x_target": 0.1,
+  "x_actual": 0.1015625,
+  "counts": {
+   "Al": 230,
+   "Ni": 26
+  },
+  "seed": 101,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.10_256.data",
+  "T_sweep": [
+   2000.0,
+   850.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.20",
+  "x_target": 0.2,
+  "x_actual": 0.19921875,
+  "counts": {
+   "Al": 205,
+   "Ni": 51
+  },
+  "seed": 102,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.20_256.data",
+  "T_sweep": [
+   2000.0,
+   950.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.20_r1",
+  "x_target": 0.2,
+  "x_actual": 0.19921875,
+  "counts": {
+   "Al": 205,
+   "Ni": 51
+  },
+  "seed": 102,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.20_256.data",
+  "T_sweep": [
+   2000.0,
+   950.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.20_r2",
+  "x_target": 0.2,
+  "x_actual": 0.19921875,
+  "counts": {
+   "Al": 205,
+   "Ni": 51
+  },
+  "seed": 102,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.20_256.data",
+  "T_sweep": [
+   2000.0,
+   950.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.30",
+  "x_target": 0.3,
+  "x_actual": 0.30078125,
+  "counts": {
+   "Al": 179,
+   "Ni": 77
+  },
+  "seed": 103,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.30_256.data",
+  "T_sweep": [
+   2000.0,
+   1100.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.30_r1",
+  "x_target": 0.3,
+  "x_actual": 0.30078125,
+  "counts": {
+   "Al": 179,
+   "Ni": 77
+  },
+  "seed": 103,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.30_256.data",
+  "T_sweep": [
+   2000.0,
+   1100.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.30_r2",
+  "x_target": 0.3,
+  "x_actual": 0.30078125,
+  "counts": {
+   "Al": 179,
+   "Ni": 77
+  },
+  "seed": 103,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.30_256.data",
+  "T_sweep": [
+   2000.0,
+   1100.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.40",
+  "x_target": 0.4,
+  "x_actual": 0.3984375,
+  "counts": {
+   "Al": 154,
+   "Ni": 102
+  },
+  "seed": 104,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.40_256.data",
+  "T_sweep": [
+   2000.0,
+   1300.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.40_r1",
+  "x_target": 0.4,
+  "x_actual": 0.3984375,
+  "counts": {
+   "Al": 154,
+   "Ni": 102
+  },
+  "seed": 104,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.40_256.data",
+  "T_sweep": [
+   2000.0,
+   1300.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.40_r2",
+  "x_target": 0.4,
+  "x_actual": 0.3984375,
+  "counts": {
+   "Al": 154,
+   "Ni": 102
+  },
+  "seed": 104,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.40_256.data",
+  "T_sweep": [
+   2000.0,
+   1300.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.50",
+  "x_target": 0.5,
+  "x_actual": 0.5,
+  "counts": {
+   "Al": 128,
+   "Ni": 128
+  },
+  "seed": 105,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.50_256.data",
+  "T_sweep": [
+   2000.0,
+   1500.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.50_r1",
+  "x_target": 0.5,
+  "x_actual": 0.5,
+  "counts": {
+   "Al": 128,
+   "Ni": 128
+  },
+  "seed": 105,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.50_256.data",
+  "T_sweep": [
+   2000.0,
+   1500.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.50_r2",
+  "x_target": 0.5,
+  "x_actual": 0.5,
+  "counts": {
+   "Al": 128,
+   "Ni": 128
+  },
+  "seed": 105,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.50_256.data",
+  "T_sweep": [
+   2000.0,
+   1500.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.60",
+  "x_target": 0.6,
+  "x_actual": 0.6015625,
+  "counts": {
+   "Al": 102,
+   "Ni": 154
+  },
+  "seed": 106,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.60_256.data",
+  "T_sweep": [
+   2000.0,
+   1450.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.60_r1",
+  "x_target": 0.6,
+  "x_actual": 0.6015625,
+  "counts": {
+   "Al": 102,
+   "Ni": 154
+  },
+  "seed": 106,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.60_256.data",
+  "T_sweep": [
+   2000.0,
+   1450.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.60_r2",
+  "x_target": 0.6,
+  "x_actual": 0.6015625,
+  "counts": {
+   "Al": 102,
+   "Ni": 154
+  },
+  "seed": 106,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.60_256.data",
+  "T_sweep": [
+   2000.0,
+   1450.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.70",
+  "x_target": 0.7,
+  "x_actual": 0.69921875,
+  "counts": {
+   "Al": 77,
+   "Ni": 179
+  },
+  "seed": 107,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.70_256.data",
+  "T_sweep": [
+   2000.0,
+   1350.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.70_r1",
+  "x_target": 0.7,
+  "x_actual": 0.69921875,
+  "counts": {
+   "Al": 77,
+   "Ni": 179
+  },
+  "seed": 107,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.70_256.data",
+  "T_sweep": [
+   2000.0,
+   1350.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.70_r2",
+  "x_target": 0.7,
+  "x_actual": 0.69921875,
+  "counts": {
+   "Al": 77,
+   "Ni": 179
+  },
+  "seed": 107,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.70_256.data",
+  "T_sweep": [
+   2000.0,
+   1350.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.80",
+  "x_target": 0.8,
+  "x_actual": 0.80078125,
+  "counts": {
+   "Al": 51,
+   "Ni": 205
+  },
+  "seed": 108,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.80_256.data",
+  "T_sweep": [
+   2000.0,
+   1400.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.80_r1",
+  "x_target": 0.8,
+  "x_actual": 0.80078125,
+  "counts": {
+   "Al": 51,
+   "Ni": 205
+  },
+  "seed": 108,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.80_256.data",
+  "T_sweep": [
+   2000.0,
+   1400.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.80_r2",
+  "x_target": 0.8,
+  "x_actual": 0.80078125,
+  "counts": {
+   "Al": 51,
+   "Ni": 205
+  },
+  "seed": 108,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.80_256.data",
+  "T_sweep": [
+   2000.0,
+   1400.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.90",
+  "x_target": 0.9,
+  "x_actual": 0.8984375,
+  "counts": {
+   "Al": 26,
+   "Ni": 230
+  },
+  "seed": 109,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.90_256.data",
+  "T_sweep": [
+   2000.0,
+   1450.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.90_r1",
+  "x_target": 0.9,
+  "x_actual": 0.8984375,
+  "counts": {
+   "Al": 26,
+   "Ni": 230
+  },
+  "seed": 109,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.90_256.data",
+  "T_sweep": [
+   2000.0,
+   1450.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x0.90_r2",
+  "x_target": 0.9,
+  "x_actual": 0.8984375,
+  "counts": {
+   "Al": 26,
+   "Ni": 230
+  },
+  "seed": 109,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x0.90_256.data",
+  "T_sweep": [
+   2000.0,
+   1450.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x1.00",
+  "x_target": 1.0,
+  "x_actual": 1.0,
+  "counts": {
+   "Ni": 256
+  },
+  "seed": 110,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x1.00_256.data",
+  "T_sweep": [
+   2000.0,
+   1500.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x1.00_r1",
+  "x_target": 1.0,
+  "x_actual": 1.0,
+  "counts": {
+   "Ni": 256
+  },
+  "seed": 110,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x1.00_256.data",
+  "T_sweep": [
+   2000.0,
+   1500.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ },
+ {
+  "tag": "lqd_x1.00_r2",
+  "x_target": 1.0,
+  "x_actual": 1.0,
+  "counts": {
+   "Ni": 256
+  },
+  "seed": 110,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/lqd_x1.00_256.data",
+  "T_sweep": [
+   2000.0,
+   1500.0
+  ],
+  "dir": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid"
+ }
+]
