@@ -1,0 +1,5 @@
+{
+ "example": "agcu_eam re-assembly (split terminal fcc)",
+ "fits": "{'fccAg': 'poly', 'fccCu': 'poly', 'liquid': 'rk'}",
+ "T_step": 10.0
+}

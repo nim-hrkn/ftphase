@@ -1,0 +1,5 @@
+T_low	T_high	pairs_below	pairs_above
+870.0	880.0	['fccAg+fccCu']	['fccAg+fccAg', 'fccAg+fccCu']
+880.0	890.0	['fccAg+fccAg', 'fccAg+fccCu']	['fccAg+fccCu']
+950.0	960.0	['fccAg+fccCu']	['fccAg+liquid', 'fccCu+liquid']
+1270.0	1280.0	['fccAg+liquid', 'fccCu+liquid']	['fccCu+liquid']

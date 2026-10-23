@@ -1,0 +1,149 @@
+{
+ "T_grid": [
+  700.0,
+  1400.0,
+  71
+ ],
+ "invariants": [
+  {
+   "T_low": 870.0,
+   "T_high": 880.0,
+   "pairs_below": [
+    "fccAg+fccCu"
+   ],
+   "pairs_above": [
+    "fccAg+fccAg",
+    "fccAg+fccCu"
+   ]
+  },
+  {
+   "T_low": 880.0,
+   "T_high": 890.0,
+   "pairs_below": [
+    "fccAg+fccAg",
+    "fccAg+fccCu"
+   ],
+   "pairs_above": [
+    "fccAg+fccCu"
+   ]
+  },
+  {
+   "T_low": 950.0,
+   "T_high": 960.0,
+   "pairs_below": [
+    "fccAg+fccCu"
+   ],
+   "pairs_above": [
+    "fccAg+liquid",
+    "fccCu+liquid"
+   ]
+  },
+  {
+   "T_low": 1270.0,
+   "T_high": 1280.0,
+   "pairs_below": [
+    "fccAg+liquid",
+    "fccCu+liquid"
+   ],
+   "pairs_above": [
+    "fccCu+liquid"
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "T": 800.0,
+   "x_alpha": 0.04241020065939933,
+   "x_beta": 0.9872308884325727,
+   "edge": false,
+   "solid_only": false
+  },
+  {
+   "T": 900.0,
+   "x_alpha": 0.03950534776415881,
+   "x_beta": 0.9799937182468763,
+   "edge": false,
+   "solid_only": false
+  },
+  {
+   "T": 1000.0,
+   "x_alpha": 0.08364105213688433,
+   "x_beta": 0.9687056824139402,
+   "edge": false,
+   "solid_only": true
+  }
+ ],
+ "same_phase": [
+  {
+   "phase": "fccAg",
+   "T": 880.0,
+   "x_a": 0.066875,
+   "x_b": 0.125
+  }
+ ],
+ "regions_at_1000K": [
+  {
+   "phase_a": "fccAg",
+   "x_a": 0.0609,
+   "phase_b": "liquid",
+   "x_b": 0.4397,
+   "edge": false
+  },
+  {
+   "phase_a": "liquid",
+   "x_a": 0.6435,
+   "phase_b": "fccCu",
+   "x_b": 0.9731,
+   "edge": false
+  }
+ ],
+ "regions_at_1050K": [
+  {
+   "phase_a": "fccAg",
+   "x_a": 0.0603,
+   "phase_b": "liquid",
+   "x_b": 0.4144,
+   "edge": false
+  },
+  {
+   "phase_a": "liquid",
+   "x_a": 0.6576,
+   "phase_b": "fccCu",
+   "x_b": 0.9721,
+   "edge": false
+  }
+ ],
+ "regions_at_1100K": [
+  {
+   "phase_a": "fccAg",
+   "x_a": 0.0569,
+   "phase_b": "liquid",
+   "x_b": 0.3318,
+   "edge": false
+  },
+  {
+   "phase_a": "liquid",
+   "x_a": 0.7147,
+   "phase_b": "fccCu",
+   "x_b": 0.9724,
+   "edge": false
+  }
+ ],
+ "regions_at_1200K": [
+  {
+   "phase_a": "fccAg",
+   "x_a": 0.0319,
+   "phase_b": "liquid",
+   "x_b": 0.12,
+   "edge": false
+  },
+  {
+   "phase_a": "liquid",
+   "x_a": 0.8355,
+   "phase_b": "fccCu",
+   "x_b": 0.9768,
+   "edge": false
+  }
+ ],
+ "lowest_T_with_liquid_K": 960.0
+}
