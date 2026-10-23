@@ -123,6 +123,7 @@ def main():
     ap.add_argument("--cpu-cores", type=int, default=4, help="LAMMPS ranks per calphy job with --no-gpu")
     ap.add_argument("--qha-cores", type=int, default=4)
     ap.add_argument("--dry-run", action="store_true", help="build the inputs, print them, do not submit")
+    ap.add_argument("--b32-ti", action="store_true", help="alli: add spec['solids_ti'] for B32 (calphy ts 700 -> 880 K, >= 2000-atom cells, GPU); unchanged QHA/liquid CalcJobs are reused from the cache when caching is enabled for ftphase.qha / ftphase.calphy")
     a = ap.parse_args()
 
     from aiida import load_profile, orm
@@ -134,6 +135,11 @@ def main():
     pot_fn, cand_fn, spec_fn, descr = SYSTEMS[a.system]
     spec = spec_fn(a.smoke, gpu)
     name = (a.name or {"alli": "alli_ace", "agcu": "agcu_eam"}[a.system]) + ("_smoke" if a.smoke else "")
+    if a.b32_ti:
+        assert a.system == "alli"
+        # same B32 cells as the QHA series (16 atoms, 2x2x2 of the B32 cube -> 5x5x5 repeat = 2000 atoms); 700 -> 880 K covers the congruent melting
+        spec["solids_ti"] = {"phases": ["B32"], "T_sweep": [700.0, 880.0], "min_atoms": 2000, "n_equilibration_steps": 10000, "n_switching_steps": [10000, 10000], "n_iterations": 2}
+        name = (a.name or "alli_ace_b32ti") + ("_smoke" if a.smoke else "")
     cands = {"".join(c if c.isalnum() else "_" for c in n): orm.StructureData(ase=at) for n, (at, x) in cand_fn().items()}
     for k, s in cands.items():
         s.label = k

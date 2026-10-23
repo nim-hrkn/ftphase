@@ -6,28 +6,6 @@
  ],
  "invariants": [
   {
-   "T_low": 870.0,
-   "T_high": 880.0,
-   "pairs_below": [
-    "fccAg+fccCu"
-   ],
-   "pairs_above": [
-    "fccAg+fccAg",
-    "fccAg+fccCu"
-   ]
-  },
-  {
-   "T_low": 880.0,
-   "T_high": 890.0,
-   "pairs_below": [
-    "fccAg+fccAg",
-    "fccAg+fccCu"
-   ],
-   "pairs_above": [
-    "fccAg+fccCu"
-   ]
-  },
-  {
    "T_low": 950.0,
    "T_high": 960.0,
    "pairs_below": [
@@ -60,72 +38,65 @@
   },
   {
    "T": 900.0,
-   "x_alpha": 0.03950534776415881,
-   "x_beta": 0.9799937182468763,
+   "x_alpha": 0.041887092290012404,
+   "x_beta": 0.9708366527506475,
    "edge": false,
    "solid_only": false
   },
   {
    "T": 1000.0,
-   "x_alpha": 0.08364105213688433,
-   "x_beta": 0.9687056824139402,
+   "x_alpha": 0.07724248185490196,
+   "x_beta": 0.9550284782961581,
    "edge": false,
    "solid_only": true
   }
  ],
- "same_phase": [
-  {
-   "phase": "fccAg",
-   "T": 880.0,
-   "x_a": 0.066875,
-   "x_b": 0.125
-  }
- ],
+ "same_phase": [],
  "regions_at_1000K": [
   {
    "phase_a": "fccAg",
-   "x_a": 0.0609,
+   "x_a": 0.0613,
    "phase_b": "liquid",
-   "x_b": 0.4397,
+   "x_b": 0.4437,
    "edge": false
   },
   {
    "phase_a": "liquid",
-   "x_a": 0.6435,
+   "x_a": 0.6446,
    "phase_b": "fccCu",
-   "x_b": 0.9731,
+   "x_b": 0.9646,
    "edge": false
   }
  ],
  "regions_at_1050K": [
   {
    "phase_a": "fccAg",
-   "x_a": 0.0603,
+   "x_a": 0.0608,
    "phase_b": "liquid",
-   "x_b": 0.4144,
+   "x_b": 0.4168,
    "edge": false
   },
   {
    "phase_a": "liquid",
-   "x_a": 0.6576,
+   "x_a": 0.6591,
    "phase_b": "fccCu",
-   "x_b": 0.9721,
+   "x_b": 0.9646,
    "edge": false
   }
  ],
  "regions_at_1100K": [
   {
    "phase_a": "fccAg",
-   "x_a": 0.0569,
+   "x_a": 0.058,
    "phase_b": "liquid",
-   "x_b": 0.3318,
+   "x_b": 0.3351,
    "edge": false
   },
   {
    "phase_a": "liquid",
-   "x_a": 0.7147,
+   "x_a": 0.7174,
    "phase_b": "fccCu",
-   "x_b": 0.9724,
+   "x_b": 0.967,
    "edge": false
   }
  ],
@@ -139,9 +110,9 @@
   },
   {
    "phase_a": "liquid",
-   "x_a": 0.8355,
+   "x_a": 0.8405,
    "phase_b": "fccCu",
-   "x_b": 0.9768,
+   "x_b": 0.9767,
    "edge": false
   }
  ],
