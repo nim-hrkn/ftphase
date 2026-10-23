@@ -14,6 +14,7 @@
 <h1>0 Kの結晶構造から<br>固溶幅・液相を含む有限温度相図へ</h1>
 <p>初期計算はMLIPを使用。固相の振動自由エネルギーをaiida-alamode、液相をcalphyまたは既存CALPHADモデルで評価し、配置統計を整合させて相平衡を求めます。対象系の既存CALPHADデータベース（TDB）が利用できる場合は、全相または一部の相の自由エネルギーモデルとして採用する経路も選べます。</p>
 <span class="badge">計算設計（2026-10-20）・実行済み（Al–Li、Ni–Al、Ag–Cu 進行中、2026-10-23 時点）</span> <span class="badge">二元系 A₁₋ₓBₓ・固定圧力</span>
+<p class="note"><strong>このファイルは 2026-10-23 に obsolete_workflow.html に改名した。</strong>工程図と工程の説明は ftphase 開発状況のアーティファクト（図 1 と第 5〜8 節）が最新で、本文の全文はその付録 A にも収めてある。式 (A1)〜(J2) の参照用に残す。</p>
 <p class="note">作成日：2026-10-20、更新：2026-10-23。以下の図と式は手順の説明で、数値例は説明用です。設計は <a href="ftphase.html">ftphase パッケージ</a>として実装し、01〜07 を Al–Li（ACE、例 5・6・8）と Ni–Al（EAM、例 7）で通した。実行結果と検証は <a href="examples.html">examples.html</a> と <a href="ftphase.html">ftphase.html</a>、実行して分かった修正点は本資料の <a href="#lessons">第 9 節</a>に書く。AiiDA 化（<code>ftphase.txdiagram</code> WorkChain）は例 8・9。</p>
 <p class="note">式番号は節ごとの固定記号A〜Hと連番で示します。番号をクリックすると、その式へのリンクになります。</p>
 <nav aria-label="目次"><a href="migration.html">別計算機への移行・再開</a><a href="examples.html">実行済みの例と工程の対応</a><a href="public-sources.html">欠けている工程を補う公開ソース</a><a href="ftphase.html">ftphase パッケージ</a><a href="#overview">全体図</a><a href="#setup">候補相</a><a href="#sqs-tools">SQSの定義・生成ツール</a><a href="#tools-and-mc">具体的作業・MC・ツール比較</a><a href="#solid">固相</a><a href="#configuration">配置統計</a><a href="#sublattices">副格子とは</a><a href="#chen-consistency">Chen共著論文との整合</a><a href="#quaternary-example">4元固溶体の計算例</a><a href="#liquid">液相</a><a href="#database">データベース利用</a><a href="#equilibrium">相平衡</a><a href="#coexistence-examples">二相共存の例</a><a href="#no-calphad-functions">補間関数を使わない算法</a><a href="#checks">検証と出力</a><a href="#lessons">実行して分かったこと</a><a href="#sources">資料</a></nav></header>
@@ -92,7 +93,7 @@
 <p>関連する2024年の論文はランダム置換を用い、空孔・格子間原子を除外しています。fcc-Al中のLi固溶限は再現しますが、AlLi規則相へのAl固溶は十分再現できていません。空孔除外が原因候補として議論されており、空孔を追加して解決した実証ではありません。<a href="https://www.nature.com/articles/s41524-024-01441-0">Al–Li原著論文</a></p>
 <p>別のワークショップには <code>SQSMaster</code> による複数組成のSQS生成例があります。SQS最適化に探索アルゴリズムとしてMCを使うことと、物理的な有限温度配置分布を求めるMCは別です。<a href="https://materialdigital.github.io/pyiron-workflow-phasediagram/Workflow_4_Free_Energies.html">組成別SQSの例</a>。pyiron側のcalphy接続については<a href="https://pyiron-atomistics.readthedocs.io/en/latest/_autosummary/pyiron_atomistics.calphy.job.Calphy.html">CalphyジョブAPI</a>を参照します。</p>
 <h3>icet：相互作用を求めてMCを行う経路</h3>
-<p>公式説明は「構造エネルギーをCEへフィット → MCで配置空間をサンプリング → 合金相図」という流れです。母格子、サイトごとに許す元素、クラスター範囲を定義し、学習構造のエネルギーから有効相互作用を決定します。<a href="https://icet.materialsmodeling.org/">icet公式</a>、<a href="https://icet.materialsmodeling.org/dev/get_started/workflow.html">CE構築ワークフロー</a></p>
+<p>公式説明は「構造エネルギーをCEへフィット → MCで配置空間をサンプリング → 合金相図」という流れです。母格子、サイトごとに許す元素、クラスター範囲を定義し、学習構造のエネルギーから有効相互作用を決定します。<a href="https://icet.materialsmodeling.org/">icet公式</a>、<a href="https://icet.materialsmodeling.org/dev/get_started/obsolete_workflow.html">CE構築ワークフロー</a></p>
 <p>副格子と空孔も扱えます。空孔は格子モデル内で <code>X</code> と表されますが、MLIPへ架空元素Xを渡すのではなく、原子が欠損した構造として評価し、格子サイトとの対応を保存します。<a href="https://icet.materialsmodeling.org/moduleref/tools.html">構造・空孔の扱い</a></p>
 <p>mchammerには固定組成、semi-grand canonical、VCSGC、熱力学積分の説明があります。semi-grand canonicalでは化学ポテンシャル差を変えて組成を追跡し、不連続な変化から相境界を調べられます。二相領域を横断して自由エネルギーを求めるには、VCSGC等の適切なサンプリングを選びます。自由エネルギーを得るための温度積分・熱力学積分も提供されています。<a href="https://icet.materialsmodeling.org/dev/moduleref/ensembles.html">MCアンサンブル</a>、<a href="https://icet.materialsmodeling.org/dev/moduleref/data_containers.html">自由エネルギー解析</a></p>
 <p>異なる母格子の相は通常それぞれの配置モデルが必要です。全相の自由エネルギーを共通基準で比較する本ワークフローでは、MCだけで相境界を調べる場合も、他の格子・液相との競合を別途整合させます。</p>
@@ -299,7 +300,7 @@
 <section id="checks"><h2>7. 収束・誤差・保存する成果物</h2>
 <ul><li>固相：変位量、スーパーセル、q点、体積点、力定数フィット、虚振動、配置サンプルを確認。</li><li>液相：原子数、MD時間刻み、平衡化時間、切替時間、反復、往復差、拡散と定常性を確認。</li><li>相平衡：相境界付近で組成点を追加し、自由エネルギーの不確かさを変えて境界の感度を調べる。</li><li>共通基準：原子数による規格化、圧力、元素参照、配置・振動・量子寄与の重複と欠落を確認。</li></ul>
 <p>最低限、<code>phase, x, T, P, g, uncertainty, volume, method, reference_state, model/version</code> を保存します。構造、SQS条件、MCP入力、AiiDA pk、MD・phonon条件、フィット式、再実行コマンドを関連付けます。TDBへ変換した場合は元のgと相境界を再現できるか比較します。</p>
-<p>このHTMLとSVGは静的ファイルです。<code>docs/workflow.html</code> をブラウザで開けば閲覧できます。本文の数式はMathMLの数式モード、SVG図内の式は数式組版したベクターパスで表示します。分数・総和・積分・添字を数式として組版し、外部JavaScript・CDN・ネット接続は不要です。MathML対応ブラウザで閲覧してください。</p></section>
+<p>このHTMLとSVGは静的ファイルです。<code>docs/obsolete_workflow.html</code> をブラウザで開けば閲覧できます。本文の数式はMathMLの数式モード、SVG図内の式は数式組版したベクターパスで表示します。分数・総和・積分・添字を数式として組版し、外部JavaScript・CDN・ネット接続は不要です。MathML対応ブラウザで閲覧してください。</p></section>
 <section id="chen-consistency"><h2>論文との整合確認：Tranほか（2021、Ying Chen共著）</h2>
 <p>対象は<a href="../資料/s11669-021-00900-1.pdf">Stability and Thermodynamics Properties of CrFeNiCoMn/Pd High Entropy Alloys from First Principles</a>（J. Phase Equilib. Diffus. 42, 606–616）。ローカルPDFの本文、特にPDF 3ページ＝誌面p.608の式(1)〜(5)を確認しました。補足資料は未確認です。</p>
 <p><strong>判定：配置項の形と符号は整合します。電子熱励起を含めると寄与の構成も対応しますが、計算手法と近似は同一ではありません。</strong></p>

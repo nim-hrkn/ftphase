@@ -2,17 +2,17 @@
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>別計算機への移行・計算再開</title>
 <style>body{font-family:system-ui,sans-serif;line-height:1.8;max-width:1050px;margin:2em auto;padding:0 1.2em;color:#172838}h1,h2{line-height:1.4}table{border-collapse:collapse;width:100%;margin:1em 0}th,td{border:1px solid #ccd5dd;padding:.6em;text-align:left}th{background:#edf3f8}pre{background:#edf3f8;padding:1em;overflow:auto}code{font-family:monospace}.note{border-left:4px solid #3777a2;padding:.6em 1em;background:#f3f7fa}</style></head><body>
 <h1>別の大規模計算機への移行・計算再開</h1>
-<p>更新日：2026-10-21。<a href="workflow.html">相図計算workflow</a> ／ <a href="examples.html">実行済みの例と工程の対応</a> ／ <a href="../skills/phase-diagram/SKILL.md">phase-diagramスキル</a></p>
+<p>更新日：2026-10-21。<a href="obsolete_workflow.html">相図計算workflow</a> ／ <a href="examples.html">実行済みの例と工程の対応</a> ／ <a href="../skills/phase-diagram/SKILL.md">phase-diagramスキル</a></p>
 <p><strong>移行先にはALAMODEとMLIPが導入済みです。</strong>既存環境を利用し、利用方法・モデル・計算資源を確認してから小規模検証へ進みます。本資料は移行の手順書であり、転送・接続・ジョブ投入はまだ行っていません。相図計算の完成済みプログラムや実計算済み相図を引き継ぐものではありません。</p>
 <h2>1. 引き継ぐファイルと現在の方針</h2>
 <table><thead><tr><th>対象</th><th>役割</th></tr></thead><tbody>
 <tr><td>CLAUDE.md</td><td>参照資料の保全、単位・仮定・検証記録の規約。</td></tr>
-<tr><td>docs/ 全体</td><td>workflow.html、workflow.svg、本手順書。相対リンクを保つためフォルダ構成を維持する。</td></tr>
+<tr><td>docs/ 全体</td><td>obsolete_workflow.html、workflow.svg、本手順書。相対リンクを保つためフォルダ構成を維持する。</td></tr>
 <tr><td>skills/phase-diagram/ 全体</td><td>SKILL.mdとreferences/を含む計算判断・再開手順。SKILL.mdだけを切り離さない。</td></tr>
 <tr><td>資料/ 全体</td><td>論文PDFとaiida-alamode入門HTMLなどの原資料。原本は変更しない。</td></tr>
 <tr><td>計算入力・モデル・既存結果（別に保持している場合）</td><td>既知構造、0 Kエネルギー、MLIP重み・設定、モデル識別子、SQS・乱数シード、TDB、ジョブ入力、結果を別途追加する。モデルが移行先に存在する場合はパスとハッシュを照合する。</td></tr>
 </tbody></table>
-<p>既知の0 K安定構造を出発点に、固相の振動自由エネルギーはMLIP＋ALAMODEのphonon/QHA、配置統計は理想混合またはCE＋MC、液相はcalphyによるTIまたは既存CALPHADモデルで評価します。line phase、組成幅を持つ規則相、不規則固溶体、液相を区別し、共通基準へそろえて全相のGibbs自由エネルギーを最小化します。詳細と式はworkflow.htmlを参照してください。</p>
+<p>既知の0 K安定構造を出発点に、固相の振動自由エネルギーはMLIP＋ALAMODEのphonon/QHA、配置統計は理想混合またはCE＋MC、液相はcalphyによるTIまたは既存CALPHADモデルで評価します。line phase、組成幅を持つ規則相、不規則固溶体、液相を区別し、共通基準へそろえて全相のGibbs自由エネルギーを最小化します。詳細と式はobsolete_workflow.htmlを参照してください。</p>
 <h2>2. 転送例</h2>
 <p>以下はLinux/WSLでの例です。元のプロジェクト直下で実行します。USER、HOST、TRANSFER_DIRは利用する接続先に置き換えます。現在の文書・スキル・資料を固める例であり、別の場所にあるモデルや計算データは含みません。</p>
 <pre><code># 元の計算機：プロジェクト直下
@@ -25,7 +25,7 @@
  mkdir phasediagram-handoff
  tar -xzf phasediagram-handoff.tar.gz -C phasediagram-handoff
  cd phasediagram-handoff</code></pre>
-<p>docs/workflow.htmlを開き、SVG・ローカルPDF・スキルへのリンクを確認します。計算ノードにブラウザは必須ではなく、文書は手元でも参照できます。移行先のエージェントにはプロジェクト直下を作業ディレクトリとして、CLAUDE.mdとskills/phase-diagram/SKILL.mdを明示的に読ませます。スキルの自動検出は移行先の設定に依存します。</p>
+<p>docs/obsolete_workflow.htmlを開き、SVG・ローカルPDF・スキルへのリンクを確認します。計算ノードにブラウザは必須ではなく、文書は手元でも参照できます。移行先のエージェントにはプロジェクト直下を作業ディレクトリとして、CLAUDE.mdとskills/phase-diagram/SKILL.mdを明示的に読ませます。スキルの自動検出は移行先の設定に依存します。</p>
 <h2>3. 導入済み環境で確認する事項</h2>
 <table><thead><tr><th>項目</th><th>記録・確認する内容</th></tr></thead><tbody>
 <tr><td>ALAMODE</td><td>実行ファイルのパス・版、起動方法、MPI/OpenMP対応、必要な環境有効化。力データ入力と結果の単位を確認する。</td></tr>
@@ -53,7 +53,7 @@
 skills/phase-diagram/references/migration.md、docs/migration.htmlを読む。
 ALAMODEとMLIPはこの計算機に導入済み。既存環境を確認して利用する。
 まず実行パス・モデル・スケジューラ・計算条件・既存入力を調べ、
-確認済み事項と不足事項をまとめる。docs/workflow.htmlは設計資料であり、
+確認済み事項と不足事項をまとめる。docs/obsolete_workflow.htmlは設計資料であり、
 記載例を実計算結果とは扱わない。計算を依頼された場合は、
 小規模な単点評価とALAMODE接続確認から始め、検証後に規模を広げる。</code></pre>
 </body></html>

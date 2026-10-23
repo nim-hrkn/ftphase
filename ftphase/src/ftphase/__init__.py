@@ -1,6 +1,6 @@
 """ftphase: finite-temperature phase diagrams from MLIP free energies.
 
-The package implements the workflow stages of ``docs/workflow.html`` that no
+The package implements the workflow stages of ``docs/obsolete_workflow.html`` that no
 upstream example (calphy, pycalphad, pyiron) covers, as thin layers on top of
 public code:
 
@@ -22,7 +22,7 @@ public code:
 * stage 07 (:mod:`ftphase.diagram`) T–x diagram, invariant reactions, Monte
   Carlo error sensitivity.
 
-Equation labels refer to ``docs/workflow.html`` of the PhaseDiagram project.
+Equation labels refer to ``docs/obsolete_workflow.html`` of the PhaseDiagram project.
 """
 
 from . import units  # noqa: F401

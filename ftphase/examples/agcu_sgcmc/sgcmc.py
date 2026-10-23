@@ -171,7 +171,24 @@ def analyse():
     print("\n".join(L))
 
 
+def rkgap(regions_tsv):
+    """fcc+fcc segments of a 07_two_phase_regions.tsv (ideal + Redlich-Kister route) at the SGC temperatures -> out/rk_gap.tsv."""
+    import pandas as pd
+
+    os.makedirs(OUT, exist_ok=True)
+    reg = pd.read_csv(regions_tsv, sep="\t", comment="#")
+    rows = []
+    for T in T_LIST:
+        r = reg[np.isclose(reg["T"], T) & (reg.phase_a == "fcc") & (reg.phase_b == "fcc")]
+        if len(r):
+            r = r.sort_values("x_a")
+            rows.append({"T": T, "x_alpha": float(r["x_a"].iloc[0]), "x_beta": float(r["x_b"].iloc[-1]), "n_segments": int(len(r))})
+    pd.DataFrame(rows).to_csv(os.path.join(OUT, "rk_gap.tsv"), sep="\t", index=False)
+    print(pd.DataFrame(rows).to_string(index=False) if rows else "no fcc+fcc segments at the SGC temperatures")
+
+
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=["prepare", "analyse"]); ap.add_argument("--smoke", action="store_true")
+    ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=["prepare", "analyse", "rkgap"]); ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--regions", default=os.path.join(HERE, "..", "aiida_txdiagram", "out", "agcu_eam", "07_two_phase_regions.tsv"))
     a = ap.parse_args()
-    prepare(a.smoke) if a.cmd == "prepare" else analyse()
+    {"prepare": lambda: prepare(a.smoke), "analyse": analyse, "rkgap": lambda: rkgap(a.regions)}[a.cmd]()
