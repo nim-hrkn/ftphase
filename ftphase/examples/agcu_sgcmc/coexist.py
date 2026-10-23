@@ -113,14 +113,15 @@ def analyse():
         t = a[:, 0] * 0.002 / 1000.0     # ps -> ns
         pe = a[:, 1]
         half = len(a) // 2
-        slope = np.polyfit(t[half:], pe[half:], 1)[0]      # eV/atom per ns over the second half
+        slope1 = np.polyfit(t[:half], pe[:half], 1)[0]     # eV/atom per ns over the first half (interface still present)
         tag = os.path.basename(d); el, T = tag.split("_T")
-        rows.append({"element": el, "T": float(T), "slope_meV_per_atom_per_ns": slope * 1000, "pe_start": pe[0], "pe_end": pe[-1], "n": len(a)})
+        rows.append({"element": el, "T": float(T), "slope_meV_per_atom_per_ns": slope1 * 1000, "dpe_total_meV": (pe[-1] - pe[0]) * 1000, "pe_start": pe[0], "pe_end": pe[-1], "n": len(a)})
     rows.sort(key=lambda r: (r["element"], r["T"]))
-    L = ["| element | T (K) | d(pe)/dt (meV/atom/ns, 2nd half) | pe start -> end (eV/atom) | verdict |", "|---|---|---|---|---|"]
+    L = ["| element | T (K) | d(pe)/dt first half (meV/atom/ns) | pe change over the run (meV/atom) | verdict |", "|---|---|---|---|---|"]
     for r in rows:
-        v = "solid grows (T < Tm)" if r["slope_meV_per_atom_per_ns"] < -0.5 else ("liquid grows (T > Tm)" if r["slope_meV_per_atom_per_ns"] > 0.5 else "stationary (T ~ Tm)")
-        L.append(f"| {r['element']} | {r['T']:.0f} | {r['slope_meV_per_atom_per_ns']:+.2f} | {r['pe_start']:.4f} -> {r['pe_end']:.4f} | {v} |")
+        d_ = r["dpe_total_meV"]
+        v = "solid grows (T < Tm)" if d_ < -5 else ("liquid grows (T > Tm)" if d_ > 5 else "stationary (T ~ Tm)")
+        L.append(f"| {r['element']} | {r['T']:.0f} | {r['slope_meV_per_atom_per_ns']:+.1f} | {d_:+.1f} | {v} |")
     out = "\n".join(L)
     os.makedirs(os.path.join(HERE, "out"), exist_ok=True)
     with open(os.path.join(HERE, "out", "coexist_REPORT.md"), "w") as f:
