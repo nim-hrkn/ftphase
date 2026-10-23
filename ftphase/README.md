@@ -240,6 +240,7 @@ fit のノイズ：液相の下側凸包に幅 0.007（x = 0.47–0.48、850 K �
 - 環境は `env/ftphase`（aiida-core 2.9.3 追加）。プロファイル `ftphase`（SQLite + RabbitMQ）、計算機 `mygarden5`（core.local + core.slurm、`~/aiida_run/ftphase`）、コード `ftphase-qha@mygarden5`・`calphy@mygarden5`。`verdi` は必ず `env/ftphase/bin/verdi -p ftphase`（既定プロファイルは別プロジェクトの `alamode_pg`）。設定は `examples/aiida_txdiagram/setup_aiida.sh`（冪等）。
 - プラグインを変えたら `pip install -e ./ftphase --no-deps` のあと `verdi -p ftphase daemon restart`。
 - 投入は `examples/aiida_txdiagram/run_aiida.py`（`--smoke`、`--dry-run`、`--no-gpu`）、取り出しは `fetch_results.py <pk|name>`。spec の書き方・失敗の診かた・落とし穴（QHA 走査範囲、デーモンが書き出す `PYTHONPATH` が計算ノードの `conda` を壊す → 計算機 prepend に `unset PYTHONPATH PYTHONHOME`）は `examples/aiida_txdiagram/README.md`。
+- キャッシュ（2026-10-24）：プロファイルで `caching.enabled_for = [aiida.calculations:ftphase.qha, aiida.calculations:ftphase.calphy]` を有効にした（`verdi -p ftphase config set --append caching.enabled_for ...`、要 daemon 再起動）。入力（セル・ポテンシャル・パラメータ・コード）が同じ CalcJob は過去の結果を再利用し、`node.base.caching.get_cache_source()` に元ノードが残る。例：`run_aiida.py --system alli --b32-ti`（pk 1128）は例 8 の QHA 13 本と液相 6 本を pk 191 から数秒で再利用し、新しい B32 固相 TI 3 本だけを GPU に投入した。spec を変えても該当 CalcJob の入力が変わらなければ再計算しない。
 - テスト `tests/test_aiida.py`（一時 SQLite プロファイル、投入なし）：entry point、両 CalcJob の入力生成（`__WORKDIR__` の置換、GPU の `pace product`・KOKKOS 引数）、calphy パーサ（例 5 の実 `report.yaml` / `temperature_sweep.dat`）、QHA パーサと exit code、`prepare_cells` の実行（ACE で 01/02 を通す）。
 
 ### 8. AiiDA 版 T–x 図：ACE Al–Li、例 5 と同じ物理 — `aiida_txdiagram/` → `out/alli_ace/`
@@ -331,6 +332,9 @@ Ni–Al（第 3 段の表を後処理だけで再組立、64 秒）：Ni 反サ�
 | 2,048 原子 | 50k | −3.5668 | −3.5672 | +0.5 |
 
 液相は 256 原子でも収束している（セルで 0.4 meV）。固相の Frenkel–Ladd は 256 原子で約 7 meV/atom 低く出て（有限サイズ誤差）、これが融点 +50〜60 K の原因。2,048 原子では G_s − G_l = +0.5 meV で、融点は 1270 K 付近（共存 MD 1265–1290 K、原著者 1267 K）に戻る。切り替え長の効き目は 1–2 meV で副次的。**対処**：固相 TI のセルは 2,000 原子以上にする（`solids_ti.min_atoms` を 2000、Ni–Al の `MIN_TI_ATOMS` も同様）。Ni–Al の固相 TI（216–256 原子）と例 3・4 の fcc Al TI（256 原子）も同じ誤差を含むので、融点はそれぞれ 50–70 K 高めに出ている。
+
+
+**融解した 6 セルの固相 TI の再計算（2026-10-23、`rerun_solids_ti.py submit --only ... --T-hi ...`、pk 1060–1085）**：x_Cu = 0.25、0.75、0.875（各 2 配置）の 2,048 原子セルは 1,400 K 超の掃引で融解していたので、掃引上限を 1150 / 1250 / 1300 K に下げて GPU で再投入した。6 本中 5 本が完走（x = 0.75 の 1 配置は 1250 K でも融解、calphy の `MeltedError`；もう 1 配置は完走）。TI セルは 13 → 18 本。再組立（`out/agcu_eam_2048/reassembled/`）：共晶 950–960 K・x_Cu ≈ 0.55、Ag 1278 K は不変、Cu 側の固溶限が 1000 K で 0.973 → 0.965、900 K の固相だけの接線が x_β 0.980 → 0.971（B 経路の 0.972 と一致）、880 K にあった幅 0.06 の偽の fccAg+fccAg 区間が消えた（QHA だけのセルと TI セルの継ぎ目が無くなったため）。Ag 側（0.042 / 0.042 / 0.077）は不変。
 
 ### 9 の補足：CE+MC（経路 A の icet 版）— `ftphase.ce`、`examples/agcu_ce_mc.py` → `agcu_ce_vcsgc.py` → `out_agcu_ce/`（2026-10-23）
 
