@@ -46,3 +46,27 @@ def test_fit_recovers_pair_interaction_and_sgc_mc_gap():
     hot = sgc_scan(ce, sc, T_high, dmus, ("Cu", "Ag"), n_sweeps_eq=5, n_sweeps_av=5, direction="up", seed=3)
     xh = np.array([r["x_B"] for r in hot])
     assert np.max(np.abs(np.diff(xh))) < 0.3                  # smooth above T_c
+
+
+def test_vcsgc_dilute_branch_gap_on_toy_model():
+    """VCSGC on the same regular-solution CE (E_mix = 0.2 x(1-x) eV, T_c ~ 1000 K) at 700 K: the dilute branches of dF/dx
+    follow k_B T ln x and bend into the two-phase level near x = exp(-0.2/k_B T) = 0.036; the dilute-branch
+    extrapolation returns a symmetric gap and dmu* = 0.  Above T_c (5000 K) F is convex: the flatness test fails, NaN."""
+    from icet import ClusterExpansion, ClusterSpace
+
+    from ftphase.ce import lower_hull_gap, solvus_from_vcsgc, vcsgc_scan
+
+    prim = _toy_prim()
+    cs = ClusterSpace(prim, cutoffs=[3.0], chemical_symbols=[["Cu", "Ag"]])
+    ce = ClusterExpansion(cs, np.array([-3.0, 0.0, -0.05]))
+    sc = prim.repeat((8, 8, 8))                                                    # 512 sites
+    phis = np.unique(np.round(np.concatenate([np.arange(-2.1, -1.699, 0.01), np.arange(-1.7, -0.3, 0.1), np.arange(-0.3, 0.1001, 0.01)]), 3))
+    rows = vcsgc_scan(ce, sc, 700.0, phis, ("Cu", "Ag"), n_sweeps_eq=5, n_sweeps_av=10, seed=4)
+    xs = np.array([r["x_B"] for r in rows])
+    assert xs[0] > 0.95 and xs[-1] < 0.05 and np.all(np.diff(xs) < 0.05)         # x_B = -phi/2: from pure B at phi = -2.1 down to pure A
+    res = solvus_from_vcsgc(rows)
+    assert 0.01 < res["x_alpha"] < 0.12 and 0.88 < res["x_beta"] < 0.99 and abs(res["x_alpha"] + res["x_beta"] - 1) < 0.08 and abs(res["dmu_star"]) < 0.05
+    hot = vcsgc_scan(ce, sc, 5000.0, phis[::3], ("Cu", "Ag"), n_sweeps_eq=3, n_sweeps_av=6, seed=5)
+    h = solvus_from_vcsgc(hot)
+    assert np.isnan(h["x_alpha"]) and np.isnan(h["x_beta"])
+    x = np.linspace(0, 1, 11); assert lower_hull_gap(x, x * (1 - x), 0.05) == (0.0, 1.0) and np.isnan(lower_hull_gap(x, (x - 0.5) ** 2, 0.05)[0])

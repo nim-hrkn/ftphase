@@ -281,6 +281,8 @@ Ni–Al（第 3 段の表を後処理だけで再組立、64 秒）：Ni 反サ�
 
 結論：64 原子以上では生成法の差は約 1 meV/atom で配置ノイズ（半幅 ≤ 2 meV/atom）の内側。既定は icet（三体相関まで最適化し残差が最小）、多数の組成を素早く作るときは sqsgenerator でよい。32 原子では生成法で最大 3.7 meV/atom 動くので、例 5 の 32 原子ランダム 2 配置の平均は妥当な下限の扱いだった。
 
+**Al 側の B2 幅が出ない理由（第 5 段の補足、`vacancy_analysis.py` → `out_mygardenx1_stage5/vacancy_analysis.md`）**：この EAM の B2 NiAl の点欠陥（128 サイト、位置緩和、純元素基準の生成エネルギー）は Va_Ni 1.76、Va_Al 2.03、Ni_Al 0.51、Al_Ni 1.58 eV、組成保存の複合欠陥は三重欠陥（2 Va_Ni + Ni_Al）2.82、反サイト対 2.09、Schottky 対 2.58 eV。DFT（Fu & Painter 1997、Korzhavyi 2000；Mishin 2002 のまとめ）の三重欠陥 1.0–1.3 eV・反サイト対 1.4–1.6 eV より 1.5 eV 前後高い。熱的欠陥モデルで Ni 空孔の自由エネルギーを人為的にずらすと、1400 K の Al 側境界は 0 で 0.499、−0.2 eV で 0.495、−0.4 eV で 0.468、−0.6 eV で 0.400（実験は 1600 K で約 0.45）。Al 側の幅が出ないのはこのポテンシャルの空孔エネルギーが DFT より約 0.4–0.5 eV/空孔 高いためで、工程の問題ではない。対処はポテンシャル側（B2 の空孔・三重欠陥を学習データに含む MLIP）。
+
 ### 9. Ag–Cu（共晶 + fcc ミシビリティギャップ）：Williams–Mishin–Hamilton 2006 EAM、AiiDA、固相は calphy TI — `aiida_txdiagram/run_aiida.py --system agcu` → `out/agcu_eam/`
 
 例 8 の WorkChain に固相の calphy TI（`spec["solids_ti"]`）を加えて、fcc 固溶体 1 相を全組成で標本化する系。ポテンシャルは NIST の `potentials/agcu/CuAg.eam.alloy`（Williams, Mishin, Hamilton, MSMSE 14, 817 (2006)、setfl の元素順 Cu Ag、`pair_coeff * * CuAg.eam.alloy Ag Cu`）。
@@ -328,6 +330,22 @@ Ni–Al（第 3 段の表を後処理だけで再組立、64 秒）：Ni 反サ�
 
 液相は 256 原子でも収束している（セルで 0.4 meV）。固相の Frenkel–Ladd は 256 原子で約 7 meV/atom 低く出て（有限サイズ誤差）、これが融点 +50〜60 K の原因。2,048 原子では G_s − G_l = +0.5 meV で、融点は 1270 K 付近（共存 MD 1265–1290 K、原著者 1267 K）に戻る。切り替え長の効き目は 1–2 meV で副次的。**対処**：固相 TI のセルは 2,000 原子以上にする（`solids_ti.min_atoms` を 2000、Ni–Al の `MIN_TI_ATOMS` も同様）。Ni–Al の固相 TI（216–256 原子）と例 3・4 の fcc Al TI（256 原子）も同じ誤差を含むので、融点はそれぞれ 50–70 K 高めに出ている。
 
+### 9 の補足：CE+MC（経路 A の icet 版）— `ftphase.ce`、`examples/agcu_ce_mc.py` → `agcu_ce_vcsgc.py` → `out_agcu_ce/`（2026-10-23）
+
+`ftphase.ce` は icet の列挙（`enumerate_training_structures`）・MLIP 緩和エネルギー（`relaxed_energies`）・trainstation の CV fit（`fit_cluster_expansion`）・mchammer の半大正準 MC（`sgc_scan`）と分散拘束 SGC（`vcsgc_scan`）・固溶限の抽出（`integrate_isotherm`、`solvus_from_vcsgc`、`dilute_solvus`）をまとめたもの。Ag–Cu で経路 B（直接 SGC MC）と A（理想混合 + RK）に突き合わせた。
+
+- 学習：fcc 1–8 原子の全規則配列 631 個を EAM で位置・格子とも緩和。生成エネルギーは 0–134 meV/atom（全て正）。ARDR + 10 分割 CV の誤差はカットオフを変えても 9.0–10.6 meV/atom（pair 7 / triplet 5 Å で 10.6、pair 13 / triplet 7 Å で 8.96；`ce_cutoff_scan.tsv`）。サイズ差 13 % の Ag–Cu の緩和エネルギー（長距離の弾性項）を格子 CE で表す限界で、これが以下の精度を決める。
+- SGC MC（8×8×8 = 2,048 サイト、20 + 20 sweep、Δμ 36 点、Slurm 22779、6 分）：格子 CE には核生成の歪み障壁が無く**ヒステリシスがほぼ出ない**（up/down とも Δμ = −0.68 eV で跳ぶ）ため、跳びの直前の点が有限セルの二相状態になり、経路 B で使った枝の積分 + 接線は破綻する（0.122 / 0.341 / 0.141 という値になる）。`integrate_isotherm` の跳び検出は連続する大きな段を 1 つの跳びとして扱うよう直した。
+- VCSGC（Sadigh–Erhart 2012、mchammer `VCSGCEnsemble`、κ = 200、φ = −2.1〜0.1 を端 0.005・中央 0.05 刻みの 171 点、各点を乱数初期配置から独立に実行して並列化；mygardenx1 32 プロセスで 3 温度 513 点を 284 s）：dF/dx = −k_B T κ(φ + 2⟨x⟩) はギャップ内で共通接線の傾きに乗るが、2,048 サイトでは平坦でなく端から端へ約 0.1 eV 傾く（析出物の界面自由エネルギーが大きさ・形で変わる）。固溶限は、端の 4 点に理想希薄枝 c + k_B T ln(x/(1−x)) を当て、ギャップのすぐ内側（0.05–0.15、0.85–0.95）で測った二相水準と交わる点として読む（`solvus_from_vcsgc`；平坦性の検査で凸な F は NaN）。下側凸包や「平坦域との交点」は界面の傾きで誤読した（0.72、0.85 など）。
+
+| T (K) | CE+VCSGC x_α（Ag 側） | CE 希薄推定 | 直接 SGC MC（B） | A：RK | CE+VCSGC x_β（Cu 側） | CE 希薄推定 | 直接 SGC MC | A：RK |
+|---|---|---|---|---|---|---|---|---|
+| 800 | 0.023 | 0.020 | 0.027 | 0.042 | 0.964 | 0.961 | 0.990 | 0.987 |
+| 900 | 0.028 | 0.027 | 0.050 | 0.045 | 0.968 | 0.936 | 0.972 | 0.978 |
+| 1000 | 0.031 | 0.033 | 0.126 | 0.078 | 0.959 | 0.901 | 0.914 | 0.955 |
+
+読み：CE+MC の固溶限は 800 → 1000 K でほとんど動かない（Ag 側 0.023 → 0.031）のに対し、直接 MC（NPT の MD 込み）は 0.027 → 0.126、A 経路も 0.042 → 0.078。CE は静的な格子エネルギーだけで振動（過剰振動エントロピー・熱膨張）を含まず、Ag–Cu は振動の寄与が固溶限を大きく広げる系として知られる（Zunger らの第一原理 CE の報告）。残りは CE の 9 meV/atom の誤差（800 K で k_B T ln 2 ≈ 0.05 eV は固溶限の 2 倍に相当）。CE の不純物エネルギーは Cu in Ag 0.293、Ag in Cu 0.200 eV（2,048 サイト）、希薄推定（`dilute_solvus`）は VCSGC と 0.003 以内で一致する。結論：**希薄な固溶限は直接 MC か「理想混合 + RK + 振動」が良く、CE+MC は規則–不規則転移・短距離秩序・欠陥相互作用が本質の系（Ni–Al の B2 幅など）に使う。** CE に振動を足すなら、ランダムセルの振動項（工程 03A）を x の関数として別に加える（workflow (E2)）。テスト `tests/test_ce.py`（正則溶体の玩具 CE：fit の再現、SGC の跳び、VCSGC の希薄枝 → 対称なギャップと Δμ* = 0、T_c 超で NaN）。
+
 ## 既知の制限
 
 - calphy の `n_iterations: 1` では誤差が 0 と報告される。例 3・4 の融点には上の統計ばらつき（±10 K 程度）が付く。
@@ -335,7 +353,7 @@ Ni–Al（第 3 段の表を後処理だけで再組立、64 秒）：Ni 反サ�
 - 二元系のみ（三元以上は TDB → pycalphad の経路）。例 5・8 は x ≤ 0.5 の Al 側だけ。
 - AiiDA 版は WorkChain の再開（失敗セルだけの再投入）とキャッシュを使っていない。失敗したセルは除外して組み立てるので、直したら WorkChain 全体を再投入する。
 - `sqs_sqsgenerator` は sqsgenerator 0.5 の API を仮定しており未テスト。icet 経路を使う。
-- CE+MC そのもの（icet の学習・MC 実行）はラップしていない。状態密度・F_conf の受け取り口（E13）だけがある。
+- CE+MC は `ftphase.ce`（icet の列挙・学習、mchammer の SGC / VCSGC、固溶限の抽出）で接続した（9 の補足）。限界は CE の精度（Ag–Cu で 9 meV/atom）と振動項が無いこと。状態密度 → F_conf の受け口（E13）は別にある。
 - 04B の補正は調和近似。液相側の量子効果は扱わない。
 - 誤差伝播は相ごとの一様なオフセット（＋任意の傾き）のみ。
 

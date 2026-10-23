@@ -43,3 +43,4 @@ pyiron-examples/**/scratch/
 calphy-examples/potentials/
 # live log of the headless session (ftphase/examples/aiida_txdiagram/out/)
 headless_claude.log
+potentials/grace/*.npz

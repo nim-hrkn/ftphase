@@ -119,6 +119,7 @@
 <p><strong>最も重要な知見：</strong>融点付近では準調和の固相自由エネルギーが calphy TI より 20–45 meV/atom 高い（fcc Ni 1500 K で +43、L1₂ +36、B2 +8–16）。第 1 段（QHA 固相）では Ni 融点が 1500 K を切り B2 合致溶融が 1739 K だった。うち約 18 meV は phonopy の自動基本胞と固定 [4,4,4] メッシュで純元素・規則相の q 点が 64 個に減っていたこと（密度指定 60 Å に変更）、残りは非調和性。T_m の 0.8 倍以上では固相も TI で評価する（workflow の補助経路）。</p>
 
 <p><strong>第 5 段（2026-10-23）</strong>：固相 TI を 2,000 原子以上（fcc 2,304、B2 2,400、L1₂ 2,916）、掃引上限を fcc Al 1250・fcc Ni 1950・B2 2000・L1₂ 1900 K にして再計算（<code>run_stage5.sh</code>、mygardenx1 Slurm 14222–14250、<code>out_mygardenx1_stage5/</code>）。固液 G の交点：Al 1040 K（原著者の二相 MD 1042）、Ni 1703 K（1701）、B2 1808 K（1780）、L1₂ ≈ 1631 K（1678；液相は x = 0.70/0.80 の平均で近似）。第 3・4 段の「融点 +50〜70 K」（256 原子の Frenkel–Ladd の有限サイズ誤差）と「掃引上限で相が消える」人工物の両方が解消。B2 の幅 0.499–0.611、L1₂ 0.769–0.778（1200 K）、(Ni) 固溶限 0.909 → 0.892 は第 4 段とほぼ同じ。</p>
+<p><strong>Al 側の B2 幅が出ない理由（<code>vacancy_analysis.py</code> → <code>out_mygardenx1_stage5/vacancy_analysis.md</code>）</strong>：この EAM の B2 NiAl の点欠陥生成エネルギー（純元素基準、128 サイト）は Va_Ni 1.76、Va_Al 2.03、Ni_Al 0.51、Al_Ni 1.58 eV、三重欠陥 2.82、反サイト対 2.09、Schottky 対 2.58 eV で、DFT の三重欠陥 1.0–1.3 eV より 1.5 eV 前後高い。熱的欠陥モデルで Ni 空孔の自由エネルギーを −0.2 / −0.4 / −0.6 eV ずらすと 1400 K の Al 側境界は 0.495 / 0.468 / 0.400（実験は 1600 K で約 0.45）。幅が出ないのはポテンシャルの空孔エネルギー（DFT より 0.4–0.5 eV/空孔 高い）の性質で、工程の問題ではない。</p>
 <h3>3.8 AiiDA 版：工程 01–07 を <code>TxDiagramWorkChain</code> で（例 8、2026-10-23）</h3>
 <p><code>ftphase/src/ftphase/aiida/</code> と <code>ftphase/examples/aiida_txdiagram/</code>。例 5 の Slurm 依存チェーン（<code>run_pipeline.sh</code>）を AiiDA 2.9 の WorkChain に置き換えた。entry point は <code>ftphase.qha</code>（CalcJob、1 セルの phonopy QHA を計算ノードの <code>ftphase-qha-run</code> で）、<code>ftphase.calphy</code>（CalcJob、calphy 1 ブロックを <code>calphy_kernel</code> で。パスは <code>__WORKDIR__</code> と書いてジョブスクリプト先頭の <code>sed</code> で <code>$PWD</code> に置換）、<code>ftphase.txdiagram</code>（WorkChain）。流れは calcfunction <code>prepare_cells</code>（01 緩和・凸包・既知相の照合、02A 固相セル、02B 液相セル；worker 内で約 15 秒）→ QHA × N と calphy × M を同時投入（Slurm：QHA は CPU 4 コア、calphy は <code>--gres=gpu:1</code>）→ <code>inspect</code>（失敗セルを報告して除外；固相 0 で exit 402、液相 0 で 401）→ calcfunction <code>assemble_diagram</code>（04A/04B/05/06/07；summary Dict と REPORT.md・png・tsv の SinglefileData）。投入後はデーモンと Slurm が完走させ、セッションを閉じてよい。</p>
 <p>設定（<code>setup_aiida.sh</code>、冪等）：プロファイル <code>ftphase</code>（SQLite + RabbitMQ、<code>verdi presto</code>；既定プロファイル <code>alamode_pg</code> は変えないので <code>verdi</code> は常に <code>env/ftphase/bin/verdi -p ftphase</code>）、計算機 <code>mygarden5</code>（core.local + core.slurm、<code>~/aiida_run/ftphase</code>）、コード <code>ftphase-qha@mygarden5</code>・<code>calphy@mygarden5</code>（prepend で <code>env/ftphase</code> を activate）、デーモン 2 worker。プラグインを変えたら <code>pip install -e ./ftphase --no-deps</code> と <code>verdi -p ftphase daemon restart</code>。</p>
@@ -143,6 +144,13 @@
 <tr><td>Cu 融点</td><td>1360–1370 K</td><td>—</td><td>1325–1350 K</td><td>1327 K</td><td>1358 K</td></tr>
 </tbody></table>
 <p>読み：固溶限は 800–900 K で A と B が 0.015 以内で一致し、1000 K は B が広い（A は中央セル欠落の外挿）。融点は TI 経路が二相共存 MD（原著者と一致）より Ag +50 K、Cu +35 K 高い。calphy の fe を 1275 K（Ag の共存温度の中）でセル 256 / 2,048 原子 × 切り替え 10k / 50k ステップで比べると、本番設定（256 原子、10k）は G_固相 − G_液相 = −5.9 meV/atom（本来 0）で、固相の切り替えを 50k にすると +1.9 meV 戻る。2,048 原子では +1.3 meV（10k）、+0.5 meV（50k）：液相は 256 原子で収束しているが、固相の Frenkel–Ladd が 256 原子で約 7 meV/atom 低く出る有限サイズ誤差が原因（<code>agcu_sgcmc/out/ti_convergence.md</code>）。固相 TI は 2,000 原子以上のセルで行う（<code>solids_ti.min_atoms = 2000</code>）。端成分の fcc セル 19 本を 2,048 原子で再計算（<code>rerun_solids_ti.py</code>、13 本成功、x = 0.19–0.25・0.75–0.81 の 6 本は融解）して組み立て直すと（<code>out/agcu_eam_2048/reassembled/</code>）、Ag 融点 1278 K、Cu 融点 1326 K（二相共存 MD 1265–1290 / 1325–1350 K、原著者 1267 / 1327 K）、共晶 950–960 K・x_Cu ≈ 0.55（原著者 935 K・0.542）、固溶限 fccAg 0.061 / fccCu 0.973（1000 K）になった。Ni–Al 第 5 段と ACE Al（2,048 原子で 892 K、QHA 経路 896 K）でも同様に解消。</p>
+<p><strong>CE+MC（経路 A の icet 版、<code>ftphase.ce</code>、<code>examples/agcu_ce_mc.py</code> → <code>agcu_ce_vcsgc.py</code> → <code>out_agcu_ce/</code>、2026-10-23）</strong>：fcc 1–8 原子の全規則配列 631 個を EAM で緩和して学習（生成エネルギー 0–134 meV/atom、全て正）。ARDR + 10 分割 CV の誤差はカットオフによらず 9.0–10.6 meV/atom で、サイズ差 13 % の緩和エネルギーを格子 CE で表す限界。SGC MC（2,048 サイト）は格子 CE ではヒステリシスがほぼ無く、跳び直前の点が有限セルの二相状態になるので枝の積分 + 接線は使えない。VCSGC（κ = 200、φ 171 点を独立並列、mygardenx1 で 284 s）の dF/dx はギャップ内で共通接線に乗るが有限セルでは約 0.1 eV 傾く（界面自由エネルギー）ので、固溶限は端の 4 点に当てた理想希薄枝 c + k_B T ln(x/(1−x)) がギャップのすぐ内側の二相水準に達する点で読む（<code>solvus_from_vcsgc</code>）。</p>
+<div class="tablewrap"><table><thead><tr><th>T (K)</th><th>CE+VCSGC x_α</th><th>CE 希薄推定</th><th>直接 SGC MC（B）</th><th>A：RK</th><th>CE+VCSGC x_β</th><th>CE 希薄推定</th><th>直接 SGC MC</th><th>A：RK</th></tr></thead><tbody>
+<tr><td>800</td><td>0.023</td><td>0.020</td><td>0.027</td><td>0.042</td><td>0.964</td><td>0.961</td><td>0.990</td><td>0.987</td></tr>
+<tr><td>900</td><td>0.028</td><td>0.027</td><td>0.050</td><td>0.045</td><td>0.968</td><td>0.936</td><td>0.972</td><td>0.978</td></tr>
+<tr><td>1000</td><td>0.031</td><td>0.033</td><td>0.126</td><td>0.078</td><td>0.959</td><td>0.901</td><td>0.914</td><td>0.955</td></tr>
+</tbody></table></div>
+<p>読み：CE+MC の固溶限は温度にほとんど依らない（Ag 側 0.023 → 0.031）のに対し直接 MC は 0.027 → 0.126。CE は静的な格子エネルギーだけで振動（過剰振動エントロピー・熱膨張）を含まないことが主因（Ag–Cu は振動が固溶限を広げる系として知られる）、残りは CE の 9 meV/atom の誤差（800 K の k_B T ln 2 ≈ 0.05 eV は固溶限 2 倍分）。希薄な固溶限は直接 MC か理想混合 + RK + 振動の方が良く、CE+MC は規則–不規則・短距離秩序・欠陥相互作用が本質の系に使う。</p>
 <h2>4. 実装中に見つかった落とし穴（修正済み）</h2>
 <ul>
 <li>phonopy の固定メッシュ <code>[4,4,4]</code> は <code>primitive_matrix='auto'</code> で基本胞が小さい純元素・規則相では q 点 64 個しかなく、1500 K の F が 18 meV/atom ずれた（例 7）。メッシュは長さ（密度）で指定する（<code>mesh=60.0</code>）。</li>
@@ -160,7 +168,7 @@
 <ul>
 <li>二元系のみ。三元以上は calphy <code>to_tdb</code> → pycalphad の経路（<code>check_with_pycalphad</code> は簡易比較のみ）。</li>
 <li>AiiDA 版は失敗セルだけの再投入（再開）とキャッシュを使っていない。失敗セルは除外して組み立て、直したら WorkChain を再投入する。</li>
-<li>CE の学習と MC 実行（icet / smol）はラップしていない。状態密度 → F_conf の受け口だけ。</li>
+<li>CE+MC は <code>ftphase.ce</code>（icet 列挙・学習、mchammer SGC / VCSGC、固溶限抽出）で接続（3.9）。限界は CE の精度と振動項の欠落。smol・状態密度 → F_conf の受け口は別。</li>
 <li>04B の補正は調和近似で、液相側の量子効果は扱わない。</li>
 <li>誤差伝播は相ごとの一様オフセット（＋任意の傾き）。組成依存の誤差は未対応。</li>
 <li><code>sqs_sqsgenerator</code> は未テスト（icet 経路を使う）。</li>
