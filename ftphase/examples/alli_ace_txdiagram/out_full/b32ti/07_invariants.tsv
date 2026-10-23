@@ -1,0 +1,8 @@
+T_low	T_high	pairs_below	pairs_above
+670.0	680.0	['Al2Li3+Al4Li9', 'Al2Li3+B32', 'Al4Li9+liquid', 'B32+fcc', 'liquid+liquid']	['Al2Li3+B32', 'Al2Li3+liquid', 'B32+fcc', 'liquid+liquid']
+710.0	720.0	['Al2Li3+B32', 'Al2Li3+liquid', 'B32+fcc', 'liquid+liquid']	['B32+fcc', 'B32+liquid', 'liquid+liquid']
+750.0	760.0	['B32+fcc', 'B32+liquid', 'liquid+liquid']	['B32+fcc', 'B32+liquid']
+760.0	770.0	['B32+fcc', 'B32+liquid']	['B32+liquid', 'fcc+liquid']
+840.0	850.0	['B32+liquid', 'fcc+liquid']	['B32+liquid', 'fcc+liquid', 'liquid+liquid']
+850.0	860.0	['B32+liquid', 'fcc+liquid', 'liquid+liquid']	['fcc+liquid', 'liquid+liquid']
+870.0	880.0	['fcc+liquid', 'liquid+liquid']	['fcc+liquid']

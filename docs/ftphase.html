@@ -106,6 +106,8 @@
 <p>メッシュ収束の効果：fcc Al の QHA F は [4,4,4]（基本胞で 64 q 点）→ 60 Å で 700 K −6.0、900 K −8.8 meV/atom（bcc Li −1.7/−3.4、B32 −0.3）。これで Al 融点が 850 → 890 K に上がり、calphy の固液 TI だけの例 4（902–927 K）と整合。液相の run 間のばらつきは 0.1–0.2 meV/atom（最大 0.55）で、Monte Carlo の σ は下限 1.4 meV/atom。誤差帯（30 サンプル）：770 K の fcc + 液相は fcc 0.11 ± 0.03・液相 0.29 ± 0.02、850 K は 0.04 ± 0.02・0.13 ± 0.05。液相の下側凸包に出る幅 0.007（x = 0.47–0.48）と幅 0.02–0.10（x = 0.88–0.98、650–750 K）の liquid+liquid 区間は Monte Carlo で位置が動かず、統計ノイズによる fit の曲率（相境界ではない）。格子が 650 K で止まるのは液相の run が全組成にある温度だけを使うため。配置ノイズを下げても共晶温度は変わらず、温度が実験より約 100 K 低い主因はポテンシャルと古典水準側にある。REPORT.md の誤差帯節が空だった不具合（感度解析の温度が格子 1 つ飛ばしで 720/800/900 K が無い）は最寄り温度を使うよう直した。</p>
 
 <p>3.5・3.6 の実験欄の出典：H. Okamoto, J. Phase Equilib. Diffus. 33, 500 (2012) Fig. 1（Hallstedt &amp; Kim 2007 の CALPHAD 評価に基づく。読み取り値は <code>資料/10.1007/s11669-012-0119-8/Fig1_readings.md</code>）。共晶組成は図の読み取りで x_Li ≈ 0.24（旧記載 0.30 は誤り）。</p>
+<p><strong>B32 の融点付近を固相 TI で検証（2026-10-24、<code>b32_ti.py</code> → <code>out_full/b32ti/</code>）</strong>：B32 3 セルを 2,000 原子に複製して calphy ts 700 → 880 K（GPU、1 本 25 分）。QHA（古典水準）− TI は x = 0.4375 で −3.0〜−3.4、0.5 で −1.1〜−1.3、0.5625 で +0.5〜+0.8 meV/atom：ACE の B32 では準調和近似が融点付近でも ±3 meV/atom で足り、Ni–Al の EAM（+20〜45 meV/atom）とは違う。不変反応は QHA 版と同一（共晶 760–770 K、B32 合致溶融 850–860 K）。AiiDA の WorkChain でも同じ計算を実行（pk 1128、キャッシュで B32 の TI 3 本だけが新規）。</p>
+
 <h3>3.7 Ni–Al（組成幅を持つ規則相）：Mishin 2009 EAM、mygardenx1（例 7、2026-10-22）</h3>
 <p><code>ftphase/examples/nial_eam/</code>。B2 NiAl の三重欠陥（Ni 反サイト + Ni 空孔）と L1₂ Ni₃Al の反サイトを副格子モデルで扱い、fcc は 64 原子 SQS、液相は 11 組成 × 3 run の calphy。固相は QHA と calphy TI の両方で計算し、組立は TI を使う。mygardenx1（64 コア）で第 1 段 12 分、第 2 段 11 分。</p>
 <table><thead><tr><th>特徴</th><th>EAM（古典）</th><th>実験</th></tr></thead><tbody>
