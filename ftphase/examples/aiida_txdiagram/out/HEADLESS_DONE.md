@@ -6,7 +6,7 @@
 
 1. 煙試験：pk 67（QHA 5 本が exit 300：1100 K の EOS 最小が走査範囲 0.97–1.03 の外）→ `run_aiida.py --smoke` の scales を 0.97–1.07 の 6 点に直し、pk 118 が 11:31 投入 → 11:34 に `assemble_diagram` まで完走。`fetch_results.py alli_ace_smoke` → `out/alli_ace_smoke/REPORT.md`、`07_phase_diagram.png`。
    - `SRE module mismatch` の原因：AiiDA デーモン worker が自分の `sys.path` を `PYTHONPATH` に書き出し、Slurm ジョブが継承 → miniforge3 の `conda`（python 3.14）が `env/ftphase/lib/python3.12` を読んで死に、`conda activate` が失敗していた。計算機 `mygarden5` の prepend_text に `unset PYTHONPATH PYTHONHOME` を設定（`setup_aiida.sh` も更新）。以後の `_scheduler-stderr.txt` は空。
-2. 本番：`run_aiida.py` → **pk 191**（`out/alli_ace.pk.json`、11:34:50 投入、12:27:14 完了）。prepare_cells 成功、QHA 13 本（pk 216–240）すべて exit 0（4 分）、GPU 液相 6 本（pk 242–252）exit 0（8.5 分ずつ直列）、assemble_diagram pk 271 付近 exit 0。`fetch_results.py alli_ace` → `out/alli_ace/`。
+2. 本番：`run_aiida.py` → **pk 191**（`out/alli_ace.pk.json`、11:34:50 投入、12:27:14 完了）。prepare_cells 成功、QHA 13 本（pk 216–240）すべて exit 0（4 分）、GPU 液相 6 本（pk 242–252）exit 0（8.5 分ずつ直列）、assemble_diagram pk 329 exit 0。`fetch_results.py alli_ace` → `out/alli_ace/`。
 3. テスト：`ftphase/tests/test_aiida.py`（8 件）追加、`conftest.py` に `aiida.tools.pytest_fixtures` 登録。`pytest ftphase/tests -q` → 50 passed, 1 skipped（skip は従来の「LAMMPS バイナリが PATH に無い」）。
 4. 文書：`examples/aiida_txdiagram/README.md`（新規）、`ftphase/README.md`（AiiDA 節 + 例 8 + 検証件数）、`docs/ftphase.html`（3.8 節、検証件数、制限）、`skills/phase-diagram/references/ftphase.md`（AiiDA 層、使い方、事実）、`CLAUDE.md`（「AiiDA (profile ftphase)」節）。
 5. コミット：branch `aiida`、dfd6f47「AiiDA workflow: smoke test passes end to end, tests, docs, production submitted (pk 191)」。`.gitignore` に `headless_claude.log` を追加。
