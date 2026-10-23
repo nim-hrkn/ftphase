@@ -86,7 +86,7 @@ plot_tx(reg).figure.savefig("Tx.png"); write_records("two_phase.tsv", reg, {"fit
 
 ## 検証
 
-`tests/`（pytest、35 件、約 4 秒）。解析解との比較を中心にしています。
+`tests/`（pytest、50 件 + skip 1、約 7 秒；AiiDA 層 8 件 `test_aiida.py` を含む）。解析解との比較を中心にしています。
 
 - 配置項：workflow の数値例 (E3)–(E8)、(E15)–(E17) を再現。厳密数え上げ (E9) が Stirling に収束。副格子モデルが単一副格子で理想混合に一致、B32 の反サイトモデルが「全格子点理想混合の半分」になる。空孔を含む組成換算 (E11)/(E12)。2 準位系の状態密度から F と S。
 - QHA：Einstein 結晶の量子・古典 F、S = −dF/dT、虚振動の例外、Vinet の係数回復、二次 E0(V) と線形 F_vib の解析解（圧力項も）、anphon `.thermo` の整合性、phonopy の F が入力セルあたりに正しく規格化されること（基本胞と立方胞で一致）。
@@ -225,11 +225,25 @@ fit のノイズ：液相の下側凸包に幅 0.007（x = 0.47–0.48、850 K �
 
 実験値（比較用）：NiAl 合致溶融 1911 K、B2 の幅 約 0.45–0.60、Ni₃Al 包晶 1668 K、L → Ni₃Al + (Ni) 共晶 1658 K（x ≈ 0.76）、(Ni) の Al 固溶 約 0.21、Al 側共晶 913 K。
 
+## AiiDA ワークフロー（工程 01–07 を 1 本の WorkChain で、2026-10-23）
+
+`ftphase.aiida`（`src/ftphase/aiida/`）は同じ工程を AiiDA 2.9 のプラグインにしたもの。entry point は `ftphase.qha`（CalcJob：1 セルの phonopy QHA、計算ノードで `ftphase-qha-run input.json`）、`ftphase.calphy`（CalcJob：calphy 計算 1 ブロック、`calphy_kernel -i input.yaml -k 0`）、`ftphase.txdiagram`（WorkChain：calcfunction `prepare_cells` → QHA と calphy を並列投入 → `inspect` → calcfunction `assemble_diagram`）。重い計算だけ Slurm、緩和・凸包・組立はデーモン worker 内。投入後はデーモンと Slurm が完走させ、入力・各セル・配列・REPORT.md・図が provenance 付きで残る。
+
+- 環境は `env/ftphase`（aiida-core 2.9.3 追加）。プロファイル `ftphase`（SQLite + RabbitMQ）、計算機 `mygarden5`（core.local + core.slurm、`~/aiida_run/ftphase`）、コード `ftphase-qha@mygarden5`・`calphy@mygarden5`。`verdi` は必ず `env/ftphase/bin/verdi -p ftphase`（既定プロファイルは別プロジェクトの `alamode_pg`）。設定は `examples/aiida_txdiagram/setup_aiida.sh`（冪等）。
+- プラグインを変えたら `pip install -e ./ftphase --no-deps` のあと `verdi -p ftphase daemon restart`。
+- 投入は `examples/aiida_txdiagram/run_aiida.py`（`--smoke`、`--dry-run`、`--no-gpu`）、取り出しは `fetch_results.py <pk|name>`。spec の書き方・失敗の診かた・落とし穴（QHA 走査範囲、デーモンが書き出す `PYTHONPATH` が計算ノードの `conda` を壊す → 計算機 prepend に `unset PYTHONPATH PYTHONHOME`）は `examples/aiida_txdiagram/README.md`。
+- テスト `tests/test_aiida.py`（一時 SQLite プロファイル、投入なし）：entry point、両 CalcJob の入力生成（`__WORKDIR__` の置換、GPU の `pace product`・KOKKOS 引数）、calphy パーサ（例 5 の実 `report.yaml` / `temperature_sweep.dat`）、QHA パーサと exit code、`prepare_cells` の実行（ACE で 01/02 を通す）。
+
+### 8. AiiDA 版 T–x 図：ACE Al–Li、例 5 と同じ物理 — `aiida_txdiagram/` → `out/alli_ace/`
+
+煙試験（pk 118）は 3 分で `assemble_diagram` まで通過。本番（pk 191、2026-10-23 11:34 投入；QHA 13 セル、密度メッシュ 60 Å、GPU 液相 6 本 × 3 反復）の結果と例 5 との比較は `aiida_txdiagram/out/alli_ace/REPORT.md` と `aiida_txdiagram/README.md` の「結果」節。
+
 ## 既知の制限
 
 - calphy の `n_iterations: 1` では誤差が 0 と報告される。例 3・4 の融点には上の統計ばらつき（±10 K 程度）が付く。
 
-- 二元系のみ（三元以上は TDB → pycalphad の経路）。例 5 は x ≤ 0.5 の Al 側だけ。
+- 二元系のみ（三元以上は TDB → pycalphad の経路）。例 5・8 は x ≤ 0.5 の Al 側だけ。
+- AiiDA 版は WorkChain の再開（失敗セルだけの再投入）とキャッシュを使っていない。失敗したセルは除外して組み立てるので、直したら WorkChain 全体を再投入する。
 - `sqs_sqsgenerator` は sqsgenerator 0.5 の API を仮定しており未テスト。icet 経路を使う。
 - CE+MC そのもの（icet の学習・MC 実行）はラップしていない。状態密度・F_conf の受け取り口（E13）だけがある。
 - 04B の補正は調和近似。液相側の量子効果は扱わない。

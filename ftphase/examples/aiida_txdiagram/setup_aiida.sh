@@ -41,7 +41,7 @@ if ! $V computer show "$COMPUTER" >/dev/null 2>&1; then
   $V computer setup -n --label "$COMPUTER" --hostname localhost --description "this host via Slurm (ftphase)" \
     --transport core.local --scheduler core.slurm --work-dir "$WORKDIR" \
     --mpirun-command "mpirun -np {tot_num_mpiprocs}" --mpiprocs-per-machine 16 --default-memory-per-machine 60000000 \
-    --prepend-text "" --append-text ""
+    --prepend-text "unset PYTHONPATH PYTHONHOME  # the daemon exports its sys.path as PYTHONPATH; it breaks the base conda python" --append-text ""
   $V computer configure core.local "$COMPUTER" -n --safe-interval 5
   $V computer test "$COMPUTER" || true
 else

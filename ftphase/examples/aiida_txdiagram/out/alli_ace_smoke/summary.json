@@ -1,0 +1,96 @@
+{
+ "started": "2026-10-23 11:33:34",
+ "solids_used": [
+  "s00_fcc",
+  "s01_fcc",
+  "s02_B32",
+  "s03_B32",
+  "s04_B32"
+ ],
+ "solids_missing": [],
+ "liquids_used": [
+  "lqd_x0_00",
+  "lqd_x0_20"
+ ],
+ "liquids_missing": [],
+ "liquid_x_available": [
+  0.0,
+  0.2037037037037
+ ],
+ "liquid_runs_per_x": {
+  "0.0000": 1,
+  "0.2037": 1
+ },
+ "liquid_T_min_K": {
+  "0.0000": 900.0,
+  "0.2037": 900.0
+ },
+ "table_check": [
+  "mixed quantum/classical treatment: ['classical', 'classical+harmonic-correction'] (see ftphase.quantum)"
+ ],
+ "T_grid": [
+  900.0,
+  1100.0,
+  21
+ ],
+ "edge_segments_dropped": 28,
+ "lowest_T_with_liquid_K": 900.0,
+ "coexistence_at_that_T": [
+  {
+   "phase_a": "liquid",
+   "x_a": 0.055227687105257,
+   "phase_b": "fcc",
+   "x_b": 0.16739121363831
+  }
+ ],
+ "pure_A_melting_bracket_K": null,
+ "invariants": [],
+ "regions_at_700K": [],
+ "regions_at_800K": [],
+ "regions_at_900K": [
+  {
+   "phase_a": "liquid",
+   "x_a": 0.055227687105257,
+   "phase_b": "fcc",
+   "x_b": 0.16739121363831
+  }
+ ],
+ "regions_at_1000K": [
+  {
+   "phase_a": "liquid",
+   "x_a": 0.18587962962963,
+   "phase_b": "fcc",
+   "x_b": 0.25
+  }
+ ],
+ "same_phase_segments": [],
+ "fit_residuals": {
+  "T": 900.0,
+  "rows": [
+   {
+    "T": 900.0,
+    "phase": "B32",
+    "rmse_eV": 2.5639502485114e-16,
+    "flag": false
+   },
+   {
+    "T": 900.0,
+    "phase": "fcc",
+    "rmse_eV": 3.1401849173676e-16,
+    "flag": false
+   },
+   {
+    "T": 900.0,
+    "phase": "liquid",
+    "rmse_eV": 1.5700924586838e-15,
+    "flag": false
+   }
+  ]
+ },
+ "sigma_used_eV": {
+  "fcc": 0.002,
+  "B32": 0.002,
+  "liquid": 0.0014
+ },
+ "finished": "2026-10-23 11:33:35"
+}

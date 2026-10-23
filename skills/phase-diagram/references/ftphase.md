@@ -18,6 +18,8 @@
 
 CLI：`ftphase check`、`ftphase diagram`、`ftphase hull0k`。
 
+AiiDA 層（`ftphase.aiida`、2026-10-23）：CalcJob `ftphase.qha`（1 セルの QHA、`ftphase-qha-run`）、`ftphase.calphy`（calphy 1 ブロック、`calphy_kernel`、パスは `__WORKDIR__` → `$PWD`）、WorkChain `ftphase.txdiagram`（calcfunction `prepare_cells` 01/02 → CalcJob 並列 03A/03B → `inspect` → calcfunction `assemble_diagram` 04–07）。例と手順は `ftphase/examples/aiida_txdiagram/README.md`。
+
 ## 使うときの判断
 
 - 表の `kind` は solution / point / limited。限定組成相は `limited` にして外挿を防ぐ。点相（line compound）は `point`。
@@ -27,9 +29,17 @@ CLI：`ftphase check`、`ftphase diagram`、`ftphase hull0k`。
 - GPU で ACE：conda-forge の LAMMPS 22 Jul 2025 には `hybrid/scaled/kk` が無く、calphy は固相 fe 以外で `hybrid/scaled` を使うので `-k on` では止まる。`env/lammps-gpu/bin/lmp_gpu`（stable 30 Sep 2026、`build.sh`）を `lammps_executable` に渡す。1 GPU = MPI 1 ランク。 注意点：GPU 1 枚ではジョブが直列になるため、総スループットは CPU 8 コアと同程度です。利点は 1 本の待ち時間短縮と、CPU を QHA に空けられることです。
 - `sensitivity` に calphy の `G_err` や QHA の見積もり誤差（meV/atom）を渡し、境界の標準偏差を必ず記録する。
 
+## AiiDA で回すとき（profile `ftphase`）
+
+- `verdi` は `env/ftphase/bin/verdi -p ftphase`。既定プロファイル `alamode_pg`（別プロジェクト）とそのデーモンには触らない。
+- 計算機 `mygarden5`（core.local + core.slurm、`~/aiida_run/ftphase`）、コード `ftphase-qha@mygarden5`・`calphy@mygarden5`、デーモン 2 worker（`setup_aiida.sh`）。投入は `run_aiida.py`（`--smoke` / `--dry-run` / `--no-gpu`）、取り出しは `fetch_results.py`。
+- プラグインを変えたら `pip install -e ./ftphase --no-deps` → `verdi -p ftphase daemon restart`。
+- 失敗は `process status` の exit code（QHA 300 出力無し、calphy 300/310/320、WorkChain 401/402/410）→ `calcjob outputcat <pk> -p qha.err`。失敗セルは除外して組み立てるので、直したら再投入。
+- 落とし穴：デーモンが `PYTHONPATH` を書き出して計算ノードの base `conda` を壊す（計算機 prepend に `unset PYTHONPATH PYTHONHOME`）。QHA の走査範囲は 1100 K で 1.05 以上。WorkChain を kill しても子が残ることがある。
+
 ## 検証済みの事実（2026-10-21）
 
-- pytest 39 件（解析解：正則溶体の binodal、Einstein 結晶、二次 E0(V) の QHA、Stirling、2 準位系の状態密度、phonopy の規格化）。
+- pytest 50 件 + skip 1（2026-10-23；AiiDA 8 件を含む。解析解：正則溶体の binodal、Einstein 結晶、二次 E0(V) の QHA、Stirling、2 準位系の状態密度、phonopy の規格化）。
 - Al–Li EAM（workshop データ）：理想混合＋poly3 で共晶 904–906 K、spline で 818–820 K。B32 を副格子で扱うと 800 K で既に液相が入る。
 - Al–Li ACE：Al₃Li が ACE の凸包上に乗る（B32–fcc の弦より 4.6 meV/atom 下）。fcc Al の F_q − F_cl は 300 K で 3.4、1000 K で 1.0 meV/atom。
 - 01 から 07 を通した例（2026-10-22、`examples/alli_ace_txdiagram/`、Slurm + GPU、セッション非依存）：ACE Al–Li の Al 側。共晶 760–770 K・x ≈ 0.30（実験 873 K・0.30）、fcc 固溶限 0.157、純 Al 融点 860–870 K、Al₃Li は 700 K 以上で不安定。温度は実験より約 100 K 低いが組成の特徴は合う。1 時間（液相 GPU 6 本 × 8.5 分が支配）。
@@ -38,3 +48,4 @@ CLI：`ftphase check`、`ftphase diagram`、`ftphase hull0k`。
 - 多項式 fit は G にそのまま当てない：理想混合項を解析的に分離して過剰項だけを fit（`builder_from_table` の `ideal_excess_fit`、既定で有効）。そうしないと偽の fcc+fcc / liquid+liquid 帯が出る。
 - GPU（2026-10-22）：calphy ts を `lmp_gpu`（LAMMPS 30 Sep 2026 KOKKOS/CUDA）で実行。1 ランク GPU が CPU 4 ランクの 1.7〜3.3 倍速、1 点のエネルギー・圧力は全桁一致。別 seed 4 サンプルの G の標準偏差は 900 K で 1.3〜1.4 meV/atom、純 Al の融点は 902–927 K に散る（5000+5000 ステップ、1 反復）。`n_iterations ≥ 3` にして `G_err` を使うこと。
 - phonopy を `primitive_matrix='auto'` で使うと F は基本胞あたりになる。入力セルあたりへの換算を忘れると 4 倍小さくなる（修正済み、回帰テスト有り）。
+- AiiDA 版（例 8、`examples/aiida_txdiagram/`、2026-10-23）：煙試験 pk 118 が 3 分で REPORT.md まで通過。本番 pk 191（例 5 と同じ物理、密度メッシュ 60 Å）を 11:34 に投入。結果は `out/alli_ace/REPORT.md`。
