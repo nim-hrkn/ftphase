@@ -1,0 +1,29 @@
+22:05:26 [01] fcc-Al     E=-3.36000 eV/atom V=16.608  Fm-3m (225) -> Fm-3m (225)
+22:05:26 [01] fcc-Ni     E=-4.45000 eV/atom V=10.904  Fm-3m (225) -> Fm-3m (225)
+22:05:26 [01] B2-NiAl    E=-4.51087 eV/atom V=11.357  Pm-3m (221) -> Pm-3m (221)
+22:05:26 [01] L12-Ni3Al  E=-4.63148 eV/atom V=11.026  Pm-3m (221) -> Pm-3m (221)
+22:05:26 [01] Ni2Al3     E=-4.15893 eV/atom V=13.431  P-3m1 (164) -> P-3m1 (164)
+22:05:26 [01] NiAl3      E=-3.87521 eV/atom V=14.858  Pnma (62) -> Pnma (62)
+22:05:26 [01] hull:
+     name    x       e  e_form  on_hull  e_above_hull
+   fcc-Al 0.00 -3.3600  0.0000     True        0.0000
+    NiAl3 0.25 -3.8752 -0.2427    False        0.0602
+   Ni2Al3 0.40 -4.1589 -0.3629    False        0.1218
+  B2-NiAl 0.50 -4.5109 -0.6059     True        0.0000
+L12-Ni3Al 0.75 -4.6315 -0.4540     True        0.0000
+   fcc-Ni 1.00 -4.4500  0.0000     True        0.0000
+22:06:30 [02A] 18 solid cells written
+22:06:30 [02B] 33 liquid calphy blocks (16 ranks each) -> /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_liquid/input_liquid.yaml
+22:25:22 [03B-solid] 18 calphy solid blocks -> /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/input_solid.yaml
+22:37:33 [02A+] id 18 B2 x=0.5556 3 Ni anti-site(s) (54 atoms; TI cell 216)
+22:37:33 [02A+] id 19 B2 x=0.5741 4 Ni anti-site(s) (54 atoms; TI cell 216)
+22:37:33 [02A+] id 20 B2 x=0.5926 5 Ni anti-site(s) (54 atoms; TI cell 216)
+22:37:33 [02A+] id 21 B2 x=0.6111 6 Ni anti-site(s) (54 atoms; TI cell 216)
+22:37:33 [02A+] id 22 B2 x=0.4706 3 Ni vacancy(ies) (51 atoms; TI cell 204)
+22:37:33 [02A+] id 23 B2 x=0.4600 4 Ni vacancy(ies) (50 atoms; TI cell 200)
+22:37:33 [02A+] id 24 L12 x=0.7685 2 Ni anti-sites (108 atoms; TI cell 216)
+22:37:33 [02A+] id 25 L12 x=0.7315 2 Al anti-sites (108 atoms; TI cell 216)
+22:37:33 [02A+] id 26 L12 x=0.7778 3 Ni anti-sites (108 atoms; TI cell 216)
+22:37:33 [02A+] id 27 L12 x=0.7222 3 Al anti-sites (108 atoms; TI cell 216)
+22:37:33 [02A+] 10 extra defect cells; TI input /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/input_solid_more.yaml
+20:29:17 [03B-solid] 28 calphy solid blocks -> /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid/input_solid.yaml

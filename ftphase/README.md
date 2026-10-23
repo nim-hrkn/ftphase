@@ -130,6 +130,8 @@ plot_tx(reg).figure.savefig("Tx.png"); write_records("two_phase.tsv", reg, {"fit
 
 x_Li = 0.1016（256 原子、ランダム置換）の fcc と液相も同じ入力で計算し、900 K で fcc が液相より 29.7 meV/atom 高い（古典同士）。(b)−(c) の 10 K が量子／古典の取り違えの大きさ、(c)−(a) の 30 K が 900 K で QHA（古典化後）が Einstein 結晶 TI より 3.7 meV/atom 高いこと（QHA に無い非調和項と TI の統計誤差）の大きさです。
 
+**2026-10-23 追記（固相 TI のセルサイズ）**：fcc Al の固相 TI を 2,048 原子（8×8×8、GPU、800 → 1000 K）でやり直すと、液相（256 原子 3 本の平均）との交点は **892 K** になった（`alli_ace_melting_2048.py` → `out_alli_ace/melting_2048.md`）。256 原子の 2 本は 904 K と 931 K で、有限サイズの分だけ高い（EAM Ag では +55 K、ACE Al では +12〜40 K）。QHA 経路（例 6、密度メッシュ）の 896 K と 4 K 差で整合し、ACE Al の古典融点は 892–896 K（実験 933.5 K）。
+
 ### 4. GPU と CPU の calphy 比較（03B）— `alli_ace_gpu_compare.py` → `out_alli_ace/gpu_vs_cpu.{json,png}`
 
 例 3 と同じ 4 本（fcc／液相 × x = 0, 0.1、800–1000 K、5000+5000 ステップ）を、`calphy_ace_gpu/make_input.py` が書いた GPU 入力（`lmp_gpu`、KOKKOS、`pace product`、`--gres=gpu:1`）で再実行し、さらに純 Al の 2 本を CPU・GPU それぞれ別 seed で繰り返しました（`calphy_ace_repeat/`、`calphy_ace_gpu_repeat/`）。
