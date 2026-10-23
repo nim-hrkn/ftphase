@@ -1,0 +1,120 @@
+{
+ "lqd_x0_00": {
+  "tag": "lqd_x0.00",
+  "x_target": 0.0,
+  "x_actual": 0.0,
+  "seed": 0,
+  "repeat": 0,
+  "counts": {
+   "Ag": 256,
+   "Cu": 0
+  },
+  "temperature": [
+   1500.0,
+   1050.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_20": {
+  "tag": "lqd_x0.20",
+  "x_target": 0.2,
+  "x_actual": 0.19921875,
+  "seed": 100,
+  "repeat": 0,
+  "counts": {
+   "Ag": 205,
+   "Cu": 51
+  },
+  "temperature": [
+   1500.0,
+   950.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_40": {
+  "tag": "lqd_x0.40",
+  "x_target": 0.4,
+  "x_actual": 0.3984375,
+  "seed": 101,
+  "repeat": 0,
+  "counts": {
+   "Ag": 154,
+   "Cu": 102
+  },
+  "temperature": [
+   1500.0,
+   950.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_50": {
+  "tag": "lqd_x0.50",
+  "x_target": 0.5,
+  "x_actual": 0.5,
+  "seed": 102,
+  "repeat": 0,
+  "counts": {
+   "Ag": 128,
+   "Cu": 128
+  },
+  "temperature": [
+   1500.0,
+   950.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_60": {
+  "tag": "lqd_x0.60",
+  "x_target": 0.6,
+  "x_actual": 0.6015625,
+  "seed": 103,
+  "repeat": 0,
+  "counts": {
+   "Ag": 102,
+   "Cu": 154
+  },
+  "temperature": [
+   1500.0,
+   950.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_80": {
+  "tag": "lqd_x0.80",
+  "x_target": 0.8,
+  "x_actual": 0.80078125,
+  "seed": 104,
+  "repeat": 0,
+  "counts": {
+   "Ag": 51,
+   "Cu": 205
+  },
+  "temperature": [
+   1500.0,
+   950.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x1_00": {
+  "tag": "lqd_x1.00",
+  "x_target": 1.0,
+  "x_actual": 1.0,
+  "seed": 105,
+  "repeat": 0,
+  "counts": {
+   "Cu": 256
+  },
+  "temperature": [
+   1500.0,
+   1100.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ }
+}
