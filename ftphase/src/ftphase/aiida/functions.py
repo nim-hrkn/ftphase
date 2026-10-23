@@ -163,6 +163,14 @@ def prepare_cells(spec: orm.Dict, potential: orm.SinglefileData, **candidates: o
     return out
 
 
+@calcfunction
+def repeat_structure(structure: orm.StructureData, n: orm.Int):
+    """n x n x n repetition of a cell (calphy TI needs >= ~200 atoms)."""
+    at = structure.get_ase().repeat((int(n), int(n), int(n)))
+    at.calc = None
+    return orm.StructureData(ase=at)
+
+
 def _lower_to_classical(T, G, hw, w, n_atoms):
     from ftphase.quantum import quantum_minus_classical
 
@@ -177,8 +185,12 @@ def assemble_diagram(spec: orm.Dict, solid_params: orm.Dict, liquid_params: orm.
     """Stages 04-07: one free-energy table, configurational terms, lower convex hull per T,
     invariants, Monte Carlo error bands, T-x figure, REPORT.md.
 
-    ``nodes``: ``qha_<key>`` ArrayData from QhaCalculation (keys of solid_params) and
-    ``liq_<key>`` ArrayData (sweep) from CalphyCalculation (keys of liquid_params).
+    ``nodes``: ``qha_<key>`` ArrayData from QhaCalculation (keys of solid_params),
+    ``liq_<key>`` ArrayData (sweep) from CalphyCalculation (keys of liquid_params) and, optionally,
+    ``sti_<key>`` ArrayData (sweep of a calphy solid ts run of the same cell, spec["solids_ti"]).
+    Where a solid TI sweep exists its rows replace the QHA rows inside the sweep's temperature
+    range (anharmonic level); QHA rows (lowered to the classical level) are kept below it.
+    summary["qha_minus_ti_meV"] records the difference per cell at the sweep ends.
 
     spec["assemble"] keys: T_min, T_max, T_step, fits {phase: spline|poly|rk|smooth}, poly_orders,
     config_terms {phase: ideal | "sublattice:<site model>"}, entropy_models {phase: [site model,
@@ -199,12 +211,31 @@ def assemble_diagram(spec: orm.Dict, solid_params: orm.Dict, liquid_params: orm.
     rows = []
     for key, meta in sol_p.items():
         node = nodes.get(f"qha_{key}")
-        if node is None:
+        ti = nodes.get(f"sti_{key}")
+        if node is None and ti is None:
             summary["solids_missing"].append(key); continue
-        T = node.get_array("T"); G = _lower_to_classical(T, node.get_array("G"), node.get_array("hw_eV"), node.get_array("weights"), meta["n_atoms"])
-        V = node.get_array("V")
         summary["solids_used"].append(key)
+        if node is not None:
+            T = node.get_array("T"); G = _lower_to_classical(T, node.get_array("G"), node.get_array("hw_eV"), node.get_array("weights"), meta["n_atoms"])
+            V = node.get_array("V")
+        else:
+            T = G = V = np.array([])
+            summary.setdefault("solids_ti_only", []).append(key)
+        T_ti_lo = None
+        if ti is not None:
+            Tt, Gt, Et = ti.get_array("temperature"), ti.get_array("free_energy"), ti.get_array("error")
+            T_ti_lo = float(Tt.min())
+            summary.setdefault("solids_ti_used", []).append(key)
+            if T.size:
+                summary.setdefault("qha_minus_ti_meV", {})[key] = {f"{t:.0f}": float((np.interp(t, T, G) - np.interp(t, Tt, Gt)) * 1000) for t in (Tt.min(), 0.5 * (Tt.min() + Tt.max()), Tt.max()) if T.min() <= t <= T.max()}
+            for t, g, e in zip(Tt, Gt, Et):
+                rows.append({"phase": meta["phase"], "kind": meta["kind"], "x": meta["x"], "T": float(np.round(t, 3)), "P_GPa": float(asm.get("pressure_GPa", 0.0)), "G": float(g), "G_err": float(e),
+                             "V": float(np.interp(t, T, V)) if T.size else np.nan,
+                             "model": model, "reference_state": "absolute potential energy", "method": f"calphy ts solid (Frenkel-Ladd + reversible scaling), {sol_p[key]['n_atoms']}-atom cell repeated; config {meta['config']}",
+                             "config_entropy": "none", "quantum": "classical", "n_atoms": meta["n_atoms"], "source": f"aiida calphy-solid {key}"})
         for t, g, v in zip(T, G, V):
+            if T_ti_lo is not None and t >= T_ti_lo - 1e-6:
+                continue
             rows.append({"phase": meta["phase"], "kind": meta["kind"], "x": meta["x"], "T": float(t), "P_GPa": float(asm.get("pressure_GPa", 0.0)), "G": float(g), "G_err": 0.0, "V": float(v),
                          "model": model, "reference_state": "absolute potential energy", "method": f"QHA phonopy sc={meta['supercell']} mesh={meta['mesh']}; lowered by F_q-F_cl (harmonic); config {meta['config']}",
                          "config_entropy": "none", "quantum": "classical+harmonic-correction", "n_atoms": meta["n_atoms"], "source": f"aiida qha {key}"})
@@ -213,8 +244,8 @@ def assemble_diagram(spec: orm.Dict, solid_params: orm.Dict, liquid_params: orm.
     if not sol.empty:
         for (ph, x, T), g in sol.groupby(["phase", "x", "T"]):
             r = g.iloc[0].to_dict()
-            r["G"] = float(g["G"].mean()); r["G_err"] = float((g["G"].max() - g["G"].min()) / 2) if len(g) > 1 else 0.0
-            r["V"] = float(g["V"].mean()); r["source"] = f"aiida qha {ph} x={x:.4f} ({len(g)} configs)"
+            r["G"] = float(g["G"].mean()); r["G_err"] = max(float((g["G"].max() - g["G"].min()) / 2) if len(g) > 1 else 0.0, float(g["G_err"].max()))
+            r["V"] = float(g["V"].mean()); r["source"] = f"aiida {'calphy-solid' if 'calphy' in r['method'] else 'qha'} {ph} x={x:.4f} ({len(g)} configs)"
             r["method"] = r["method"].split("; config")[0] + f"; mean of {len(g)} configurations"
             agg.append(r)
     sol = pd.DataFrame(agg)
@@ -351,6 +382,10 @@ def _report_text(sp, summary, reg, sens):
     for t in sorted({avail[np.argmin(np.abs(avail - t))] for t in (700.0, 800.0, 900.0)} if avail.size else []):
         for _, r in sens[np.isclose(sens["T"], t)].iterrows():
             L.append(f"* {t:.0f} K {r['pair']}: x_a = {r['x_a_mean']:.3f} +/- {r['x_a_std']:.3f}, x_b = {r['x_b_mean']:.3f} +/- {r['x_b_std']:.3f} ({int(r['n_found'])}/{int(r['n_samples'])} samples)")
+    if summary.get("qha_minus_ti_meV"):
+        L += ["", "## QHA (classical level) minus calphy solid TI per cell, meV/atom (anharmonic error of the quasi-harmonic route)", ""]
+        for key, d in summary["qha_minus_ti_meV"].items():
+            L.append(f"* {key}: " + ", ".join(f"{t} K {v:+.1f}" for t, v in d.items()))
     L += ["", "## Caveats", "", f"* table check: {summary.get('table_check')}", f"* fit residuals at {summary['fit_residuals']['T']:.0f} K: {summary['fit_residuals']['rows']}",
           "* every number is on the classical level of the potential; compare with experiment only after the quantum correction and potential error are accounted for.", ""]
     return "\n".join(L)

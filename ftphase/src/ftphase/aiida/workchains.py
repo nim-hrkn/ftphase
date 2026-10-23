@@ -8,11 +8,12 @@
 Failed cells are skipped (reported); the assembly needs at least one liquid run.
 """
 
+import numpy as np
 from aiida import orm
 from aiida.engine import WorkChain
 from aiida.plugins import CalculationFactory
 
-from ftphase.aiida.functions import assemble_diagram, prepare_cells
+from ftphase.aiida.functions import assemble_diagram, prepare_cells, repeat_structure
 
 QhaCalculation = CalculationFactory("ftphase.qha")
 CalphyCalculation = CalculationFactory("ftphase.calphy")
@@ -77,10 +78,39 @@ class TxDiagramWorkChain(WorkChain):
             builder.metadata.options = self.inputs.qha_options.get_dict()
             builder.metadata.label = f"qha {key} {m['phase']} x={m['x']:.4f}"
             self.to_context(**{f"qha_{key}": self.submit(builder)})
+        extra = self.inputs.calphy_extra.get_dict() if "calphy_extra" in self.inputs else {}
+        # ---- optional calphy TI of the solid cells (anharmonic level near T_m; spec["solids_ti"])
+        sti = sp.get("solids_ti")
+        self.ctx.sti_keys = []
+        if sti:
+            for key, structure in self.ctx.solids.items():
+                m = sol_p[key]
+                if sti.get("phases") and m["phase"] not in sti["phases"]:
+                    continue
+                T_sw = list(sti.get("T_sweep_by_phase", {}).get(m["phase"], sti.get("T_sweep", [900.0, 1400.0])))
+                if sti.get("T_hi_by_x"):   # cap the sweep end per composition, e.g. [[0, 1360], [1, 1480]] (about 1.1 T_m of the pure ends)
+                    pts = sorted(sti["T_hi_by_x"])
+                    T_sw[1] = float(np.interp(m["x"], [q[0] for q in pts], [q[1] for q in pts]))
+                n_rep = max(1, int(np.ceil((float(sti.get("min_atoms", 200)) / m["n_atoms"]) ** (1.0 / 3.0) - 1e-9)))
+                big = repeat_structure(structure, orm.Int(n_rep)) if n_rep > 1 else structure
+                params = {"name": f"sol_{key}", "folder_prefix": f"sol_{key}", "mode": sti.get("mode", "ts"), "elements": sp["elements"], "masses": sp["masses"],
+                          "pair_style": sp["pair_style"], "pair_coeff": sp["pair_coeff"], "temperature": [float(T_sw[0]), float(T_sw[1])] if sti.get("mode", "ts") == "ts" else float(T_sw[0]),
+                          "pressure": float(sti.get("pressure", 0.0)), "reference_phase": "solid", "n_equilibration_steps": int(sti.get("n_equilibration_steps", 10000)),
+                          "n_switching_steps": sti.get("n_switching_steps", [10000, 10000]), "n_iterations": int(sti.get("n_iterations", 1))}
+                params.update(extra)
+                builder = CalphyCalculation.get_builder()
+                builder.code = self.inputs.calphy_code
+                builder.structure = big
+                builder.potential = self.inputs.potential
+                builder.parameters = orm.Dict(dict=params)
+                builder.metadata.options = self.inputs.calphy_options.get_dict()
+                builder.metadata.label = f"calphy solid {key} {m['phase']} x={m['x']:.4f} ({len(big.sites)} atoms)"
+                self.to_context(**{f"sti_{key}": self.submit(builder)})
+                self.ctx.sti_keys.append(key)
         if self.inputs.skip_liquids.value:
+            self.report(f"submitted {len(self.ctx.solids)} QHA and {len(self.ctx.sti_keys)} solid TI calculations (liquids skipped)")
             return
         lq = sp.get("liquids", {})
-        extra = self.inputs.calphy_extra.get_dict() if "calphy_extra" in self.inputs else {}
         liq_p = self.ctx.liquid_params.get_dict()
         for key, structure in self.ctx.liquids.items():
             m = liq_p[key]
@@ -97,10 +127,16 @@ class TxDiagramWorkChain(WorkChain):
             builder.metadata.options = self.inputs.calphy_options.get_dict()
             builder.metadata.label = f"calphy {m['tag']} x={m['x_actual']:.4f}"
             self.to_context(**{f"liq_{key}": self.submit(builder)})
-        self.report(f"submitted {len(self.ctx.solids)} QHA and {len(self.ctx.liquids)} calphy calculations")
+        self.report(f"submitted {len(self.ctx.solids)} QHA, {len(self.ctx.sti_keys)} solid TI and {len(self.ctx.liquids)} liquid calphy calculations")
 
     def inspect(self):
-        self.ctx.ok_qha, self.ctx.ok_liq, failed = {}, {}, []
+        self.ctx.ok_qha, self.ctx.ok_liq, self.ctx.ok_sti, failed = {}, {}, {}, []
+        for key in self.ctx.get("sti_keys", []):
+            node = self.ctx[f"sti_{key}"]
+            if node.is_finished_ok and "sweep" in node.outputs:
+                self.ctx.ok_sti[key] = node.outputs.sweep
+            else:
+                failed.append(f"sti_{key}<{node.pk}>:{node.exit_status}")
         for key in self.ctx.solids:
             node = self.ctx[f"qha_{key}"]
             if node.is_finished_ok:
@@ -116,7 +152,7 @@ class TxDiagramWorkChain(WorkChain):
                     failed.append(f"liq_{key}<{node.pk}>:{node.exit_status}")
         if failed:
             self.report("failed calculations (skipped): " + ", ".join(failed))
-        if not self.ctx.ok_qha:
+        if not self.ctx.ok_qha and not self.ctx.ok_sti:
             return self.exit_codes.ERROR_NO_SOLID
         if not self.ctx.ok_liq:
             return self.exit_codes.ERROR_NO_LIQUID
@@ -124,6 +160,7 @@ class TxDiagramWorkChain(WorkChain):
     def assemble(self):
         nodes = {f"qha_{k}": v for k, v in self.ctx.ok_qha.items()}
         nodes.update({f"liq_{k}": v for k, v in self.ctx.ok_liq.items()})
+        nodes.update({f"sti_{k}": v for k, v in self.ctx.ok_sti.items()})
         try:
             res = assemble_diagram(self.inputs.spec, self.ctx.solid_params, self.ctx.liquid_params, **nodes)
         except Exception as exc:  # the calcfunction is recorded as excepted; keep the WorkChain readable

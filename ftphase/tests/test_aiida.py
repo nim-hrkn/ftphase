@@ -234,3 +234,54 @@ def test_prepare_cells_calcfunction(aiida_profile_clean):
     assert liq["lqd_x0_25"]["n_atoms"] == 32 and abs(liq["lqd_x0_25"]["x_actual"] - 0.25) < 1e-9
     for k in list(sol) + list(liq):
         assert isinstance(res[("solid_" if k in sol else "liquid_") + k], orm.StructureData)
+
+
+def test_repeat_structure_calcfunction(aiida_profile_clean):
+    from ase.build import bulk
+
+    from ftphase.aiida.functions import repeat_structure
+
+    s = orm.StructureData(ase=bulk("Cu", "fcc", a=3.6, cubic=True))
+    big = repeat_structure(s, orm.Int(2))
+    assert len(big.sites) == 32 and abs(big.cell[0][0] - 7.2) < 1e-9
+
+
+def test_assemble_diagram_uses_solid_ti_rows(aiida_profile_clean):
+    """A cell with a calphy solid sweep uses the TI rows inside the sweep range (QHA rows below it);
+    a cell with TI but no QHA is still used; the QHA - TI difference is recorded."""
+    from ftphase.aiida.functions import assemble_diagram
+
+    spec = {"elements": ["A", "B"], "x_element": "B", "model": "toy",
+            "assemble": {"T_min": 900.0, "T_max": 1100.0, "T_step": 50.0, "fits": {"fcc": "poly", "liquid": "poly"}, "poly_order": 2, "config_terms": {"fcc": "ideal"},
+                         "sigma": {"fcc": 0.001, "liquid": 0.001}, "hull": {"min_width": 0.005, "gap_tol": 2.5}, "drop_edge_beyond_liquid": False, "sensitivity_samples": 3, "title": "toy", "xlabel": "x"}}
+    xs = [0.0, 0.5, 1.0]
+    sol_p = {f"s0{i}_fcc": {"phase": "fcc", "kind": "solution", "x": x, "config": 0, "n_atoms": 4, "supercell": [1, 1, 1], "mesh": 60.0} for i, x in enumerate(xs)}
+    liq_p = {f"lqd_x{i}": {"tag": f"lqd_x{i}", "x_target": x, "x_actual": x, "seed": 0, "repeat": 0, "counts": {}, "temperature": [1100.0, 900.0], "mode": "ts", "n_atoms": 32} for i, x in enumerate(xs)}
+    T = np.arange(0.0, 1101.0, 50.0)
+    nodes = {}
+    for key, m in sol_p.items():
+        g_solid = -3.0 - 0.05 * m["x"] - 1.0e-4 * T                      # toy solid: G = E0 - S T, no QHA in s02 (TI only)
+        if key != "s02_fcc":
+            arr = orm.ArrayData(); arr.set_array("T", T); arr.set_array("G", g_solid); arr.set_array("V", np.full_like(T, 16.0))
+            arr.set_array("hw_eV", np.array([0.02, 0.03])); arr.set_array("weights", np.array([1.0, 1.0]))
+            nodes[f"qha_{key}"] = arr
+        Tt = np.linspace(900.0, 1100.0, 21)
+        sti = orm.ArrayData(); sti.set_array("temperature", Tt); sti.set_array("free_energy", -3.0 - 0.05 * m["x"] - 1.0e-4 * Tt - 0.002); sti.set_array("error", np.full_like(Tt, 1e-4))
+        nodes[f"sti_{key}"] = sti
+    for key, m in liq_p.items():
+        Tl = np.linspace(1100.0, 900.0, 21)
+        liq = orm.ArrayData(); liq.set_array("temperature", Tl); liq.set_array("free_energy", -2.95 - 0.05 * m["x_actual"] - 2.0e-4 * Tl); liq.set_array("error", np.full_like(Tl, 1e-4))
+        nodes[f"liq_{key}"] = liq
+    res = assemble_diagram(orm.Dict(dict=spec), orm.Dict(dict=sol_p), orm.Dict(dict=liq_p), **nodes)
+    s = res["summary"].get_dict()
+    assert sorted(s["solids_used"]) == sorted(sol_p) and s["solids_ti_only"] == ["s02_fcc"]
+    assert set(s["qha_minus_ti_meV"]) == {"s00_fcc", "s01_fcc"}
+    assert all(abs(v - 2.0) < 0.5 for d in s["qha_minus_ti_meV"].values() for v in d.values())   # QHA sits 2 meV above the TI rows by construction (minus the small F_q-F_cl of the toy frequencies)
+    import io
+    import pandas as pd
+    with res["free_energies"].open() as f:
+        df = pd.read_csv(io.StringIO(f.read()), sep="\t", comment="#")
+    fcc = df[df.phase == "fcc"]
+    assert (fcc[fcc["T"] >= 900.0]["method"].str.contains("calphy ts solid")).all()
+    assert (fcc[fcc["T"] < 900.0]["method"].str.contains("QHA")).all()
+    assert "report" in res and "figure" in res
