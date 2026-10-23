@@ -54,7 +54,7 @@ def make_spec_agcu(smoke: bool, gpu: bool):
         "relax": {"fmax": 1e-3, "cell": True},
         "solids": [{"phase": "fcc", "kind": "solution", "base": "fcc-Ag", "repeat": [2, 2, 2], "x": xs, "n_configs": 2, "series": "random", "seed": 0,
                     "supercell": [2, 2, 2], "mesh": 60.0}],
-        "solids_ti": {"phases": ["fcc"], "T_sweep": [900.0, 1400.0], "T_hi_by_x": [[0.0, 1360.0], [1.0, 1480.0]], "min_atoms": 200,
+        "solids_ti": {"phases": ["fcc"], "T_sweep": [900.0, 1400.0], "T_hi_by_x": [[0.0, 1360.0], [1.0, 1480.0]], "min_atoms": 2000,   # 256-atom Frenkel-Ladd cells are ~7 meV/atom too low (ti_convergence.py); 4x4x4 of 32 = 2048
                       "n_equilibration_steps": 10000, "n_switching_steps": [10000, 10000], "n_iterations": 1, "mode": "ts"},
         "liquids": {"base": "fcc-Ag", "repeat": [4, 4, 4], "x": [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0], "seed": 100, "T_sweep": [1500.0, 950.0],
                     "T_override": {"0.0": 1050.0, "1.0": 1100.0}, "n_repeats": 1, "n_equilibration_steps": 10000, "n_switching_steps": [10000, 10000],
