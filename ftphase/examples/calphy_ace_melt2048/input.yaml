@@ -1,0 +1,39 @@
+calculations:
+- mode: ts
+  element:
+  - Al
+  - Li
+  mass:
+  - 26.9815
+  - 6.94
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/calphy_ace_melt2048/fcc_al_2048.data
+  reference_phase: solid
+  temperature:
+  - 800.0
+  - 1000.0
+  pressure: 0
+  pair_style: pace product
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/pyiron-examples/workshop2022-phase-diagram/resources/lammps/potentials/ace/AlLi-6gen-18May.yace
+    Al Li'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 2
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: fcc2048
+  md:
+    cmdargs: -k on g 1 -sf kk -pk kokkos newton on neigh half
+  lammps_executable: /home/kino/kino/Claude/Projects/PhaseDiagram/env/lammps-gpu/bin/lmp_gpu
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 1
+    memory: 8GB
+    walltime: '48:00:00'
+    commands:
+    - source /home/kino/miniforge3/etc/profile.d/conda.sh && conda activate /home/kino/kino/Claude/Projects/PhaseDiagram/env/ftphase
+    options:
+      gres: gpu:1

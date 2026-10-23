@@ -17,7 +17,9 @@ import numpy as np
 import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-IN = os.path.join(HERE, "out_mygardenx1")
+import argparse as _ap
+_args = _ap.ArgumentParser(); _args.add_argument("--in", dest="indir", default=None); _args = _args.parse_args()
+IN = os.path.abspath(_args.indir) if _args.indir else (os.path.join(HERE, "out_mygardenx1") if os.path.isdir(os.path.join(HERE, "out_mygardenx1")) else os.path.join(HERE, "out"))
 OUT = os.path.join(IN, "ws")
 T_DIAG = np.arange(950.0, 2000.1, 10.0)
 
