@@ -10,7 +10,7 @@ from ftphase.configurational import (
 
 
 def test_ideal_binary_matches_workflow_example():
-    # docs/workflow.html eq. (E3)-(E8): fcc-Al0.9Li0.1
+    # docs/obsolete_workflow.html eq. (E3)-(E8): fcc-Al0.9Li0.1
     s = ideal_entropy(0.1)
     assert abs(s - 2.80135e-5) < 1e-9
     assert abs(ideal_entropy(0.1, per="mol") - 2.70289) < 1e-4

@@ -18,7 +18,7 @@ pycalphad's Model.ideal_mixing_energy (Otis & Liu, J. Open Res. Softw. 5, 1
 (2017)), i.e. the same convention a TDB file uses, so that values can later be
 compared with pycalphad.
 
-Rules carried over from the project workflow (docs/workflow.html, section 4):
+Rules carried over from the project workflow (docs/obsolete_workflow.html, section 4):
 never apply the all-site ideal term to an ordered phase; never add an ideal
 term to a free energy that already contains configurational statistics
 (MC/TI, liquid TI with UFM reference); record which term was added.

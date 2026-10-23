@@ -102,7 +102,7 @@ Checked 2026-10-21 on this host: `/home/kino/miniforge3/envs/alamode` holds aiid
   - `references/examples.md` — which upstream example (calphy / pycalphad / pyiron) covers which workflow stage, what none of them cover, and the run-time pitfalls found on 2026-10-21.
   - `references/ftphase.md` — module map, decision notes and verified facts for the project's `ftphase` package.
   - `references/public-sources.md` — public codes that can fill the uncovered stages (icet, sqsgenerator, matcalc, phonopy QHA, smol, ESPEI, exaPD) and the fact that the installed calphy 2.3.0 `calphy.phase_diagram.PhaseDiagram` already does CALPHAD-surface fitting, limited-range phases and TDB export (no upstream example).
-- `docs/workflow.html` (+ `workflow.svg`) — the full design document with numbered stages 01→06 (02A/02B structure series, 03A solid QHA / 03B liquid TI, 04A configurational term, 05 common reference, 06 equilibrium) and equations labelled `eq-A1`…`eq-J2`. The skill references point here by relative path, so keep the `docs/`, `skills/`, `資料/` folder structure intact.
+- `docs/obsolete_workflow.html` (+ `workflow.svg`) — the full design document with numbered stages 01→06 (02A/02B structure series, 03A solid QHA / 03B liquid TI, 04A configurational term, 05 common reference, 06 equilibrium) and equations labelled `eq-A1`…`eq-J2`. The skill references point here by relative path, so keep the `docs/`, `skills/`, `資料/` folder structure intact.
 - `docs/examples.html` — the executed examples mapped onto stages 01–07 with results, environments and pitfalls (Japanese; long form of `references/examples.md`).
 - `docs/ftphase.html` — design, verification and worked results of the `ftphase` package (Japanese; long form of `references/ftphase.md`).
 - `docs/public-sources.html` — survey (2026-10-21) of public source code for the stages no example covers, with licences, what was verified locally, and a recommended combination (long form of `references/public-sources.md`).
@@ -111,7 +111,7 @@ Checked 2026-10-21 on this host: `/home/kino/miniforge3/envs/alamode` holds aiid
 
 ## Conventions that matter here
 
-- Numerical examples in `docs/workflow.html` (e.g. fcc-Al0.9Li0.1 S_conf) are illustrations, not computed results for any user system. Keep "not yet executed" clearly separate from measured results in anything you write.
+- Numerical examples in `docs/obsolete_workflow.html` (e.g. fcc-Al0.9Li0.1 S_conf) are illustrations, not computed results for any user system. Keep "not yet executed" clearly separate from measured results in anything you write.
 - Cite PDF page numbers when reporting content from `資料/`.
 - State units, reference states, composition basis (atom vs formula unit), and pressure explicitly; the skill forbids mixing eV/atom with J/mol or double-counting vibrational/configurational/ideal-mixing terms.
 - Migration status: the destination machine has ALAMODE and MLIP installed (user-confirmed 2026-10-21). Nothing has been transferred or submitted yet. Do not assume AiiDA/MCP, calphy/LAMMPS, icet, or TDB tooling exist there; check first, and start with the small-scale connectivity checks in `references/migration.md` before scaling up.

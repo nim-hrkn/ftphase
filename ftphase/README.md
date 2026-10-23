@@ -1,6 +1,6 @@
 # ftphase — MLIP の自由エネルギーから有限温度相図を組む Python パッケージ
 
-`docs/workflow.html` の工程のうち、calphy・pycalphad・pyiron の公開例が覆っていなかった部分
+`docs/obsolete_workflow.html` の工程のうち、calphy・pycalphad・pyiron の公開例が覆っていなかった部分
 （`docs/examples.html`、`docs/public-sources.html` 参照）を、公開コードの上に薄く実装したものです。
 作成日 2026-10-21。版 0.1.0。ライセンス MIT（依存パッケージは各自のライセンスに従う。calphy は Academic Software Licence）。
 
@@ -18,7 +18,7 @@
 | 06 凸包・共通接線 | `ftphase.equilibrium` | 点相（line compound）と限定組成相を含む全相の下側凸包（単調鎖）、式 (H3) の共通接線を fsolve で精密化、混和ギャップ検出、化学ポテンシャル (H4)、てこの法則 (H5)、対称正則溶体の解析解 | pyiron workshop `helpers.find_common_tangent` の一般化、pymatgen の凸包と同じ考え方 |
 | 07 T–x 図・不変反応・誤差・記録 | `ftphase.diagram` | 温度走査、共存相の組の変化で不変反応を挟み込む、Monte Carlo による G の不確かさの伝播、温度ごとの帯で描画、TSV + JSON の記録 | — |
 
-式番号は `docs/workflow.html` のラベルです。
+式番号は `docs/obsolete_workflow.html` のラベルです。
 
 ## 導入
 
@@ -297,4 +297,4 @@ Ni–Al（第 3 段の表を後処理だけで再組立、64 秒）：Ni 反サ�
 - pymatgen: S. P. Ong et al., Comput. Mater. Sci. 68, 314 (2013)
 - smol（Wang–Landau の状態密度の受け口）: L. Barroso-Luque et al., JOSS 7, 4504 (2022)
 - 凸包: A. M. Andrew, Inf. Process. Lett. 9, 216 (1979)（単調鎖）
-- 本プロジェクトの式: `docs/workflow.html`（eq-A1 … eq-J2）
+- 本プロジェクトの式: `docs/obsolete_workflow.html`（eq-A1 … eq-J2）

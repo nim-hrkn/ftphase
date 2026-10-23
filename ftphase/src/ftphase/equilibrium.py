@@ -1,6 +1,6 @@
 """Stage 06: lower convex hull of all phases at one (T, P) and common tangents.
 
-Implements eq. (H1)-(H5) of docs/workflow.html for a binary system:
+Implements eq. (H1)-(H5) of docs/obsolete_workflow.html for a binary system:
 
 * every phase contributes points (x, g) to the lower convex hull in the
   (x, g) plane: a solution phase as a dense sampling of its fitted g(x)
