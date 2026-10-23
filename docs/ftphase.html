@@ -72,6 +72,8 @@
 </tbody></table>
 <p><strong>注意点：GPU 1 枚ではジョブが直列になるため、総スループットは CPU 8 コアと同程度です。利点は 1 本の待ち時間短縮と、CPU を QHA に空けられることです。</strong>（CPU 8 コア = 4 ランク × 2 本同時。この結論はジョブが 1 本あたり 2〜7 分の 256 原子系での測定に基づく）</p>
 
+<p><strong>GRACE の GPU 対応（2026-10-23、<code>env/lammps-gpu-grace/</code>）</strong>：GRACE の pair style は lammps-user-pace v.2025.12.4.p1 にあり、conda-forge の <code>grace.patch</code> は LAMMPS 22 Jul 2025 update 6 用（30 Sep 2026 では Kokkos の型名が変わって当たらない）。update 6 + patch + 30 Sep 2026 から移植した <code>pair_hybrid_scaled_kokkos</code> で <code>lmp_gpugrace</code> をビルド（cuBLAS が要るので env/ftphase に libcublas-dev を追加）。モデル：<code>GRACE-FS-OAM.yaml</code>（checkpoint から tensorpotential で FS 形式に書き出し）と <code>GRACE-1L-OMAT-medium-base-fp64</code> の kokkos.npz。fcc Al₀.₇Li₀.₃ 2,048 原子 50 ステップで <code>grace/fs/kk</code>・<code>grace/1l/kk</code>・<code>hybrid/scaled/kk</code>（grace/fs/kk + ufm、calphy の液相混合）が GPU で動き、エネルギーは CPU と全桁一致、MD ループは GPU 1 ランク 2.6 s / CPU 4 ランク 4.9 s / CPU 1 ランク 13.8 s。<code>gpu_capability</code> は <code>&lt;style&gt;/kk</code> の有無を確認し、<code>product</code> の付加は pace のみ。</p>
+
 <h3>3.5 01 から出発した T–x 図：ACE Al–Li、Slurm + GPU（2026-10-22）</h3>
 <p><code>ftphase/examples/alli_ace_txdiagram/</code>。<code>pipeline.py</code> の 4 段（prepare / solids / calphy / assemble）を <code>run_pipeline.sh</code> が Slurm に投入する。固相 QHA は CPU ジョブ、液相 calphy は GPU ジョブ 6 本（calphy が自分で sbatch）、組立は <code>--dependency=afterany</code> で全部を待つ。投入後はセッションに依存しない。途中でマシンが再起動した（15:34）が、待機中のジョブは Slurm が再起動後に流し、止まった 1 本と凝固で止まった 1 本は <code>run_resume.sh</code> が未完了の組成だけを再投入して組立をやり直した。</p>
 <table><thead><tr><th>段</th><th>内容</th><th>時間</th></tr></thead><tbody>

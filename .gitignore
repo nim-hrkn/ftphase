@@ -1,6 +1,17 @@
 # conda prefix environments (recreate from CLAUDE.md / ftphase/README.md)
-env/
-env*/
+# conda prefix envs and source builds: ignore everything except the build recipes
+env/*
+!env/lammps-gpu/
+env/lammps-gpu/*
+!env/lammps-gpu/build.sh
+!env/lammps-gpu-grace/
+env/lammps-gpu-grace/*
+!env/lammps-gpu-grace/build.sh
+!env/lammps-gpu-grace/README.md
+!env/lammps-gpu-grace/test_grace.sh
+!env/lammps-gpu-grace/test/
+env/lammps-gpu-grace/test/*
+!env/lammps-gpu-grace/test/in.grace
 # python
 __pycache__/
 *.pyc
@@ -43,4 +54,3 @@ pyiron-examples/**/scratch/
 calphy-examples/potentials/
 # live log of the headless session (ftphase/examples/aiida_txdiagram/out/)
 headless_claude.log
-potentials/grace/*.npz
