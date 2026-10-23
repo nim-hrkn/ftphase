@@ -102,4 +102,22 @@ QHA 5 本すべて exit 0、calphy 2 本 exit 0、`assemble_diagram` が REPORT.
 
 `out/alli_ace.pk.json`。QHA 13 セル（fcc 32 原子 x = 0, 0.0625–0.25 × 2 配置、Al₃Li 4 原子、B32 16 原子 × 3；supercell 2×2×2 か 3×3×3、密度メッシュ 60 Å、9 体積、T 0–1100 K 25 K 刻み）、
 calphy GPU 液相 6 本（256 原子、1100 → 700 K、x = 0.1 は 800 K まで、10000 + 10000 ステップ、3 反復）。
+QHA 13 本は 2 本ずつ（4 コア × 2）走り、runner 時間 3–24 秒/セル、投入から約 4 分で全完了（exit 0）。GPU 液相は 1 本ずつ（`--gres=gpu:1`）。
 結果と例 5 との比較は `out/alli_ace/REPORT.md` と末尾の「結果」節（終了後に追記）。
+
+## 結果（pk 191、2026-10-23 11:34 投入 → 12:27 完了、約 53 分；`out/alli_ace/`）
+
+全 CalcJob が exit 0（QHA 13、calphy 6）。所要時間の内訳は QHA 4 分、GPU 液相 6 本 × 8.5 分（直列）、組立 10 秒。例 5（同じ物理、Slurm チェーン版、phonopy 固定メッシュ [4,4,4]）との比較（古典水準、0 GPa、格子 700–1100 K、10 K 刻み）：
+
+| 特徴 | AiiDA 版（密度メッシュ 60 Å） | 例 5（[4,4,4] メッシュ） | 実験 |
+|---|---|---|---|
+| 共晶 | 760–770 K、液相 x ≈ 0.32、fcc 0.164 + B32 0.482 | 760–770 K、x ≈ 0.30–0.31、fcc 0.157 + B32 0.480 | 873 K、x ≈ 0.30、fcc ≈ 0.14 |
+| 純 Al の融点 | 880–890 K | 860–870 K | 933.5 K |
+| B32 側の液相線の終わり（x = 0.5） | 850–860 K | 840–850 K | 973 K |
+| 800 K の二相域 | fcc(0.136)+liquid(0.257)、liquid(0.364)+B32(0.487) | fcc(0.128)+liquid(0.250)、liquid(0.360)+B32(0.484) | — |
+| Al₃Li | 700 K 以上で現れない | 同じ | 準安定 δ' |
+| fit 残差（900 K） | fcc 0.2、liquid 0.4 meV/atom | — | — |
+
+- Al 融点が +20 K、B32 側が +10 K 上がったのは HANDOFF の見込みどおり、密度メッシュ 60 Å で純 Al の F_vib が正しくなった分（例 6 と同じ向き）。共晶温度・組成・固溶限は例 5 と 0.01 以内で一致し、AiiDA 化で物理は変わっていない。
+- **新たに出た差**：700–790 K に幅 ≤ 0.09 の fcc+fcc 区間（x = 0.03–0.12、REPORT.md の「Same-phase segments」、tsv では `miscibility gap`）。Monte Carlo の一様オフセットには動じない（700 K で 23/30）が、液相とも B32 とも無関係な Al 側の狭い帯で、物理ではなく 32 原子 2 配置の fcc 系列（x = 0.0625 の 2 配置はどちらも Cmcm、x ≥ 0.125 は P1）の配置ノイズを 3 次多項式の過剰項が拾ったもの。例 5 では [4,4,4] メッシュのノイズ配分が違って出なかった。対処は例 6 と同じ（64 原子 SQS、`fits={'fcc':'rk'}` か `poly_order` を下げる、`sigma['fcc']` を配置ばらつきに合わせる）。本 WorkChain の目的（AiiDA 化の検証）には影響しない。
+- 図 `out/alli_ace/07_phase_diagram.png`、表 `07_two_phase_regions.tsv`、`07_sensitivity.tsv`、`summary.json`、各 CalcJob の pk と作業 dir は `calcjobs.tsv`。provenance は `verdi -p ftphase node graph generate 191`。

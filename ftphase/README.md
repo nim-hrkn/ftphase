@@ -236,7 +236,7 @@ fit のノイズ：液相の下側凸包に幅 0.007（x = 0.47–0.48、850 K �
 
 ### 8. AiiDA 版 T–x 図：ACE Al–Li、例 5 と同じ物理 — `aiida_txdiagram/` → `out/alli_ace/`
 
-煙試験（pk 118）は 3 分で `assemble_diagram` まで通過。本番（pk 191、2026-10-23 11:34 投入；QHA 13 セル、密度メッシュ 60 Å、GPU 液相 6 本 × 3 反復）の結果と例 5 との比較は `aiida_txdiagram/out/alli_ace/REPORT.md` と `aiida_txdiagram/README.md` の「結果」節。
+煙試験（pk 118）は 3 分で `assemble_diagram` まで通過。本番 pk 191（2026-10-23 11:34 投入、12:27 完了、53 分；QHA 13 セル・密度メッシュ 60 Å、GPU 液相 6 本 × 3 反復、全 19 CalcJob が exit 0）：共晶 760–770 K・液相 x ≈ 0.32・fcc 0.164 + B32 0.482、純 Al 融点 880–890 K（例 5 の 860–870 K から密度メッシュの分だけ上昇、例 6 と同じ向き）、B32 側の液相線の終わり 850–860 K、Al₃Li は 700 K 以上で現れない。共晶の温度・組成・固溶限は例 5 と 0.01 以内で一致。700–790 K に幅 ≤ 0.09 の fcc+fcc 帯（x = 0.03–0.12）が出るが、32 原子 2 配置の配置ノイズを過剰項の 3 次多項式が拾ったもの（例 6 の 64 原子 SQS / Redlich–Kister で消える種類）。詳細は `aiida_txdiagram/README.md` の「結果」節と `out/alli_ace/REPORT.md`。
 
 ## 既知の制限
 

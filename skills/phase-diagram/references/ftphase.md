@@ -48,4 +48,4 @@ AiiDA 層（`ftphase.aiida`、2026-10-23）：CalcJob `ftphase.qha`（1 セル�
 - 多項式 fit は G にそのまま当てない：理想混合項を解析的に分離して過剰項だけを fit（`builder_from_table` の `ideal_excess_fit`、既定で有効）。そうしないと偽の fcc+fcc / liquid+liquid 帯が出る。
 - GPU（2026-10-22）：calphy ts を `lmp_gpu`（LAMMPS 30 Sep 2026 KOKKOS/CUDA）で実行。1 ランク GPU が CPU 4 ランクの 1.7〜3.3 倍速、1 点のエネルギー・圧力は全桁一致。別 seed 4 サンプルの G の標準偏差は 900 K で 1.3〜1.4 meV/atom、純 Al の融点は 902–927 K に散る（5000+5000 ステップ、1 反復）。`n_iterations ≥ 3` にして `G_err` を使うこと。
 - phonopy を `primitive_matrix='auto'` で使うと F は基本胞あたりになる。入力セルあたりへの換算を忘れると 4 倍小さくなる（修正済み、回帰テスト有り）。
-- AiiDA 版（例 8、`examples/aiida_txdiagram/`、2026-10-23）：煙試験 pk 118 が 3 分で REPORT.md まで通過。本番 pk 191（例 5 と同じ物理、密度メッシュ 60 Å）を 11:34 に投入。結果は `out/alli_ace/REPORT.md`。
+- AiiDA 版（例 8、`examples/aiida_txdiagram/`、2026-10-23）：煙試験 pk 118 が 3 分で REPORT.md まで通過。本番 pk 191（例 5 と同じ物理、密度メッシュ 60 Å）は 53 分で完走（19 CalcJob すべて exit 0）：共晶 760–770 K・x ≈ 0.32・fcc 0.164 + B32 0.482、Al 融点 880–890 K（例 5 の 860–870 K からメッシュの分だけ上昇）、B32 側 850–860 K。例 5 と 0.01 以内で一致。700–790 K の幅 ≤ 0.09 の fcc+fcc 帯は 32 原子 2 配置の配置ノイズ（例 6 の 64 原子 SQS / rk で消える種類）。結果 `out/alli_ace/REPORT.md`。
