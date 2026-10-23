@@ -81,9 +81,9 @@
 <tr><td>04–07</td><td>F_q − F_cl で古典水準へ、理想混合（fcc）・副格子（B32）、表、凸包、不変反応、Monte Carlo 誤差帯、図</td><td>5 s</td></tr>
 </tbody></table>
 <table><thead><tr><th>特徴</th><th>ACE（古典水準、0 GPa）</th><th>実験</th></tr></thead><tbody>
-<tr><td>共晶</td><td>760–770 K、液相 x ≈ 0.30–0.31、fcc 0.157 + B32 0.480</td><td>873 K、x ≈ 0.30、fcc ≈ 0.14</td></tr>
-<tr><td>純 Al 融点</td><td>860–870 K（例 3 の (c) 874 K と整合）</td><td>933.5 K</td></tr>
-<tr><td>B32 側の液相線の終わり（x = 0.5）</td><td>840–850 K</td><td>973 K</td></tr>
+<tr><td>共晶</td><td>760–770 K、液相 x ≈ 0.30–0.31、fcc 0.157 + B32 0.480</td><td>875 K、x ≈ 0.24、fcc ≈ 0.14</td></tr>
+<tr><td>純 Al 融点</td><td>860–870 K（例 3 の (c) 874 K と整合）</td><td>933.6 K</td></tr>
+<tr><td>B32 側の液相線の終わり（x = 0.5）</td><td>840–850 K</td><td>975 K</td></tr>
 <tr><td>Al₃Li</td><td>700 K 以上で不安定（誤差サンプル 30 回中 1 回）</td><td>準安定 δ'</td></tr>
 <tr><td>誤差帯（固相 2、液相 1.4 meV/atom）</td><td>fcc 固溶限 ±0.01、800 K の液相側境界 ±0.03–0.05、共晶温度 ±15 K 程度</td><td>—</td></tr>
 </tbody></table>
@@ -93,16 +93,17 @@
 <p><code>alli_ace_txdiagram/pipeline_full.py</code> + <code>run_pipeline_full.sh</code>。例 5 の 2 つの改良を一度に行う：fcc 固溶体を 64 原子 icet SQS（固定超格子の MC、<code>sqs_icet(method='supercells')</code>）にして配置ノイズを下げる、Li 側（bcc 固溶体 x = 0.75–1 の 64 原子 SQS、液相 x = 0.6–1.0 の GPU calphy）を加えて 0 ≤ x ≤ 1 の図にする。Al 側の液相は例 5 を再利用。Slurm job 22546（固相 CPU）、22547–22551（液相 GPU）、22552（組立、afterany）。<strong>結果は <code>out_full/REPORT.md</code>（主要数値、誤差帯、例 5 との G の差）と <code>out_full/07_phase_diagram.png</code> に自動で書かれる。</strong></p>
 <p>結果（<strong>最終組立 2026-10-23 01:22</strong>、Slurm 22620；REPORT.md の文面は 08:18 に再生成；格子 650–1100 K）。固相 16 セルは密度メッシュ 60 Å の QHA（Slurm 22619）、液相は 11 組成 × 3–4 run（seed 違いの 1100 → 700 K 3 本 + 700 → 650/500 K の掃引、計 32 本、Slurm 22553–22584・22622）を (x, T) で平均。ユーザー提供の Al₂Li₃（mp-16506）と Al₄Li₉（mp-568404）は <code>addsolid</code> で点相、液相は理想混合 + 4 項 Redlich–Kister。</p>
 <table><thead><tr><th>特徴</th><th>ACE 例 6（最終）</th><th>中間組立（10-22 20:45、[4,4,4]、液相 1 本）</th><th>例 5（32 原子ランダム）</th><th>実験</th></tr></thead><tbody>
-<tr><td>共晶（Al 側）</td><td>760–770 K、液相 x ≈ 0.31–0.32、fcc 0.15 ± 0.02 + B32 0.482</td><td>760–770 K、0.31、fcc 0.11</td><td>760–770 K、0.30、fcc 0.157</td><td>873 K、0.30、fcc ≈ 0.14</td></tr>
-<tr><td>純 Al 融点</td><td>890–900 K</td><td>850–860 K</td><td>860–870 K</td><td>933.5 K</td></tr>
-<tr><td>B32 の合致溶融</td><td>850–860 K</td><td>840–850 K</td><td>—</td><td>973 K</td></tr>
-<tr><td>Al₂Li₃</td><td>安定、710–720 K で B32 + 液相に分解</td><td>限界的</td><td>—</td><td>約 790 K まで</td></tr>
-<tr><td>Al₄Li₉</td><td>安定、670–680 K で Al₂Li₃ + 液相に分解</td><td>700 K 以上で不安定</td><td>—</td><td>約 600 K まで</td></tr>
-<tr><td>Li 側（650 K）</td><td>Al₄Li₉(0.69) + 液相(0.78)；bcc Li は格子内に現れない</td><td>B32 + 液相のみ</td><td>—</td><td>Li 融点 453 K</td></tr>
+<tr><td>共晶（Al 側）</td><td>760–770 K、液相 x ≈ 0.31–0.32、fcc 0.15 ± 0.02 + B32 0.482</td><td>760–770 K、0.31、fcc 0.11</td><td>760–770 K、0.30、fcc 0.157</td><td>875 K、0.24、fcc ≈ 0.14</td></tr>
+<tr><td>純 Al 融点</td><td>890–900 K</td><td>850–860 K</td><td>860–870 K</td><td>933.6 K</td></tr>
+<tr><td>B32 の合致溶融</td><td>850–860 K</td><td>840–850 K</td><td>—</td><td>975 K</td></tr>
+<tr><td>Al₂Li₃</td><td>安定、710–720 K で B32 + 液相に分解</td><td>限界的</td><td>—</td><td>包晶 793 K で生成</td></tr>
+<tr><td>Al₄Li₉</td><td>安定、670–680 K で Al₂Li₃ + 液相に分解</td><td>700 K 以上で不安定</td><td>—</td><td>543 K で生成（AlLi₂₋ₓ は 608 K まで）</td></tr>
+<tr><td>Li 側（650 K）</td><td>Al₄Li₉(0.69) + 液相(0.78)；bcc Li は格子内に現れない</td><td>B32 + 液相のみ</td><td>—</td><td>Li 融点 453.8 K、Li 側共晶 452 K</td></tr>
 <tr><td>64 原子 SQS − 32 原子ランダム平均（fcc、800 K）</td><td>−0.9、−0.9、+0.5、−2.9 meV/atom</td><td>同左</td><td>半幅 0–1.7 meV/atom</td><td>—</td></tr>
 </tbody></table>
 <p>メッシュ収束の効果：fcc Al の QHA F は [4,4,4]（基本胞で 64 q 点）→ 60 Å で 700 K −6.0、900 K −8.8 meV/atom（bcc Li −1.7/−3.4、B32 −0.3）。これで Al 融点が 850 → 890 K に上がり、calphy の固液 TI だけの例 4（902–927 K）と整合。液相の run 間のばらつきは 0.1–0.2 meV/atom（最大 0.55）で、Monte Carlo の σ は下限 1.4 meV/atom。誤差帯（30 サンプル）：770 K の fcc + 液相は fcc 0.11 ± 0.03・液相 0.29 ± 0.02、850 K は 0.04 ± 0.02・0.13 ± 0.05。液相の下側凸包に出る幅 0.007（x = 0.47–0.48）と幅 0.02–0.10（x = 0.88–0.98、650–750 K）の liquid+liquid 区間は Monte Carlo で位置が動かず、統計ノイズによる fit の曲率（相境界ではない）。格子が 650 K で止まるのは液相の run が全組成にある温度だけを使うため。配置ノイズを下げても共晶温度は変わらず、温度が実験より約 100 K 低い主因はポテンシャルと古典水準側にある。REPORT.md の誤差帯節が空だった不具合（感度解析の温度が格子 1 つ飛ばしで 720/800/900 K が無い）は最寄り温度を使うよう直した。</p>
 
+<p>3.5・3.6 の実験欄の出典：H. Okamoto, J. Phase Equilib. Diffus. 33, 500 (2012) Fig. 1（Hallstedt &amp; Kim 2007 の CALPHAD 評価に基づく。読み取り値は <code>資料/10.1007/s11669-012-0119-8/Fig1_readings.md</code>）。共晶組成は図の読み取りで x_Li ≈ 0.24（旧記載 0.30 は誤り）。</p>
 <h3>3.7 Ni–Al（組成幅を持つ規則相）：Mishin 2009 EAM、mygardenx1（例 7、2026-10-22）</h3>
 <p><code>ftphase/examples/nial_eam/</code>。B2 NiAl の三重欠陥（Ni 反サイト + Ni 空孔）と L1₂ Ni₃Al の反サイトを副格子モデルで扱い、fcc は 64 原子 SQS、液相は 11 組成 × 3 run の calphy。固相は QHA と calphy TI の両方で計算し、組立は TI を使う。mygardenx1（64 コア）で第 1 段 12 分、第 2 段 11 分。</p>
 <table><thead><tr><th>特徴</th><th>EAM（古典）</th><th>実験</th></tr></thead><tbody>
@@ -122,9 +123,9 @@
 <p>設定（<code>setup_aiida.sh</code>、冪等）：プロファイル <code>ftphase</code>（SQLite + RabbitMQ、<code>verdi presto</code>；既定プロファイル <code>alamode_pg</code> は変えないので <code>verdi</code> は常に <code>env/ftphase/bin/verdi -p ftphase</code>）、計算機 <code>mygarden5</code>（core.local + core.slurm、<code>~/aiida_run/ftphase</code>）、コード <code>ftphase-qha@mygarden5</code>・<code>calphy@mygarden5</code>（prepend で <code>env/ftphase</code> を activate）、デーモン 2 worker。プラグインを変えたら <code>pip install -e ./ftphase --no-deps</code> と <code>verdi -p ftphase daemon restart</code>。</p>
 <p>煙試験（pk 118、fcc 2 + B32 3 セル、液相 2 本 × 1000 ステップ）は 3 分で REPORT.md と図まで通過。本番 pk 191（2026-10-23 11:34 投入、12:27 完了、53 分：QHA 13 セル・密度メッシュ 60 Å・9 体積は 4 分、GPU 液相 6 本 × 3 反復が直列で 8.5 分ずつ、組立 10 秒；19 CalcJob すべて exit 0）。</p>
 <table><thead><tr><th>特徴</th><th>AiiDA 版（メッシュ 60 Å）</th><th>例 5（[4,4,4]）</th><th>実験</th></tr></thead><tbody>
-<tr><td>共晶</td><td>760–770 K、液相 x ≈ 0.32、fcc 0.164 + B32 0.482</td><td>760–770 K、x ≈ 0.30–0.31、fcc 0.157 + B32 0.480</td><td>873 K、x ≈ 0.30、fcc ≈ 0.14</td></tr>
-<tr><td>純 Al の融点</td><td>880–890 K</td><td>860–870 K</td><td>933.5 K</td></tr>
-<tr><td>B32 側の液相線の終わり</td><td>850–860 K</td><td>840–850 K</td><td>973 K</td></tr>
+<tr><td>共晶</td><td>760–770 K、液相 x ≈ 0.32、fcc 0.164 + B32 0.482</td><td>760–770 K、x ≈ 0.30–0.31、fcc 0.157 + B32 0.480</td><td>875 K、x ≈ 0.24、fcc ≈ 0.14</td></tr>
+<tr><td>純 Al の融点</td><td>880–890 K</td><td>860–870 K</td><td>933.6 K</td></tr>
+<tr><td>B32 側の液相線の終わり</td><td>850–860 K</td><td>840–850 K</td><td>975 K</td></tr>
 <tr><td>800 K の二相域</td><td>fcc(0.136)+liquid(0.257)、liquid(0.364)+B32(0.487)</td><td>fcc(0.128)+liquid(0.250)、liquid(0.360)+B32(0.484)</td><td>—</td></tr>
 </tbody></table>
 <p>共晶の温度・組成・固溶限は例 5 と 0.01 以内で一致し、Al 融点と B32 側が 10–20 K 上がったのは密度メッシュで純 Al の F_vib が正しくなった分（例 6 と同じ向き）。AiiDA 化で物理は変わっていない。新たに 700–790 K に幅 ≤ 0.09 の fcc+fcc 帯（x = 0.03–0.12）が出る。液相にも B32 にも関係しない Al 側の狭い帯で、32 原子 2 配置の fcc 系列の配置ノイズを過剰項の 3 次多項式が拾ったもの（Monte Carlo の一様オフセットには動じないので <code>sensitivity</code> では消えない）。対処は例 6 と同じ（64 原子 SQS、<code>fits={'fcc':'rk'}</code>、<code>sigma['fcc']</code> を配置ばらつきに合わせる）。詳細 <code>aiida_txdiagram/README.md</code> の「結果」節、<code>out/alli_ace/REPORT.md</code>。</p>
