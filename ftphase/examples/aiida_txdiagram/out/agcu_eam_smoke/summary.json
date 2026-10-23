@@ -1,0 +1,77 @@
+{
+ "started": "2026-10-23 16:23:59",
+ "solids_used": [
+  "s00_fcc",
+  "s01_fcc",
+  "s02_fcc"
+ ],
+ "solids_missing": [],
+ "liquids_used": [
+  "lqd_x0_00",
+  "lqd_x0_50"
+ ],
+ "liquids_missing": [],
+ "solids_ti_used": [
+  "s00_fcc",
+  "s01_fcc",
+  "s02_fcc"
+ ],
+ "qha_minus_ti_meV": {
+  "s00_fcc": {
+   "1000": -8.3560077139739,
+   "1050": -8.6987565939038,
+   "1100": -8.5074025722616
+  },
+  "s02_fcc": {
+   "1000": 19.001832498423,
+   "1050": 19.947734223662,
+   "1100": 21.845946854389
+  }
+ },
+ "solids_ti_only": [
+  "s01_fcc"
+ ],
+ "liquid_x_available": [
+  0.0,
+  0.5
+ ],
+ "liquid_runs_per_x": {
+  "0.0000": 1,
+  "0.5000": 1
+ },
+ "liquid_T_min_K": {
+  "0.0000": 1200.0,
+  "0.5000": 1200.0
+ },
+ "table_check": [
+  "mixed quantum/classical treatment: ['classical', 'classical+harmonic-correction'] (see ftphase.quantum)"
+ ],
+ "T_grid": [
+  1200.0,
+  1400.0,
+  21
+ ],
+ "pure_A_melting_bracket_K": null,
+ "invariants": [],
+ "regions_at_700K": [],
+ "regions_at_800K": [],
+ "regions_at_900K": [],
+ "regions_at_1000K": [],
+ "same_phase_segments": [],
+ "fit_residuals": {
+  "T": 1200.0,
+  "rows": [
+   {
+    "T": 1200.0,
+    "phase": "liquid",
+    "rmse_eV": 1.1322097734007e-15,
+    "flag": false
+   }
+  ]
+ },
+ "sigma_used_eV": {
+  "liquid": 0.0014,
+  "fcc": 0.002
+ },
+ "finished": "2026-10-23 16:24:00"
+}

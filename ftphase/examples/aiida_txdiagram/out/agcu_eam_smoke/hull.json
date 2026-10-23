@@ -1,0 +1,56 @@
+{
+ "relaxed": [
+  {
+   "name": "fcc-Ag",
+   "x": 0.0,
+   "e": -2.849999974721,
+   "V": 17.10448225,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "fcc-Cu",
+   "x": 1.0,
+   "e": -3.5399999686871,
+   "V": 11.81040834375,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  }
+ ],
+ "hull": [
+  {
+   "name": "fcc-Ag",
+   "x": 0.0,
+   "e": -2.849999974721,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Cu",
+   "x": 1.0,
+   "e": -3.5399999686871,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  }
+ ],
+ "ground_state_check": [
+  {
+   "name": "fcc-Ag",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Cu",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  }
+ ],
+ "potential": "CuAg.eam.alloy",
+ "finished": "2026-10-23 16:13:06"
+}
