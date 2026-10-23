@@ -1,0 +1,156 @@
+{
+ "seconds": 63.994043588638306,
+ "T_grid": [
+  950.0,
+  2000.0,
+  106
+ ],
+ "invariants": [
+  {
+   "T_low": 950.0,
+   "T_high": 960.0,
+   "pairs_below": [
+    "B2+L12",
+    "B2+liquid",
+    "L12+fccNi",
+    "fccAl+liquid"
+   ],
+   "pairs_above": [
+    "B2+L12",
+    "B2+liquid",
+    "L12+fccNi"
+   ]
+  },
+  {
+   "T_low": 1630.0,
+   "T_high": 1640.0,
+   "pairs_below": [
+    "B2+L12",
+    "B2+liquid",
+    "L12+fccNi"
+   ],
+   "pairs_above": [
+    "B2+L12",
+    "B2+liquid",
+    "L12+liquid",
+    "fccNi+liquid"
+   ]
+  },
+  {
+   "T_low": 1640.0,
+   "T_high": 1650.0,
+   "pairs_below": [
+    "B2+L12",
+    "B2+liquid",
+    "L12+liquid",
+    "fccNi+liquid"
+   ],
+   "pairs_above": [
+    "B2+liquid",
+    "L12+liquid",
+    "fccNi+liquid"
+   ]
+  },
+  {
+   "T_low": 1670.0,
+   "T_high": 1680.0,
+   "pairs_below": [
+    "B2+liquid",
+    "L12+liquid",
+    "fccNi+liquid"
+   ],
+   "pairs_above": [
+    "B2+liquid",
+    "fccNi+liquid"
+   ]
+  },
+  {
+   "T_low": 1740.0,
+   "T_high": 1750.0,
+   "pairs_below": [
+    "B2+liquid",
+    "fccNi+liquid"
+   ],
+   "pairs_above": [
+    "B2+liquid"
+   ]
+  }
+ ],
+ "B2_range_vs_T": {
+  "1000": [
+   0.49965963588851636,
+   0.6111111111111112
+  ],
+  "1200": [
+   0.4993119969141953,
+   0.6111111111111112
+  ],
+  "1400": [
+   0.49888103318724303,
+   0.6111111111111112
+  ],
+  "1600": [
+   0.4986155615890334,
+   0.6111111111111112
+  ],
+  "1800": [
+   0.5002815419105573,
+   0.6111111111111112
+  ]
+ },
+ "same_phase_segments": [],
+ "regions_at_1200K": [
+  {
+   "phase_a": "liquid",
+   "x_a": 0.2085,
+   "phase_b": "B2",
+   "x_b": 0.4993
+  },
+  {
+   "phase_a": "B2",
+   "x_a": 0.6111,
+   "phase_b": "L12",
+   "x_b": 0.7367
+  },
+  {
+   "phase_a": "L12",
+   "x_a": 0.7778,
+   "phase_b": "fccNi",
+   "x_b": 0.895
+  }
+ ],
+ "regions_at_1500K": [
+  {
+   "phase_a": "liquid",
+   "x_a": 0.3036,
+   "phase_b": "B2",
+   "x_b": 0.4987
+  },
+  {
+   "phase_a": "B2",
+   "x_a": 0.6111,
+   "phase_b": "L12",
+   "x_b": 0.7272
+  },
+  {
+   "phase_a": "L12",
+   "x_a": 0.7778,
+   "phase_b": "fccNi",
+   "x_b": 0.8756
+  }
+ ],
+ "regions_at_1800K": [
+  {
+   "phase_a": "liquid",
+   "x_a": 0.424,
+   "phase_b": "B2",
+   "x_b": 0.5003
+  },
+  {
+   "phase_a": "B2",
+   "x_a": 0.6111,
+   "phase_b": "liquid",
+   "x_b": 0.6725
+  }
+ ]
+}

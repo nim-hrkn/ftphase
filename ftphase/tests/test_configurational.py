@@ -104,3 +104,81 @@ def test_b2_triple_defect_site_fractions():
     assert sublattice_entropy(*b2_triple_defect_site_fractions(0.5), basis="atom", vacancy="Va") < 1e-12
     sf2, _ = b2_triple_defect_site_fractions(0.52)
     assert sf2[0]["B"] > 0 and "Va" not in sf2[1]
+
+
+def test_wagner_schottky_reduces_to_constitutional_defects_at_low_T():
+    from ftphase.configurational import b2_triple_defect_site_fractions, wagner_schottky_free_energy
+
+    g0 = -4.5
+    e = {"B_on_A": 0.6, "Va_on_B": 0.9 - g0}        # raw vacancy energy = formation energy + |g0|
+    for x in (0.55, 0.45):
+        G, sf = wagner_schottky_free_energy(x, 1e-3, (0.5, 0.5), e, g0_atom=g0, return_fractions=True)
+        sfc, _ = b2_triple_defect_site_fractions(x)
+        assert abs(sf[0]["B"] - sfc[0]["B"]) < 1e-4 and abs(sf[1].get("Va", 0.0) - sfc[1].get("Va", 0.0)) < 1e-4
+    G, sf = wagner_schottky_free_energy(0.5, 1e-3, (0.5, 0.5), e, g0_atom=g0, return_fractions=True)
+    assert abs(G - g0) < 1e-6 and sf[0]["B"] < 1e-6 and sf[1]["Va"] < 1e-6
+
+
+def test_wagner_schottky_thermal_triple_defects_at_stoichiometry():
+    """At x = 1/2 the thermal defects of the B2 triple-defect type come as 2 Va_B + 1 B_A per
+    triple defect: y_Va = 2 y_BA and y ~ exp(-E_triple / 3 k T) up to the entropy prefactor."""
+    import numpy as np
+
+    from ftphase.configurational import KB_EV, wagner_schottky_free_energy
+
+    g0 = -4.5
+    e = {"B_on_A": 0.6, "Va_on_B": 0.9 - g0}
+    E_triple = 2 * 0.9 + 0.6
+    prev = 0.0
+    for T in (1200.0, 1500.0, 1800.0):
+        G, sf = wagner_schottky_free_energy(0.5, T, (0.5, 0.5), e, g0_atom=g0, return_fractions=True)
+        y_va, y_ba = sf[1]["Va"], sf[0]["B"]
+        assert abs(y_va / y_ba - 2.0) < 0.05
+        assert 0.5 < y_va / np.exp(-E_triple / (3 * KB_EV * T)) < 2.0
+        assert G < g0 and y_va > prev
+        prev = y_va
+
+
+def test_defect_energies_from_cells_recovers_inputs():
+    """Synthetic 54-site B2 cells with 1-3 anti-sites and 1-2 vacancies: the extraction returns the
+    energies used to build them."""
+    from ftphase.configurational import defect_energies_from_cells
+
+    n_sites, g0, e_anti, e_vac_raw = 54, -4.5, 0.6, 5.4
+    xs, Gs, ns = [0.5], [g0], [54]
+    for k in (1, 2, 3):                      # B anti-sites on A: n_B = 27 + k, 54 atoms
+        xs.append((27 + k) / 54); Gs.append((g0 * 54 + k * e_anti) / 54); ns.append(54)
+    for k in (1, 2):                         # B vacancies: n_B = 27 - k, 54 - k atoms
+        xs.append((27 - k) / (54 - k)); Gs.append((g0 * 54 + k * e_vac_raw) / (54 - k)); ns.append(54 - k)
+    e, g0_out, n_out, rows = defect_energies_from_cells(xs, Gs, ns, (0.5, 0.5))
+    assert n_out == 54 and abs(g0_out - g0) < 1e-12
+    assert abs(e["B_on_A"] - e_anti) < 1e-9 and abs(e["Va_on_B"] - e_vac_raw) < 1e-9 and set(e) == {"B_on_A", "Va_on_B"}
+
+
+def test_builder_wagner_schottky_curve_has_no_cusp():
+    """builder_from_table(entropy_models={'B2': ('wagner_schottky', (0.5, 0.5))}) gives a smooth
+    G(x) through the sampled defect cells with a finite slope at stoichiometry at high T."""
+    import numpy as np
+
+    from ftphase.assemble import builder_from_table
+    from ftphase.records import FreeEnergyTable
+
+    n_sites, g0, e_anti, e_vac_raw = 54, -4.5, 0.6, 5.4
+    rows = []
+    for T in (1000.0, 1800.0):
+        cells = [(0.5, g0, 54)]
+        cells += [((27 + k) / 54, (g0 * 54 + k * e_anti) / 54, 54) for k in (1, 2, 3)]
+        cells += [((27 - k) / (54 - k), (g0 * 54 + k * e_vac_raw) / (54 - k), 54 - k) for k in (1, 2)]
+        for x, G, n in cells:
+            rows.append({"phase": "B2", "kind": "limited", "x": x, "T": T, "P_GPa": 0.0, "G": G, "G_err": 0.0, "V": 12.0, "model": "toy", "reference_state": "abs",
+                         "method": "toy", "config_entropy": "none", "quantum": "classical", "n_atoms": n, "source": "toy"})
+    tab = FreeEnergyTable.from_rows(rows, {})
+    builder = builder_from_table(tab, entropy_models={"B2": ("wagner_schottky", (0.5, 0.5))})
+    for T in (1000.0, 1800.0):
+        (pc,) = builder(T)
+        xg = np.linspace(0.49, 0.51, 41)
+        gg = np.array([pc.g(v) for v in xg])
+        d2 = np.diff(gg, 2) / (xg[1] - xg[0]) ** 2
+        assert np.all(np.isfinite(gg)) and gg[20] <= g0 + 1e-4        # thermal defects lower G at stoichiometry (spline tolerance 0.1 meV)
+        assert d2.max() < 1e4                                         # no cusp (a cusp gives a huge second difference)
+        assert abs(pc.g(0.52) - ((g0 * 54 + 1.08 * e_anti) / 54)) < 0.02   # close to the dilute anti-site line

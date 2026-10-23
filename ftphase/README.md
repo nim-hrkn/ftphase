@@ -242,6 +242,12 @@ fit のノイズ：液相の下側凸包に幅 0.007（x = 0.47–0.48、850 K �
 
 煙試験（pk 118）は 3 分で `assemble_diagram` まで通過。本番 pk 191（2026-10-23 11:34 投入、12:27 完了、53 分；QHA 13 セル・密度メッシュ 60 Å、GPU 液相 6 本 × 3 反復、全 19 CalcJob が exit 0）：共晶 760–770 K・液相 x ≈ 0.32・fcc 0.164 + B32 0.482、純 Al 融点 880–890 K（例 5 の 860–870 K から密度メッシュの分だけ上昇、例 6 と同じ向き）、B32 側の液相線の終わり 850–860 K、Al₃Li は 700 K 以上で現れない。共晶の温度・組成・固溶限は例 5 と 0.01 以内で一致。700–790 K に幅 ≤ 0.09 の fcc+fcc 帯（x = 0.03–0.12）が出るが、32 原子 2 配置の配置ノイズを過剰項の 3 次多項式が拾ったもの（例 6 の 64 原子 SQS / Redlich–Kister で消える種類）。詳細は `aiida_txdiagram/README.md` の「結果」節と `out/alli_ace/REPORT.md`。
 
+### 7 の第 4 段：B2・L1₂ を熱的欠陥（Wagner–Schottky 型）で再組立（2026-10-23）— `nial_eam/reassemble_ws.py` → `out_mygardenx1/ws/`
+
+第 3 段までの副格子モデルは組成ごとに 1 種類の構成欠陥（B2 NiAl：Ni 側は Ni 反サイト、Al 側は Ni 空孔）だけで、化学量論組成で G(x) に尖点が出て凸包が幅 ≤ 0.01 の偽の同一相区間（B2+B2、1820–1880 K）を作っていた。`configurational.wagner_schottky_free_energy` は A 副格子の B 反サイト・空孔、B 副格子の A 反サイト・空孔（最大 4 種）の占有を (x, T) ごとに G/atom = [(a+b) g₀ + Σ n_s y_d ε_d − T S_conf(y)] / N_atoms(y) の最小化で決める（組成拘束は y について線形なので 1 変数を消去、残りは対数空間で最小化）。有効欠陥自由エネルギー ε_d(T) は `defect_energies_from_cells` が標本セル（x、G、原子数）から各温度で直接求める（振動の寄与込み）。`builder_from_table(entropy_models={"B2": ("wagner_schottky", (0.5, 0.5))})` で使う。テスト 4 件（T → 0 で構成欠陥に一致、化学量論組成の三重欠陥 y_Va = 2 y_anti ∝ exp(−E_triple/3k_BT)、合成セルからの ε_d 復元、尖点の消失）。
+
+Ni–Al（第 3 段の表を後処理だけで再組立、64 秒）：Ni 反サイト −0.55 → −0.63 eV（1000 → 1800 K、生の値）、Ni 空孔の生成エネルギー相当 1.68 → 1.59 eV。1800 K の化学量論組成で y_反サイト 0.26 %、y_空孔 0.52 %。B2 の幅は 0.4986–0.611（下限が 0.001 だけ Al 側へ）、同一相の偽区間はゼロ、不変反応は第 3 段と同じ（固相 TI の掃引上限の人工物は残る）。Al 側の幅が出ないのは EAM の空孔生成自由エネルギー 1.6 eV が高いため。限界：希薄・非相互作用、短距離秩序なし（次は経路 B の直接 SGC MC）。
+
 ### 02A 補足：sqsgenerator と icet の比較（Al–Li、ACE、2026-10-23）— `alli_sqs_compare.py` → `out_alli_ace/sqs_compare.{md,json}`
 
 `structures.sqs_sqsgenerator` は sqsgenerator 0.5.6 に無い `sqs_optimize` を呼んでいて動かなかったので、0.5 の API（`parse_config` → `optimize` → `best()`、`structure()`・`sro()` はメソッド）に書き直した（テスト `test_sqs_sqsgenerator_counts_and_metadata`）。fcc Al–Li の 32・64 原子セル、x_Li = 1/16, 1/8, 1/4 で random 置換・icet（固定超格子 MC、cutoff 7.0/5.0 Å）・sqsgenerator（Warren–Cowley 5 殻、5 × 10⁵ 反復）を比較（Slurm 22731、14 分）：
