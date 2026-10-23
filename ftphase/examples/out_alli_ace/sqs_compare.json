@@ -1,0 +1,200 @@
+[
+ {
+  "n": 32,
+  "x": 0.0625,
+  "generator": "random",
+  "seconds_generate": 0.00014543533325195312,
+  "icet_cluster_vector_deviation": 0.22981770833333337,
+  "alpha_AlLi_shell1": -0.06666666666666665,
+  "E0_eV_per_atom": -3.380091757101268,
+  "V0_A3_per_atom": 16.49891444995367
+ },
+ {
+  "n": 32,
+  "x": 0.0625,
+  "generator": "icet",
+  "seconds_generate": 3.9438717365264893,
+  "icet_cluster_vector_deviation": 0.21940104166666674,
+  "alpha_AlLi_shell1": 0.022222222222222254,
+  "E0_eV_per_atom": -3.379961265192698,
+  "V0_A3_per_atom": 16.504932971876247
+ },
+ {
+  "n": 32,
+  "x": 0.0625,
+  "generator": "sqsgenerator",
+  "seconds_generate": 0.23560452461242676,
+  "icet_cluster_vector_deviation": 0.22981770833333337,
+  "alpha_AlLi_shell1": -0.06666666666666665,
+  "E0_eV_per_atom": -3.3800917571012654,
+  "V0_A3_per_atom": 16.498914449953787,
+  "sqsgenerator_objective": 0.28888888888888875
+ },
+ {
+  "n": 32,
+  "x": 0.125,
+  "generator": "random",
+  "seconds_generate": 0.0002155303955078125,
+  "icet_cluster_vector_deviation": 0.39062500000000017,
+  "alpha_AlLi_shell1": -0.04761904761904767,
+  "E0_eV_per_atom": -3.2852080128771717,
+  "V0_A3_per_atom": 16.482731771342483,
+  "G800_eV_per_atom": -3.5049832366002303,
+  "seconds_qha": 5.848660469055176
+ },
+ {
+  "n": 32,
+  "x": 0.125,
+  "generator": "icet",
+  "seconds_generate": 4.016056060791016,
+  "icet_cluster_vector_deviation": 0.24479166666666669,
+  "alpha_AlLi_shell1": 0.0,
+  "E0_eV_per_atom": -3.2840215759367872,
+  "V0_A3_per_atom": 16.497544834705074,
+  "G800_eV_per_atom": -3.5044888741358444,
+  "seconds_qha": 16.835654258728027
+ },
+ {
+  "n": 32,
+  "x": 0.125,
+  "generator": "sqsgenerator",
+  "seconds_generate": 0.1122443675994873,
+  "icet_cluster_vector_deviation": 0.34895833333333354,
+  "alpha_AlLi_shell1": -0.04761904761904767,
+  "E0_eV_per_atom": -3.2869615853620093,
+  "V0_A3_per_atom": 16.46919893379815,
+  "sqsgenerator_objective": 0.33333333333333304,
+  "G800_eV_per_atom": -3.506226365481667,
+  "seconds_qha": 5.763629913330078
+ },
+ {
+  "n": 32,
+  "x": 0.25,
+  "generator": "random",
+  "seconds_generate": 0.00022840499877929688,
+  "icet_cluster_vector_deviation": 0.5208333333333335,
+  "alpha_AlLi_shell1": -0.02777777777777768,
+  "E0_eV_per_atom": -3.098698386030157,
+  "V0_A3_per_atom": 16.467301212787717
+ },
+ {
+  "n": 32,
+  "x": 0.25,
+  "generator": "icet",
+  "seconds_generate": 4.050074577331543,
+  "icet_cluster_vector_deviation": 0.16666666666666669,
+  "alpha_AlLi_shell1": 0.0,
+  "E0_eV_per_atom": -3.0950090094665033,
+  "V0_A3_per_atom": 16.511552189593246
+ },
+ {
+  "n": 32,
+  "x": 0.25,
+  "generator": "sqsgenerator",
+  "seconds_generate": 0.0994572639465332,
+  "icet_cluster_vector_deviation": 0.41666666666666663,
+  "alpha_AlLi_shell1": 0.0,
+  "E0_eV_per_atom": -3.0968563100091626,
+  "V0_A3_per_atom": 16.498705308111788,
+  "sqsgenerator_objective": 0.08333333333333326
+ },
+ {
+  "n": 64,
+  "x": 0.0625,
+  "generator": "random",
+  "seconds_generate": 0.0001933574676513672,
+  "icet_cluster_vector_deviation": 0.21419270833333337,
+  "alpha_AlLi_shell1": -0.06666666666666665,
+  "E0_eV_per_atom": -3.3809087402173263,
+  "V0_A3_per_atom": 16.492540712146443
+ },
+ {
+  "n": 64,
+  "x": 0.0625,
+  "generator": "icet",
+  "seconds_generate": 5.977663040161133,
+  "icet_cluster_vector_deviation": 0.06705729166666685,
+  "alpha_AlLi_shell1": -0.022222222222222143,
+  "E0_eV_per_atom": -3.3809702057539135,
+  "V0_A3_per_atom": 16.50117804819568
+ },
+ {
+  "n": 64,
+  "x": 0.0625,
+  "generator": "sqsgenerator",
+  "seconds_generate": 0.2691819667816162,
+  "icet_cluster_vector_deviation": 0.10872395833333348,
+  "alpha_AlLi_shell1": -0.022222222222222143,
+  "E0_eV_per_atom": -3.3811835982566114,
+  "V0_A3_per_atom": 16.497571063343216,
+  "sqsgenerator_objective": 0.4622222222222222
+ },
+ {
+  "n": 64,
+  "x": 0.125,
+  "generator": "random",
+  "seconds_generate": 0.0002949237823486328,
+  "icet_cluster_vector_deviation": 0.46354166666666663,
+  "alpha_AlLi_shell1": 0.0,
+  "E0_eV_per_atom": -3.285744601416078,
+  "V0_A3_per_atom": 16.473088142633916,
+  "G800_eV_per_atom": -3.505069601709384,
+  "seconds_qha": 34.59815263748169
+ },
+ {
+  "n": 64,
+  "x": 0.125,
+  "generator": "icet",
+  "seconds_generate": 6.077362537384033,
+  "icet_cluster_vector_deviation": 0.020833333333333315,
+  "alpha_AlLi_shell1": 0.0,
+  "E0_eV_per_atom": -3.2862569490003413,
+  "V0_A3_per_atom": 16.47411355509661,
+  "G800_eV_per_atom": -3.5057682216309782,
+  "seconds_qha": 34.33160758018494
+ },
+ {
+  "n": 64,
+  "x": 0.125,
+  "generator": "sqsgenerator",
+  "seconds_generate": 0.2930898666381836,
+  "icet_cluster_vector_deviation": 0.2187500000000001,
+  "alpha_AlLi_shell1": 0.0,
+  "E0_eV_per_atom": -3.285094837802167,
+  "V0_A3_per_atom": 16.48187115132276,
+  "sqsgenerator_objective": 0.34999999999999964,
+  "G800_eV_per_atom": -3.5049111904088135,
+  "seconds_qha": 34.387142181396484
+ },
+ {
+  "n": 64,
+  "x": 0.25,
+  "generator": "random",
+  "seconds_generate": 0.0002484321594238281,
+  "icet_cluster_vector_deviation": 0.5104166666666667,
+  "alpha_AlLi_shell1": -0.02777777777777768,
+  "E0_eV_per_atom": -3.0992035295418496,
+  "V0_A3_per_atom": 16.46454917546022
+ },
+ {
+  "n": 64,
+  "x": 0.25,
+  "generator": "icet",
+  "seconds_generate": 6.087778329849243,
+  "icet_cluster_vector_deviation": 0.10937499999999999,
+  "alpha_AlLi_shell1": 0.0,
+  "E0_eV_per_atom": -3.0979564425014003,
+  "V0_A3_per_atom": 16.47894140473663
+ },
+ {
+  "n": 64,
+  "x": 0.25,
+  "generator": "sqsgenerator",
+  "seconds_generate": 0.26151323318481445,
+  "icet_cluster_vector_deviation": 0.3125,
+  "alpha_AlLi_shell1": 0.0,
+  "E0_eV_per_atom": -3.0978167189317354,
+  "V0_A3_per_atom": 16.48015929296832,
+  "sqsgenerator_objective": 0.08333333333333304
+ }
+]
