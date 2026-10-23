@@ -1,0 +1,424 @@
+{
+ "s00_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.0,
+  "config": 0,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 32
+  }
+ },
+ "s01_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.03125,
+  "config": 0,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 31,
+   "Cu": 1
+  }
+ },
+ "s02_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.03125,
+  "config": 1,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 31,
+   "Cu": 1
+  }
+ },
+ "s03_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.0625,
+  "config": 2,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 30,
+   "Cu": 2
+  }
+ },
+ "s04_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.0625,
+  "config": 3,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 30,
+   "Cu": 2
+  }
+ },
+ "s05_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.125,
+  "config": 4,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 28,
+   "Cu": 4
+  }
+ },
+ "s06_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.125,
+  "config": 5,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 28,
+   "Cu": 4
+  }
+ },
+ "s07_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.25,
+  "config": 6,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 24,
+   "Cu": 8
+  }
+ },
+ "s08_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.25,
+  "config": 7,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 24,
+   "Cu": 8
+  }
+ },
+ "s09_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.375,
+  "config": 8,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 20,
+   "Cu": 12
+  }
+ },
+ "s10_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.375,
+  "config": 9,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 20,
+   "Cu": 12
+  }
+ },
+ "s11_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.5,
+  "config": 10,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 16,
+   "Cu": 16
+  }
+ },
+ "s12_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.5,
+  "config": 11,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 16,
+   "Cu": 16
+  }
+ },
+ "s13_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.625,
+  "config": 12,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 12,
+   "Cu": 20
+  }
+ },
+ "s14_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.625,
+  "config": 13,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 12,
+   "Cu": 20
+  }
+ },
+ "s15_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.75,
+  "config": 14,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 8,
+   "Cu": 24
+  }
+ },
+ "s16_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.75,
+  "config": 15,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 8,
+   "Cu": 24
+  }
+ },
+ "s17_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.875,
+  "config": 16,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 4,
+   "Cu": 28
+  }
+ },
+ "s18_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.875,
+  "config": 17,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 4,
+   "Cu": 28
+  }
+ },
+ "s19_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.9375,
+  "config": 18,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 2,
+   "Cu": 30
+  }
+ },
+ "s20_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.9375,
+  "config": 19,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 2,
+   "Cu": 30
+  }
+ },
+ "s21_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.96875,
+  "config": 20,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 1,
+   "Cu": 31
+  }
+ },
+ "s22_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.96875,
+  "config": 21,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ag": 1,
+   "Cu": 31
+  }
+ },
+ "s23_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 1.0,
+  "config": 22,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Cu": 32
+  }
+ },
+ "s24_fcc": {
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 1.0,
+  "config": 23,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Cu": 32
+  }
+ }
+}

@@ -1,0 +1,85 @@
+pk	label	state	exit	remote_workdir
+429	prepare_cells	finished	0	
+466	qha s00_fcc fcc x=0.0000	finished	0	/home/kino/aiida_run/ftphase/7e/7d/e414-9e28-4f0f-b68f-3a824548e6f5
+468	qha s01_fcc fcc x=0.0312	finished	0	/home/kino/aiida_run/ftphase/ef/d9/25c7-2547-4a7f-a324-aa176c12d165
+470	qha s02_fcc fcc x=0.0312	finished	0	/home/kino/aiida_run/ftphase/78/70/1127-5355-4741-81f1-7c062a073376
+472	qha s03_fcc fcc x=0.0625	finished	0	/home/kino/aiida_run/ftphase/23/08/18b7-bf42-4cde-8e58-983a082ba7ec
+474	qha s04_fcc fcc x=0.0625	finished	0	/home/kino/aiida_run/ftphase/73/3a/50f3-2130-4141-b4d3-3ec34e6626dc
+476	qha s05_fcc fcc x=0.1250	finished	0	/home/kino/aiida_run/ftphase/bc/fc/c380-e5f8-4009-aa83-ee91726bff63
+478	qha s06_fcc fcc x=0.1250	finished	0	/home/kino/aiida_run/ftphase/50/6d/09fa-433f-456b-abaa-35308f11f30f
+480	qha s07_fcc fcc x=0.2500	finished	0	/home/kino/aiida_run/ftphase/8d/88/5726-6ea6-4154-ae1c-5a6a14a458ef
+482	qha s08_fcc fcc x=0.2500	finished	0	/home/kino/aiida_run/ftphase/d9/bf/17c2-e94a-490d-b087-53fbb2187b18
+484	qha s09_fcc fcc x=0.3750	finished	0	/home/kino/aiida_run/ftphase/19/b0/2925-683b-48f7-b43a-f44a75c5d636
+486	qha s10_fcc fcc x=0.3750	finished	0	/home/kino/aiida_run/ftphase/01/7c/77a2-a165-4c31-b212-5b6b1bf1f472
+488	qha s11_fcc fcc x=0.5000	finished	0	/home/kino/aiida_run/ftphase/b3/96/8406-7ffe-4421-ac4b-d9618de2c91e
+490	qha s12_fcc fcc x=0.5000	finished	0	/home/kino/aiida_run/ftphase/13/50/e1f7-50ae-4bcc-8a78-181b54a45bcd
+492	qha s13_fcc fcc x=0.6250	finished	0	/home/kino/aiida_run/ftphase/c2/26/e2d4-bfd6-4250-bbdd-845d4f0e75c9
+494	qha s14_fcc fcc x=0.6250	finished	0	/home/kino/aiida_run/ftphase/31/09/09fc-84db-46f5-b2bb-16f51ab46c48
+496	qha s15_fcc fcc x=0.7500	finished	0	/home/kino/aiida_run/ftphase/6d/49/d047-5923-4ee7-9d3c-9eb5b051f57e
+498	qha s16_fcc fcc x=0.7500	finished	0	/home/kino/aiida_run/ftphase/bc/84/39a2-7e0e-4ffd-85e8-acbfac262d24
+500	qha s17_fcc fcc x=0.8750	finished	0	/home/kino/aiida_run/ftphase/e5/9d/ae75-c887-4180-ac1e-32213ee47efc
+502	qha s18_fcc fcc x=0.8750	finished	0	/home/kino/aiida_run/ftphase/6b/3b/efb0-b1a4-4aaa-ac1d-db5b4ceb02b2
+504	qha s19_fcc fcc x=0.9375	finished	0	/home/kino/aiida_run/ftphase/69/51/e0fb-e488-44f8-96b0-38318a7b66ce
+506	qha s20_fcc fcc x=0.9375	finished	0	/home/kino/aiida_run/ftphase/10/2e/0897-86b0-4424-ab40-0402910fa501
+508	qha s21_fcc fcc x=0.9688	finished	0	/home/kino/aiida_run/ftphase/3b/17/a4ff-a3c0-4725-9bee-b27442fee6a3
+510	qha s22_fcc fcc x=0.9688	finished	0	/home/kino/aiida_run/ftphase/bd/f7/4e48-fe86-44ba-8881-112f2cc28ef2
+512	qha s23_fcc fcc x=1.0000	finished	0	/home/kino/aiida_run/ftphase/2b/ab/fc57-0691-45c3-9a6a-019eae67b6c8
+514	qha s24_fcc fcc x=1.0000	finished	0	/home/kino/aiida_run/ftphase/4a/e7/4585-0d11-4ede-81be-5a858c0863bb
+516	repeat_structure	finished	0	
+519	calphy solid s00_fcc fcc x=0.0000 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/6e/4c/86f6-8f6b-47bf-a4ba-617498957f58
+521	repeat_structure	finished	0	
+524	calphy solid s01_fcc fcc x=0.0312 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/dc/a1/d743-37e9-4324-aeca-e8c3681ea202
+526	repeat_structure	finished	0	
+529	calphy solid s02_fcc fcc x=0.0312 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/79/03/14fc-1085-42a4-b268-685526689017
+531	repeat_structure	finished	0	
+534	calphy solid s03_fcc fcc x=0.0625 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/04/2a/5328-9a30-4493-a42a-e9892f67d4fb
+536	repeat_structure	finished	0	
+539	calphy solid s04_fcc fcc x=0.0625 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/12/5c/f7cf-4ab3-4365-9679-c52c6f1e9bb4
+541	repeat_structure	finished	0	
+544	calphy solid s05_fcc fcc x=0.1250 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/d4/9e/faf2-df97-49ed-a1b2-edf730d3c36b
+546	repeat_structure	finished	0	
+549	calphy solid s06_fcc fcc x=0.1250 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/d0/30/1a0c-f2a5-4c47-9857-18b9554307c6
+551	repeat_structure	finished	0	
+554	calphy solid s07_fcc fcc x=0.2500 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/c0/3f/3395-2c4e-4f6d-be70-21c976cb92e9
+556	repeat_structure	finished	0	
+559	calphy solid s08_fcc fcc x=0.2500 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/33/22/f409-badf-42ac-8d8c-beb1b886d3dc
+561	repeat_structure	finished	0	
+564	calphy solid s09_fcc fcc x=0.3750 (256 atoms)	finished	320	/home/kino/aiida_run/ftphase/94/ab/4946-b1d1-4104-8442-62a75d918db2
+566	repeat_structure	finished	0	
+569	calphy solid s10_fcc fcc x=0.3750 (256 atoms)	finished	320	/home/kino/aiida_run/ftphase/0b/80/3f26-452d-47e5-9266-90863f438d78
+571	repeat_structure	finished	0	
+574	calphy solid s11_fcc fcc x=0.5000 (256 atoms)	finished	320	/home/kino/aiida_run/ftphase/96/0b/2115-32b6-4e24-ae04-f2044986b341
+576	repeat_structure	finished	0	
+579	calphy solid s12_fcc fcc x=0.5000 (256 atoms)	finished	320	/home/kino/aiida_run/ftphase/57/3f/4d71-63b4-4ab3-adf1-0b2de264eacd
+581	repeat_structure	finished	0	
+584	calphy solid s13_fcc fcc x=0.6250 (256 atoms)	finished	320	/home/kino/aiida_run/ftphase/79/92/d303-6fdf-48b6-8f34-91e95eda9a3e
+586	repeat_structure	finished	0	
+589	calphy solid s14_fcc fcc x=0.6250 (256 atoms)	finished	320	/home/kino/aiida_run/ftphase/88/2e/6f29-2120-4c81-bb0d-4dff8974692b
+591	repeat_structure	finished	0	
+594	calphy solid s15_fcc fcc x=0.7500 (256 atoms)	finished	320	/home/kino/aiida_run/ftphase/43/e9/3865-d67b-41bb-89a5-4f2e117bf16c
+596	repeat_structure	finished	0	
+599	calphy solid s16_fcc fcc x=0.7500 (256 atoms)	finished	320	/home/kino/aiida_run/ftphase/bb/6a/dcc5-672c-4a99-8b66-ad9f1595adcb
+601	repeat_structure	finished	0	
+606	calphy solid s17_fcc fcc x=0.8750 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/b9/64/08b7-3671-4d62-b75d-d709bc48e681
+611	repeat_structure	finished	0	
+618	calphy solid s18_fcc fcc x=0.8750 (256 atoms)	finished	320	/home/kino/aiida_run/ftphase/12/62/5662-7aca-465d-b46e-b986c3dc31d5
+623	repeat_structure	finished	0	
+632	calphy solid s19_fcc fcc x=0.9375 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/51/a6/aaf8-026d-4564-8878-5edecf78745d
+634	repeat_structure	finished	0	
+637	calphy solid s20_fcc fcc x=0.9375 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/fb/57/5262-1bea-4e16-acb2-8fc74f880a28
+639	repeat_structure	finished	0	
+642	calphy solid s21_fcc fcc x=0.9688 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/ba/5e/423f-c6bd-495b-a0c0-27877fa16f52
+644	repeat_structure	finished	0	
+647	calphy solid s22_fcc fcc x=0.9688 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/bf/7d/e707-e1a3-4316-9ba3-f95146b1db87
+649	repeat_structure	finished	0	
+652	calphy solid s23_fcc fcc x=1.0000 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/21/ba/83d5-403c-49aa-a7c4-78e491a6c35d
+654	repeat_structure	finished	0	
+657	calphy solid s24_fcc fcc x=1.0000 (256 atoms)	finished	0	/home/kino/aiida_run/ftphase/0d/41/df9f-e871-4886-813f-cad8f3215017
+659	calphy lqd_x0.00 x=0.0000	finished	0	/home/kino/aiida_run/ftphase/b5/63/6885-bbef-4ca4-a685-b9016c51cdf8
+661	calphy lqd_x0.20 x=0.1992	finished	0	/home/kino/aiida_run/ftphase/14/06/876a-f437-4715-858a-98dae7ae9111
+663	calphy lqd_x0.40 x=0.3984	finished	0	/home/kino/aiida_run/ftphase/6d/92/3cc1-b82d-4afd-b7fb-0474de8345bc
+665	calphy lqd_x0.50 x=0.5000	finished	0	/home/kino/aiida_run/ftphase/5c/99/a7e1-8576-481b-9d10-f9a4db0e8366
+667	calphy lqd_x0.60 x=0.6016	finished	0	/home/kino/aiida_run/ftphase/46/13/544f-23bc-44ef-85bd-ed2c25bcb79c
+669	calphy lqd_x0.80 x=0.8008	finished	0	/home/kino/aiida_run/ftphase/87/a1/1642-a2af-4d22-97c4-3b303f67554f
+671	calphy lqd_x1.00 x=1.0000	finished	0	/home/kino/aiida_run/ftphase/0d/cc/c340-7136-4627-9fdb-bb31b4710857
+873	assemble_diagram	finished	0	
