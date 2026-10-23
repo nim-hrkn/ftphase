@@ -132,6 +132,16 @@
 <p>見つかった落とし穴：(1) QHA の走査範囲。煙試験の 0.97–1.03 では fcc Al の 1100 K の最小体積が範囲外で exit 300（例外で止めて走査を広げるという設計どおり）。(2) AiiDA デーモンの worker は自分の <code>sys.path</code> を <code>PYTHONPATH</code> に入れて起き、Slurm ジョブがそれを継ぐため、計算ノードの miniforge3 の <code>conda</code>（python 3.14）が <code>env/ftphase/lib/python3.12</code> を読んで <code>SRE module mismatch</code> で死に <code>conda activate</code> が失敗する。コードは絶対パスなので計算は走るが、計算機の prepend_text に <code>unset PYTHONPATH PYTHONHOME</code> を入れて止めた。(3) WorkChain を kill しても子の CalcJob が Waiting で残ることがある（個別に kill）。(4) <code>sacct</code> が無いため <code>detailed_job_info</code> の警告が出るが無害。</p>
 <p>テスト <code>tests/test_aiida.py</code>（8 件、<code>aiida.tools.pytest_fixtures</code> の一時 SQLite プロファイル、投入なし）：entry point の解決、両 CalcJob の <code>prepare_for_submission</code>（input.json の構成、<code>__WORKDIR__</code>、GPU の <code>pace product</code>・KOKKOS 引数・<code>queue.cores=1</code>）、calphy パーサを例 5 の実 <code>report.yaml</code>・<code>temperature_sweep.dat</code>（G(1100 K) = −3.9175 eV/atom、sweep 1100 → 700 K）で、exit 300/310、QHA パーサと exit 300、<code>prepare_cells</code> を ACE で実行（凸包、反サイト x = 7/16, 9/16、液相の T_override）。全体で 50 件合格、1 件 skip。</p>
 
+<h3>3.9 Ag–Cu（共晶 + fcc ミシビリティギャップ）：経路 A と経路 B の突き合わせ（例 9、2026-10-23）</h3>
+<p>Williams–Mishin–Hamilton 2006 EAM（NIST）。<strong>経路 A</strong>（AiiDA <code>TxDiagramWorkChain</code>、pk 428、1 時間 40 分）：fcc 固溶体を全組成で標本化（32 原子ランダム × 2 配置、13 組成）、900 K 以上の固相は calphy 固相 TI（WorkChain に <code>spec["solids_ti"]</code> を追加；ギャップ内の準安定セル 9 本は 1,400 K 超で融解して QHA に戻る）、液相 7 組成を GPU で 1500 → 950 K。fcc を 1 本の RK で結ぶと端側（TI）と中央（QHA だけ）の水準差 12–32 meV/atom が曲率になり偽の fcc+fcc 区間が出たので、<code>reassemble_agcu.py</code> で fccAg / fccCu に分けて組み立て直した。<strong>経路 B</strong>（<code>agcu_sgcmc/sgcmc.py</code>、mygardenx1）：同じ EAM で半大正準 MC（LAMMPS <code>fix atom/swap</code> + NPT、2,048 原子、800・900・1000 K、Δμ を上下に掃引）、枝ごとに dG/dx = Δμ を積分して共通接線。<strong>融点の検証</strong>（<code>coexist.py</code>）：純 Ag・Cu の固液二相共存 MD（6,144 原子、400 ps）。</p>
+<table><thead><tr><th>特徴</th><th>A：TI + 凸包</th><th>B：SGC MC</th><th>二相共存 MD</th><th>原著者（Williams 2006、界面 MC）</th><th>実験</th></tr></thead><tbody>
+<tr><td>共晶</td><td>980–990 K、x_Cu ≈ 0.57</td><td>—</td><td>—</td><td>935 K、0.542</td><td>1052 K、0.40</td></tr>
+<tr><td>Ag 側固溶限 x_Cu（800 / 900 / 1000 K）</td><td>0.042 / 0.045 / 0.078</td><td>0.027 / 0.050 / 0.126</td><td>—</td><td>0.063（935 K）</td><td>0.09〜0.141</td></tr>
+<tr><td>Cu 側 x_Cu（800 / 900 / 1000 K）</td><td>0.987 / 0.978 / 0.955</td><td>0.990 / 0.972 / 0.914</td><td>—</td><td>0.97</td><td>0.951〜0.98</td></tr>
+<tr><td>Ag 融点</td><td>1320–1330 K</td><td>—</td><td>1265–1290 K</td><td>1267 K</td><td>1235 K</td></tr>
+<tr><td>Cu 融点</td><td>1360–1370 K</td><td>—</td><td>1325–1350 K</td><td>1327 K</td><td>1358 K</td></tr>
+</tbody></table>
+<p>読み：固溶限は 800–900 K で A と B が 0.015 以内で一致し、1000 K は B が広い（A は中央セル欠落の外挿）。融点は TI 経路が二相共存 MD（原著者と一致）より Ag +50 K、Cu +35 K 高い。calphy の fe を 1275 K（Ag の共存温度の中）でセル 256 / 2,048 原子 × 切り替え 10k / 50k ステップで比べると、本番設定（256 原子、10k）は G_固相 − G_液相 = −5.9 meV/atom（本来 0）で、固相の切り替えを 50k にすると +1.9 meV 戻る（<code>agcu_sgcmc/out/ti_convergence.md</code>、残りは実行中）。Ni–Al の Ni +70 K も同じ向きなので、固液 TI の切り替え長・セルサイズを見直す。</p>
 <h2>4. 実装中に見つかった落とし穴（修正済み）</h2>
 <ul>
 <li>phonopy の固定メッシュ <code>[4,4,4]</code> は <code>primitive_matrix='auto'</code> で基本胞が小さい純元素・規則相では q 点 64 個しかなく、1500 K の F が 18 meV/atom ずれた（例 7）。メッシュは長さ（密度）で指定する（<code>mesh=60.0</code>）。</li>
