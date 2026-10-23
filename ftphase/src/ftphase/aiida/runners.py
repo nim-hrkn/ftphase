@@ -20,9 +20,30 @@ def lammps_calculator(pair_style: str, pair_coeff: str, atom_types: dict):
     return LAMMPSlib(lmpcmds=[f"pair_style {pair_style}", f"pair_coeff {pair_coeff}"], atom_types=dict(atom_types), keep_alive=True, log_file=None)
 
 
+def volume_scan_data(atoms, calc, supercell_matrix, T, scales, mesh, imaginary, fmax):
+    """Energies and phonon free energies on the volume scan (the per-volume part of
+    :func:`ftphase.qha.phonopy_volume_scan`, computed once so the QHA fit can be retried)."""
+    from ase.optimize import BFGS
+    from ftphase.qha import phonopy_free_energy
+
+    vols, e0s, Fs, freqs = [], [], [], []
+    for s in scales:
+        a = atoms.copy()
+        a.set_cell(atoms.get_cell() * s, scale_atoms=True)
+        a.calc = calc
+        if len(a) > 1:
+            BFGS(a, logfile=None).run(fmax=fmax, steps=500)
+        vols.append(a.get_volume())
+        e0s.append(a.get_potential_energy())
+        F, hw, w = phonopy_free_energy(a, calc, supercell_matrix, T, mesh=mesh, imaginary=imaginary, return_frequencies=True)
+        Fs.append(F)
+        freqs.append((hw, w))
+    return {"volumes": np.array(vols), "e0": np.array(e0s), "f_vib": np.array(Fs).T, "frequencies": freqs}
+
+
 def qha_main(argv=None):
     from ase.io import read
-    from ftphase.qha import phonopy_volume_scan
+    from ftphase.qha import qha_gibbs
     from ftphase.validate import relax
 
     argv = sys.argv[1:] if argv is None else argv
@@ -42,11 +63,22 @@ def qha_main(argv=None):
     T = np.asarray(p["temperatures"], dtype=float)
     mesh = p.get("mesh", 60.0)
     mesh = tuple(mesh) if isinstance(mesh, (list, tuple)) else float(mesh)
-    res, data = phonopy_volume_scan(atoms, calc, np.diag(p["supercell"]) if np.ndim(p["supercell"]) == 1 else np.asarray(p["supercell"]), T,
-                                    scales=tuple(p.get("scales", (0.97, 0.98, 0.99, 1.0, 1.01, 1.02, 1.03, 1.04, 1.05))), mesh=mesh,
-                                    imaginary=p.get("imaginary", "drop"), eos=p.get("eos", "vinet"), pressure_gpa=float(p.get("pressure_GPa", 0.0)))
+    scales = tuple(p.get("scales", (0.97, 0.98, 0.99, 1.0, 1.01, 1.02, 1.03, 1.04, 1.05)))
+    sc = np.diag(p["supercell"]) if np.ndim(p["supercell"]) == 1 else np.asarray(p["supercell"])
+    data = volume_scan_data(atoms, calc, sc, T, scales, mesh, p.get("imaginary", "drop"), float(p.get("relax", {}).get("fmax", 1e-3)))
+    # QHA has no minimum far above the melting point: shorten the temperature range instead of failing
+    T_full = T
+    while True:
+        try:
+            res = qha_gibbs(data["volumes"], data["e0"], T, data["f_vib"][: len(T)], pressure_gpa=float(p.get("pressure_GPa", 0.0)), eos=p.get("eos", "vinet"), n_atoms=len(atoms))
+            break
+        except ValueError as exc:
+            if len(T) <= 4:
+                raise
+            T = T[:-1]
+            out.setdefault("qha_T_shortened", []).append(f"{float(T_full[len(T)]):.0f} K dropped: {exc}")
+    res.metadata.update({"scales": list(scales), "supercell_matrix": np.asarray(sc).tolist(), "mesh": (list(mesh) if np.ndim(mesh) else float(mesh)), "T_max_effective": float(T.max())})
     G, V = res.per_atom()
-    scales = list(p.get("scales", (0.97, 0.98, 0.99, 1.0, 1.01, 1.02, 1.03, 1.04, 1.05)))
     i0 = int(np.argmin(np.abs(np.asarray(scales) - 1.0)))
     hw, w = data["frequencies"][i0]
     np.savez("qha_arrays.npz", T=T, G=np.asarray(G, dtype=float), V=np.asarray(V, dtype=float), hw_eV=np.asarray(hw, dtype=float),

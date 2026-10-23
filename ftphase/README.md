@@ -242,6 +242,17 @@ fit のノイズ：液相の下側凸包に幅 0.007（x = 0.47–0.48、850 K �
 
 煙試験（pk 118）は 3 分で `assemble_diagram` まで通過。本番 pk 191（2026-10-23 11:34 投入、12:27 完了、53 分；QHA 13 セル・密度メッシュ 60 Å、GPU 液相 6 本 × 3 反復、全 19 CalcJob が exit 0）：共晶 760–770 K・液相 x ≈ 0.32・fcc 0.164 + B32 0.482、純 Al 融点 880–890 K（例 5 の 860–870 K から密度メッシュの分だけ上昇、例 6 と同じ向き）、B32 側の液相線の終わり 850–860 K、Al₃Li は 700 K 以上で現れない。共晶の温度・組成・固溶限は例 5 と 0.01 以内で一致。700–790 K に幅 ≤ 0.09 の fcc+fcc 帯（x = 0.03–0.12）が出るが、32 原子 2 配置の配置ノイズを過剰項の 3 次多項式が拾ったもの（例 6 の 64 原子 SQS / Redlich–Kister で消える種類）。詳細は `aiida_txdiagram/README.md` の「結果」節と `out/alli_ace/REPORT.md`。
 
+### 9. Ag–Cu（共晶 + fcc ミシビリティギャップ）：Williams–Mishin–Hamilton 2006 EAM、AiiDA、固相は calphy TI — `aiida_txdiagram/run_aiida.py --system agcu` → `out/agcu_eam/`
+
+例 8 の WorkChain に固相の calphy TI（`spec["solids_ti"]`）を加えて、fcc 固溶体 1 相を全組成で標本化する系。ポテンシャルは NIST の `potentials/agcu/CuAg.eam.alloy`（Williams, Mishin, Hamilton, MSMSE 14, 817 (2006)、setfl の元素順 Cu Ag、`pair_coeff * * CuAg.eam.alloy Ag Cu`）。
+固相：fcc 32 原子ランダムセル × 2 配置、x_Cu = 0, 1/32, 2/32, 4/32, 8/32, 12/32, 16/32, 20/32, 24/32, 28/32, 30/32, 31/32, 1（23 セル）。QHA（0–1400 K、密度メッシュ 60 Å、長さ比 0.96–1.08）と、同じセルを 2×2×2 に複製した 256 原子の calphy 固相 ts（900 K → 1360–1480 K、組成で補間）を並行して走らせ、組立では 900 K 以上を TI、以下を QHA にする。
+液相：256 原子、x_Cu = 0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0、calphy ts 1500 → 950 K（純 Ag は 1050 K、純 Cu は 1100 K まで）、GPU。fit は fcc・液相とも理想混合 + 4 項 Redlich–Kister。格子 900–1400 K。
+
+実験（NIST の Ag–Cu はんだ相図ページ、Hayes 1986 の評価；Subramanian & Perepezko 1993）：共晶 1052 K、液相 x_Cu ≈ 0.40、(Ag) の Cu 固溶限 0.133–0.141、(Cu) の Ag 固溶 0.045–0.049（x_Cu 0.95–0.955）、Ag 融点 1235 K、Cu 融点 1358 K。
+他の理論：Nitol ら 2025（arXiv 2508.18129、MTP、二相共存 MC）：共晶 1001 K、液相 x_Ag = 0.57、固溶限 Cu in Ag 0.04・Ag in Cu 0.099、Ag 融点は実験より約 100 K 低い。
+
+煙試験 pk 346（2026-10-23 16:13 投入）で WorkChain の新経路（固相 TI、TI だけのセル、QHA の温度範囲自動短縮）を確認。本番の投入・結果は下に追記する。
+
 ## 既知の制限
 
 - calphy の `n_iterations: 1` では誤差が 0 と報告される。例 3・4 の融点には上の統計ばらつき（±10 K 程度）が付く。

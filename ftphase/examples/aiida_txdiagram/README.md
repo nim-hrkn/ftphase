@@ -73,8 +73,16 @@ WorkChain の入力は `spec`（Dict）、`potential`（SinglefileData）、`can
 | `relax: {fmax, cell}` | 01 の緩和 |
 | `solids: [ {phase, kind, base, repeat, x, n_configs, series, seed, supercell, mesh, antisites, icet} ]` | 02A。`kind` は solution / limited / point。`antisites: true` で基底セルと x ∓ 1/N の反サイトセル、`series: sqs` で icet SQS、既定はランダム置換。`supercell` と `mesh`（長さ Å か [n,n,n]）は QHA の設定 |
 | `liquids: {base, repeat, x, seed, T_sweep, T_override, n_repeats, n_equilibration_steps, n_switching_steps, n_iterations, mode, pressure}` | 02B/03B。`T_override: {"0.1": 800}` で特定組成の終端温度を変える（凝固する組成） |
-| `qha: {T_max, T_step, scales, eos, imaginary, relax}` | 03A。`scales` は長さ比。1100 K では 1.05 以上が要る（下の落とし穴 1） |
+| `qha: {T_max, T_step, scales, eos, imaginary, relax}` | 03A。`scales` は長さ比。1100 K では 1.05 以上が要る（下の落とし穴 1）。EOS の最小が走査範囲を出る温度は runner が自動で落とす（`results.qha_T_shortened`） |
+| `solids_ti: {phases, T_sweep, T_sweep_by_phase, T_hi_by_x, min_atoms, n_equilibration_steps, n_switching_steps, n_iterations, mode}` | 任意。固相セルごとに calphy の固相 ts（Frenkel–Ladd + 可逆スケーリング、`min_atoms` 以上になるまで `repeat_structure` で複製）を QHA と並行して走らせ、組立では掃引範囲内を TI の行で置き換える（QHA は掃引下限より下だけ）。`T_hi_by_x: [[0, 1360], [1, 1480]]` で組成ごとに終端温度を補間（純端の融点の約 1.1 倍）。REPORT.md に「QHA − TI」の表が出る。Ni–Al（例 7）で QHA が融点付近で 20–45 meV/atom 高かった教訓 |
 | `assemble: {T_min, T_max, T_step, fits, poly_order(s), config_terms, entropy_models, sigma, hull, drop_edge_beyond_liquid, sensitivity_samples, title, xlabel, liquid_sigma_floor}` | 04–07。`config_terms` は `ideal` か `sublattice:<site model>`（`b32_antisite`、`b2_triple_defect`） |
+
+## 系の切り替え（`--system`）
+
+`run_aiida.py --system alli`（既定、例 8：ACE Al–Li）／`--system agcu`（例 9：EAM Ag–Cu、`potentials/agcu/CuAg.eam.alloy`、Williams–Mishin–Hamilton 2006）。
+Ag–Cu は fcc 固溶体 1 相を全組成（32 原子ランダムセル × 2 配置、x_Cu = 0, 1/32, …, 31/32, 1）で標本化し、`fits: {fcc: rk, liquid: rk}`
+（理想混合 + Redlich–Kister）で fit する。共晶と fcc のミシビリティギャップは「1 本の fcc 曲線と液相の下側凸包」から出る。固相は 900 K 以上を calphy TI（`solids_ti`）、以下を QHA。
+新しい系は `candidates_<name>()` と `make_spec_<name>()` を書いて `SYSTEMS` に登録する。
 
 ## 失敗の診かた
 

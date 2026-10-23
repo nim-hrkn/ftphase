@@ -1,0 +1,9 @@
+{
+ "pk": 346,
+ "uuid": "31b19c3f-1d87-4943-ba82-66bbcb56f531",
+ "name": "agcu_eam_smoke",
+ "profile": "ftphase",
+ "submitted": "2026-10-23 16:13:04",
+ "gpu": true,
+ "smoke": true
+}
