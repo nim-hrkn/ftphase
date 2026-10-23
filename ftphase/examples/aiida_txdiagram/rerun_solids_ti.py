@@ -34,7 +34,9 @@ def _workchain(pk):
     return wc, kids, prep
 
 
-def submit(pk):
+def submit(pk, only=None, t_hi=None):
+    """only: comma-separated solid keys to (re)submit; t_hi: {key: T_hi} sweep-end overrides (e.g. cells that melted at the
+    default 1.1 T_m cap: alloy cells inside the gap are metastable and melt well below the pure-end cap)."""
     from aiida import orm
     from aiida.engine import submit as aiida_submit
     from aiida.plugins import CalculationFactory
@@ -46,15 +48,18 @@ def submit(pk):
     sol_p = prep.outputs.solid_params.get_dict()
     extra = wc.inputs.calphy_extra.get_dict() if "calphy_extra" in wc.inputs else {}
     Calphy = CalculationFactory("ftphase.calphy")
-    rec = {"pk_workchain": pk, "jobs": {}}
+    rec = json.load(open(REC)) if (only and os.path.exists(REC)) else {"pk_workchain": pk, "jobs": {}}
+    t_hi = t_hi or {}
     for key, m in sol_p.items():
-        if 0.3 < m["x"] < 0.7:
+        if only and key not in only:
+            continue
+        if not only and 0.3 < m["x"] < 0.7:
             continue
         structure = prep.outputs[f"solid_{key}"]
         n_rep = max(1, int(np.ceil((MIN_ATOMS / m["n_atoms"]) ** (1 / 3) - 1e-9)))
         big = repeat_structure(structure, orm.Int(n_rep))
         T_sw = list(sti.get("T_sweep", [900.0, 1400.0]))
-        pts = sorted(sti["T_hi_by_x"]); T_sw[1] = float(np.interp(m["x"], [q[0] for q in pts], [q[1] for q in pts]))
+        pts = sorted(sti["T_hi_by_x"]); T_sw[1] = float(t_hi.get(key, np.interp(m["x"], [q[0] for q in pts], [q[1] for q in pts])))
         params = {"name": f"sol_{key}", "folder_prefix": f"sol_{key}", "mode": "ts", "elements": sp["elements"], "masses": sp["masses"], "pair_style": sp["pair_style"],
                   "pair_coeff": sp["pair_coeff"], "temperature": T_sw, "pressure": 0.0, "reference_phase": "solid", "n_equilibration_steps": int(sti.get("n_equilibration_steps", 10000)),
                   "n_switching_steps": sti.get("n_switching_steps", [10000, 10000]), "n_iterations": int(sti.get("n_iterations", 1))}
@@ -114,8 +119,12 @@ def assemble():
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=["submit", "assemble"]); ap.add_argument("--pk", type=int, default=428)
     ap.add_argument("--profile", default="ftphase")
+    ap.add_argument("--only", default=None, help="comma-separated solid keys, e.g. s07_fcc,s08_fcc (others keep their recorded jobs)")
+    ap.add_argument("--T-hi", dest="t_hi", default=None, help="sweep-end overrides key=T,key=T")
     a = ap.parse_args()
     from aiida import load_profile
 
     load_profile(a.profile)
-    submit(a.pk) if a.cmd == "submit" else assemble()
+    only = set(a.only.split(",")) if a.only else None
+    t_hi = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in a.t_hi.split(",")} if a.t_hi else None
+    submit(a.pk, only, t_hi) if a.cmd == "submit" else assemble()
