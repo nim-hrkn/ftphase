@@ -24,7 +24,7 @@
 <path d="M310 420 V452" class="line"/>
 <path d="M895 420 V452" class="line"/>
 <rect x="50" y="452" width="520" height="170" rx="12" fill="#e9f4ff" stroke="#9bc1e7"/>
-<text x="72" y="486" class="heading">03A  aiida-alamode MCP → AiiDA</text>
+<text x="72" y="486" class="heading">03A  phonopy / ALAMODE（aiida-alamode 可）</text>
 <text x="72" y="517" class="body">各体積で緩和 → 変位 → MLIPの力 → 力定数</text>
 <text x="72" y="543" class="body">phononから</text><svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns2="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" width="63.0" height="16.0" viewBox="0 0 63 16" version="1.1" x="175" y="526" role="img" aria-label="f_{\mathrm{vib}}(T,v)">
  <title>f_{\mathrm{vib}}(T,v)</title><metadata>

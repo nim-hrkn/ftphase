@@ -13,10 +13,10 @@
 <header><div class="eyebrow">PHASE DIAGRAM / COMPUTATIONAL WORKFLOW</div>
 <h1>0 Kの結晶構造から<br>固溶幅・液相を含む有限温度相図へ</h1>
 <p>初期計算はMLIPを使用。固相の振動自由エネルギーをaiida-alamode、液相をcalphyまたは既存CALPHADモデルで評価し、配置統計を整合させて相平衡を求めます。対象系の既存CALPHADデータベース（TDB）が利用できる場合は、全相または一部の相の自由エネルギーモデルとして採用する経路も選べます。</p>
-<span class="badge">計算設計・未実行</span> <span class="badge">二元系 A₁₋ₓBₓ・固定圧力</span>
-<p class="note">作成日：2026-10-20。以下の図と式は手順の説明です。実際の相図・自由エネルギー・MCP実行結果を示すものではありません。</p>
+<span class="badge">計算設計（2026-10-20）・実行済み（Al–Li、Ni–Al、Ag–Cu 進行中、2026-10-23 時点）</span> <span class="badge">二元系 A₁₋ₓBₓ・固定圧力</span>
+<p class="note">作成日：2026-10-20、更新：2026-10-23。以下の図と式は手順の説明で、数値例は説明用です。設計は <a href="ftphase.html">ftphase パッケージ</a>として実装し、01〜07 を Al–Li（ACE、例 5・6・8）と Ni–Al（EAM、例 7）で通した。実行結果と検証は <a href="examples.html">examples.html</a> と <a href="ftphase.html">ftphase.html</a>、実行して分かった修正点は本資料の <a href="#lessons">第 9 節</a>に書く。AiiDA 化（<code>ftphase.txdiagram</code> WorkChain）は例 8・9。</p>
 <p class="note">式番号は節ごとの固定記号A〜Hと連番で示します。番号をクリックすると、その式へのリンクになります。</p>
-<nav aria-label="目次"><a href="migration.html">別計算機への移行・再開</a><a href="examples.html">実行済みの例と工程の対応</a><a href="public-sources.html">欠けている工程を補う公開ソース</a><a href="ftphase.html">ftphase パッケージ</a><a href="#overview">全体図</a><a href="#setup">候補相</a><a href="#sqs-tools">SQSの定義・生成ツール</a><a href="#tools-and-mc">具体的作業・MC・ツール比較</a><a href="#solid">固相</a><a href="#configuration">配置統計</a><a href="#sublattices">副格子とは</a><a href="#chen-consistency">Chen共著論文との整合</a><a href="#quaternary-example">4元固溶体の計算例</a><a href="#liquid">液相</a><a href="#database">データベース利用</a><a href="#equilibrium">相平衡</a><a href="#coexistence-examples">二相共存の例</a><a href="#checks">検証と出力</a><a href="#sources">資料</a></nav></header>
+<nav aria-label="目次"><a href="migration.html">別計算機への移行・再開</a><a href="examples.html">実行済みの例と工程の対応</a><a href="public-sources.html">欠けている工程を補う公開ソース</a><a href="ftphase.html">ftphase パッケージ</a><a href="#overview">全体図</a><a href="#setup">候補相</a><a href="#sqs-tools">SQSの定義・生成ツール</a><a href="#tools-and-mc">具体的作業・MC・ツール比較</a><a href="#solid">固相</a><a href="#configuration">配置統計</a><a href="#sublattices">副格子とは</a><a href="#chen-consistency">Chen共著論文との整合</a><a href="#quaternary-example">4元固溶体の計算例</a><a href="#liquid">液相</a><a href="#database">データベース利用</a><a href="#equilibrium">相平衡</a><a href="#coexistence-examples">二相共存の例</a><a href="#checks">検証と出力</a><a href="#lessons">実行して分かったこと</a><a href="#sources">資料</a></nav></header>
 <section id="overview"><h2>1. 全体のワークフロー</h2>
 <figure><img src="workflow.svg" width="1200" height="1320" alt="候補相の設定から固相のQHAと配置自由エネルギー、液相の熱力学積分へ分岐し、共通の自由エネルギー基準に統合して凸包と相図を計算するフロー"><figcaption>図1．各工程の式・仮定・確認事項を以下に示します。</figcaption></figure>
 <p>aiida-alamodeは固相自由エネルギーの計算と履歴管理に使います。配置エントロピー、液相自由エネルギー、全相の競合を含む相平衡は、それぞれの工程として組み合わせます。</p></section>
@@ -55,7 +55,7 @@
 <h3>02Aから後続計算へ渡す手順</h3>
 <ol><li>母格子、混合する副格子、各副格子の許可元素と占有率を決める。完全規則・無欠陥のline phaseにはSQSを作らない。</li><li>整数個の原子で目標組成を表せるセルを選ぶ。例えばAl₀.₉Li₀.₁なら総原子数を10の倍数にする。セル形状と相関範囲も検討する。</li><li>探索する相関の種類・距離、試行数、乱数シードを指定し、複数候補を生成する。</li><li>相関誤差、実組成、原子数依存性、候補間の差を確認する。ツールごとに目的関数が異なるため、最適化スコアだけで異なるツールを比較しない。</li><li>未緩和SQSを保存してからMLIPで緩和し、aiida-alamodeのphonon/QHAまたはcalphyの固相TIへ渡す。緩和で相が変わった場合は元の相のデータとして扱わない。</li><li>構造、生成ツールと版、セル、組成、相関条件、シード、評価結果を保存する。固定配置の自由エネルギーに配置項を加えるかは04Aで整合させる。</li></ol>
 <p class="callout">SQS探索のMCは、相関誤差を小さくするための最適化です。実際の温度で配置エネルギーに従う物理的MCとは目的が異なります。SQS単体から配置エントロピー、短範囲秩序の温度依存性、固溶幅は得られません。</p>
-<p class="note">本節はツール選定と計算設計の説明です。SQS生成・ツール導入はまだ実行していません。</p>
+<p class="note">本節はツール選定と計算設計の説明です。icet 4.0 と sqsgenerator 0.5.6 を導入し、Al–Li の fcc 固溶体では icet の固定超格子 MC（<code>generate_sqs_from_supercells</code>、32・64 原子）を例 6 で使った。64 原子 SQS と 32 原子ランダム 2 配置の平均の差は fcc Al–Li の 800 K で −3〜+1 meV/atom（ftphase.html 3.6）。sqsgenerator の wrapper（<code>ftphase.structures.sqs_sqsgenerator</code>）の検証は第 9 節の記録を参照。</p>
 </section>
 <section id="tools-and-mc"><h2>2補足. 02A・02Bの具体的作業とcalphy・pyiron・icet</h2>
 <p><strong>02A・02Bは組成・構造系列を準備する工程です。</strong>相互作用の学習やMCによる配置統計は、その後の自由エネルギー評価に接続します。「line phaseとして固定組成を仮定する」ことと、「欠陥を調べて組成幅が小さいと検証する」ことを区別します。</p>
@@ -208,7 +208,7 @@
 <p>各組成で液体を平衡化し、Uhlenbeck–Fordモデル（UFM）を参照系として熱力学積分します。以下は固定T,Vでの平衡TIの基本式です。calphyの往復スイッチングを用いる計算では、有限速度の散逸と往復差を検証します。</p>
 <div class="eq"><div class="equation-row" id="eq-F1"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mi>U</mi><mi>λ</mi></msub><mo>=</mo><mrow><mrow><mo>(</mo><mrow><mn>1</mn><mo>−</mo><mi>λ</mi></mrow><mo>)</mo></mrow><msub><mi>U</mi><mtext>UFM</mtext></msub><mo>+</mo><mi>λ</mi><msub><mi>U</mi><mtext>MLIP</mtext></msub></mrow></mrow></math><a class="equation-number" href="#eq-F1" aria-label="式 F1">(F1)</a></div><div class="equation-row" id="eq-F2"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mi>F</mi><mtext>MLIP</mtext></msub><mo>=</mo><mrow><msub><mi>F</mi><mtext>UFM</mtext></msub><mo>+</mo><msubsup><mo>∫</mo><mn>0</mn><mn>1</mn></msubsup><msub><mrow><mo>⟨</mo><mrow><msub><mi>U</mi><mtext>MLIP</mtext></msub><mo>−</mo><msub><mi>U</mi><mtext>UFM</mtext></msub></mrow><mo>⟩</mo></mrow><mrow><mi>λ</mi><mo>,</mo><mi>T</mi><mo>,</mo><mi>V</mi></mrow></msub><mi mathvariant="normal">d</mi><mi>λ</mi></mrow></mrow></math><a class="equation-number" href="#eq-F2" aria-label="式 F2">(F2)</a></div><div class="equation-row" id="eq-F3"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><msub><mi>g</mi><mtext>liq</mtext></msub><mrow><mo>(</mo><mrow><mi>T</mi><mo>,</mo><mi>P</mi><mo>,</mo><mi>x</mi></mrow><mo>)</mo></mrow></mrow><mo>=</mo><mrow><munder><mi mathvariant="normal">min</mi><mi>v</mi></munder><mrow><mo>[</mo><mrow><mrow><msub><mi>f</mi><mtext>liq</mtext></msub><mrow><mo>(</mo><mrow><mi>T</mi><mo>,</mo><mi>v</mi><mo>,</mo><mi>x</mi></mrow><mo>)</mo></mrow></mrow><mo>+</mo><mi>P</mi><mi>v</mi></mrow><mo>]</mo></mrow></mrow></mrow></math><a class="equation-number" href="#eq-F3" aria-label="式 F3">(F3)</a></div></div>
 <p>F<sub>UFM</sub>は、正しい組成・粒子数の理想気体混合寄与とUFM過剰項を含む参照自由エネルギーです。混合項を後から重複追加しません。NPT等を使う実際の経路・PV項の扱いは導入版に合わせて記録します。</p>
-<p>LAMMPSでMLIPが <code>hybrid/scaled</code> と併用できるかを確認し、全系共通のλでエネルギー・力・ビリアルを検証します。通常MDが動くことだけでは、TI対応の確認になりません。</p>
+<p>LAMMPSでMLIPが <code>hybrid/scaled</code> と併用できるかを確認し、全系共通のλでエネルギー・力・ビリアルを検証します。通常MDが動くことだけでは、TI対応の確認になりません。確認結果（2026-10-22）：CPU では conda-forge の LAMMPS 22 Jul 2025 で <code>pace</code>・<code>eam/alloy</code>・<code>grace/fs</code> が <code>hybrid/scaled</code> と併用できた。GPU（KOKKOS）では <code>hybrid/scaled/kk</code> が LAMMPS 30 Sep 2026 以降にしか無く、ソースからビルドした（<code>env/lammps-gpu</code>）。<code>pace/kk</code> は <code>pair_style pace product</code> が必要。GPU 1 ランクは CPU 4 ランクの 1.7〜3.3 倍速で、エネルギーは一致した。</p>
 <h3>既存CALPHAD液相モデル</h3>
 <div class="eq"><div class="equation-row" id="eq-F4"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mi>g</mi><mtext>liq</mtext></msub><mo>=</mo><mrow><mrow><mo>(</mo><mrow><mn>1</mn><mo>−</mo><mi>x</mi></mrow><mo>)</mo></mrow><msubsup><mi>g</mi><mtext>A</mtext><mrow><mtext>L</mtext><mo>,</mo><mn>0</mn></mrow></msubsup><mo>+</mo><mi>x</mi><msubsup><mi>g</mi><mtext>B</mtext><mrow><mtext>L</mtext><mo>,</mo><mn>0</mn></mrow></msubsup><mo>+</mo><mrow><msub><mi>k</mi><mtext>B</mtext></msub><mi>T</mi></mrow><mrow><mo>[</mo><mrow><mrow><mo>(</mo><mrow><mn>1</mn><mo>−</mo><mi>x</mi></mrow><mo>)</mo></mrow><mi mathvariant="normal">ln</mi><mrow><mo>(</mo><mrow><mn>1</mn><mo>−</mo><mi>x</mi></mrow><mo>)</mo></mrow><mo>+</mo><mi>x</mi><mi mathvariant="normal">ln</mi><mi>x</mi></mrow><mo>]</mo></mrow><mo>+</mo><mrow><msubsup><mi>g</mi><mtext>ex</mtext><mtext>L</mtext></msubsup><mrow><mo>(</mo><mrow><mi>T</mi><mo>,</mo><mi>x</mi></mrow><mo>)</mo></mrow></mrow></mrow></mrow></math><a class="equation-number" href="#eq-F4" aria-label="式 F4">(F4)</a></div></div>
 <p>式(F4)は、二元系A–Bの液相自由エネルギーを<strong>純元素の基準・理想混合・理想混合からのずれ</strong>に分けた、単純な置換型液相モデルです。圧力は一定とし、式中では圧力依存を省略しています。</p>
@@ -247,7 +247,7 @@
 <div class="eq"><div class="equation-row" id="eq-G1"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mi>Δ</mi><mrow><msub><mi>g</mi><mi>φ</mi></msub><mrow><mo>(</mo><mrow><mi>T</mi><mo>,</mo><mi>P</mi><mo>,</mo><mi>x</mi></mrow><mo>)</mo></mrow></mrow></mrow><mo>=</mo><mrow><mrow><msub><mi>g</mi><mi>φ</mi></msub><mrow><mo>(</mo><mrow><mi>T</mi><mo>,</mo><mi>P</mi><mo>,</mo><mi>x</mi></mrow><mo>)</mo></mrow></mrow><mo>−</mo><mrow><mo>[</mo><mrow><mrow><mo>(</mo><mrow><mn>1</mn><mo>−</mo><mi>x</mi></mrow><mo>)</mo></mrow><mrow><msubsup><mi>g</mi><mtext>A</mtext><mtext>ref</mtext></msubsup><mrow><mo>(</mo><mrow><mi>T</mi><mo>,</mo><mi>P</mi></mrow><mo>)</mo></mrow></mrow><mo>+</mo><mi>x</mi><mrow><msubsup><mi>g</mi><mtext>B</mtext><mtext>ref</mtext></msubsup><mrow><mo>(</mo><mrow><mi>T</mi><mo>,</mo><mi>P</mi></mrow><mo>)</mo></mrow></mrow></mrow><mo>]</mo></mrow></mrow></mrow></math><a class="equation-number" href="#eq-G1" aria-label="式 G1">(G1)</a></div></div>
 <p>同じ線形参照項を全相から差し引いても平衡組成は変わりません。ただし、MLIPの原子エネルギーのゼロ点を合わせるだけで、実験に基づくTDBと温度依存性まで一致するわけではありません。純元素の相間差、熱容量、零点振動・量子効果を含む基準を確認し、既知の相境界でも検証します。</p>
 <p>導入前に、対象元素系と相、温度・圧力・組成範囲、相互作用パラメータ、副格子・空孔モデル、単位とモル基準、版・出典・利用条件、平衡計算ソフトとの互換性を確認します。規則相の固溶幅を扱うには、その相に組成変化を許すモデルが必要です。line phaseしか含まないモデルから、その相の有限の固溶幅は得られません。</p>
-<p class="callout">データベースのgが既に振動・配置等を含む総自由エネルギーなら、phonon自由エネルギーや理想混合項をそのまま再加算しません。相ごとに「既存モデルを採用」「置き換え」「補正・再フィット」を明記します。本ワークフローでは特定のデータベースの取得・適合性確認はまだ行っていません。</p>
+<p class="callout">データベースのgが既に振動・配置等を含む総自由エネルギーなら、phonon自由エネルギーや理想混合項をそのまま再加算しません。相ごとに「既存モデルを採用」「置き換え」「補正・再フィット」を明記します。本ワークフローでは特定のデータベースの取得・適合性確認は行っていない（pycalphad 0.11.2 と付属の TDB で API の動作だけ確認、examples.html）。</p>
 </section>
 <section id="equilibrium"><h2>6. 全相の競合から固溶幅と相図を求める</h2>
 <p><strong>図1の06は、全相の自由エネルギーから相平衡を求める工程です。calphyだけに限定されません。</strong>二元系の組成別自由エネルギーにはcalphyの相図機能を使う経路があり、下記の実例で説明します。CALPHADモデルを使う場合はpycalphadなどの平衡計算ソフトを使います。自前で凸包・共通接線を計算することもできます。calphyによるMD・熱力学積分は各相の自由エネルギーを作る工程で、06の全相の平衡計算とは役割が異なります。規則相の内部占有率、候補相、多元系への対応は選んだ平衡計算手法の適用範囲を確認します。</p>
@@ -281,7 +281,7 @@
 <p>開発者側の「SGC and VCSGC ensembles」チュートリアルは、Ag–PdのCEモデルを用いて、二相分離領域（miscibility gap）と相図を求めます。<a href="https://ce-tutorials.materialsmodeling.org/part-3/sgc-vcsgc-simulations.html">Ag–Pd：SGC・VCSGCから相図を作る例</a></p>
 <ol><li>Ag–PdのCEモデルを読み込み、fccスーパーセルを用意する。</li><li>複数温度でSGC・VCSGCのMCを行い、組成と自由エネルギーの組成微分を取得する。</li><li>VCSGCの結果を積分し、組成依存自由エネルギーを求める。</li><li>共通接線から共存組成を決定し、温度ごとに追跡して相図を作る。</li></ol>
 <p>SGCでは二相領域で組成が不連続に変わるため、その区間を連続的にサンプリングするにはVCSGC等を使います。この例にはMC実行スクリプトと解析用データも案内されています。同じfcc格子の組成分離を示す例であり、液相・別結晶構造を含む相図全体をそのまま与えるものではありません。</p>
-<p class="note">上記は公開チュートリアルの内容を確認したものです。本ワークスペースでの計算実行・相図再現はまだ行っていません。</p>
+<p class="note">上記は公開チュートリアルの内容を確認したものです。本ワークスペースでは workshop の 18 本の calphy 計算を pyiron で実行し、ftphase で相図を再現した（例 1）。接線をチュートリアルの名目組成ではなく実組成で引くと 800 K の固溶限は 0.158 / 0.222 になる（ftphase.html 3.1）。</p>
 </section>
 <section id="checks"><h2>7. 収束・誤差・保存する成果物</h2>
 <ul><li>固相：変位量、スーパーセル、q点、体積点、力定数フィット、虚振動、配置サンプルを確認。</li><li>液相：原子数、MD時間刻み、平衡化時間、切替時間、反復、往復差、拡散と定常性を確認。</li><li>相平衡：相境界付近で組成点を追加し、自由エネルギーの不確かさを変えて境界の感度を調べる。</li><li>共通基準：原子数による規格化、圧力、元素参照、配置・振動・量子寄与の重複と欠落を確認。</li></ul>
@@ -307,12 +307,25 @@
 </tbody></table></div>
 <p><strong>数値照合：</strong>理想配置項のみを再計算すると、1000 Kの5元等原子比では−138.69 meV/atom、組成(0.40, 0.15, 0.15, 0.15, 0.15)では−129.67 meV/atomです。論文p.612（PDF 7ページ）の−139、−130 meV/atomと丸めの範囲で一致します。総自由エネルギーは再計算していません。</p>
 </section>
+<section id="lessons"><h2>9. 実行して分かったこと（2026-10-21〜23、設計への反映）</h2>
+<p>01〜07 を ftphase で実装し、Al–Li（ACE、例 5・6・8）、Ni–Al（Mishin 2009 EAM、例 7）、Ag–Cu（例 9、進行中）で通した。式と工程の区切りは変えずに済んだが、次の点は設計の注記として加える。数値の出典は <a href="ftphase.html">ftphase.html</a> の各節。</p>
+<table><thead><tr><th>工程</th><th>分かったこと</th><th>設計への反映</th></tr></thead><tbody>
+<tr><td>02A</td><td>fcc Al–Li で 64 原子 icet SQS と 32 原子ランダム 2 配置の平均の差は 800 K で −3〜+1 meV/atom。配置ノイズは共晶温度を動かさず、固溶限を 0.01〜0.05 動かす。</td><td>固溶体は複数配置の平均と半幅を誤差に使う。SQS は icet の固定超格子 MC（5 秒）。</td></tr>
+<tr><td>03A</td><td>phonopy の固定メッシュ [4,4,4] は基本胞の小さいセルで q 点が 64 個しかなく、fcc Al の F が 900 K で 8.8 meV/atom 高かった（Al 融点 850 → 890 K）。QHA は融点付近で calphy の固相 TI より 20〜45 meV/atom 高い（Ni、非調和）。</td><td>メッシュは密度指定（60 Å）。約 0.8 T_m 以上の固相は calphy の固相 TI（Frenkel–Ladd + 可逆スケーリング）に置き換える（式 (D1)(D2) の経路は低温側）。TI の掃引上限は相が消える温度より高く取る（Ni–Al では上限で相が消える人工物が出た）。</td></tr>
+<tr><td>03B</td><td>calphy の液相 TI は GPU（KOKKOS、<code>hybrid/scaled/kk</code> は LAMMPS 30 Sep 2026 以降）で CPU 4 ランクの 1.7〜3.3 倍速。seed 違いの再現幅は 1.3〜1.4 meV/atom（ACE Al–Li）、平均化後の run 間のばらつき 0.1〜0.5 meV/atom。</td><td>各組成 2〜3 本を平均し、ばらつきを Monte Carlo の σ に使う（下限 1.4 meV/atom）。</td></tr>
+<tr><td>04A / 06</td><td>k_B T x ln x を含む G に多項式を当てると端点の傾きを再現できず、偽のミシビリティギャップが出る。欠陥セルのスプラインは標本ノイズから偽の B2+B2 二相域を作る。</td><td>理想混合（式 (E1)）と副格子エントロピー（式 (E9)–(E13)）は解析的に分離し、fit は過剰項だけに当てる（液相は理想混合 + Redlich–Kister）。規則相の欠陥エネルギーは化学量論組成の両側で枝ごとに線形 fit。</td></tr>
+<tr><td>04B</td><td>量子 QHA の固相と古典 TI の液相を混ぜると ACE Al の融点が 40 K 下がり、調和補正 F_q − F_cl で 10 K 戻る（残りは QHA と TI の差）。</td><td>全相を同じ水準（古典）に揃えてから凸包を取る。</td></tr>
+<tr><td>05 / 07</td><td>液相の run が全組成にある温度だけを格子にしないと、切れた液相を凸包が見て偽の区間を作る。同一相の「二相域」は Monte Carlo で位置が動かなければ fit の曲率。</td><td>格子は液相の被覆で決める。同一相区間は標準偏差 0 を根拠に fit ノイズと表示する。標本範囲の端にある境界は edge フラグを付ける。</td></tr>
+<tr><td>実行基盤</td><td>Slurm の依存チェーン（例 5〜7）と AiiDA の WorkChain（例 8・9、<code>ftphase.txdiagram</code>）のどちらでもセッション非依存に完走した。AiiDA ではデーモンが <code>PYTHONPATH</code> を書き出し、ジョブ内の conda を壊した（計算機の prepend で解除）。</td><td>重い工程（03A/03B）は CalcJob、軽い工程（01/02/04〜07）は calcfunction。再投入は未完了分だけ。</td></tr>
+<tr><td>実験との比較</td><td>Al–Li（ACE、古典）：共晶 760〜770 K・x ≈ 0.31（実験 875 K・0.24、Okamoto 2012）、温度が一様に 40〜120 K 低い。Ni–Al（EAM）：B2 合致溶融 1861 K（実験 1911、同じ EAM の二相 MD 1850 ± 25）、B2 の Ni 側の幅は出るが Al 側の空孔幅は出ない。</td><td>温度のずれはポテンシャルと古典水準の問題で、工程の問題ではない。規則相の Al 側の幅は熱的欠陥対（Wagner–Schottky）を含む副格子モデルが要る。</td></tr>
+</tbody></table>
+</section>
 <section id="sources"><h2>8. 根拠と参照資料</h2>
 <p>この説明は以下のローカル資料、既存の相図スキル、および「具体的作業・MC・ツール比較」節にリンクした公式Web資料・原著論文に基づきます。ソフトウェアの実行API・計算可能範囲は導入版で確認します。</p>
 <ul><li><a href="../資料/aiida-alamode%20入門%20_%20Introduction.html">aiida-alamode 入門 / Introduction</a>：1.0.0、2026-09-26。AiiDAとの対応、LLM操作、QHA driver、MgOレポートの熱力学量を参照。</li>
 <li><a href="../skills/phase-diagram/SKILL.md">phase-diagram スキル</a>：方法の選択と熱力学上の必須事項。</li>
 <li><a href="../skills/phase-diagram/references/workflow.md">詳細ワークフロー</a>：固相、配置エントロピー、液相TI、共通接線の定式化。</li>
 <li><a href="../skills/phase-diagram/references/sources.md">公式資料と検証例の一覧</a>：ALAMODE、calphy、LAMMPS、SQS、pycalphadの参照先。</li></ul>
-<p class="note">本資料では新しい計算や外部ソフトウェアの動作検証は行っていません。図内の工程は推奨する設計であり、すべてが単一のMCP呼び出しで自動実行されることを意味しません。</p></section>
+<p class="note">外部ソフトウェアの動作検証と実行結果は examples.html と ftphase.html にある。図内の工程は推奨する設計であり、すべてが単一のMCP呼び出しで自動実行されることを意味しない。AiiDA では <code>ftphase.txdiagram</code> WorkChain（例 8・9）が 01〜07 を一つの provenance グラフとして実行する。</p></section>
 <footer>MLIP → 自由エネルギー → 相平衡 ／ <a href="workflow.svg">SVG図を開く</a></footer>
 </main></body></html>

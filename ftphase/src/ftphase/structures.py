@@ -207,21 +207,43 @@ def sqs_icet(
     return sqs, meta
 
 
-def sqs_sqsgenerator(atoms: Atoms, composition: Dict[str, int], shell_weights: Optional[Dict[int, float]] = None, iterations: int = 100000, seed: Optional[int] = None) -> Tuple[Atoms, Dict]:
-    """SQS with sqsgenerator (0.5 API) on the given supercell; Warren-Cowley objective."""
+def sqs_sqsgenerator(atoms: Atoms, composition: Dict[str, int], shell_weights: Optional[Dict[int, float]] = None, iterations: int = 100000,
+                     seed: Optional[int] = None, pair_weights=None, shell_radii=None) -> Tuple[Atoms, Dict]:
+    """SQS with sqsgenerator 0.5 (``parse_config`` + ``optimize``) on the given supercell.
+
+    Objective: weighted Warren-Cowley short-range-order parameters of the cross pairs over the
+    first shells (defaults of sqsgenerator: 5 shells with weights 1, 1/2, ..., 1/5; same-species
+    pairs have weight 0).  ``composition`` gives atom counts, e.g. {'Al': 28, 'Li': 4}.
+    Returns (atoms, metadata) with the objective, the SRO parameters per shell and species pair,
+    the shell radii/weights used and the number of degenerate best structures.  The C++ core is
+    fast (10^5-10^6 iterations in well under a second for 32-64 atoms); seeds are not exposed by
+    the 0.5 Python API, so ``seed`` is only recorded.
+    """
     import sqsgenerator as sg  # type: ignore
 
-    cfg = {"structure": {"lattice": atoms.get_cell()[:].tolist(), "coords": atoms.get_scaled_positions().tolist(), "species": atoms.get_chemical_symbols()}, "composition": dict(composition), "iterations": int(iterations)}
+    cfg = {"structure": {"lattice": atoms.get_cell()[:].tolist(), "coords": atoms.get_scaled_positions().tolist(), "species": atoms.get_chemical_symbols()},
+           "composition": {k: int(v) for k, v in composition.items()}, "iterations": int(iterations)}
     if shell_weights:
-        cfg["shell_weights"] = dict(shell_weights)
-    if seed is not None:
-        cfg["seed"] = int(seed)
-    results = sg.sqs_optimize(cfg)
-    best = results[0] if isinstance(results, (list, tuple)) else results
-    # sqsgenerator returns its own structure object with to_ase() in 0.5
-    st = best.structure if hasattr(best, "structure") else best["structure"]
-    out = st.to_ase() if hasattr(st, "to_ase") else atoms.copy()
-    meta = {"generator": "sqsgenerator", "objective": float(getattr(best, "objective", np.nan)), "iterations": iterations, "seed": seed}
+        cfg["shell_weights"] = {int(k): float(v) for k, v in shell_weights.items()}
+    if pair_weights is not None:
+        cfg["pair_weights"] = pair_weights
+    if shell_radii is not None:
+        cfg["shell_radii"] = shell_radii
+    conf = sg.parse_config(cfg)
+    res = sg.optimize(conf)
+    best = res.best()
+
+    def _v(x):
+        return x() if callable(x) else x
+
+    out = sg.to_ase(_v(best.structure))
+    sro = np.asarray(_v(best.sro), dtype=float)
+    species = list(_v(best.species)) if hasattr(best, "species") else None
+    meta = {"generator": f"sqsgenerator {getattr(sg, '__version__', '')}", "objective": float(_v(best.objective)), "iterations": int(iterations), "seed": seed,
+            "sro": sro.tolist(), "species_order": [str(v) for v in species] if species else None,
+            "shell_radii": [list(map(float, r)) for r in _v(conf.shell_radii)] if hasattr(conf, "shell_radii") else None,
+            "shell_weights": [{int(k): float(v) for k, v in w.items()} for w in _v(conf.shell_weights)] if hasattr(conf, "shell_weights") else None,
+            "n_best_structures": int(_v(res.num_results)) if hasattr(res, "num_results") else None, "n_atoms": len(out), "composition": dict(composition)}
     return out, meta
 
 

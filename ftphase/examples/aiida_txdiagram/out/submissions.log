@@ -3,3 +3,4 @@
 {"pk": 118, "uuid": "33356234-657a-49c9-9cf6-0e291a31b2f5", "name": "alli_ace_smoke", "profile": "ftphase", "submitted": "2026-10-23 11:30:23", "gpu": true, "smoke": true}
 {"pk": 191, "uuid": "7a860a1d-bbfd-4216-ac98-646b9ff3cd52", "name": "alli_ace", "profile": "ftphase", "submitted": "2026-10-23 11:34:50", "gpu": true, "smoke": false}
 {"pk": 346, "uuid": "31b19c3f-1d87-4943-ba82-66bbcb56f531", "name": "agcu_eam_smoke", "profile": "ftphase", "submitted": "2026-10-23 16:13:04", "gpu": true, "smoke": true}
+{"pk": 428, "uuid": "e57cf0ac-ba10-4f32-9c2a-ce8eba76f2c6", "name": "agcu_eam", "profile": "ftphase", "submitted": "2026-10-23 16:24:18", "gpu": true, "smoke": false}

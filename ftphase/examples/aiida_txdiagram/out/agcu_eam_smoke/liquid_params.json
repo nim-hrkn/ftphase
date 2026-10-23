@@ -1,0 +1,36 @@
+{
+ "lqd_x0_00": {
+  "tag": "lqd_x0.00",
+  "x_target": 0.0,
+  "x_actual": 0.0,
+  "seed": 0,
+  "repeat": 0,
+  "counts": {
+   "Ag": 108,
+   "Cu": 0
+  },
+  "temperature": [
+   1500.0,
+   1200.0
+  ],
+  "mode": "ts",
+  "n_atoms": 108
+ },
+ "lqd_x0_50": {
+  "tag": "lqd_x0.50",
+  "x_target": 0.5,
+  "x_actual": 0.5,
+  "seed": 100,
+  "repeat": 0,
+  "counts": {
+   "Ag": 54,
+   "Cu": 54
+  },
+  "temperature": [
+   1500.0,
+   1200.0
+  ],
+  "mode": "ts",
+  "n_atoms": 108
+ }
+}
