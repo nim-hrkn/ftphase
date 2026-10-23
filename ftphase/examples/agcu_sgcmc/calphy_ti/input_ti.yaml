@@ -1,0 +1,226 @@
+calculations:
+- mode: fe
+  element:
+  - Ag
+  - Cu
+  mass:
+  - 107.8682
+  - 63.546
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/agcu_sgcmc/calphy_ti/ag_256.data
+  reference_phase: solid
+  temperature: 1275.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/agcu/CuAg.eam.alloy
+    Ag Cu'
+  n_equilibration_steps: 10000
+  n_switching_steps: 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: sol_256_10k
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 4
+    memory: 8GB
+    walltime: '48:00:00'
+    commands: &id001
+    - source /home/kino/miniforge3/etc/profile.d/conda.sh && conda activate /home/kino/kino/Claude/Projects/PhaseDiagram/env/ftphase
+- mode: fe
+  element:
+  - Ag
+  - Cu
+  mass:
+  - 107.8682
+  - 63.546
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/agcu_sgcmc/calphy_ti/ag_256.data
+  reference_phase: liquid
+  temperature: 1275.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/agcu/CuAg.eam.alloy
+    Ag Cu'
+  n_equilibration_steps: 10000
+  n_switching_steps: 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: liq_256_10k
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 4
+    memory: 8GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: fe
+  element:
+  - Ag
+  - Cu
+  mass:
+  - 107.8682
+  - 63.546
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/agcu_sgcmc/calphy_ti/ag_256.data
+  reference_phase: solid
+  temperature: 1275.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/agcu/CuAg.eam.alloy
+    Ag Cu'
+  n_equilibration_steps: 10000
+  n_switching_steps: 50000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: sol_256_50k
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 4
+    memory: 8GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: fe
+  element:
+  - Ag
+  - Cu
+  mass:
+  - 107.8682
+  - 63.546
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/agcu_sgcmc/calphy_ti/ag_256.data
+  reference_phase: liquid
+  temperature: 1275.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/agcu/CuAg.eam.alloy
+    Ag Cu'
+  n_equilibration_steps: 10000
+  n_switching_steps: 50000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: liq_256_50k
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 4
+    memory: 8GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: fe
+  element:
+  - Ag
+  - Cu
+  mass:
+  - 107.8682
+  - 63.546
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/agcu_sgcmc/calphy_ti/ag_2048.data
+  reference_phase: solid
+  temperature: 1275.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/agcu/CuAg.eam.alloy
+    Ag Cu'
+  n_equilibration_steps: 10000
+  n_switching_steps: 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: sol_2048_10k
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 4
+    memory: 8GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: fe
+  element:
+  - Ag
+  - Cu
+  mass:
+  - 107.8682
+  - 63.546
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/agcu_sgcmc/calphy_ti/ag_2048.data
+  reference_phase: liquid
+  temperature: 1275.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/agcu/CuAg.eam.alloy
+    Ag Cu'
+  n_equilibration_steps: 10000
+  n_switching_steps: 10000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: liq_2048_10k
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 4
+    memory: 8GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: fe
+  element:
+  - Ag
+  - Cu
+  mass:
+  - 107.8682
+  - 63.546
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/agcu_sgcmc/calphy_ti/ag_2048.data
+  reference_phase: solid
+  temperature: 1275.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/agcu/CuAg.eam.alloy
+    Ag Cu'
+  n_equilibration_steps: 10000
+  n_switching_steps: 50000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: sol_2048_50k
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 4
+    memory: 8GB
+    walltime: '48:00:00'
+    commands: *id001
+- mode: fe
+  element:
+  - Ag
+  - Cu
+  mass:
+  - 107.8682
+  - 63.546
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/agcu_sgcmc/calphy_ti/ag_2048.data
+  reference_phase: liquid
+  temperature: 1275.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/agcu/CuAg.eam.alloy
+    Ag Cu'
+  n_equilibration_steps: 10000
+  n_switching_steps: 50000
+  n_iterations: 3
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: liq_2048_50k
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 4
+    memory: 8GB
+    walltime: '48:00:00'
+    commands: *id001
