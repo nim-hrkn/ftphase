@@ -1,0 +1,41 @@
+# coexistence MD Cu T=1400 K
+units metal
+atom_style atomic
+boundary p p p
+lattice fcc 3.615
+region box block 0 8 0 8 0 24
+create_box 2 box
+create_atoms 2 box
+mass 1 107.8682
+mass 2 63.546
+pair_style eam/alloy
+pair_coeff * * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/agcu/CuAg.eam.alloy Ag Cu
+timestep 0.002
+velocity all create 1400 4711 loop geom
+# stage 1: solid at T, isotropic NPT -> lattice parameter at T
+fix s1 all npt temp 1400 1400 0.2 iso 0.0 0.0 2.0
+thermo 1000
+run 10000
+unfix s1
+# stage 2: melt the upper half, lower half frozen
+region upper block INF INF INF INF $(lz/2) INF units box
+group upper region upper
+group lower subtract all upper
+fix fr lower setforce 0.0 0.0 0.0
+velocity upper create 2800.0 1234 loop geom
+fix s2 upper nvt temp 2800.0 2800.0 0.2
+run 15000
+unfix s2
+velocity upper create 1400 777 loop geom
+fix s2b upper nvt temp 1400 1400 0.2
+run 5000
+unfix s2b
+unfix fr
+# stage 3: whole box at T, NPT coupled along z only; record pe/atom every 10 ps
+velocity all scale 1400
+fix s3 all npt temp 1400 1400 0.2 z 0.0 0.0 2.0
+variable epa equal pe/atoms
+fix avg all ave/time 100 50 5000 v_epa file pe.dat
+thermo 5000
+thermo_style custom step temp pe lz v_epa
+run 200000
