@@ -101,9 +101,10 @@ def lammps_styles(executable: str) -> Dict[str, List[str]]:
 def gpu_capability(executable: str) -> Dict[str, object]:
     """What the LAMMPS binary can do on a GPU for calphy + ACE.
 
-    Keys: ``kokkos`` (package present), ``pace_kk``, ``hybrid_scaled_kk``,
-    ``ufm``, ``ti_spring``, ``version``; ``plain_fe_solid`` / ``all_modes``
-    summarise which calphy runs may use ``gpu=True``.
+    Keys: ``kokkos`` (package present), ``pace_kk``, ``grace_fs_kk``, ``grace_1l_kk``,
+    ``grace_2l_kk``, ``kk_pair_styles`` (every pair style with a ``/kk`` variant),
+    ``hybrid_scaled_kk``, ``ufm``, ``ti_spring``, ``version``; ``plain_fe_solid`` /
+    ``all_modes`` summarise which calphy runs may use ``gpu=True`` with ACE.
     """
     st = lammps_styles(str(executable))
     pair, fix = set(st["pair"]), set(st["fix"])
@@ -112,6 +113,10 @@ def gpu_capability(executable: str) -> Dict[str, object]:
         "version": st["version"][0] if st["version"] else "",
         "kokkos": "KOKKOS" in set(st["packages"]),
         "pace_kk": "pace/kk" in pair,
+        "grace_fs_kk": "grace/fs/kk" in pair,
+        "grace_1l_kk": "grace/1l/kk" in pair,
+        "grace_2l_kk": "grace/2l/kk" in pair,
+        "kk_pair_styles": sorted(x[:-3] for x in pair if x.endswith("/kk")),
         "hybrid_scaled_kk": "hybrid/scaled/kk" in pair,
         "ufm": "ufm" in pair,
         "ti_spring": "ti/spring" in fix,
@@ -210,12 +215,15 @@ def calculation_block(
             q["options"] = opts
         if lammps_executable and check_executable:
             cap = gpu_capability(lammps_executable)
-            uses_pace = pair_style.split()[0] in ("pace", "pace/extrapolation")
+            base = pair_style.split()[0]
+            uses_pace = base in ("pace", "pace/extrapolation")
             problems = []
             if not cap["kokkos"]:
                 problems.append("no KOKKOS package")
             if uses_pace and not cap["pace_kk"]:
                 problems.append("no pair_style pace/kk")
+            elif not uses_pace and base not in cap["kk_pair_styles"] and base != "hybrid/scaled":
+                problems.append(f"no pair_style {base}/kk (GRACE: build env/lammps-gpu-grace, 22Jul2025_update6 + grace.patch)")
             if needs_hybrid_scaled(mode, reference_phase) and not cap["hybrid_scaled_kk"]:
                 problems.append(f"no pair_style hybrid/scaled/kk (needed by mode {mode!r}, reference_phase {reference_phase!r}; LAMMPS >= 30 Sep 2026)")
             if problems:

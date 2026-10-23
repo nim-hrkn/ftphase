@@ -153,6 +153,12 @@ def test_calphy_gpu_capability_check(tmp_path, monkeypatch):
     fake["pace_kk"] = False
     with pytest.raises(ValueError, match="pace/kk"):
         cio.calculation_block("s", "fe", ["Al"], [26.98], data, "pace", "* * x.yace Al", 800, gpu=True, lammps_executable="fake")
+    # GRACE (or any other MLIP): the binary must list <style>/kk; the pair style keeps its arguments (no 'product')
+    fake["kk_pair_styles"] = ["grace/fs", "pace"]
+    g = cio.calculation_block("g", "fe", ["Al"], [26.98], data, "grace/fs", "* * FS.yaml Al", 800, gpu=True, lammps_executable="fake")
+    assert g["pair_style"] == "grace/fs"
+    with pytest.raises(ValueError, match="grace/1l/kk"):
+        cio.calculation_block("g1", "fe", ["Al"], [26.98], data, "grace/1l", "* * w.npz Al", 800, gpu=True, lammps_executable="fake")
 
 
 @pytest.mark.slow
