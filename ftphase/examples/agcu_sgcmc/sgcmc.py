@@ -118,24 +118,31 @@ def analyse():
         def jump(a):
             dx = np.diff(a[:, 1]); i = int(np.argmax(np.abs(dx))); return a[i, 0], a[i + 1, 0], a[i, 1], a[i + 1, 1]
         ju, jd = jump(up), jump(down)
-        # integrate dG/dx = dmu along each branch -> G(x) up to a constant per branch; anchor both on the same
-        # reference by matching the grand potential Omega = G - dmu x at the respective pure ends
-        def integrate(a, from_end):
+        # the alpha (Ag-rich) branch = 'up' points before its jump; the beta (Cu-rich) branch = 'down' points above its jump
+        alpha = up[up[:, 0] <= ju[0] + 1e-9]
+        beta = down[down[:, 0] >= jd[1] - 1e-9]
+        # integrate dG/dx = dmu along each branch -> G(x) relative to the pure end of that branch (x strictly increasing;
+        # points with the same composition, e.g. the pure end at very negative dmu, are merged)
+        def integrate(a):
             x = a[:, 1]; dmu = a[:, 0]
             order = np.argsort(x); x = x[order]; dmu = dmu[order]
-            g = np.concatenate([[0.0], np.cumsum(0.5 * (dmu[1:] + dmu[:-1]) * np.diff(x))])
-            return x, g   # relative to the pure end of this branch
-        xa, ga = integrate(up, "Ag")
-        xb, gb = integrate(down, "Cu")
+            xu, idx = np.unique(np.round(x, 6), return_inverse=True)
+            du = np.array([dmu[idx == k].mean() for k in range(len(xu))])
+            g = np.concatenate([[0.0], np.cumsum(0.5 * (du[1:] + du[:-1]) * np.diff(xu))])
+            return xu, g
+        xa, ga = integrate(alpha)
+        xb, gb = integrate(beta)
+        if len(xa) < 3 or len(xb) < 3:
+            continue
         # branch alpha: G_alpha(x) = G_Ag + ga(x); branch beta: G_beta(x) = G_Cu + (gb(x) - gb(1)) ; G_Cu - G_Ag from the SGC runs:
         # at coexistence dmu* both grand potentials are equal; estimate dmu* as the midpoint of the hysteresis loop and
         # fix G_Cu - G_Ag = int over the full (combined) isotherm of dmu dx using the midpoint construction
         dmu_star = 0.5 * (ju[0] + jd[1])
         # Maxwell-like estimate: G_Cu - G_Ag = integral of dmu over x from 0 to 1 along the combined isotherm with the jump at dmu_star
         xa_lim = np.interp(dmu_star, up[:, 0], up[:, 1]); xb_lim = np.interp(dmu_star, down[:, 0], down[:, 1])
-        g_alpha_at = np.interp(xa_lim, xa, ga); g_beta_rel_at = np.interp(xb_lim, xb, gb) - np.interp(1.0, xb, gb) if xb.max() >= 0.999 else np.interp(xb_lim, xb, gb) - gb[-1]
-        dG_CuAg = g_alpha_at + dmu_star * (xb_lim - xa_lim) - g_beta_rel_at
-        G_alpha = ga; G_beta = (gb - (gb[-1] if xb.max() < 0.999 else np.interp(1.0, xb, gb))) + dG_CuAg
+        g_alpha_at = np.interp(xa_lim, xa, ga); g_beta_rel_at = np.interp(xb_lim, xb, gb) - gb[-1]
+        dG_CuAg = g_alpha_at + dmu_star * (xb_lim - xa_lim) - g_beta_rel_at     # G(pure Cu) - G(pure Ag) from the Maxwell midpoint
+        G_alpha = ga; G_beta = (gb - gb[-1]) + dG_CuAg
         # common tangent between the two branches via the lower hull of both curves
         pa = PhaseCurve.from_points("fcc_alpha", xa, G_alpha, fit="spline", limited=True)
         pb = PhaseCurve.from_points("fcc_beta", xb, G_beta, fit="spline", limited=True)
