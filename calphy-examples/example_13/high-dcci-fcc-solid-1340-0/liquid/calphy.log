@@ -1,0 +1,27 @@
+2026-10-21 15:49:47,677 calphy.helpers INFO     Master random seed is 2020174371 (md.seed; recorded in input_file.yaml)
+2026-10-21 15:49:47,677 calphy.helpers INFO     Temperature start: 1340.000000 K, temperature stop: 1340.000000 K, pressure: 0.000000 bar
+2026-10-21 15:49:47,677 calphy.helpers INFO     Pressure adjusted in iso
+2026-10-21 15:49:47,677 calphy.helpers INFO     Reference phase is liquid
+2026-10-21 15:49:47,677 calphy.helpers INFO     Melting cycle will run, this can be turned off using the keyword melting_cycle
+2026-10-21 15:49:47,677 calphy.helpers INFO     Solidification detection enabled at tolerance.liquid_fraction = 0.05
+2026-10-21 15:49:47,677 calphy.helpers INFO     Thermostat/Barostat combo for equilibration cycle is not explicitely specified
+2026-10-21 15:49:47,677 calphy.helpers INFO     Thermostat/Barostat combo for equilibration cycle can be specified using keyword equilibration_control
+2026-10-21 15:49:47,677 calphy.helpers INFO     Nose-Hoover thermostat damping is 0.100000
+2026-10-21 15:49:47,677 calphy.helpers INFO     Nose-Hoover barostat damping is 0.100000
+2026-10-21 15:49:47,677 calphy.helpers INFO     These values can be tuned by adding in the input file:
+2026-10-21 15:49:47,677 calphy.helpers INFO     nose_hoover:
+2026-10-21 15:49:47,677 calphy.helpers INFO        thermostat_damping: <float>
+2026-10-21 15:49:47,677 calphy.helpers INFO        barostat_damping: <float>
+2026-10-21 15:49:47,677 calphy.helpers INFO     Integration stage is done using Nose-Hoover thermostat and barostat when needed
+2026-10-21 15:49:47,677 calphy.helpers INFO     Thermostat damping is 0.100000
+2026-10-21 15:49:47,677 calphy.helpers INFO     Barostat damping is 0.100000
+2026-10-21 15:49:47,677 calphy.helpers INFO     500 atoms in 125 cells on 4 cores
+2026-10-21 15:49:47,677 calphy.helpers INFO     pair_style: eam/alloy
+2026-10-21 15:49:47,677 calphy.helpers INFO     pair_coeff: * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Cu01.eam.alloy Cu
+2026-10-21 15:50:08,636 calphy.helpers INFO     Starting melting cycle with thigh temp 2680.000000, factor 1.000000
+2026-10-21 15:50:13,529 calphy.helpers INFO     fraction of solids found: 0.000000
+2026-10-21 15:50:19,603 calphy.helpers INFO     At count 1 mean pressure is 10.17 bar, std 792.74, vol/atom 13.4023
+2026-10-21 15:50:24,102 calphy.helpers INFO     At count 2 mean pressure is -8.99 bar, std 685.56, vol/atom 13.4189
+2026-10-21 15:50:24,102 calphy.helpers INFO     Pressure within tolerance
+2026-10-21 15:50:24,102 calphy.helpers INFO     finalized vol/atom 13.418917 at pressure -8.988046
+2026-10-21 15:50:24,102 calphy.helpers INFO     Avg box dimensions x: 18.861000, y: 18.861000, z:18.861000

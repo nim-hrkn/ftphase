@@ -1,0 +1,37 @@
+2026-10-21 15:22:37,792 calphy.helpers INFO     Master random seed is 1325106827 (md.seed; recorded in input_file.yaml)
+2026-10-21 15:22:37,792 calphy.helpers INFO     Temperature start: 800.000000 K, temperature stop: 800.000000 K, pressure: 0.000000 bar
+2026-10-21 15:22:37,792 calphy.helpers INFO     Pressure adjusted in iso
+2026-10-21 15:22:37,792 calphy.helpers INFO     Reference phase is solid
+2026-10-21 15:22:37,792 calphy.helpers WARNING  Melt detection is DISABLED (tolerance.solid_fraction = 0): if this solid melts during equilibration the run will continue and report a free energy for the melted structure. Set tolerance.solid_fraction > 0 (e.g. 0.7) to enable it.
+2026-10-21 15:22:37,792 calphy.helpers INFO     Equilibration stage is done using berendsen barostat/thermostat
+2026-10-21 15:22:37,792 calphy.helpers INFO     Berendsen thermostat damping is 100.000000
+2026-10-21 15:22:37,792 calphy.helpers INFO     Berendsen barostat damping is 100.000000
+2026-10-21 15:22:37,792 calphy.helpers INFO     These values can be tuned by adding in the input file:
+2026-10-21 15:22:37,792 calphy.helpers INFO     berendsen:
+2026-10-21 15:22:37,792 calphy.helpers INFO        thermostat_damping: <float>
+2026-10-21 15:22:37,792 calphy.helpers INFO        barostat_damping: <float>
+2026-10-21 15:22:37,792 calphy.helpers INFO     Integration stage is done using Nose-Hoover thermostat and barostat when needed
+2026-10-21 15:22:37,792 calphy.helpers INFO     Thermostat damping is 0.100000
+2026-10-21 15:22:37,792 calphy.helpers INFO     Barostat damping is 0.100000
+2026-10-21 15:22:37,792 calphy.helpers INFO     1024 atoms in 1 cells on 4 cores
+2026-10-21 15:22:37,792 calphy.helpers INFO     pair_style: eam/fs
+2026-10-21 15:22:37,792 calphy.helpers INFO     pair_coeff: * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/ZrCu.eam.fs Zr Cu
+2026-10-21 15:22:37,792 calphy.helpers INFO     Calculating composition scaling
+2026-10-21 15:22:38,159 calphy.helpers INFO     Forward swap types: [1, 2, 3]
+2026-10-21 15:22:38,159 calphy.helpers INFO     Reverse swap types: [1, 2, 3]
+2026-10-21 15:22:38,683 calphy.helpers INFO     Update pair styles and coefficients
+2026-10-21 15:22:38,683 calphy.helpers INFO     initial component 1: pair_style eam/fs | pair_coeff * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/ZrCu.eam.fs Cu Zr Zr
+2026-10-21 15:22:38,683 calphy.helpers INFO     final component 1: pair_style eam/fs | pair_coeff * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/ZrCu.eam.fs Cu Cu Zr
+2026-10-21 15:22:38,686 calphy.helpers INFO     Modified lattice written to /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_10/composition_scaling-zrcu.data-solid-800-0.0.data.comp.data
+2026-10-21 15:22:38,686 calphy.helpers INFO     Original mass: [91.224, 63.546]
+2026-10-21 15:22:38,686 calphy.helpers INFO     Temporarily replacing mass: [91.224, 91.224, 91.224]
+2026-10-21 15:23:04,959 calphy.helpers INFO     At count 1 mean pressure is 0.07 bar, std 3.22, vol/atom 17.1648
+2026-10-21 15:23:04,959 calphy.helpers INFO     Pressure within tolerance
+2026-10-21 15:23:04,959 calphy.helpers INFO     finalized vol/atom 17.164784 at pressure 0.072367
+2026-10-21 15:23:04,959 calphy.helpers INFO     Avg box dimensions x: 26.000000, y: 26.000000, z:26.000000
+2026-10-21 15:23:10,462 calphy.helpers INFO     Averaging routine finished in 31.775775 s
+2026-10-21 15:23:52,630 calphy.helpers INFO     Alchemy integration cycle 1 finished in 42.167957 s
+2026-10-21 15:23:52,632 calphy.helpers INFO     performing mass rescaling
+2026-10-21 15:23:52,632 calphy.helpers INFO     Ref. mass is 91.224
+2026-10-21 15:23:52,632 calphy.helpers INFO     Target masses are [63.546]
+2026-10-21 15:23:52,633 calphy.helpers INFO     Report written in /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_10/composition_scaling-zrcu.data-solid-800-0/report.yaml

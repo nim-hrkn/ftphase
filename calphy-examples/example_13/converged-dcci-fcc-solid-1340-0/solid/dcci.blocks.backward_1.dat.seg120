@@ -1,0 +1,3 @@
+# block averages of the dcci backward sweep, solid cell
+# step u_real[eV/atom] vol[A^3/atom] lambda
+60500 -3.33644 12.593 0.945689

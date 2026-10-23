@@ -1,0 +1,21 @@
+average:
+  density: 0.05826126536185708
+  vol_atom: 17.164908520461296
+input:
+  concentration: 0.4990234375 0.5009765625
+  element: Zr Cu
+  lattice: ZrCu.data
+  pressure: 0.0
+  temperature: 800
+results:
+  com_correction: 0.0
+  dissipation: 1.2465124605227817e-05
+  einstein_crystal: 0.0
+  entropy_contribution: 1.6436269265774762e-10
+  error: 3.8006881570841887e-06
+  free_energy: 0.0038722162394253584
+  mass_correction: -3.6511301111452575e-05
+  pv: 0.0
+  reference_system: 0.0
+  unit: eV/atom
+  work: 0.003835704938313906

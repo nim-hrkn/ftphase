@@ -1,0 +1,32 @@
+2026-10-21 15:10:16,141 calphy.helpers INFO     Master random seed is 364728657 (md.seed; recorded in input_file.yaml)
+2026-10-21 15:10:16,141 calphy.helpers INFO     Temperature start: 1000.000000 K, temperature stop: 1000.000000 K, pressure: 0.000000 bar
+2026-10-21 15:10:16,141 calphy.helpers INFO     Pressure adjusted in iso
+2026-10-21 15:10:16,141 calphy.helpers INFO     Reference phase is liquid
+2026-10-21 15:10:16,141 calphy.helpers INFO     Melting cycle will run, this can be turned off using the keyword melting_cycle
+2026-10-21 15:10:16,141 calphy.helpers WARNING  Solidification detection is DISABLED (tolerance.liquid_fraction = 1): if this liquid freezes during equilibration the run will continue and report a free energy for the frozen structure. Set tolerance.liquid_fraction < 1 (e.g. 0.05) to enable it.
+2026-10-21 15:10:16,141 calphy.helpers INFO     Thermostat/Barostat combo for equilibration cycle is not explicitely specified
+2026-10-21 15:10:16,141 calphy.helpers INFO     Thermostat/Barostat combo for equilibration cycle can be specified using keyword equilibration_control
+2026-10-21 15:10:16,141 calphy.helpers INFO     Nose-Hoover thermostat damping is 0.100000
+2026-10-21 15:10:16,141 calphy.helpers INFO     Nose-Hoover barostat damping is 0.100000
+2026-10-21 15:10:16,141 calphy.helpers INFO     These values can be tuned by adding in the input file:
+2026-10-21 15:10:16,141 calphy.helpers INFO     nose_hoover:
+2026-10-21 15:10:16,141 calphy.helpers INFO        thermostat_damping: <float>
+2026-10-21 15:10:16,141 calphy.helpers INFO        barostat_damping: <float>
+2026-10-21 15:10:16,141 calphy.helpers INFO     Integration stage is done using Nose-Hoover thermostat and barostat when needed
+2026-10-21 15:10:16,141 calphy.helpers INFO     Thermostat damping is 0.100000
+2026-10-21 15:10:16,141 calphy.helpers INFO     Barostat damping is 0.100000
+2026-10-21 15:10:16,141 calphy.helpers INFO     250 atoms in 125 cells on 4 cores
+2026-10-21 15:10:16,141 calphy.helpers INFO     pair_style: eam
+2026-10-21 15:10:16,141 calphy.helpers INFO     pair_coeff: * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Fe.eam
+2026-10-21 15:10:18,769 calphy.helpers INFO     Starting melting cycle with thigh temp 2000.000000, factor 1.000000
+2026-10-21 15:10:22,362 calphy.helpers INFO     fraction of solids found: 0.964000
+2026-10-21 15:10:26,861 calphy.helpers INFO     At count 1 mean pressure is 11.53 bar, std 720.81, vol/atom 12.8158
+2026-10-21 15:10:30,478 calphy.helpers INFO     At count 2 mean pressure is -10.30 bar, std 628.81, vol/atom 12.8193
+2026-10-21 15:10:33,689 calphy.helpers INFO     At count 3 mean pressure is 3.22 bar, std 622.75, vol/atom 12.8202
+2026-10-21 15:10:33,689 calphy.helpers INFO     Pressure within tolerance
+2026-10-21 15:10:33,689 calphy.helpers INFO     finalized vol/atom 12.820246 at pressure 3.218272
+2026-10-21 15:10:33,689 calphy.helpers INFO     Avg box dimensions x: 14.744000, y: 14.744000, z:14.744000
+2026-10-21 15:10:41,884 calphy.helpers INFO     Averaging routine finished in 25.743536 s
+2026-10-21 15:10:41,885 calphy.helpers INFO     integration iteration 1: warm start of 1000 steps (n_equilibration_steps = 10000)
+2026-10-21 15:11:05,773 calphy.helpers INFO     Integration cycle 1 finished in 23.888484 s
+2026-10-21 15:11:05,783 calphy.helpers INFO     Report written in /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_06/fe-bcc-liquid-1000-0/report.yaml

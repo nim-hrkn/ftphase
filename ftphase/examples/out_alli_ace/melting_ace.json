@@ -1,0 +1,14 @@
+{
+ "Tm_calphy_classical_K": 904.460611227213,
+ "Tm_QHA_quantum_vs_classical_liquid_K": 864.0743295901622,
+ "Tm_QHA_lowered_to_classical_vs_liquid_K": 873.8047315854674,
+ "dF_quantum_minus_classical_meV_per_atom_at_900K": 1.1444392859738528,
+ "G_solid_QHA_classical_minus_calphy_meV_at_900K": 3.673119012318704,
+ "G_err_calphy_solid_meV": 0.0,
+ "G_err_calphy_liquid_meV": 0.0,
+ "T_range_K": [
+  800.0,
+  1000.0
+ ],
+ "x_0.1_solid_minus_liquid_meV_at_900K": 29.678033579757734
+}

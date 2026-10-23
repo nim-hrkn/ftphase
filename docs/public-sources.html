@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>欠けている工程を補う公開ソースコード</title>
+<style>body{font-family:system-ui,sans-serif;line-height:1.8;max-width:1100px;margin:2em auto;padding:0 1.2em;color:#172838}h1,h2,h3{line-height:1.4}table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.95em}th,td{border:1px solid #ccd5dd;padding:.5em .6em;text-align:left;vertical-align:top}th{background:#edf3f8}pre{background:#edf3f8;padding:1em;overflow:auto}code{font-family:monospace}.note{border-left:4px solid #3777a2;padding:.6em 1em;background:#f3f7fa}.warn{border-left:4px solid #c0392b;padding:.6em 1em;background:#fbf1ef}</style></head><body>
+<h1>欠けている工程を補う公開ソースコード</h1>
+<p>更新日：2026-10-21。<a href="workflow.html">相図計算 workflow</a>（工程 01–07 の定義）／ <a href="examples.html">実行済みの例と工程の対応</a>（何が欠けているかの根拠）／ <a href="ftphase.html">ftphase パッケージ（実装）</a> ／ <a href="migration.html">移行手順</a> ／ <a href="../skills/phase-diagram/SKILL.md">phase-diagram スキル</a>（要約は <a href="../skills/phase-diagram/references/public-sources.md">references/public-sources.md</a>）</p>
+<p class="note">2026-10-21 に <a href="examples.html">実行済みの例</a>で埋まらなかった工程（01、02A の SQS・副格子、03A の phonon/QHA 本線、04A の副格子配置項と CE+MC、04B、05 の TDB 化、06 の line phase を含む多相凸包、07 の誤差感度）について、公開されているソースコードで補えるかを調べた結果です。各ツールの記述は公式文書・論文・GitHub の表示を同日に確認したもので、本ホストで動かして検証したのは「導入済み」と書いたものだけです。</p>
+
+<h2>1. 結論</h2>
+<ul>
+<li>欠けている工程はすべて公開コードで補えます。ただし一つの統合パッケージは無く、工程ごとに別のコードを組み合わせます。</li>
+<li><strong>導入済みの calphy 2.3.0 の <code>calphy.phase_diagram.PhaseDiagram</code> クラスが 05・06 の大半をすでに持っています</strong>。G(x,T) を GHSER + 理想混合 + Redlich–Kister に分解し（<code>build_calphad_surface</code>）、line compound と限定組成相を含む TDB を書き出し（<code>to_tdb</code>）、pycalphad / OpenCalphad で読めます。upstream の examples/ と docs/ に入力例は無く、2026-05〜07 の commit（d72f25d, 90a93e3）で入った機能です。<a href="examples.html">examples.html</a> と examples.md の旧記述「二元限定・line phase 非対応」は誤りで、同日に訂正しました。</li>
+<li>主軸は「icet（02A/04A）＋ aiida-alamode と phonopy（03A）＋ calphy PhaseDiagram（03B/05/06）＋ pycalphad（06/07）」。参照実装として exaPD（Ames/LANL）と Menon 2024 の pyiron ワークフローを読みます。</li>
+<li>自作が避けられないのは、(a) QHA 由来の G(T,V,x) と calphy TI 由来の G(T,P,x) を同じ表形式・同じ基準に揃える変換層（04B/05）、(b) SQS 系列 → aiida-alamode → calphy PhaseDiagram を結ぶドライバ、(c) 境界の誤差感度（07）の 3 点です。</li>
+</ul>
+
+<h2>2. 工程ごとの候補</h2>
+<table><thead><tr><th>工程</th><th>公開コード（ライセンス）</th><th>補える範囲</th><th>導入状況・注意</th></tr></thead><tbody>
+<tr><td>01 候補相と MLIP の検証</td><td>matcalc（BSD-3、MaterialsVirtualLab）<br>mlipx（zincware/BASF）<br>pymatgen の PhaseDiagram</td><td>matcalc：RelaxCalc, EOSCalc, ElasticityCalc, PhononCalc, QHACalc と ElasticityBenchmark / PhononBenchmark。MACE, SevenNet, MatterSim, ORB, GRACE, CHGNet, M3GNet のほか MAML 経由で MTP/GAP/SNAP/ACE を ASE 計算器として扱う。<br>mlipx：energy-volume、PhaseDiagram（生成エネルギー）、VibrationalAnalysis、MD のレシピと複数 MLIP の比較。</td><td>未導入。融点の検証は導入済み calphy の <code>melting_temperature</code> で足りる。0 K 凸包は pymatgen でも可（env/pyiron に有り）。</td></tr>
+<tr><td>02A SQS・副格子・空孔</td><td>icet 4.0（Chalmers、Mozilla Public License 2.0 系）<br>sqsgenerator 0.5.6（MIT）<br>ATAT mcsqs（CC BY-ND 4.0）</td><td>icet：<code>generate_sqs</code>（焼きなまし）、<code>generate_sqs_by_enumeration</code>（列挙で最適解を逃さない）、<code>generate_sqs_from_supercells</code>。副格子は <code>ClusterSpace</code> に <code>[['Al','Li'],['Li','X']]</code> のように与え、空孔は <code>'X'</code>、組成は副格子ごとの辞書。品質はクラスター相関の目標値との差。<br>sqsgenerator：Warren–Cowley 短範囲秩序指標、C++/OpenMP、pyiron の <code>SQSJob</code>（structuretoolkit 経由）が使う。</td><td>pip で取得できることを確認済み（icet は sdist 4.0、sqsgenerator は cp312 wheel）。env/pyiron に足せば pyiron の SQSJob が動く（<code>structuretoolkit.build.sqs_structures</code> は存在、sqsgenerator 本体が未導入）。ATAT は NoDerivatives のため改変配布不可、優先しない。</td></tr>
+<tr><td>03A phonon/QHA 本線</td><td>aiida-alamode 1.1.0（本ホストの conda env alamode）<br>phonopy（BSD）<br>matcalc QHACalc</td><td>aiida-alamode：anphon の DOS 実行が <code>thermo</code> ArrayData（T, C_v, S, U, F、基本胞あたり）を返す。ZnO 既定の <code>run_alamode_qha.py</code>（MODE=QHA、高次 IFC）もある。<br>phonopy：<code>phonopy-qha</code> と <code>phonopy.run_qha</code>（体積 5 点以上、vinet / birch_murnaghan / murnaghan、<code>--pressure</code> で PV 項）。旧 <code>PhonopyQHA</code> は非推奨。</td><td>コードは揃っている。欠けるのは組成系列（SQS ごと）への繰り返しと、各体積の F_vib(T) を集めて式 (D2) の最小化を行い calphy と同じ基準に載せる薄いスクリプト。ASE 計算器は MatterSim / SevenNet のみ組み込み。calphy 側の MLIP（pace 等）と同じポテンシャルを使うには ASE の LAMMPS 計算器を足す必要がある。</td></tr>
+<tr><td>04A 副格子配置項・CE+MC</td><td>icet mchammer<br>smol（BSD 改変版、Ceder group）<br>CLEASE（ASE 系、GPL）</td><td>icet：CE から配置自由エネルギーを <code>ThermodynamicIntegrationEnsemble</code>（λ 積分）、温度積分（<code>free_energy_tools</code>）、Wang–Landau（状態密度 g(E) → 任意温度の F）で直接出す。CE の学習構造生成・学習（ARDR/LASSO/Bayesian）・制約付き学習も有る。<br>smol：多副格子 CE、canonical / semigrand / 電荷中性 semigrand MC、Metropolis と Wang–Landau、SQS 生成、基底状態探索。pymatgen 上。</td><td>理想混合を超える唯一の経路（式 (E13)）。MLIP で CE の学習データを作る部分は自作。F_conf には配置エネルギーが含まれるので静的エネルギーを再加算しない（workflow.md 第 4 節）。</td></tr>
+<tr><td>02A/04A の別解</td><td>exaPD（Ames Lab / LANL、github.com/ML-AMD/exa-pd、BSD 相当の文面）</td><td>固溶体を semi-grand canonical MC/MD で Δμ(x) として走査し Redlich–Kister の微分に 4 パラメータ（L0–L3）でフィット。line compound は Einstein 結晶 TI（Frenkel–Ladd）、液相は UFM TI。各 G(T) を 6 項多項式にして TDB に書き pycalphad で描く。Cu–Zr の例。</td><td>本ワークフローの 02A→03→04A→05→06→07 を一本で通す設計で、参照実装として最も近い。Parsl 前提、公式対応は Perlmutter のみ。LAMMPS の MLIP 対応と正式なライセンス名は README に記載なし。</td></tr>
+<tr><td>04B 量子固相と古典液相の整合</td><td>専用コードなし</td><td>calphy の Einstein 結晶 / UFM 参照は古典。零点振動と核量子効果は phonopy / anphon の調和自由エネルギー（量子）と古典調和自由エネルギーの差で補正する式を自作。</td><td>量子補正の有無を結果の method 欄に必ず記録する。</td></tr>
+<tr><td>05 基準統一・TDB 化</td><td>calphy 2.3.0 <code>PhaseDiagram</code>（導入済み、Academic Software Licence）<br>ESPEI 0.9.1（PhasesResearchLab、MIT、pycalphad 上）</td><td>calphy：<code>build_calphad_surface(rk_order)</code> で各相を (1−x)G_A(T)+xG_B(T)+k_BT[x ln x+(1−x)ln(1−x)]+x(1−x)ΣL_k(1−2x)^k に分解。<code>to_tdb(filename, line_compounds=[...], L_temperature_form='poly6'|'linear')</code> がホスト相を GHSER 参照の 2 副格子 (A,B):VA、line compound を A:B、限定組成相を有界フィットで書き、JSON メタデータを埋める。<code>from_tdb</code> で往復。<br>ESPEI：生成エンタルピー・エントロピー・比熱などの熱化学データと相境界（ZPF）データから CEF のパラメータを生成し、MCMC で最適化と不確かさ評価。</td><td>calphy 側は導入済み。QHA 由来の G を calphy の <code>gather_results</code> が読む DataFrame 形式に流し込む変換が自作部分。ESPEI は未導入で、公式サイトは 0.9.1 へ転送されるが本文の取得に失敗したため最新の要件は未確認。</td></tr>
+<tr><td>06 多相凸包・共通接線</td><td>calphy <code>PhaseDiagram.calculate</code>（導入済み）<br>pycalphad 0.11.2（導入済み、MIT）<br>OpenCalphad（GPL、Fortran、OCASI）</td><td>calphy：<code>composition_intervals</code> で限定組成相、<code>ideal_configurational_entropy=False</code> で規則相の理想混合を外す、<code>calphad_surface=True</code> で解析的な G(x,T) 面から境界を取る。二元のみ。<br>pycalphad：TDB 経由なら三元以上も Mapping API で描ける。</td><td>二元なら calphy で完結。限定組成相を範囲外へ外挿しないことを <code>composition_intervals</code> で保証する。</td></tr>
+<tr><td>07 誤差感度・記録</td><td>ESPEI の MCMC<br>pycalphad（4_Metastability の駆動力・T0）<br>AiiDA provenance（alamode 環境）</td><td>ESPEI はパラメータの事後分布から境界の不確かさを出す。calphy の <code>error</code>（往復差）を G に伝播させる感度評価は自作。</td><td>自作部分が最も多い工程。</td></tr>
+</tbody></table>
+
+<h2>3. 公開ワークフローの前例</h2>
+<table><thead><tr><th>前例</th><th>内容</th><th>本ワークフローとの差</th></tr></thead><tbody>
+<tr><td>Menon et al. 2024, npj Comput. Mater. 10, 261（CC BY 4.0）</td><td>pyiron + calphy + LAMMPS + pycalphad で Al–Li の EAM / HDNNP / ACE 相図。fcc, B32, 液相、x_Li ≤ 0.5、600–1000 K、組成刻み 0.01。pyiron 組織の GitHub に 02_fitting / 03_validation / 04phasediagram を持つリポジトリとして公開（正確なリポジトリ名は今回未特定）。データセットは <code>pyiron-examples/menon2024-alli-eam/</code> に取り込み済み。</td><td>固相の配置エントロピーは理想混合の後付けで、論文自身が限界と明記。SQS も副格子モデルも無い。</td></tr>
+<tr><td>exaPD（arXiv 2510.01400、2025）</td><td>上表のとおり。SGC MC で固溶体、Einstein 結晶 TI で line compound、UFM TI で液相、TDB → pycalphad。</td><td>phonon/QHA を使わず全相 MD。多元系と大規模並列が目的。</td></tr>
+<tr><td>Automated prediction of thermodynamic properties（arXiv 2511.14655、Comput. Condens. Matter 45, 2025）</td><td>MD の自由エネルギー面を Gaussian 過程で再構成し、調和 / 準調和の零点補正と能動学習で V–T 空間を走査。純元素 fcc/bcc 9 種、20 ポテンシャル。</td><td>04B の量子補正の扱いの参考。コード公開先はアブストラクトからは未確認。</td></tr>
+</tbody></table>
+
+<h2>4. 本ホストで確認したこと</h2>
+<ul>
+<li>calphy 2.3.0（GitHub 67caa5b）の <code>env/calphy/lib/python3.12/site-packages/calphy/phase_diagram.py</code> は約 200 KB で、<code>PhaseDiagram.__init__(folders, reference_element, composition_intervals, smooth)</code>、<code>calculate(T_range, T_step, fit_order, method, ideal_configurational_entropy, calphad_surface, rk_order, ...)</code>、<code>build_calphad_surface</code>、<code>to_tdb</code>、<code>from_tdb</code>、<code>to_parquet</code>、<code>plot</code>、<code>plot_free_energy</code>、<code>plot_calphad_surface_fit</code>、<code>plot_convergence</code> を持つ。upstream の git log で 2026-05-16（TDB 書き出しの草稿）と 2026-07-19（pycalphad での往復再現）を確認。</li>
+<li>env/pyiron の structuretoolkit 0.0.48 に <code>build.sqs</code> / <code>build.sqs_structures</code> があり、pyiron_atomistics の <code>SQSJob</code> は import できる。sqsgenerator 本体は未導入。</li>
+<li>icet 4.0（sdist）と sqsgenerator 0.5.6（cp312 wheel）は pip で取得できる。どの env にも未導入。</li>
+<li>matcalc, mlipx, smol, CLEASE, ESPEI, OpenCalphad, exaPD はいずれも未導入。</li>
+</ul>
+
+<h2>5. 推奨する組み合わせ</h2>
+<ol>
+<li><strong>01</strong>：matcalc を env/pyiron に追加し、EOS・弾性・phonon のベンチマークと 0 K 凸包（pymatgen）を回す。融点は calphy の <code>melting_temperature</code>。</li>
+<li><strong>02A</strong>：icet を env/pyiron に追加し、副格子・空孔を含む SQS を <code>generate_sqs_by_enumeration</code>（小セル）または <code>generate_sqs</code>（大セル）で生成。セル形状・原子数・cutoff・目標相関との差を記録する（workflow.md 第 2 節）。</li>
+<li><strong>03A</strong>：SQS ごとに aiida-alamode で体積走査の調和 phonon → <code>thermo</code> の F(T) を集め、phonopy の QHA 関数で式 (D2)。補助経路は calphy の固相 TI。</li>
+<li><strong>04A</strong>：第一近似は式 (E2)/(E10) の理想混合・副格子項。規則相の組成幅や短範囲秩序が効く系では icet の CE を MLIP で学習し、Wang–Landau または TI で F_conf。</li>
+<li><strong>03B/05/06</strong>：液相は calphy の UFM TI。全相を calphy <code>PhaseDiagram</code> の DataFrame に揃え、<code>calculate(calphad_surface=True)</code> で境界、<code>to_tdb</code> で TDB。QHA 由来の固相はここへ流し込む変換層を書く。</li>
+<li><strong>06/07</strong>：TDB を pycalphad で再計算し、calphy の境界と一致するか確認。三元以上は pycalphad の Mapping。誤差は calphy の <code>error</code> を伝播させるか ESPEI の MCMC。</li>
+</ol>
+<p class="warn">ライセンスの注意：calphy は Academic Software Licence（非商用）。ATAT は CC BY-ND で改変配布不可。CLEASE と OpenCalphad は GPL。商用利用や再配布を伴う場合は組み合わせを見直す。</p>
+
+<h2>6. 参照した資料</h2>
+<ul>
+<li>icet：<a href="https://icet.materialsmodeling.org/advanced_topics/index.html">advanced topics</a>、<a href="https://icet.materialsmodeling.org/advanced_topics/sqs_generation.html">SQS generation</a>、<a href="https://icet.materialsmodeling.org/advanced_topics/free_energy_canonical_ensemble.html">TI / 温度積分</a>、<a href="https://icet.materialsmodeling.org/_modules/mchammer/ensembles/wang_landau_ensemble.html">Wang–Landau</a></li>
+<li>sqsgenerator：<a href="https://github.com/dgehringer/sqsgenerator">GitHub</a>、Gehringer, Friák, Holec, Comput. Phys. Commun. 286, 108664 (2023)。pyiron <a href="https://pyiron-atomistics.readthedocs.io/en/latest/_modules/pyiron_atomistics/atomistics/job/sqs.html">SQSJob</a></li>
+<li>matcalc：<a href="https://github.com/materialsvirtuallab/matcalc">GitHub</a>。mlipx：<a href="https://mlipx.readthedocs.io/en/stable/recipes.html">recipes</a>、<a href="https://mlipx.readthedocs.io/en/stable/nodes.html">nodes</a></li>
+<li>phonopy：<a href="https://phonopy.github.io/phonopy/qha.html">QHA</a></li>
+<li>smol：<a href="https://cedergrouphub.github.io/smol/">docs</a>、JOSS 2022。CLEASE：<a href="https://arxiv.org/pdf/1810.12816">arXiv 1810.12816</a></li>
+<li>ESPEI：<a href="https://arxiv.org/pdf/1902.01269">Bocklund et al. 2019</a>、<a href="https://espei.readthedocs.io/en/0.8/design.html">design</a>、<a href="https://pypi.org/project/espei">PyPI</a></li>
+<li>ATAT：<a href="https://www.brown.edu/Departments/Engineering/Labs/avdw/atat/manual/node2.html">Credits and Licence</a>、<a href="https://www.brown.edu/Departments/Engineering/Labs/avdw/atat/manual/node52.html">phb</a></li>
+<li>OpenCalphad：<a href="https://opencalphad.com/">公式</a>、<a href="https://calphad.com/open_source_software/">calphad.com の一覧</a></li>
+<li>Menon 2024：<a href="https://arxiv.org/html/2403.05724v1">arXiv 2403.05724</a>。exaPD：<a href="https://arxiv.org/html/2510.01400v2">arXiv 2510.01400</a>、<a href="https://github.com/ML-AMD/exa-pd">GitHub</a>。<a href="https://arxiv.org/abs/2511.14655">arXiv 2511.14655</a></li>
+</ul>
+</body></html>

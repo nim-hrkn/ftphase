@@ -1,0 +1,300 @@
+[
+ {
+  "id": 0,
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.0,
+  "config": 0,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_00_fcc_x0.0000_c0.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   6,
+   6,
+   6
+  ],
+  "n_atoms": 32,
+  "counts": {
+   "Al": 32
+  }
+ },
+ {
+  "id": 1,
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.0625,
+  "config": 0,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_01_fcc_x0.0625_c0.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   6,
+   6,
+   6
+  ],
+  "n_atoms": 32,
+  "counts": {
+   "Al": 30,
+   "Li": 2
+  }
+ },
+ {
+  "id": 2,
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.0625,
+  "config": 1,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_02_fcc_x0.0625_c1.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   6,
+   6,
+   6
+  ],
+  "n_atoms": 32,
+  "counts": {
+   "Al": 30,
+   "Li": 2
+  }
+ },
+ {
+  "id": 3,
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.125,
+  "config": 2,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_03_fcc_x0.1250_c2.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   6,
+   6,
+   6
+  ],
+  "n_atoms": 32,
+  "counts": {
+   "Al": 28,
+   "Li": 4
+  }
+ },
+ {
+  "id": 4,
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.125,
+  "config": 3,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_04_fcc_x0.1250_c3.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   6,
+   6,
+   6
+  ],
+  "n_atoms": 32,
+  "counts": {
+   "Al": 28,
+   "Li": 4
+  }
+ },
+ {
+  "id": 5,
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.1875,
+  "config": 4,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_05_fcc_x0.1875_c4.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   6,
+   6,
+   6
+  ],
+  "n_atoms": 32,
+  "counts": {
+   "Al": 26,
+   "Li": 6
+  }
+ },
+ {
+  "id": 6,
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.1875,
+  "config": 5,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_06_fcc_x0.1875_c5.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   6,
+   6,
+   6
+  ],
+  "n_atoms": 32,
+  "counts": {
+   "Al": 26,
+   "Li": 6
+  }
+ },
+ {
+  "id": 7,
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.25,
+  "config": 6,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_07_fcc_x0.2500_c6.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   6,
+   6,
+   6
+  ],
+  "n_atoms": 32,
+  "counts": {
+   "Al": 24,
+   "Li": 8
+  }
+ },
+ {
+  "id": 8,
+  "phase": "fcc",
+  "kind": "solution",
+  "x": 0.25,
+  "config": 7,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_08_fcc_x0.2500_c7.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   6,
+   6,
+   6
+  ],
+  "n_atoms": 32,
+  "counts": {
+   "Al": 24,
+   "Li": 8
+  }
+ },
+ {
+  "id": 9,
+  "phase": "Al3Li",
+  "kind": "point",
+  "x": 0.25,
+  "config": 0,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_09_Al3Li_x0.2500_c0.extxyz",
+  "supercell": [
+   3,
+   3,
+   3
+  ],
+  "mesh": [
+   12,
+   12,
+   12
+  ],
+  "n_atoms": 4,
+  "counts": {
+   "Al": 3,
+   "Li": 1
+  }
+ },
+ {
+  "id": 10,
+  "phase": "B32",
+  "kind": "limited",
+  "x": 0.5,
+  "config": 0,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_10_B32_x0.5000_c0.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   8,
+   8,
+   8
+  ],
+  "n_atoms": 16,
+  "counts": {
+   "Al": 8,
+   "Li": 8
+  }
+ },
+ {
+  "id": 11,
+  "phase": "B32",
+  "kind": "limited",
+  "x": 0.4375,
+  "config": 0,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_11_B32_x0.4375_c0.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   8,
+   8,
+   8
+  ],
+  "n_atoms": 16,
+  "counts": {
+   "Al": 9,
+   "Li": 7
+  }
+ },
+ {
+  "id": 12,
+  "phase": "B32",
+  "kind": "limited",
+  "x": 0.5625,
+  "config": 0,
+  "file": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/out/02A_solid_12_B32_x0.5625_c0.extxyz",
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": [
+   8,
+   8,
+   8
+  ],
+  "n_atoms": 16,
+  "counts": {
+   "Al": 7,
+   "Li": 9
+  }
+ }
+]

@@ -1,0 +1,28 @@
+2026-10-21 15:11:07,285 calphy.helpers INFO     Master random seed is 295045634 (md.seed; recorded in input_file.yaml)
+2026-10-21 15:11:07,285 calphy.helpers INFO     Temperature start: 600.000000 K, temperature stop: 600.000000 K, pressure: 0.000000 bar
+2026-10-21 15:11:07,285 calphy.helpers INFO     Pressure adjusted in iso
+2026-10-21 15:11:07,285 calphy.helpers INFO     Reference phase is solid
+2026-10-21 15:11:07,285 calphy.helpers WARNING  Melt detection is DISABLED (tolerance.solid_fraction = 0): if this solid melts during equilibration the run will continue and report a free energy for the melted structure. Set tolerance.solid_fraction > 0 (e.g. 0.7) to enable it.
+2026-10-21 15:11:07,285 calphy.helpers INFO     Thermostat/Barostat combo for equilibration cycle is not explicitely specified
+2026-10-21 15:11:07,285 calphy.helpers INFO     Thermostat/Barostat combo for equilibration cycle can be specified using keyword equilibration_control
+2026-10-21 15:11:07,285 calphy.helpers INFO     Nose-Hoover thermostat damping is 0.100000
+2026-10-21 15:11:07,285 calphy.helpers INFO     Nose-Hoover barostat damping is 0.100000
+2026-10-21 15:11:07,285 calphy.helpers INFO     These values can be tuned by adding in the input file:
+2026-10-21 15:11:07,285 calphy.helpers INFO     nose_hoover:
+2026-10-21 15:11:07,285 calphy.helpers INFO        thermostat_damping: <float>
+2026-10-21 15:11:07,285 calphy.helpers INFO        barostat_damping: <float>
+2026-10-21 15:11:07,285 calphy.helpers INFO     Integration stage is done using Nose-Hoover thermostat and barostat when needed
+2026-10-21 15:11:07,285 calphy.helpers INFO     Thermostat damping is 0.100000
+2026-10-21 15:11:07,285 calphy.helpers INFO     Barostat damping is 0.100000
+2026-10-21 15:11:07,285 calphy.helpers INFO     500 atoms in 125 cells on 4 cores
+2026-10-21 15:11:07,285 calphy.helpers INFO     pair_style: eam/fs
+2026-10-21 15:11:07,285 calphy.helpers INFO     pair_coeff: * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Cu1.eam.fs Cu
+2026-10-21 15:11:07,285 calphy.helpers INFO     second pair_style: eam/alloy
+2026-10-21 15:11:07,285 calphy.helpers INFO     second pair_coeff: * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Cu01.eam.alloy Cu
+2026-10-21 15:11:18,825 calphy.helpers INFO     At count 1 mean pressure is 4.99 bar, std 113.06, vol/atom 12.3012
+2026-10-21 15:11:18,825 calphy.helpers INFO     Pressure within tolerance
+2026-10-21 15:11:18,825 calphy.helpers INFO     finalized vol/atom 12.301198 at pressure 4.988910
+2026-10-21 15:11:18,825 calphy.helpers INFO     Avg box dimensions x: 18.322000, y: 18.322000, z:18.322000
+2026-10-21 15:11:24,281 calphy.helpers INFO     Averaging routine finished in 16.995993 s
+2026-10-21 15:12:05,612 calphy.helpers INFO     Alchemy integration cycle 1 finished in 41.331049 s
+2026-10-21 15:12:05,623 calphy.helpers INFO     Report written in /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_07/alchemy-fcc-solid-600-0/report.yaml

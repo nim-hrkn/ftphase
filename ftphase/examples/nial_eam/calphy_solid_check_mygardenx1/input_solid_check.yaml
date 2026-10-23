@@ -1,0 +1,66 @@
+calculations:
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid_check/fcc_Ni_256.data
+  reference_phase: solid
+  temperature:
+  - 1300.0
+  - 1800.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 2
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: fccNi
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: &id001
+    - source /home/kino/miniconda3/etc/profile.d/conda.sh && conda activate /home/kino/kino/Claude/Projects/PhaseDiagram/env/ftphase
+- mode: ts
+  element:
+  - Al
+  - Ni
+  mass:
+  - 26.9815
+  - 58.6934
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/calphy_solid_check/fcc_Al_256.data
+  reference_phase: solid
+  temperature:
+  - 700.0
+  - 1000.0
+  pressure: 0
+  pair_style: eam/alloy
+  pair_coeff: '* * /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nial/Mishin-Ni-Al-2009.eam.alloy
+    Al Ni'
+  n_equilibration_steps: 10000
+  n_switching_steps:
+  - 10000
+  - 10000
+  n_iterations: 2
+  tolerance:
+    solid_fraction: 0.7
+    liquid_fraction: 0.05
+  folder_prefix: fccAl
+  queue:
+    scheduler: slurm
+    queuename: debug
+    cores: 16
+    memory: 16GB
+    walltime: '48:00:00'
+    commands: *id001

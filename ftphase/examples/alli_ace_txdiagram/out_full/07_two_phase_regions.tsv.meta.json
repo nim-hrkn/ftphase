@@ -1,0 +1,9 @@
+{
+ "example": "alli_ace_txdiagram_full",
+ "fit": "{'fcc': 'poly', 'bcc': 'poly', 'liquid': 'rk', 'B32': 'spline'} (liquid: ideal + 4-term Redlich-Kister; fcc/bcc: cubic excess over ideal mixing)",
+ "hull": "{'min_width': 0.005, 'gap_tol': 2.5}",
+ "T_step": 10.0,
+ "level": "classical (QHA lowered by F_q-F_cl)",
+ "liquid": "calphy ts GPU, UFM, 3 iterations",
+ "solids": "QHA, 64-atom SQS (fcc, bcc), B32 16-atom, Al3Li 4-atom"
+}

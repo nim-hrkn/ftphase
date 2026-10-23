@@ -1,0 +1,22 @@
+average:
+  density: 0.11116435449303023
+  spring_constant: '4.554876152848165'
+  vol_atom: 8.99494533857483
+input:
+  concentration: '1.0'
+  element: Cu
+  lattice: fcc
+  pressure: 1000000.0
+  temperature: 3700
+results:
+  com_correction: -0.012093868615309802
+  dissipation: -0.004568197471796598
+  einstein_crystal: -2.7867600733808273
+  error: 0.0
+  free_energy: 0.35774495003026807
+  pv: 5.6146676719578235
+  reference_system: -2.798853941996137
+  ts_dissipation: 7.384167805748218e-05
+  ts_dissipation_high: false
+  unit: eV/atom
+  work: -2.4580687799314185

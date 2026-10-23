@@ -1,0 +1,10 @@
+2026-10-22 14:15:19
+Total number of 2 calculations found
+submitting fccx0tsfccal256datasolid8000
+submitting lqdx0tsfccal256dataliquid8000
+22532 lqdx0tsfccal256dataliquid8000 PENDING 0:00 N/A 4
+22529 fccx01tsfccal09li01256datasolid8000 PENDING 0:00 gres/gpu:1 1
+22530 lqdx01tsfccal09li01256dataliquid8000 PENDING 0:00 gres/gpu:1 1
+22531 fccx0tsfccal256datasolid8000 RUNNING 0:02 N/A 8
+22528 lqdx0tsfccal256dataliquid8000 RUNNING 0:54 gres/gpu:1 2
+22525 hdd-smart-long RUNNING 1:24:46 N/A 2

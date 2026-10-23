@@ -1,0 +1,28 @@
+calculations:
+- element: Cu
+  lattice: fcc
+  lattice_constant: 3.61
+  mass: 63.546
+  mode: ts
+  n_equilibration_steps: 10000
+  n_iterations: 1
+  n_switching_steps: 25000
+  pair_coeff: '* * ../potentials/Cu01.eam.alloy Cu'
+  pair_style: eam/alloy
+  pressure: 1500000.0
+  queue:
+    queuename: debug
+    memory: 8GB
+    walltime: '48:00:00'
+    commands:
+    - source /home/kino/miniforge3/etc/profile.d/conda.sh && conda activate /home/kino/kino/Claude/Projects/PhaseDiagram/env/calphy
+    cores: 4
+    scheduler: slurm
+  reference_phase: solid
+  repeat:
+  - 5
+  - 5
+  - 5
+  temperature:
+  - 4600.0
+  - 4700.0

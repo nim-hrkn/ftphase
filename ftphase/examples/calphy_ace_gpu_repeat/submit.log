@@ -1,0 +1,7 @@
+2026-10-22 14:22:57
+submitting fccx0tsfccal256datasolid8000
+submitting lqdx0tsfccal256dataliquid8000
+22534 lqdx0tsfccal256dataliquid8000 PENDING 0:00 gres/gpu:1
+22533 fccx0tsfccal256datasolid8000 RUNNING 0:03 gres/gpu:1
+22532 lqdx0tsfccal256dataliquid8000 RUNNING 3:13 N/A
+22525 hdd-smart-long RUNNING 1:32:24 N/A

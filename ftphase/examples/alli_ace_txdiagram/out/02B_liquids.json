@@ -1,0 +1,75 @@
+[
+ {
+  "tag": "lqd_x0.00",
+  "x_target": 0.0,
+  "x_actual": 0.0,
+  "counts": {
+   "Al": 256
+  },
+  "seed": 100,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/calphy_liquid/lqd_x0.00_256.data"
+ },
+ {
+  "tag": "lqd_x0.10",
+  "x_target": 0.1,
+  "x_actual": 0.1015625,
+  "counts": {
+   "Al": 230,
+   "Li": 26
+  },
+  "seed": 101,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/calphy_liquid/lqd_x0.10_256.data",
+  "T_sweep": [
+   1100.0,
+   800.0
+  ]
+ },
+ {
+  "tag": "lqd_x0.20",
+  "x_target": 0.2,
+  "x_actual": 0.19921875,
+  "counts": {
+   "Al": 205,
+   "Li": 51
+  },
+  "seed": 102,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/calphy_liquid/lqd_x0.20_256.data"
+ },
+ {
+  "tag": "lqd_x0.30",
+  "x_target": 0.3,
+  "x_actual": 0.30078125,
+  "counts": {
+   "Al": 179,
+   "Li": 77
+  },
+  "seed": 103,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/calphy_liquid/lqd_x0.30_256.data"
+ },
+ {
+  "tag": "lqd_x0.40",
+  "x_target": 0.4,
+  "x_actual": 0.3984375,
+  "counts": {
+   "Al": 154,
+   "Li": 102
+  },
+  "seed": 104,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/calphy_liquid/lqd_x0.40_256.data",
+  "T_sweep": [
+   1100.0,
+   700.0
+  ]
+ },
+ {
+  "tag": "lqd_x0.50",
+  "x_target": 0.5,
+  "x_actual": 0.5,
+  "counts": {
+   "Al": 128,
+   "Li": 128
+  },
+  "seed": 105,
+  "data": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/alli_ace_txdiagram/calphy_liquid/lqd_x0.50_256.data"
+ }
+]

@@ -1,0 +1,22 @@
+average:
+  density: 0.07992392504780522
+  spring_constant: '1.2925999893217768'
+  vol_atom: 12.510981540696193
+input:
+  concentration: '1.0'
+  element: Fe
+  lattice: fcc
+  pressure: 0.0
+  temperature: 100
+results:
+  com_correction: -0.0003933353782065595
+  dissipation: -0.00010472024441821048
+  einstein_crystal: 0.003420594163402601
+  error: 0.0
+  free_energy: -4.235736433154583
+  pv: 0.0
+  reference_system: 0.003027258785196041
+  ts_dissipation: 0.0014624175025525475
+  ts_dissipation_high: true
+  unit: eV/atom
+  work: -4.238763691939779

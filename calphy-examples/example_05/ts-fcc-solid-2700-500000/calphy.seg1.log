@@ -1,0 +1,103 @@
+LAMMPS (22 Jul 2025 - Update 6)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread.
+  using 1 OpenMP thread(s) per MPI task
+units metal
+atom_style atomic
+timestep 0.001
+read_restart calphy.restart
+Reading restart file ...
+  restart file = 22 Jul 2025, LAMMPS = 22 Jul 2025
+  restoring atom style atomic from restart
+  orthogonal box = (-0.020379062 -0.020379062 -0.020379062) to (17.187908 17.187908 17.187908)
+  2 by 2 by 1 MPI processor grid
+  pair style hybrid/scaled stores no restart info
+  500 atoms
+  read_restart CPU = 0.001 seconds
+pair_style hybrid/scaled v_lambda_eq eam/alloy
+pair_coeff * * eam/alloy /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Cu01.eam.alloy Cu
+compute tcm all temp/com
+variable li equal 1.000000
+variable lf equal 0.931034
+variable lambda_eq equal 0.931034
+variable xcm equal xcm(all,x)
+variable ycm equal xcm(all,y)
+variable zcm equal xcm(all,z)
+variable step equal step
+variable dU equal c_thermo_pe/atoms
+fix f1 all npt temp 2700.000000 2700.000000 0.100000 iso 465517.241379 465517.241379 0.100000 fixedpoint ${xcm} ${ycm} ${zcm}
+fix f1 all npt temp 2700.000000 2700.000000 0.100000 iso 465517.241379 465517.241379 0.100000 fixedpoint 7.72335000000674 ${ycm} ${zcm}
+fix f1 all npt temp 2700.000000 2700.000000 0.100000 iso 465517.241379 465517.241379 0.100000 fixedpoint 7.72335000000674 7.723349999992 ${zcm}
+fix f1 all npt temp 2700.000000 2700.000000 0.100000 iso 465517.241379 465517.241379 0.100000 fixedpoint 7.72335000000674 7.723349999992 7.72334999999156
+Resetting global fix info from restart file:
+  fix style: npt, fix ID: f1
+fix_modify f1 temp tcm
+thermo_style custom step pe c_tcm press vol
+thermo 10000
+echo log
+unfix f1
+fix f1 all npt temp 2700.000000 2700.000000 0.100000 iso 465517.241379 500000.000000 0.100000 fixedpoint ${xcm} ${ycm} ${zcm}
+fix f1 all npt temp 2700.000000 2700.000000 0.100000 iso 465517.241379 500000.000000 0.100000 fixedpoint 7.72335000000674 ${ycm} ${zcm}
+fix f1 all npt temp 2700.000000 2700.000000 0.100000 iso 465517.241379 500000.000000 0.100000 fixedpoint 7.72335000000674 7.723349999992 ${zcm}
+fix f1 all npt temp 2700.000000 2700.000000 0.100000 iso 465517.241379 500000.000000 0.100000 fixedpoint 7.72335000000674 7.723349999992 7.72334999999156
+Resetting global fix info from restart file:
+  fix style: npt, fix ID: f1
+fix_modify f1 temp tcm
+variable flambda equal ramp(${li},${lf})
+variable flambda equal ramp(1,${lf})
+variable flambda equal ramp(1,0.931034)
+variable blambda equal ramp(${lf},${li})
+variable blambda equal ramp(0.931034,${li})
+variable blambda equal ramp(0.931034,1)
+pair_style hybrid/scaled v_blambda eam/alloy
+pair_coeff * * eam/alloy /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Cu01.eam.alloy Cu
+fix f3 all print 1 "${dU} $(press) $(vol) ${blambda}" title "# dU[eV/atom] press[bar] vol[A^3] lambda" screen no file ts.backward_1.dat
+run 25000
+All restart file global fix info was re-assigned
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 7.506786
+  ghost atom cutoff = 7.506786
+  binsize = 3.753393, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eam/alloy, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 3.35 | 3.35 | 3.35 Mbytes
+   Step         PotEng         c_tcm          Press          Volume    
+     10000  -1410.5537      2577.9033      460087.91      5095.8062    
+     20000  -1463.9821      2642.4921      462206.83      5099.7332    
+     30000  -1501.2936      2745.5617      500461.25      5045.698     
+     35000  -1528.5891      2762.48        497676.12      5056.3333    
+Loop time of 9.53658 on 4 procs for 25000 steps with 500 atoms
+
+Performance: 226.496 ns/day, 0.106 hours/ns, 2621.484 timesteps/s, 1.311 Matom-step/s
+99.4% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 8.0472     | 8.0497     | 8.0523     |   0.1 | 84.41
+Neigh   | 0.14373    | 0.14454    | 0.1454     |   0.2 |  1.52
+Comm    | 0.43606    | 0.43982    | 0.44195    |   0.3 |  4.61
+Output  | 3.809e-05  | 3.967e-05  | 4.0748e-05 |   0.0 |  0.00
+Modify  | 0.83524    | 0.8361     | 0.837      |   0.1 |  8.77
+Other   |            | 0.06634    |            |       |  0.70
+
+Nlocal:            125 ave         138 max         117 min
+Histogram: 1 1 0 1 0 0 0 0 0 1
+Nghost:           1737 ave        1745 max        1724 min
+Histogram: 1 0 0 0 0 0 1 0 1 1
+Neighs:        10945.8 ave       12172 max       10124 min
+Histogram: 1 0 1 1 0 0 0 0 0 1
+
+Total # of neighbors = 43783
+Ave neighs/atom = 87.566
+Neighbor list builds = 460
+Dangerous builds = 0
+unfix f3
+write_restart calphy.restart
+System init for write_restart ...
+Total wall time: 0:00:09

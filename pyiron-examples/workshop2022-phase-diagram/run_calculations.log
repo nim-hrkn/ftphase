@@ -1,0 +1,92 @@
+18 jobs, 4 concurrent x 4 cores
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+[17:44:20] xp_sol     finished               460.6 s
+[17:44:20] xp_lqd     finished               270.4 s
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+[17:44:57] xp_alli    ERROR MeltedError: System melted, increase size or reduce temp!
+ Solid detection algorithm only works with BCC/FCC/HCP/SC/DIA. Detection algorithm can be turned off by setting:
+ tolerance.solid_fraction: 0   498.2 s
+[17:44:57] x0_sol     finished               307.4 s
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+[17:48:34] x0_lqd     finished               444.8 s
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/pyiron/lib/python3.12/site-packages/ase/io/lammpsdata.py:72: FutureWarning: "style" is deprecated; please use "atom_style".
+  warnings.warn(
+[18:32:33] x0_alli    finished              3046.7 s
+[18:32:33] x1_sol     finished               684.9 s
+[18:32:33] x1_lqd     finished               409.1 s
+[18:32:33] x1_alli    finished               601.3 s
+[18:32:33] x2_sol     finished               408.1 s
+[18:32:33] x2_lqd     finished               479.0 s
+[18:32:33] x2_alli    finished               753.3 s
+[18:32:33] x3_sol     finished               379.8 s
+[18:32:33] x3_lqd     ERROR SolidifiedError: System solidified, increase temperature  1102.8 s
+[18:32:33] x3_alli    finished               527.8 s
+[18:33:22] x4_sol     finished              1333.8 s
+[18:33:22] x4_lqd     finished               722.0 s
+[18:33:22] x4_alli    finished               381.2 s
+The job xp_lqd was saved and received the ID: xp_lqd
+Job None is running!
+The job x0_lqd was saved and received the ID: x0_lqd
+Job None is running!
+The job x1_alli was saved and received the ID: x1_alli
+Job None is running!
+The job x3_sol was saved and received the ID: x3_sol
+Job None is running!
+The job x3_alli was saved and received the ID: x3_alli
+Job None is running!
+The job x4_lqd was saved and received the ID: x4_lqd
+Job None is running!
+The job xp_sol was saved and received the ID: xp_sol
+Job None is running!
+The job x1_sol was saved and received the ID: x1_sol
+Job None is running!
+The job x2_lqd was saved and received the ID: x2_lqd
+Job None is running!
+The job x3_lqd was saved and received the ID: x3_lqd
+The job x4_alli was saved and received the ID: x4_alli
+Job None is running!
+The job x0_sol was saved and received the ID: x0_sol
+Job None is running!
+The job x0_alli was saved and received the ID: x0_alli
+Job None is running!
+The job xp_alli was saved and received the ID: xp_alli
+The job x1_lqd was saved and received the ID: x1_lqd
+Job None is running!
+The job x2_sol was saved and received the ID: x2_sol
+Job None is running!
+The job x2_alli was saved and received the ID: x2_alli
+Job None is running!
+The job x4_sol was saved and received the ID: x4_sol
+Job None is running!
+ALL DONE

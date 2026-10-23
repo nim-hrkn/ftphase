@@ -1,0 +1,16 @@
+{
+ "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/pyiron-examples/workshop2022-phase-diagram/resources/lammps/potentials/ace/AlLi-6gen-18May.yace",
+ "started": "2026-10-22 14:58:36",
+ "lmp_gpu": {
+  "executable": "/home/kino/kino/Claude/Projects/PhaseDiagram/env/lammps-gpu/bin/lmp_gpu",
+  "version": "30 Sep 2026",
+  "kokkos": true,
+  "pace_kk": true,
+  "hybrid_scaled_kk": true,
+  "ufm": true,
+  "ti_spring": true,
+  "plain_fe_solid": true,
+  "all_modes": true
+ },
+ "finished": "2026-10-22 14:58:41"
+}

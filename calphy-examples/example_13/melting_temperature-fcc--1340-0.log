@@ -1,0 +1,81 @@
+2026-10-21 15:34:21,510 calphy.helpers WARNING  mode melting_temperature: enabling melt detection with tolerance.solid_fraction = 0.7 (the default of 0 makes the check unreachable). Set tolerance.solid_fraction explicitly to override.
+2026-10-21 15:34:21,510 calphy.helpers WARNING  mode melting_temperature: enabling solidification detection with tolerance.liquid_fraction = 0.05 (the default of 1 makes the check unreachable). Set tolerance.liquid_fraction explicitly to override.
+2026-10-21 15:34:21,511 calphy.helpers WARNING  mode melting_temperature: enabling melt detection with tolerance.solid_fraction = 0.7 (the default of 0 makes the check unreachable). Set tolerance.solid_fraction explicitly to override.
+2026-10-21 15:34:21,511 calphy.helpers WARNING  mode melting_temperature: enabling solidification detection with tolerance.liquid_fraction = 0.05 (the default of 1 makes the check unreachable). Set tolerance.liquid_fraction explicitly to override.
+2026-10-21 15:34:22,361 calphy.helpers INFO     Free energy of /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_13/ts-fcc-solid-1140-0.0.data and /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_13/ts-fcc-liquid-1140-0.1.data phases will be calculated
+2026-10-21 15:34:22,361 calphy.helpers INFO     Temperature range of 1140.000000-1540.000000
+2026-10-21 15:34:22,361 calphy.helpers INFO     STATE: Temperature range of 1140.000000-1540.000000 K
+2026-10-21 15:34:22,361 calphy.helpers INFO     Starting solid fe calculation
+2026-10-21 15:34:33,067 calphy.helpers INFO     At count 1 mean pressure is -2.52 bar, std 324.93, vol/atom 12.5715
+2026-10-21 15:34:33,067 calphy.helpers INFO     Pressure within tolerance
+2026-10-21 15:34:33,067 calphy.helpers INFO     finalized vol/atom 12.571517 at pressure -2.518688
+2026-10-21 15:34:33,067 calphy.helpers INFO     Avg box dimensions x: 18.455000, y: 18.455000, z:18.455000
+2026-10-21 15:34:41,073 calphy.helpers INFO     At count 1 mean k is 1.551120 std is 0.010000
+2026-10-21 15:34:41,073 calphy.helpers INFO     finalized sprint constants
+2026-10-21 15:34:41,073 calphy.helpers INFO     [np.float64(1.551119987186132)]
+2026-10-21 15:34:46,557 calphy.helpers INFO     Averaging routine finished in 24.195754 s
+2026-10-21 15:34:46,557 calphy.helpers INFO     integration iteration 1: equilibration blocks of 1000 steps (warm start; n_equilibration_steps = 10000)
+2026-10-21 15:35:08,180 calphy.helpers INFO     Integration cycle 1 finished in 21.622809 s
+2026-10-21 15:35:08,200 calphy.helpers INFO     Report written in /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_13/ts-fcc-solid-1140-0/report.yaml
+2026-10-21 15:35:08,201 calphy.helpers INFO     Starting solid reversible scaling run
+2026-10-21 15:35:08,201 calphy.helpers INFO     Starting temperature sweep cycle: 1
+2026-10-21 15:35:08,201 calphy.helpers INFO     forward sweep (iteration 1): T 1140.0 → 1540.0 K, λ 1.0000 → 0.7403, P 0.0000 → 0.0000 bar
+2026-10-21 15:35:08,201 calphy.helpers INFO     forward sweep (iteration 1): warm start of 1000 steps (configuration already equilibrated; velocities are regenerated for the COM-constrained equilibration that follows)
+2026-10-21 15:35:08,201 calphy.helpers INFO     forward sweep (iteration 1): warm start done
+2026-10-21 15:35:08,201 calphy.helpers INFO     forward sweep (iteration 1): COM-constrained equilibration start
+2026-10-21 15:35:08,201 calphy.helpers INFO     forward sweep (iteration 1): COM-constrained equilibration done
+2026-10-21 15:35:08,201 calphy.helpers INFO     forward sweep (iteration 1): sweep start
+2026-10-21 15:35:08,201 calphy.helpers INFO     ts-sweep forward (iteration 1): 30000 steps
+2026-10-21 15:35:08,201 calphy.helpers INFO     forward sweep (iteration 1): sweep done
+2026-10-21 15:35:08,201 calphy.helpers INFO     forward sweep (iteration 1): configuration saved to conf.ts.forward_1.data
+2026-10-21 15:35:23,490 calphy.helpers INFO     backward sweep (iteration 1): T 1540.0 → 1140.0 K, λ 0.7403 → 1.0000, P 0.0000 → 0.0000 bar
+2026-10-21 15:35:23,491 calphy.helpers INFO     backward sweep (iteration 1): middle equilibration start
+2026-10-21 15:35:23,491 calphy.helpers INFO     backward sweep (iteration 1): middle equilibration done
+2026-10-21 15:35:28,904 calphy.helpers INFO     backward sweep (iteration 1): sweep start
+2026-10-21 15:35:28,904 calphy.helpers INFO     ts-sweep backward (iteration 1): 30000 steps
+2026-10-21 15:35:28,904 calphy.helpers INFO     backward sweep (iteration 1): sweep done
+2026-10-21 15:35:41,329 calphy.helpers INFO     Finished temperature sweep cycle: 1
+2026-10-21 15:35:41,330 calphy.helpers INFO     Please cite the following publications:
+2026-10-21 15:35:41,330 calphy.helpers INFO     - 10.1103/PhysRevLett.83.3973
+2026-10-21 15:35:41,449 calphy.helpers INFO     Reversible-scaling sweep (solid) dissipation: 1.122e-04 eV/atom
+2026-10-21 15:35:41,450 calphy.helpers INFO     Report updated in /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_13/ts-fcc-solid-1140-0/report.yaml
+2026-10-21 15:35:41,450 calphy.helpers INFO     Please cite the following publications:
+2026-10-21 15:35:41,450 calphy.helpers INFO     - 10.1103/PhysRevMaterials.5.103801
+2026-10-21 15:35:41,450 calphy.helpers INFO     Starting liquid fe calculation
+2026-10-21 15:35:41,450 calphy.helpers INFO     Starting melting cycle with thigh temp 3080.000000, factor 1.000000
+2026-10-21 15:35:46,454 calphy.helpers INFO     fraction of solids found: 0.000000
+2026-10-21 15:35:54,226 calphy.helpers INFO     At count 1 mean pressure is -2.56 bar, std 387.12, vol/atom 13.1483
+2026-10-21 15:35:54,226 calphy.helpers INFO     Pressure within tolerance
+2026-10-21 15:35:54,226 calphy.helpers INFO     finalized vol/atom 13.148343 at pressure -2.563356
+2026-10-21 15:35:54,226 calphy.helpers INFO     Avg box dimensions x: 18.733000, y: 18.733000, z:18.733000
+2026-10-21 15:36:02,436 calphy.helpers INFO     Averaging routine finished in 20.985438 s
+2026-10-21 15:36:02,436 calphy.helpers INFO     integration iteration 1: warm start of 1000 steps (n_equilibration_steps = 10000)
+2026-10-21 15:36:47,390 calphy.helpers INFO     Integration cycle 1 finished in 44.953764 s
+2026-10-21 15:36:47,408 calphy.helpers INFO     Report written in /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_13/ts-fcc-liquid-1140-0/report.yaml
+2026-10-21 15:36:47,408 calphy.helpers INFO     Starting liquid reversible scaling calculation
+2026-10-21 15:36:47,408 calphy.helpers INFO     Starting temperature sweep cycle: 1
+2026-10-21 15:36:47,408 calphy.helpers INFO     forward sweep (iteration 1): T 1140.0 → 1540.0 K, λ 1.0000 → 0.7403, P 0.0000 → 0.0000 bar
+2026-10-21 15:36:47,409 calphy.helpers INFO     forward sweep (iteration 1): warm start of 1000 steps (configuration already equilibrated; velocities are regenerated for the COM-constrained equilibration that follows)
+2026-10-21 15:36:47,409 calphy.helpers INFO     forward sweep (iteration 1): warm start done
+2026-10-21 15:36:47,409 calphy.helpers INFO     forward sweep (iteration 1): COM-constrained equilibration start
+2026-10-21 15:36:47,409 calphy.helpers INFO     forward sweep (iteration 1): COM-constrained equilibration done
+2026-10-21 15:36:47,409 calphy.helpers INFO     forward sweep (iteration 1): sweep start
+2026-10-21 15:36:47,409 calphy.helpers INFO     ts-sweep forward (iteration 1): 30000 steps
+2026-10-21 15:36:47,409 calphy.helpers INFO     forward sweep (iteration 1): sweep done
+2026-10-21 15:36:47,409 calphy.helpers INFO     forward sweep (iteration 1): configuration saved to conf.ts.forward_1.data
+2026-10-21 15:37:01,250 calphy.helpers INFO     backward sweep (iteration 1): T 1540.0 → 1140.0 K, λ 0.7403 → 1.0000, P 0.0000 → 0.0000 bar
+2026-10-21 15:37:01,250 calphy.helpers INFO     backward sweep (iteration 1): middle equilibration start
+2026-10-21 15:37:01,250 calphy.helpers INFO     backward sweep (iteration 1): middle equilibration done
+2026-10-21 15:37:06,492 calphy.helpers INFO     backward sweep (iteration 1): sweep start
+2026-10-21 15:37:06,492 calphy.helpers INFO     ts-sweep backward (iteration 1): 30000 steps
+2026-10-21 15:37:06,492 calphy.helpers INFO     backward sweep (iteration 1): sweep done
+2026-10-21 15:37:16,677 calphy.helpers INFO     Finished temperature sweep cycle: 1
+2026-10-21 15:37:16,677 calphy.helpers INFO     Please cite the following publications:
+2026-10-21 15:37:16,677 calphy.helpers INFO     - 10.1103/PhysRevLett.83.3973
+2026-10-21 15:37:16,808 calphy.helpers INFO     Reversible-scaling sweep (liquid) dissipation: 1.479e-04 eV/atom
+2026-10-21 15:37:16,809 calphy.helpers INFO     Report updated in /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_13/ts-fcc-liquid-1140-0/report.yaml
+2026-10-21 15:37:16,809 calphy.helpers INFO     Please cite the following publications:
+2026-10-21 15:37:16,809 calphy.helpers INFO     - 10.1103/PhysRevMaterials.5.103801
+2026-10-21 15:37:16,810 calphy.helpers INFO     Found melting temperature = 1351.94 +/- 0.00 K 
+2026-10-21 15:37:16,810 calphy.helpers INFO     Experimental melting temperature = 1357.77 K 
+2026-10-21 15:37:16,810 calphy.helpers INFO     STATE: Tm = 1351.94 K +/- 0.00 K

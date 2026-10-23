@@ -1,0 +1,121 @@
+calculations:
+- alchemy_coupling: false
+  berendsen:
+    barostat_damping: 100.0
+    thermostat_damping: 100.0
+  c_over_a: null
+  composition_scaling:
+    output_chemical_composition: {}
+    restrictions: []
+  dcci:
+    hysteresis_tolerance: 5.0
+    integrator: euler
+    n_block_steps: 1000
+    n_check_blocks: 0
+    parallel_cells: false
+    stop_at_target_pressure: true
+  element:
+  - Zr
+  - Cu
+  equilibration_control: berendsen
+  execution_mode: executable
+  file_format: lammps-data
+  fix_potential_path: true
+  folder_prefix: null
+  inputfile: input-direct-2.yaml
+  kernel: 0
+  lammps_executable: null
+  lattice: /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_10/fe-zrcu_substitution.data-solid-800-0.0.data
+  lattice_constant: 0.0
+  mass:
+  - 91.224
+  - 63.546
+  materials_project:
+    conventional: true
+    target_natoms: 1500
+  md:
+    barostat_damping: 0.1
+    cmdargs: ''
+    init_commands: []
+    n_cycles: 100
+    n_every_steps: 10
+    n_repeat_steps: 10
+    n_small_steps: 10000
+    seed: 348257508
+    thermostat_damping: 0.1
+    timestep: 0.001
+  melting_cycle: true
+  melting_temperature:
+    attempts: 5
+    guess: null
+    step: 200
+  mode: fe
+  monte_carlo:
+    allow_all_swaps: true
+    forward_swap_types: []
+    n_steps: 1
+    n_swaps: 0
+    reverse_swap_types: []
+    use_custom_lammps: false
+  mpi_executable: null
+  n_elements: 2
+  n_equilibration_steps: 5000
+  n_iterations: 3
+  n_print_steps: 0
+  n_print_steps_equilibration: 0
+  n_switching_steps: 5000
+  nose_hoover:
+    barostat_damping: 0.1
+    thermostat_damping: 0.1
+  npt: true
+  pair_coeff:
+  - '* * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/ZrCu.eam.fs
+    Zr Cu'
+  pair_mode: null
+  pair_style:
+  - eam/fs
+  phase_name: ''
+  phase_transition_detection:
+    mode: none
+    onset_fraction: 0.85
+    prescan_steps: 20000
+  potential_file: null
+  pressure: 0.0
+  pressure_coupling: null
+  quantum_thermal_bath:
+    barostat_damping: 0.1
+    f_max: 200.0
+    n_f: 100
+    thermostat_damping: 0.1
+  queue:
+    commands:
+    - source /home/kino/miniforge3/etc/profile.d/conda.sh && conda activate /home/kino/kino/Claude/Projects/PhaseDiagram/env/calphy
+    cores: 4
+    jobname: calphy
+    memory: 8GB
+    options: {}
+    queuename: debug
+    scheduler: slurm
+    walltime: '48:00:00'
+  reference_composition: 0.0
+  reference_phase: solid
+  repeat:
+  - 1
+  - 1
+  - 1
+  script_mode: false
+  spring_constants: null
+  temperature: 800.0
+  temperature_high: 0.0
+  tolerance:
+    dissipation: 0.001
+    lattice_constant: 0.0002
+    liquid_fraction: 1.0
+    pressure: 10.0
+    solid_fraction: 0.0
+    spring_constant: 0.1
+  uhlenbeck_ford_model:
+    p: 50.0
+    sigma: 1.5
+    single_p: null
+    single_sigma: null

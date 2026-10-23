@@ -1,0 +1,40 @@
+launch 2026-10-22 22:05:23 on mygardenx1
+nial_solids 14138
+calphy_liquid 14139:14140:14141:14142:14143:14144:14145:14146:14147:14148:14149:14150:14151:14152:14153:14154:14155:14156:14157:14158:14159:14160:14161:14162:14163:14164:14165:14166:14167:14168:14169:14170:14171
+nial_assemble 14172 (dependency afterany:14138:14139:14140:14141:14142:14143:14144:14145:14146:14147:14148:14149:14150:14151:14152:14153:14154:14155:14156:14157:14158:14159:14160:14161:14162:14163:14164:14165:14166:14167:14168:14169:14170:14171)
+  JOBID                       NAME     STATE     TIME  CPUS NODELIST(REASON)
+  14142 lqdx010tslqdx010256dataliq   PENDING     0:00    16 (Resources)
+  14143 lqdx010r1tslqdx010256datal   PENDING     0:00    16 (Priority)
+  14144 lqdx010r2tslqdx010256datal   PENDING     0:00    16 (Priority)
+  14145 lqdx020tslqdx020256dataliq   PENDING     0:00    16 (Priority)
+  14146 lqdx020r1tslqdx020256datal   PENDING     0:00    16 (Priority)
+  14147 lqdx020r2tslqdx020256datal   PENDING     0:00    16 (Priority)
+  14148 lqdx030tslqdx030256dataliq   PENDING     0:00    16 (Priority)
+  14149 lqdx030r1tslqdx030256datal   PENDING     0:00    16 (Priority)
+  14150 lqdx030r2tslqdx030256datal   PENDING     0:00    16 (Priority)
+  14151 lqdx040tslqdx040256dataliq   PENDING     0:00    16 (Priority)
+  14152 lqdx040r1tslqdx040256datal   PENDING     0:00    16 (Priority)
+restored 2026-10-22 22:25:20 from local copies after an rsync --delete-excluded accident
+stage2 2026-10-22 22:25:21 on mygardenx1
+nial_solids(mesh) 14175
+calphy_solid 14176:14177:14178:14179:14180:14181:14182:14183:14184:14185:14186:14187:14188:14189:14190:14191:14192:14193
+calphy_liquid resume (lqd_x0.70_r1 lqd_x0.80_r1) 14194:14195
+nial_assemble 14196 (dependency afterany:14175:14176:14177:14178:14179:14180:14181:14182:14183:14184:14185:14186:14187:14188:14189:14190:14191:14192:14193:14194:14195)
+  JOBID                       NAME     STATE     TIME  CPUS NODELIST(REASON)
+  14179 sol03fccNix1p0000tssol03fc   PENDING     0:00    16 (Resources)
+  14180 sol04fccNix0p9375tssol04fc   PENDING     0:00    16 (Priority)
+  14181 sol05fccNix0p8750tssol05fc   PENDING     0:00    16 (Priority)
+  14182 sol06fccNix0p8125tssol06fc   PENDING     0:00    16 (Priority)
+  14183 sol07fccNix0p7500tssol07fc   PENDING     0:00    16 (Priority)
+  14184 sol08B2x0p5000tssol08b2x0p   PENDING     0:00    16 (Priority)
+  14185 sol09B2x0p5185tssol09b2x0p   PENDING     0:00    16 (Priority)
+stage3 2026-10-22 22:37:32 on mygardenx1
+nial_solids(more defects) 14197
+calphy_solid more 14198:14199:14200:14201:14202:14203:14204:14205:14206:14207
+nial_assemble 14208
+  JOBID                       NAME     STATE     TIME  CPUS NODELIST(REASON)
+  14201 sol21B2x0p6111tssol21b2x0p   PENDING     0:00    16 (Resources)
+  14202 sol22B2x0p4706tssol22b2x0p   PENDING     0:00    16 (Priority)
+  14203 sol23B2x0p4600tssol23b2x0p   PENDING     0:00    16 (Priority)
+  14204 sol24L12x0p7685tssol24l12x   PENDING     0:00    16 (Priority)
+  14205 sol25L12x0p7315tssol25l12x   PENDING     0:00    16 (Priority)

@@ -1,0 +1,6 @@
+T_low	T_high	pairs_below	pairs_above
+950.0	960.0	['B2+L12', 'B2+liquid', 'L12+fccNi', 'fccAl+liquid']	['B2+L12', 'B2+liquid', 'L12+fccNi']
+1690.0	1700.0	['B2+L12', 'B2+liquid', 'L12+fccNi']	['B2+liquid', 'fccNi+liquid']
+1740.0	1750.0	['B2+liquid', 'fccNi+liquid']	['B2+liquid']
+1810.0	1820.0	['B2+liquid']	['B2+B2', 'B2+liquid']
+1880.0	1890.0	['B2+B2', 'B2+liquid']	['B2+liquid']

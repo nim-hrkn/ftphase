@@ -1,0 +1,29 @@
+2026-10-21 14:44:00,567 calphy.helpers INFO     Master random seed is 458056401 (md.seed; recorded in input_file.yaml)
+2026-10-21 14:44:00,567 calphy.helpers INFO     Temperature start: 100.000000 K, temperature stop: 100.000000 K, pressure: 0.000000 bar
+2026-10-21 14:44:00,567 calphy.helpers INFO     Pressure adjusted in iso
+2026-10-21 14:44:00,567 calphy.helpers INFO     Reference phase is solid
+2026-10-21 14:44:00,567 calphy.helpers WARNING  Melt detection is DISABLED (tolerance.solid_fraction = 0): if this solid melts during equilibration the run will continue and report a free energy for the melted structure. Set tolerance.solid_fraction > 0 (e.g. 0.7) to enable it.
+2026-10-21 14:44:00,567 calphy.helpers INFO     Equilibration stage is done using nose_hoover barostat/thermostat
+2026-10-21 14:44:00,567 calphy.helpers INFO     Berendsen thermostat damping is 100.000000
+2026-10-21 14:44:00,567 calphy.helpers INFO     Berendsen barostat damping is 100.000000
+2026-10-21 14:44:00,567 calphy.helpers INFO     These values can be tuned by adding in the input file:
+2026-10-21 14:44:00,567 calphy.helpers INFO     berendsen:
+2026-10-21 14:44:00,567 calphy.helpers INFO        thermostat_damping: <float>
+2026-10-21 14:44:00,567 calphy.helpers INFO        barostat_damping: <float>
+2026-10-21 14:44:00,567 calphy.helpers INFO     Integration stage is done using Nose-Hoover thermostat and barostat when needed
+2026-10-21 14:44:00,567 calphy.helpers INFO     Thermostat damping is 0.100000
+2026-10-21 14:44:00,567 calphy.helpers INFO     Barostat damping is 0.100000
+2026-10-21 14:44:00,567 calphy.helpers INFO     250 atoms in 125 cells on 4 cores
+2026-10-21 14:44:00,567 calphy.helpers INFO     pair_style: eam
+2026-10-21 14:44:00,567 calphy.helpers INFO     pair_coeff: * * /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/potentials/Fe.eam
+2026-10-21 14:44:06,591 calphy.helpers INFO     At count 1 mean pressure is 0.11 bar, std 4.16, vol/atom 11.9153
+2026-10-21 14:44:06,591 calphy.helpers INFO     Pressure within tolerance
+2026-10-21 14:44:06,591 calphy.helpers INFO     finalized vol/atom 11.915343 at pressure 0.111580
+2026-10-21 14:44:06,591 calphy.helpers INFO     Avg box dimensions x: 14.388000, y: 14.388000, z:14.388000
+2026-10-21 14:44:12,195 calphy.helpers INFO     At count 1 mean k is 2.585200 std is 0.000000
+2026-10-21 14:44:12,195 calphy.helpers INFO     finalized sprint constants
+2026-10-21 14:44:12,195 calphy.helpers INFO     [np.float64(2.5851999786435536)]
+2026-10-21 14:44:17,427 calphy.helpers INFO     Averaging routine finished in 16.859446 s
+2026-10-21 14:44:17,427 calphy.helpers INFO     integration iteration 1: equilibration blocks of 1000 steps (warm start; n_equilibration_steps = 10000)
+2026-10-21 14:44:22,629 calphy.helpers INFO     Integration cycle 1 finished in 5.202276 s
+2026-10-21 14:44:22,639 calphy.helpers INFO     Report written in /home/kino/kino/Claude/Projects/PhaseDiagram/calphy-examples/example_01/fe-bcc-solid-100-0/report.yaml
