@@ -31,3 +31,12 @@ def anphon_thermo():
     if not os.path.exists(p):
         pytest.skip("anphon thermo file not present")
     return p
+
+
+# AiiDA test fixtures (temporary sqlite profile, no broker); only when aiida-core is installed.
+try:
+    import aiida  # noqa: F401
+
+    pytest_plugins = ["aiida.tools.pytest_fixtures"]
+except ImportError:  # pragma: no cover
+    pass

@@ -41,3 +41,5 @@ pyiron-examples/**/scratch/
 *.slurm.err
 # duplicate potential copies (potentials/ and resources/ keep the originals)
 calphy-examples/potentials/
+# live log of the headless session (ftphase/examples/aiida_txdiagram/out/)
+headless_claude.log

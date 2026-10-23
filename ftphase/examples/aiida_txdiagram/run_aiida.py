@@ -61,7 +61,7 @@ def make_spec(smoke: bool, gpu: bool):
         spec["solids"] = [{"phase": "fcc", "kind": "solution", "base": "fcc-Al", "repeat": [1, 1, 1], "x": [0.0, 0.25], "n_configs": 1, "series": "random", "seed": 0, "supercell": [2, 2, 2], "mesh": [4, 4, 4]},
                           {"phase": "B32", "kind": "limited", "base": "B32-AlLi", "antisites": True, "supercell": [1, 1, 1], "mesh": [4, 4, 4]}]
         spec["liquids"].update({"x": [0.0, 0.2], "repeat": [3, 3, 3], "n_equilibration_steps": 1000, "n_switching_steps": [1000, 1000], "n_iterations": 1, "T_sweep": [1100.0, 900.0]})
-        spec["qha"].update({"T_step": 100.0, "scales": [0.97, 0.985, 1.0, 1.015, 1.03]})
+        spec["qha"].update({"T_step": 100.0, "scales": [0.97, 0.99, 1.01, 1.03, 1.05, 1.07]})  # 1100 K needs V0 beyond 1.03^3
         spec["assemble"].update({"T_min": 900.0, "sensitivity_samples": 5, "title": "smoke test"})
     if not gpu:
         spec["liquids"]["cpu"] = True
