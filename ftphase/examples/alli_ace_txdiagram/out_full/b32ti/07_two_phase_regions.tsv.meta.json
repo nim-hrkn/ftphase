@@ -1,0 +1,6 @@
+{
+ "example": "alli_ace_txdiagram full, B32 by solid TI (2000 atoms)",
+ "fits": "{'fcc': 'poly', 'bcc': 'poly', 'liquid': 'rk', 'B32': 'spline'}",
+ "hull": "{'min_width': 0.005, 'gap_tol': 2.5}",
+ "T_step": 10.0
+}
