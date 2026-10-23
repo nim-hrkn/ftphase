@@ -16,7 +16,7 @@
 <span class="badge">計算設計（2026-10-20）・実行済み（Al–Li、Ni–Al、Ag–Cu 進行中、2026-10-23 時点）</span> <span class="badge">二元系 A₁₋ₓBₓ・固定圧力</span>
 <p class="note">作成日：2026-10-20、更新：2026-10-23。以下の図と式は手順の説明で、数値例は説明用です。設計は <a href="ftphase.html">ftphase パッケージ</a>として実装し、01〜07 を Al–Li（ACE、例 5・6・8）と Ni–Al（EAM、例 7）で通した。実行結果と検証は <a href="examples.html">examples.html</a> と <a href="ftphase.html">ftphase.html</a>、実行して分かった修正点は本資料の <a href="#lessons">第 9 節</a>に書く。AiiDA 化（<code>ftphase.txdiagram</code> WorkChain）は例 8・9。</p>
 <p class="note">式番号は節ごとの固定記号A〜Hと連番で示します。番号をクリックすると、その式へのリンクになります。</p>
-<nav aria-label="目次"><a href="migration.html">別計算機への移行・再開</a><a href="examples.html">実行済みの例と工程の対応</a><a href="public-sources.html">欠けている工程を補う公開ソース</a><a href="ftphase.html">ftphase パッケージ</a><a href="#overview">全体図</a><a href="#setup">候補相</a><a href="#sqs-tools">SQSの定義・生成ツール</a><a href="#tools-and-mc">具体的作業・MC・ツール比較</a><a href="#solid">固相</a><a href="#configuration">配置統計</a><a href="#sublattices">副格子とは</a><a href="#chen-consistency">Chen共著論文との整合</a><a href="#quaternary-example">4元固溶体の計算例</a><a href="#liquid">液相</a><a href="#database">データベース利用</a><a href="#equilibrium">相平衡</a><a href="#coexistence-examples">二相共存の例</a><a href="#checks">検証と出力</a><a href="#lessons">実行して分かったこと</a><a href="#sources">資料</a></nav></header>
+<nav aria-label="目次"><a href="migration.html">別計算機への移行・再開</a><a href="examples.html">実行済みの例と工程の対応</a><a href="public-sources.html">欠けている工程を補う公開ソース</a><a href="ftphase.html">ftphase パッケージ</a><a href="#overview">全体図</a><a href="#setup">候補相</a><a href="#sqs-tools">SQSの定義・生成ツール</a><a href="#tools-and-mc">具体的作業・MC・ツール比較</a><a href="#solid">固相</a><a href="#configuration">配置統計</a><a href="#sublattices">副格子とは</a><a href="#chen-consistency">Chen共著論文との整合</a><a href="#quaternary-example">4元固溶体の計算例</a><a href="#liquid">液相</a><a href="#database">データベース利用</a><a href="#equilibrium">相平衡</a><a href="#coexistence-examples">二相共存の例</a><a href="#no-calphad-functions">補間関数を使わない算法</a><a href="#checks">検証と出力</a><a href="#lessons">実行して分かったこと</a><a href="#sources">資料</a></nav></header>
 <section id="overview"><h2>1. 全体のワークフロー</h2>
 <figure><img src="workflow.svg" width="1200" height="1320" alt="候補相の設定から固相のQHAと配置自由エネルギー、液相の熱力学積分へ分岐し、共通の自由エネルギー基準に統合して凸包と相図を計算するフロー"><figcaption>図1．各工程の式・仮定・確認事項を以下に示します。</figcaption></figure>
 <p>aiida-alamodeは固相自由エネルギーの計算と履歴管理に使います。配置エントロピー、液相自由エネルギー、全相の競合を含む相平衡は、それぞれの工程として組み合わせます。</p></section>
@@ -283,6 +283,19 @@
 <p>SGCでは二相領域で組成が不連続に変わるため、その区間を連続的にサンプリングするにはVCSGC等を使います。この例にはMC実行スクリプトと解析用データも案内されています。同じfcc格子の組成分離を示す例であり、液相・別結晶構造を含む相図全体をそのまま与えるものではありません。</p>
 <p class="note">上記は公開チュートリアルの内容を確認したものです。本ワークスペースでは workshop の 18 本の calphy 計算を pyiron で実行し、ftphase で相図を再現した（例 1）。接線をチュートリアルの名目組成ではなく実組成で引くと 800 K の固溶限は 0.158 / 0.222 になる（ftphase.html 3.1）。</p>
 </section>
+<h3 id="no-calphad-functions">補間関数（CALPHAD 型）を使わない場合の算法</h3>
+<p>本ワークフローで CALPHAD 型なのは、標本点の間を補間する関数の選び方（理想混合 + Redlich–Kister、副格子の CEF 型）だけである。相平衡そのものは工程 06 の下側凸包（共通接線、式 (H1)–(H5)）で、解析関数を要らない手続きである。補間関数を外すと、算法は次の 2 系統になる。</p>
+<p><strong>A. 関数を使わず、標本点から直接平衡を取る（05 → 06 の中で）。</strong>(1) 温度ごとに各相の標本点 (x_i, G_i ± σ_i) をそのまま、または σ で重み付けした平滑化スプラインで結ぶ。解析的に分かっている項（理想混合 (E1)、副格子の s_conf (E10)–(E12)）は数え上げの厳密式なので CALPHAD ではなく、分離しておく（分離しないと x ln x の端点の形を補間が再現できず、標本ノイズが偽のミシビリティギャップになる。第 9 節 04A/06）。(2) 全相の点集合に対して下側凸包を取る。接線の端点が標本点そのものになるので境界の分解能は標本間隔で決まり、誤差は σ_i から Monte Carlo で伝播させる。(3) 境界付近に標本点を足して再計算する（適応標本化）。ftphase では <code>builder_from_table(fit="spline" | "smooth")</code> がこれに当たり、代償は標本ノイズがそのまま曲率になって同一相の偽区間が出やすいこと（Monte Carlo で動かない区間をノイズと判定する運用）。</p>
+<p><strong>B. 自由エネルギー曲線を作らず、平衡を直接シミュレーションで見つける（06 を置き換える）。</strong></p>
+<table><thead><tr><th>手法</th><th>何を計算するか</th><th>向く境界</th><th>本環境</th></tr></thead><tbody>
+<tr><td>半大正準 MC（SGC MC、LAMMPS <code>fix atom/swap</code> + MD）</td><td>T と化学ポテンシャル差 Δμ を与えて組成 ⟨x⟩ を測る。一次転移では Δμ の掃引で x が跳び、跳びの両側が x_α、x_β</td><td>固溶限、ミシビリティギャップ、規則–不規則</td><td>可（経路 B、Ag–Cu で検証予定）。ギャップ内はヒステリシス</td></tr>
+<tr><td>分散拘束 SGC MC（VCSGC、<code>fix sgcmc</code>）</td><td>組成の分散に拘束を加え、二相域の中でも ⟨x⟩(φ) を安定に得る。Δμ(x) の等面積（Maxwell）で境界</td><td>同上、ヒステリシスを消せる</td><td>可</td></tr>
+<tr><td>二相共存 MD（界面法）</td><td>固相と液相（または α と β）を接した箱で、界面が動かない T または Δμ を探す</td><td>融点、固液の液相線・固相線</td><td>可。calphy の TI の代替。1 点に数本の MD</td></tr>
+<tr><td>Gibbs–Duhem 積分</td><td>既知の 1 点から dμ/dT = −ΔS/Δx を積分して共存線を追う</td><td>線全体</td><td>自作が要る</td></tr>
+<tr><td>熱力学積分（calphy）+ 離散凸包</td><td>相ごとの絶対 G を点で持つ（現行）</td><td>全部</td><td>現行（A と組む）</td></tr>
+<tr><td>クラスター展開 + MC（icet）</td><td>格子上の有効相互作用を fit し、MC で x(Δμ, T) または Wang–Landau で状態密度 (E13)</td><td>固相の規則–不規則、固溶限</td><td>可（経路 A）</td></tr>
+</tbody></table>
+<p>B 系の長所は、補間関数も短距離秩序の仮定も要らず、短距離秩序と欠陥相互作用が自動的に入ること。短所は、境界 1 点ごとに MC/MD（Δμ × T の掃引）が要り、固相–液相はシミュレーション中に相変化が起きにくいので TI か界面法が別途要ること、規則相の幅は副格子解析を後処理で行うこと。本ワークフローは A 系（05 の表 + 解析的エントロピー項 → 06 の凸包）であり、<code>rk</code> は 11 組成の液相を滑らかに結ぶための選択にすぎない。置き換えるなら σ 重みの平滑化スプラインが最小の変更。B 系は経路 B（直接 SGC MC、Ag–Cu）で試し、A 系（理想混合 + RK の fcc ギャップ）と境界を突き合わせる。両者の差が短距離秩序と補間関数の誤差の見積もりになる。</p>
 <section id="checks"><h2>7. 収束・誤差・保存する成果物</h2>
 <ul><li>固相：変位量、スーパーセル、q点、体積点、力定数フィット、虚振動、配置サンプルを確認。</li><li>液相：原子数、MD時間刻み、平衡化時間、切替時間、反復、往復差、拡散と定常性を確認。</li><li>相平衡：相境界付近で組成点を追加し、自由エネルギーの不確かさを変えて境界の感度を調べる。</li><li>共通基準：原子数による規格化、圧力、元素参照、配置・振動・量子寄与の重複と欠落を確認。</li></ul>
 <p>最低限、<code>phase, x, T, P, g, uncertainty, volume, method, reference_state, model/version</code> を保存します。構造、SQS条件、MCP入力、AiiDA pk、MD・phonon条件、フィット式、再実行コマンドを関連付けます。TDBへ変換した場合は元のgと相境界を再現できるか比較します。</p>
