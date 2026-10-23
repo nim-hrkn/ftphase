@@ -42,9 +42,13 @@ def main():
     fcc = df.phase == "fcc"
     df.loc[fcc & (df.config_entropy == "ideal"), "G"] = df.loc[fcc & (df.config_entropy == "ideal"), "G"].to_numpy() + df.loc[fcc & (df.config_entropy == "ideal"), "T"].to_numpy() * np.array([ideal_entropy(x) for x in df.loc[fcc & (df.config_entropy == "ideal"), "x"]])
     df.loc[fcc, "config_entropy"] = "none"
-    # split the terminal solutions; drop mid-composition cells above 900 K (QHA-only, inconsistent level)
-    mid = fcc & (df.x > 0.3) & (df.x < 0.7)
-    df = df[~(mid & (df["T"] >= 900.0 - 1e-6))]
+    # split the terminal solutions; above 900 K keep only cells that have calphy solid TI rows (QHA-only cells, e.g. the
+    # mid-composition ones whose TI melted, sit 10-30 meV/atom off the TI level and would bend the fitted curve)
+    is_ti = df["method"].str.contains("calphy ts solid", na=False)
+    hot = df["T"] >= 900.0 - 1e-6
+    ti_cells = set(np.round(df.loc[fcc & is_ti, "x"], 6))
+    drop = fcc & hot & ~is_ti & ~df["x"].round(6).isin(ti_cells)
+    df = df[~drop]
     df.loc[(df.phase == "fcc") & (df.x <= 0.3), "phase"] = "fccAg"
     df.loc[(df.phase == "fcc") & (df.x >= 0.7), "phase"] = "fccCu"
     df = df[df.phase != "fcc"]
