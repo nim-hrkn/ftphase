@@ -66,8 +66,8 @@ SCALES = (0.97, 0.98, 0.99, 1.0, 1.01, 1.02, 1.03, 1.04, 1.05, 1.06, 1.07, 1.08,
 MESH_LENGTH = 60.0
 #: solids are also evaluated by calphy (Einstein-crystal TI, classical) on replicated cells of >= MIN_TI_ATOMS atoms:
 #: at 0.8-0.9 T_m the quasi-harmonic free energy of this EAM is 20-40 meV/atom too high (anharmonicity), see REPORT.md
-MIN_TI_ATOMS = 200
-T_TI = {"fccAl": [700.0, 950.0], "fccNi": [900.0, 1750.0], "B2": [900.0, 1900.0], "L12": [900.0, 1700.0], "Ni2Al3": [900.0, 1500.0], "NiAl3": [700.0, 1300.0]}
+MIN_TI_ATOMS = 2000     # stage 5 (2026-10-23): 256-atom Frenkel-Ladd cells are ~7 meV/atom too low (agcu_sgcmc/ti_convergence.py); was 200 in stages 2-4
+T_TI = {"fccAl": [700.0, 1250.0], "fccNi": [900.0, 1950.0], "B2": [900.0, 2000.0], "L12": [900.0, 1900.0], "Ni2Al3": [900.0, 1500.0], "NiAl3": [700.0, 1300.0]}   # caps above the temperatures where the phases vanish (stage 3/4 artefact)
 
 
 def log(msg):

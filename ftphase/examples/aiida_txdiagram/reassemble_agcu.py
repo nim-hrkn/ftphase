@@ -16,7 +16,9 @@ import numpy as np
 import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-IN = os.path.join(HERE, "out", "agcu_eam")
+import argparse as _ap
+_args = _ap.ArgumentParser(); _args.add_argument("--in", dest="indir", default=os.path.join(HERE, "out", "agcu_eam")); _args = _args.parse_args()
+IN = os.path.abspath(_args.indir)
 OUT = os.path.join(IN, "reassembled")
 T_DIAG = np.arange(700.0, 1400.1, 10.0)
 SGC_T = [800.0, 900.0, 1000.0]
