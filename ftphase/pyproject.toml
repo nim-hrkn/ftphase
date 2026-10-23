@@ -27,9 +27,22 @@ ti = ["calphy>=2.2"]
 hull = ["pymatgen"]
 io = ["pyarrow"]
 test = ["pytest"]
+aiida = ["aiida-core>=2.6"]
 
 [project.scripts]
 ftphase = "ftphase.cli:main"
+ftphase-qha-run = "ftphase.aiida.runners:qha_main"
+
+[project.entry-points."aiida.calculations"]
+"ftphase.qha" = "ftphase.aiida.calculations:QhaCalculation"
+"ftphase.calphy" = "ftphase.aiida.calculations:CalphyCalculation"
+
+[project.entry-points."aiida.parsers"]
+"ftphase.qha" = "ftphase.aiida.parsers:QhaParser"
+"ftphase.calphy" = "ftphase.aiida.parsers:CalphyParser"
+
+[project.entry-points."aiida.workflows"]
+"ftphase.txdiagram" = "ftphase.aiida.workchains:TxDiagramWorkChain"
 
 [tool.setuptools.packages.find]
 where = ["src"]
