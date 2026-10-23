@@ -108,6 +108,35 @@ def interpolate_T(table: FreeEnergyTable, temperatures, kind: str = "linear") ->
     return FreeEnergyTable.from_rows(rows, table.meta)
 
 
+_WS_CACHE: Dict[tuple, tuple] = {}
+
+
+def _ws_curve_cached(ph: str, T: float, g: pd.DataFrame, model, n_sample: int):
+    """Dense (x, G) of the Wagner-Schottky model for phase ``ph`` at ``T`` (cached per table rows).
+
+    ``model`` = ("wagner_schottky", (a, b)[, options]); options may give ``x_range`` (default: the
+    sampled range widened by 0.02 on each side, inside (0, 1)) and ``n_sites``.  The rows carry
+    ``config_entropy`` 'none' (raw cell free energies); the configurational term is produced here.
+    """
+    from .configurational import defect_energies_from_cells, wagner_schottky_curve
+
+    opts = model[2] if len(model) > 2 else {}
+    key = (ph, round(float(T), 6), tuple(np.round(g["x"].to_numpy(), 8)), tuple(np.round(g["G"].to_numpy(), 10)))
+    if key in _WS_CACHE:
+        return _WS_CACHE[key]
+    # rows must be raw cell energies: undo an analytic sublattice term if one was added
+    G = g["G"].to_numpy().copy()
+    if "config_entropy" in g and (g["config_entropy"] == "sublattice").any():
+        raise ValueError(f"{ph}: Wagner-Schottky model needs raw cell rows (config_entropy 'none'); do not add_configurational_term for this phase")
+    e, g0, n_sites, rows = defect_energies_from_cells(g["x"].to_numpy(), G, g["n_atoms"].to_numpy(), model[1], n_sites=opts.get("n_sites"))
+    xs = g["x"].to_numpy()
+    lo, hi = opts.get("x_range", (max(1e-3, xs.min()), min(1 - 1e-3, xs.max())))     # the sampled range (no extrapolation) unless x_range is given
+    xg = np.linspace(lo, hi, int(opts.get("n_grid", 201)))
+    gg = wagner_schottky_curve(xg, T, model[1], e, g0_atom=g0)
+    _WS_CACHE[key] = (xg, gg)
+    return xg, gg
+
+
 def builder_from_table(table: FreeEnergyTable, fit: str = "spline", poly_order: int = 4, n_sample: int = 401, fits: Optional[Dict[str, str]] = None, T_tol: float = 1e-6, use_err_weights: bool = False, ideal_excess_fit: bool = True, poly_orders: Optional[Dict[str, int]] = None, entropy_models: Optional[Dict[str, tuple]] = None) -> Callable[[float], List[Phase]]:
     """Return builder(T) producing Phase objects from the rows at temperature T.
 
@@ -153,6 +182,13 @@ def builder_from_table(table: FreeEnergyTable, fit: str = "spline", poly_order: 
                 if fit_ph == "rk" and not (np.isclose(xs.min(), 0.0) and np.isclose(xs.max(), 1.0)):
                     fit_ph = "poly"        # Redlich-Kister needs both pure ends; at this T the phase is sampled on a sub-range
                 ent_fn = ent_T = branch = None
+                if ph in entropy_models and str(entropy_models[ph][0]) == "wagner_schottky":
+                    # thermal-defect (Wagner-Schottky) model: effective defect free energies from the sampled
+                    # cells at this T, G(x) from the minimisation on a dense grid, spline through it
+                    xg, gg = _ws_curve_cached(ph, T, g, entropy_models[ph], n_sample)
+                    pc = PhaseCurve.from_points(ph, xg, gg + off + slo * (xg - 0.5), fit="spline", n_sample=n_sample, limited=(kind == "limited"))
+                    phases.append(pc)
+                    continue
                 if ph in entropy_models and set(g["config_entropy"]) == {"sublattice"}:
                     site_model, branch = entropy_models[ph]
                     ent_fn = (lambda v, sm=site_model: sublattice_entropy(*sm(v), basis="atom"))
