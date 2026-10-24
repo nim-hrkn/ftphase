@@ -12,6 +12,10 @@ env/lammps-gpu-grace/*
 !env/lammps-gpu-grace/test/
 env/lammps-gpu-grace/test/*
 !env/lammps-gpu-grace/test/in.grace
+!env/lammps-gpu-grace/test/prec/
+env/lammps-gpu-grace/test/prec/*
+!env/lammps-gpu-grace/test/prec/in.prec
+!env/lammps-gpu-grace/test/prec/sevenn_fp32.py
 # python
 __pycache__/
 *.pyc
