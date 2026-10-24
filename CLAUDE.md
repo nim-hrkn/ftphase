@@ -125,7 +125,7 @@ Checked 2026-10-21 on this host: `/home/kino/miniforge3/envs/alamode` holds aiid
 - `docs/obsolete_workflow.html` (+ `workflow.svg`) — the full design document with numbered stages 01→06 (02A/02B structure series, 03A solid QHA / 03B liquid TI, 04A configurational term, 05 common reference, 06 equilibrium) and equations labelled `eq-A1`…`eq-J2`. The skill references point here by relative path, so keep the `docs/`, `skills/`, `資料/` folder structure intact.
 - `docs/examples.html` — the executed examples mapped onto stages 01–07 with results, environments and pitfalls (Japanese; long form of `references/examples.md`).
 - `docs/ftphase.html` — design, verification and worked results of the `ftphase` package (Japanese; long form of `references/ftphase.md`).
-- `docs/mlip.html` — usable MLIPs per binary and per route, incl. route B without interpolation functions (2026-10-24).
+- `docs/mlip.html` — usable MLIPs per binary and per route, route B without interpolation functions, float32-vs-float64 measurements (float32 is adequate for calphy TI), and the Matbench Discovery universal models with their LAMMPS interfaces (2026-10-24).
 - `docs/public-sources.html` — survey (2026-10-21) of public source code for the stages no example covers, with licences, what was verified locally, and a recommended combination (long form of `references/public-sources.md`).
 - `docs/migration.html` — handoff procedure to the destination HPC (tarball + sha256 example, checklist of what to verify there).
 - `資料/` — source PDFs and the aiida-alamode intro HTML. Never modify the originals; write extracted text or analysis as separate files.

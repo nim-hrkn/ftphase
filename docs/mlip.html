@@ -47,4 +47,29 @@
 </tbody></table>
 <p>SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は、1 評価あたりのエネルギー丸め 0.05 meV（256 原子の総和）/0.02 Å に相当し、解析力の誤差ではない。SevenNet の float64 実行は <code>sevenn</code> 0.12 の checkpoint 互換パッチと fx 定数が float32 固定で失敗した。GRACE の fp32 版は径方向 MLP だけを cuBLAS fp32 にする設計で、総和は倍精度。</p>
 <div class="note">結論：calphy の TI（サーモスタット付き）では float32 で問題ない。float64 が要るのは長い NVE と、エネルギー差 1e-5 eV 級を直接使う構造最適化・フォノン有限差分（03A の変位 0.01 Å では SevenNet の有限差分力誤差 2.5 meV/Å が効くので float64 か変位 0.03 Å 以上）。</div>
+<h2>4. Matbench Discovery（2026-10-24 時点、43 モデル）のユニバーサルモデルと、この経路での可否</h2>
+<p>κ_SRME はフォノン熱伝導の誤差（小さいほど振動の記述が良く、QHA・TI に効く）。順位は leaderboard の CPS 順。出典：<a href="https://matbench-discovery.materialsproject.org/">Matbench Discovery</a>、<a href="https://franken.readthedocs.io/topics/interface_metatomic.html">lammps-metatomic（franken）</a>、<a href="https://doc.lammps.org/pair_mliap.html">LAMMPS pair_style mliap</a>、<a href="https://sevennet.readthedocs.io/en/latest/user_guide/lammps_mliap.html">SevenNet ML-IAP</a>、<a href="https://mace-docs.readthedocs.io/en/latest/guide/lammps_mliap.html">MACE ML-IAP</a>。</p>
+<table><thead><tr><th>順位</th><th>モデル</th><th>F1 / κ_SRME</th><th>LAMMPS 接続</th><th>導入作業</th><th>この経路での可否</th></tr></thead><tbody>
+<tr><td>1–4</td><td>Prophet-OAME-MBD、TECE-OAM-RRA、EquFlashV2、EquiformerV3+DeNS-OAM</td><td>0.93 / 0.07–0.12</td><td>公開 LAMMPS インターフェースを確認できず</td><td>—</td><td>現状不可（ASE で 01・03A のみ）</td></tr>
+<tr><td>5</td><td>GRACE-3L-OAM-L</td><td>0.925 / 0.121</td><td><code>grace/3l/kk</code>（<code>lmp_gpugrace</code> に導入済み）</td><td>kokkos.npz を <code>grace_models download --kokkos</code></td><td>今すぐ可（GPU）</td></tr>
+<tr><td>6</td><td>PET-OAM-XL</td><td>0.924 / 0.119</td><td><code>pair_style metatomic</code>（lammps-metatomic、conda 導入可）</td><td>別ビルド 1〜2 時間</td><td>可（libtorch 型、Kokkos 不要）</td></tr>
+<tr><td>8</td><td>eSEN-30M-OAM（fairchem）</td><td>0.925 / 0.170</td><td><code>mliap unified</code>（Python を LAMMPS 内で呼ぶ方式；fairchem 側の変換は要確認）</td><td>1 日</td><td>△</td></tr>
+<tr><td>10, 13</td><td>Nequip-OAM-XL / -L</td><td>0.906 / 0.125</td><td><code>pair_nequip</code>（libtorch）</td><td>別ビルド 1〜2 時間</td><td>可</td></tr>
+<tr><td>12</td><td>SevenNet-Omni-i12</td><td>0.906 / 0.192</td><td><code>e3gnn</code>（SevenNet 付属パッチ）または <code>mliap unified</code>（公式手順あり）</td><td>別ビルド 1〜2 時間、Python は alamode 環境に導入済み</td><td>可</td></tr>
+<tr><td>14, 18</td><td>GRACE-2L-OAM-L / -OAM</td><td>0.88 / 0.17–0.29</td><td><code>grace/2l/kk</code>（導入済み）</td><td>ダウンロードのみ</td><td>今すぐ可</td></tr>
+<tr><td>15</td><td>ORB v3</td><td>0.905 / 0.210</td><td>公式の LAMMPS 対応は未確認</td><td>—</td><td>△</td></tr>
+<tr><td>16, 20</td><td>DPA-4.0.1-Pro、DPA-3.1-3M-FT</td><td>0.86–0.88 / 0.21–0.47</td><td><code>deepmd</code>（conda-forge の deepmd-kit に同梱）</td><td>conda 1 コマンド</td><td>可（最も簡単）</td></tr>
+<tr><td>17</td><td>Allegro-OAM-L</td><td>0.895 / 0.319</td><td><code>pair_allegro</code>（libtorch、Kokkos 版あり）</td><td>別ビルド</td><td>可</td></tr>
+<tr><td>22, 36</td><td>MACE-MPA-0、MACE-MP-0</td><td>0.85 / 0.41、0.67 / 0.68</td><td><code>mace</code>（ACEsuit の LAMMPS fork）または <code>mliap unified</code>（公式手順あり）</td><td>別ビルド 1〜2 時間</td><td>可</td></tr>
+<tr><td>25</td><td>MatterSim v1 5M</td><td>0.862 / 0.575</td><td>公式の pair style なし</td><td>導入済み（ASE、alamode 環境）</td><td>01・03A のみ</td></tr>
+<tr><td>26</td><td>GRACE-1L-OAM</td><td>0.824 / 0.517</td><td><code>grace/1l/kk</code>（導入済み；kokkos 版は medium-base 系）</td><td>導入済み</td><td>今すぐ可（検証済み）</td></tr>
+<tr><td>41, 42</td><td>M3GNet、CHGNet</td><td>0.57 / 1.41、0.61 / 1.72</td><td><code>m3gnet</code>（conda 版にあり）、CHGNet は未確認</td><td>—</td><td>精度不足、対象外</td></tr>
+<tr><td>—</td><td>GRACE-FS-OAM（表外、FS 型）</td><td>—</td><td><code>grace/fs/kk</code>（導入済み）</td><td>導入済み</td><td>実行中（pk 1469、Al–Li 比較）</td></tr>
+</tbody></table>
+<ul>
+<li>「今すぐ可」は GRACE 系だけ（Kokkos 版が <code>lmp_gpugrace</code> にある）。層数の比較 FS → 1L → 2L → 3L は追加ビルドなし。</li>
+<li>libtorch 型（PET、NequIP、Allegro、SevenNet、MACE、DeePMD）は pair style 自身が GPU で動くので Kokkos も <code>hybrid/scaled/kk</code> も不要。通常ビルドに組み込めば calphy の全モードが GPU で走る。導入順：DeePMD（conda）→ SevenNet（Python 導入済み）→ MACE / NequIP → PET。</li>
+<li>上位 4 つ（Prophet、TECE、EquFlash、EquiformerV3）は LAMMPS 接続が見つからず、ASE 経由の 01・03A まで。ORB v3 と eSEN は要確認。</li>
+<li>精度（float32）は制約にならない（第 3 節）。制約は速度：2 層以上の等変モデルは GRACE-FS の 5〜20 倍遅く、例 8 規模で 1 本数時間〜半日。</li>
+</ul>
 </body></html>
