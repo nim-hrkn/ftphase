@@ -37,7 +37,7 @@ MACE・SevenNet の既定 float32 が TI の精度（1 meV/atom）に足りる�
 
 SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あたりのエネルギー丸め 0.05 meV（256 原子の総和）/0.02 Å の値で、解析力そのものの誤差ではない。SevenNet を float64 で動かすことは試したが、`sevenn` 0.12 の checkpoint 互換パッチと fx 定数が float32 固定で失敗した（`model.double()` では直らない）。GRACE の fp32 版は径方向 MLP だけを cuBLAS の fp32 にする設計で、エネルギー総和は倍精度。
 
-結論：calphy の TI（NVT/NPT、サーモスタット付き）では float32 で問題ない。float64 が要るのは長い NVE（エネルギー保存）と、エネルギー差 1e-5 eV 級を直接使う構造最適化・フォノン有限差分（QHA の 03A で変位 0.01 Å を使うときは、SevenNet の有限差分力誤差 2.5 meV/Å が効くので float64 か変位 0.03 Å 以上にする）。
+結論：calphy の TI（NVT/NPT、サーモスタット付き）では float32 で問題ない。**運用（2026-10-25、ユーザー決定）：MLIP 比較は全工程を単精度で行う**（GRACE nL は QHA も calphy も `grace/<n>l/kk/fp32`、MACE は QHA も `default_dtype float32`、SevenNet は元から float32）。fp64 しか無いのは ACE（`pace`）と GRACE-FS（`grace/fs/kk`）。float64 が要るのは長い NVE（エネルギー保存）と、エネルギー差 1e-5 eV 級を直接使う構造最適化・フォノン有限差分（QHA の 03A で変位 0.01 Å を使うときは、SevenNet の有限差分力誤差 2.5 meV/Å が効くので float64 か変位 0.03 Å 以上にする）。
 
 ## Matbench Discovery（2026-10-24 時点、43 モデル）のユニバーサルモデルと、この経路での可否
 
