@@ -179,6 +179,8 @@ def main():
     if a.system == "alli" and a.mlip != "ace":
         ml = MLIPS[a.mlip]
         spec.update({"pair_style": ml["pair_style"], "pair_coeff": ml["pair_coeff"], "model": ml["model"]})
+        if "assemble" in spec and "title" in spec["assemble"]:
+            spec["assemble"]["title"] = spec["assemble"]["title"].replace("ACE Al-Li", f"{ml['model'].split(' (')[0]} Al-Li")
         if ml.get("qha_gpu"):
             spec["qha_cmdargs"] = KK_ARGS
         for k in ("qha_pair_style", "qha_calculator", "qha_device", "qha_dtype", "qha_modal"):
