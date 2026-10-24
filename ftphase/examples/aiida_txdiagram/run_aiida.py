@@ -31,11 +31,11 @@ MLIPS = {"ace": {"potential": POT, "pair_style": "pace", "pair_coeff": "* * {pot
          # GRACE 1L/2L/3L exist only as Kokkos styles: calphy uses grace/<n>l/kk/fp32 (true-fp32 radial MLP, 3.3x faster than fp64,
          # < 1e-3 meV/atom difference; calphy's preflight needs the literal style name in the binary); the QHA stage runs
          # LAMMPSlib with the Kokkos arguments on the GPU too (the conda LAMMPS Kokkos is CUDA-only), so those QHA jobs request a GPU
-         "grace-1l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-1L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/1l/kk/fp32", "qha_pair_style": "grace/1l", "pair_coeff": "* * {potential} Al Li",
+         "grace-1l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-1L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/1l/kk/fp32", "qha_pair_style": "grace/1l/kk/fp32", "pair_coeff": "* * {potential} Al Li",
                       "model": "GRACE-1L-OMAT-medium-base-fp64 (foundation, 1 layer, kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_1l", "qha_gpu": True},
-         "grace-2l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-2L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/2l/kk/fp32", "qha_pair_style": "grace/2l", "pair_coeff": "* * {potential} Al Li",
+         "grace-2l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-2L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/2l/kk/fp32", "qha_pair_style": "grace/2l/kk/fp32", "pair_coeff": "* * {potential} Al Li",
                       "model": "GRACE-2L-OMAT-medium-base-fp64 (foundation, 2 layers, kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_2l", "qha_gpu": True},
-         "grace-3l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-3L-OMAT-large-kokkos.npz"), "pair_style": "grace/3l/kk/fp32", "qha_pair_style": "grace/3l", "pair_coeff": "* * {potential} Al Li",
+         "grace-3l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-3L-OMAT-large-kokkos.npz"), "pair_style": "grace/3l/kk/fp32", "qha_pair_style": "grace/3l/kk/fp32", "pair_coeff": "* * {potential} Al Li",
                       "model": "GRACE-3L-OMAT-large (foundation, 3 layers, fp32 kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_3l", "qha_gpu": True}}
 KK_ARGS = ["-k", "on", "g", "1", "-sf", "kk", "-pk", "kokkos", "newton", "on", "neigh", "half"]
 # libtorch-type MLIPs: the pair style itself runs on the GPU (no Kokkos, no hybrid/scaled/kk); calphy drives the plain
@@ -52,16 +52,16 @@ def _sevenn_ckpt(name):
     return f[0] if f else None
 
 
-# MACE: calphy gets the float32 TorchScript (4.7x faster than float64, PE identical to 1e-5 eV); QHA keeps the float64 .model
+# MACE: float32 everywhere (calphy TorchScript -f32, QHA MACECalculator default_dtype float32; 4.7x faster than float64, PE identical to 1e-5 eV)
 MLIPS.update({
     "sevenn-0": {"potential": os.path.join(_SEV, "7net-0_oeq.pt"), "potential_qha": _sevenn_ckpt("SevenNet_0__11Jul2024"), "pair_style": "e3gnn", "pair_coeff": "* * {potential} Al Li",
                  "model": "SevenNet-0 (11Jul2024, MPtrj; oeq deployment)", "lmp_gpu": LMP_SEVENN, "tag": "_sevenn_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "sevenn"},
     "sevenn-mf-ompa": {"potential": os.path.join(_SEV, "7net-mf-ompa_mpa_oeq.pt"), "potential_qha": _sevenn_ckpt("SevenNet_MF_ompa"), "pair_style": "e3gnn", "pair_coeff": "* * {potential} Al Li",
                        "model": "SevenNet-MF-ompa (modal mpa; oeq deployment)", "lmp_gpu": LMP_SEVENN, "tag": "_sevenn_mf_ompa", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "sevenn", "qha_modal": "mpa"},
     "mace-mpa-0": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
-                   "model": "MACE-MPA-0 medium (calphy float32, QHA float64)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "calphy_block_extra": {"md": {"init_commands": ["atom_modify map yes", "newton on"]}}},
-    "mace-omat-0": {"potential": os.path.join(_MAC, "maceomat0mediummodel.model-lammps.pt"), "potential_qha": os.path.join(_MAC, "maceomat0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
-                    "model": "MACE-OMAT-0 medium (float64)", "lmp_gpu": LMP_MACE, "tag": "_mace_omat_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "calphy_block_extra": {"md": {"init_commands": ["atom_modify map yes", "newton on"]}}},
+                   "model": "MACE-MPA-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32", "calphy_block_extra": {"md": {"init_commands": ["atom_modify map yes", "newton on"]}}},
+    "mace-omat-0": {"potential": os.path.join(_MAC, "maceomat0mediummodel.model-lammps.pt"),   # (float64 TorchScript; make a -f32 copy with mace_create_lammps_model --dtype float32 before using it) "potential_qha": os.path.join(_MAC, "maceomat0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
+                    "model": "MACE-OMAT-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_omat_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32", "calphy_block_extra": {"md": {"init_commands": ["atom_modify map yes", "newton on"]}}},
 })
 POT_AGCU = os.path.join(ROOT, "potentials/agcu/CuAg.eam.alloy")   # Williams, Mishin, Hamilton 2006 (NIST), setfl order Cu Ag
 
