@@ -9,6 +9,12 @@ cd "$ROOT"
 if [ ! -d lammps_sevenn ]; then
   git clone https://github.com/lammps/lammps.git lammps_sevenn --branch stable_2Aug2023_update3 --depth=1
   sevenn patch_lammps ./lammps_sevenn --oeq
+  # Fix (2026-10-24): pair e3gnn computes its virial from the edge terms but does not declare no_virial_fdotr_compute,
+  # so inside pair hybrid/scaled (which strips VIRIAL_FDOTR from the sub-style's vflag) it skips the virial and the
+  # pressure is zero -> calphy's NPT runs explode.  Declaring it makes LAMMPS use the style's own virial everywhere.
+  for f in lammps_sevenn/src/pair_e3gnn.cpp lammps_sevenn/src/pair_e3gnn_parallel.cpp; do
+    grep -q no_virial_fdotr_compute "$f" || sed -i -E '0,/^(Pair[A-Za-z0-9_]+::Pair[A-Za-z0-9_]+\(LAMMPS \*lmp\)[^{]*\{)/s//\1\n  no_virial_fdotr_compute = 1;/' "$f"
+  done
 fi
 export TORCH_CUDA_ARCH_LIST="8.6"
 mkdir -p build_sevenn && cd build_sevenn
