@@ -14,10 +14,29 @@ import time
 import numpy as np
 
 
-def lammps_calculator(pair_style: str, pair_coeff: str, atom_types: dict):
+def lammps_calculator(pair_style: str, pair_coeff: str, atom_types: dict, cmdargs=()):
+    """ASE LAMMPSlib calculator; ``cmdargs`` are extra LAMMPS command-line arguments, e.g. ``["-k", "on", "-sf", "kk"]``
+    for Kokkos-only pair styles (GRACE 1L/2L/3L: ``grace/2l/cpu/kk/host`` runs on the host, no GPU)."""
     from ase.calculators.lammpslib import LAMMPSlib
 
-    return LAMMPSlib(lmpcmds=[f"pair_style {pair_style}", f"pair_coeff {pair_coeff}"], atom_types=dict(atom_types), keep_alive=True, log_file=None)
+    return LAMMPSlib(lmpcmds=[f"pair_style {pair_style}", f"pair_coeff {pair_coeff}"], atom_types=dict(atom_types), keep_alive=True, log_file=None, extra_cmd_args=list(cmdargs))
+
+
+def make_calculator(inp: dict, pot: str):
+    """Calculator for the QHA runner from the input json: ``calculator`` = 'lammps' (default; ``pair_style``,
+    ``pair_coeff``, ``atom_types``, optional ``cmdargs``), 'sevenn' (SevenNet checkpoint ``pot``), or 'mace'
+    (MACE model file ``pot``; ``dtype`` default float64).  The torch calculators need the env/torch environment."""
+    kind = inp.get("calculator", "lammps")
+    if kind == "lammps":
+        return lammps_calculator(inp["pair_style"], inp["pair_coeff"].format(potential=pot), inp["atom_types"], inp.get("cmdargs", ()))
+    dev = inp.get("device", "auto")
+    if kind == "sevenn":
+        from sevenn.calculator import SevenNetCalculator  # type: ignore
+        return SevenNetCalculator(model=pot, device=dev, modal=inp.get("modal"))
+    if kind == "mace":
+        from mace.calculators import MACECalculator  # type: ignore
+        return MACECalculator(model_paths=pot, device="cuda" if dev == "auto" else dev, default_dtype=inp.get("dtype", "float64"))
+    raise ValueError(f"unknown calculator {kind!r}")
 
 
 def volume_scan_data(atoms, calc, supercell_matrix, T, scales, mesh, imaginary, fmax):
@@ -50,7 +69,7 @@ def qha_main(argv=None):
     inp = json.load(open(argv[0] if argv else "input.json"))
     t0 = time.time()
     pot = os.path.abspath(inp["potential"])
-    calc = lammps_calculator(inp["pair_style"], inp["pair_coeff"].format(potential=pot), inp["atom_types"])
+    calc = make_calculator(inp, pot)
     atoms = read(inp.get("structure", "structure.extxyz"))
     p = inp["parameters"]
     out = {"n_atoms": len(atoms), "started": time.strftime("%F %T")}
@@ -93,5 +112,35 @@ def qha_main(argv=None):
     return 0
 
 
+
+
+def relax_main(argv=None):
+    """``python -m ftphase.aiida.runners relax input.json``: relax structures with the calculator described in the json
+    (same keys as the QHA input: calculator, pair_style, pair_coeff, atom_types, cmdargs, device, dtype, modal, potential)
+    and write ``output.json`` + ``relaxed.extxyz``.  Used by the ``prepare_cells`` calcfunction for torch-based calculators,
+    which cannot be imported inside the AiiDA daemon (env/ftphase has no torch): the subprocess runs in env/torch or env/mace."""
+    import json
+    import sys
+
+    from ase.io import read, write
+
+    from ftphase.validate import relax
+
+    args = list(sys.argv[1:] if argv is None else argv)
+    if args and args[0] == "relax":
+        args = args[1:]
+    inp = json.load(open(args[0]))
+    calc = make_calculator(inp, os.path.abspath(inp["potential"]))
+    structures = read(inp["structures"], index=":")
+    rel = inp.get("relax", {})
+    rows, out_atoms = [], []
+    for at in structures:
+        r = relax(at, calc, fmax=float(rel.get("fmax", 1e-3)), cell=bool(rel.get("cell", True)))
+        a = r.atoms.copy(); a.calc = None; out_atoms.append(a)
+        rows.append({"e": r.energy_per_atom, "V": r.volume_per_atom, "sg_before": r.spacegroup_before, "sg_after": r.spacegroup_after, "converged": bool(r.converged), "transformed": bool(r.transformed)})
+    write(inp.get("output_structures", "relaxed.extxyz"), out_atoms)
+    json.dump(rows, open(inp.get("output", "output.json"), "w"), indent=1)
+
 if __name__ == "__main__":
-    sys.exit(qha_main())
+    import sys as _sys
+    (relax_main if len(_sys.argv) > 1 and _sys.argv[1] == "relax" else qha_main)()

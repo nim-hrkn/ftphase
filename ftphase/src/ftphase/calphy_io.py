@@ -233,7 +233,11 @@ def calculation_block(
     if q:
         blk["queue"] = q
     if extra:
-        blk.update(extra)
+        for k, v in extra.items():               # one level deep for the md block (init_commands, cmdargs ...), replace otherwise
+            if k == "md" and isinstance(v, dict):
+                blk.setdefault("md", {}).update(v)
+            else:
+                blk[k] = v
     return blk
 
 

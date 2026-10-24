@@ -1,6 +1,6 @@
 # EAM Ag-Cu (Williams-Mishin-Hamilton 2006), 0 GPa: fcc (calphy TI >= 900 K, QHA below) + calphy liquid [AiiDA] (AiiDA workflow ftphase.txdiagram)
 
-Assembled 2026-10-23 23:52:26.  Classical level, 0.0 GPa, model CuAg.eam.alloy (Williams-Mishin-Hamilton 2006 EAM).
+Assembled 2026-10-24 01:02:52.  Classical level, 0.0 GPa, model CuAg.eam.alloy (Williams-Mishin-Hamilton 2006 EAM).
 
 ## Inputs
 

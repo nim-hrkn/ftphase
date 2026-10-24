@@ -28,8 +28,40 @@ LMP_GPU_GRACE = os.path.join(ROOT, "env/lammps-gpu-grace/bin/lmp_gpugrace")   # 
 MLIPS = {"ace": {"potential": POT, "pair_style": "pace", "pair_coeff": "* * {potential} Al Li", "model": "AlLi-6gen-18May.yace (ACE)", "lmp_gpu": LMP_GPU, "tag": ""},
          "grace-fs": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-FS-OAM.yaml"), "pair_style": "grace/fs", "pair_coeff": "* * {potential} Al Li",
                       "model": "GRACE-FS-OAM (foundation, FS, 6 A)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_fs"},
+         # GRACE 1L/2L/3L exist only as Kokkos styles: calphy uses grace/<n>l (-> /kk on the GPU through -sf kk); the QHA stage runs
+         # LAMMPSlib with the Kokkos arguments on the GPU too (the conda LAMMPS Kokkos is CUDA-only), so those QHA jobs request a GPU
          "grace-1l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-1L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/1l", "pair_coeff": "* * {potential} Al Li",
-                      "model": "GRACE-1L-OMAT-medium-base-fp64 (foundation, 1 layer, kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_1l"}}
+                      "model": "GRACE-1L-OMAT-medium-base-fp64 (foundation, 1 layer, kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_1l", "qha_gpu": True},
+         "grace-2l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-2L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/2l", "pair_coeff": "* * {potential} Al Li",
+                      "model": "GRACE-2L-OMAT-medium-base-fp64 (foundation, 2 layers, kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_2l", "qha_gpu": True},
+         "grace-3l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-3L-OMAT-large-kokkos.npz"), "pair_style": "grace/3l", "pair_coeff": "* * {potential} Al Li",
+                      "model": "GRACE-3L-OMAT-large (foundation, 3 layers, fp32 kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_3l", "qha_gpu": True}}
+KK_ARGS = ["-k", "on", "g", "1", "-sf", "kk", "-pk", "kokkos", "newton", "on", "neigh", "half"]
+# libtorch-type MLIPs: the pair style itself runs on the GPU (no Kokkos, no hybrid/scaled/kk); calphy drives the plain
+# LAMMPS build (env/lammps-torch, wrapper scripts set the libtorch path) with 1 rank on a GPU job; QHA uses the ASE
+# calculator of the package (env/torch for SevenNet, env/mace for MACE: separate envs because of the e3nn pin) with the
+# checkpoint / .model file, while calphy gets the deployed TorchScript file -> WorkChain input potential_qha.
+_SEV = os.path.join(ROOT, "potentials/sevenn"); _MAC = os.path.join(ROOT, "potentials/mace")
+LMP_SEVENN = os.path.join(ROOT, "env/lammps-torch/bin/lmp_sevenn.sh"); LMP_MACE = os.path.join(ROOT, "env/lammps-torch/bin/lmp_mace.sh")
+
+
+def _sevenn_ckpt(name):
+    import glob
+    f = glob.glob(os.path.join(ROOT, "env/torch/lib/python3.12/site-packages/sevenn/pretrained_potentials", name, "*.pth"))
+    return f[0] if f else None
+
+
+# MACE: calphy gets the float32 TorchScript (4.7x faster than float64, PE identical to 1e-5 eV); QHA keeps the float64 .model
+MLIPS.update({
+    "sevenn-0": {"potential": os.path.join(_SEV, "7net-0_oeq.pt"), "potential_qha": _sevenn_ckpt("SevenNet_0__11Jul2024"), "pair_style": "e3gnn", "pair_coeff": "* * {potential} Al Li",
+                 "model": "SevenNet-0 (11Jul2024, MPtrj; oeq deployment)", "lmp_gpu": LMP_SEVENN, "tag": "_sevenn_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "sevenn"},
+    "sevenn-mf-ompa": {"potential": os.path.join(_SEV, "7net-mf-ompa_mpa_oeq.pt"), "potential_qha": _sevenn_ckpt("SevenNet_MF_ompa"), "pair_style": "e3gnn", "pair_coeff": "* * {potential} Al Li",
+                       "model": "SevenNet-MF-ompa (modal mpa; oeq deployment)", "lmp_gpu": LMP_SEVENN, "tag": "_sevenn_mf_ompa", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "sevenn", "qha_modal": "mpa"},
+    "mace-mpa-0": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
+                   "model": "MACE-MPA-0 medium (calphy float32, QHA float64)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "calphy_block_extra": {"md": {"init_commands": ["atom_modify map yes", "newton on"]}}},
+    "mace-omat-0": {"potential": os.path.join(_MAC, "maceomat0mediummodel.model-lammps.pt"), "potential_qha": os.path.join(_MAC, "maceomat0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
+                    "model": "MACE-OMAT-0 medium (float64)", "lmp_gpu": LMP_MACE, "tag": "_mace_omat_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "calphy_block_extra": {"md": {"init_commands": ["atom_modify map yes", "newton on"]}}},
+})
 POT_AGCU = os.path.join(ROOT, "potentials/agcu/CuAg.eam.alloy")   # Williams, Mishin, Hamilton 2006 (NIST), setfl order Cu Ag
 
 
@@ -143,11 +175,18 @@ def main():
     pot_fn, cand_fn, spec_fn, descr = SYSTEMS[a.system]
     spec = spec_fn(a.smoke, gpu)
     name = (a.name or {"alli": "alli_ace", "agcu": "agcu_eam"}[a.system]) + ("_smoke" if a.smoke else "")
-    lmp_gpu = LMP_GPU
+    lmp_gpu = LMP_GPU; torch_mlip = bool(a.system == "alli" and MLIPS[a.mlip].get("torch")); pot_qha = None
     if a.system == "alli" and a.mlip != "ace":
         ml = MLIPS[a.mlip]
         spec.update({"pair_style": ml["pair_style"], "pair_coeff": ml["pair_coeff"], "model": ml["model"]})
-        pot_fn = (lambda f=ml["potential"]: f); lmp_gpu = ml["lmp_gpu"]
+        if ml.get("qha_gpu"):
+            spec["qha_cmdargs"] = KK_ARGS
+        for k in ("qha_pair_style", "qha_calculator", "qha_device", "qha_dtype", "qha_modal"):
+            if k in ml:
+                spec[k] = ml[k]
+        if ml.get("torch"):   # stage 01 relaxations run in a subprocess of the calculator's env (the daemon has no torch)
+            spec["qha_python"] = os.path.join(ROOT, "env", "mace" if ml["qha_calculator"] == "mace" else "torch", "bin", "python")
+        pot_fn = (lambda f=ml["potential"]: f); lmp_gpu = ml["lmp_gpu"]; pot_qha = ml.get("potential_qha")
         name = (a.name or "alli" + ml["tag"]) + ("_smoke" if a.smoke else "")
     if a.b32_ti:
         assert a.system == "alli"
@@ -161,16 +200,19 @@ def main():
         "spec": orm.Dict(dict=spec),
         "potential": orm.SinglefileData(file=pot_fn()),
         "candidates": cands,
-        "qha_code": orm.load_code(f"ftphase-qha@{a.computer}"),
+        "qha_code": orm.load_code(f"{MLIPS[a.mlip].get('qha_code', 'ftphase-qha') if a.system == 'alli' else 'ftphase-qha'}@{a.computer}"),
         "calphy_code": orm.load_code(f"calphy@{a.computer}"),
         "qha_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1, "num_cores_per_mpiproc": a.qha_cores}, "max_wallclock_seconds": 24 * 3600,
-                                      "queue_name": "debug", "withmpi": False, "custom_scheduler_commands": "#SBATCH --hint=nomultithread"}),
-        "calphy_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1 if gpu else a.cpu_cores}, "max_wallclock_seconds": 48 * 3600,
+                                      "queue_name": "debug", "withmpi": False,
+                                      "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if (a.system == "alli" and MLIPS[a.mlip].get("qha_gpu")) else "")}),
+        "calphy_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1 if (gpu or torch_mlip) else a.cpu_cores}, "max_wallclock_seconds": 48 * 3600,
                                          "queue_name": "debug", "withmpi": False,
-                                         "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if gpu else "")}),
-        "calphy_extra": orm.Dict(dict={"gpu": True, "lammps_executable": lmp_gpu} if gpu else {"gpu": False, "cores": a.cpu_cores}),
+                                         "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if (gpu or torch_mlip) else "")}),
+        "calphy_extra": orm.Dict(dict={"gpu": False, "cores": 1, "lammps_executable": lmp_gpu, **({"extra": MLIPS[a.mlip]["calphy_block_extra"]} if MLIPS[a.mlip].get("calphy_block_extra") else {})} if torch_mlip else ({"gpu": True, "lammps_executable": lmp_gpu} if gpu else {"gpu": False, "cores": a.cpu_cores})),
         "metadata": {"label": f"ftphase txdiagram {name}", "description": descr},
     }
+    if pot_qha:
+        inputs["potential_qha"] = orm.SinglefileData(file=pot_qha)
     if a.dry_run:
         print(json.dumps(spec, indent=1)); print({k: (v.get_dict() if isinstance(v, orm.Dict) else type(v).__name__) for k, v in inputs.items() if k != "metadata"})
         return
