@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>使える MLIP と補間関数を使わない経路</title>
+<style>body{font-family:system-ui,sans-serif;line-height:1.8;max-width:1100px;margin:2em auto;padding:0 1.2em;color:#172838}h1,h2,h3{line-height:1.4}table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.95em}th,td{border:1px solid #ccd5dd;padding:.5em .6em;text-align:left;vertical-align:top}th{background:#edf3f8}pre{background:#edf3f8;padding:1em;overflow:auto}code{font-family:monospace}.note{border-left:4px solid #3777a2;padding:.6em 1em;background:#f3f7fa}.warn{border-left:4px solid #c0392b;padding:.6em 1em;background:#fbf1ef}</style></head><body>
+<h1>使える MLIP と、補間関数（CALPHAD 型）を使わない経路での可否</h1>
+<p>2026-10-24 に、このプロジェクトの 3 つの LAMMPS バイナリ（conda 版 <code>env/ftphase/bin/lmp_mpi</code>、自前ビルドの <code>env/lammps-gpu/bin/lmp_gpu</code>（30 Sep 2026、ACE 用）と <code>env/lammps-gpu-grace/bin/lmp_gpugrace</code>（22 Jul 2025 u6 + GRACE、<code>docs/ftphase.html</code> 3.4））の <code>lmp -h</code> と、各 Python 環境の import で確認した。短い版はスキルの <code>references/mlip.md</code>。関連：<code>docs/public-sources.html</code>（公開コードの調査）、<code>docs/obsolete_workflow.html</code> の「補間関数を使わない場合の算法」。</p>
+
+<h2>1. LAMMPS 経由で使える MLIP（calphy の熱力学積分、LAMMPSlib での QHA）</h2>
+<table><thead><tr><th>MLIP</th><th>pair style</th><th>CPU（env/ftphase、mygardenx1）</th><th>GPU calphy（lmp_gpu）</th><th>GPU calphy（lmp_gpugrace）</th></tr></thead><tbody>
+<tr><td>ACE（pacemaker）</td><td><code>pace</code>, <code>pace/kk</code></td><td>○</td><td>○（検証済み、<code>pace product</code>）</td><td>○</td></tr>
+<tr><td>GRACE FS</td><td><code>grace/fs</code>, <code>grace/fs/kk</code></td><td>○</td><td>×</td><td>○（検証済み）</td></tr>
+<tr><td>GRACE 1L / 2L / 3L（Kokkos 版、kokkos.npz）</td><td><code>grace/1l/kk</code> など</td><td>○（<code>/cpu/kk</code>）</td><td>×</td><td>○（1L 検証済み）</td></tr>
+<tr><td>GRACE（TensorFlow 版）</td><td><code>grace</code></td><td>mygardenx1 のみ（tensorpotential）</td><td>×</td><td>×（NO_GRACE_TF）</td></tr>
+<tr><td>SNAP</td><td><code>snap</code>, <code>snap/kk</code></td><td>○</td><td>○</td><td>○</td></tr>
+<tr><td>MTP（MLIP-2）</td><td><code>mlip</code></td><td>○</td><td>×</td><td>×</td></tr>
+<tr><td>n2p2（HDNNP）</td><td><code>hdnnp</code></td><td>○</td><td>×</td><td>×</td></tr>
+<tr><td>M3GNet</td><td><code>m3gnet</code></td><td>○（conda 版のみ）</td><td>×</td><td>×</td></tr>
+<tr><td>ML-IAP 経由（PyTorch / NequIP などのモデル）</td><td><code>mliap</code>, <code>mliap/kk</code></td><td>○（conda 版のみ、要モデル）</td><td>×</td><td>×</td></tr>
+<tr><td>RANN</td><td><code>rann</code></td><td>×</td><td>○</td><td>×</td></tr>
+</tbody></table>
+<div class="note">GPU での calphy は <code>hybrid/scaled/kk</code>（固相 Frenkel–Ladd 以外の全モード）が要るので、自前ビルドの 2 つだけ。conda 版 LAMMPS は GRACE の kk 版を持つが calphy の GPU 実行には使えない。<code>ftphase.calphy_io.calculation_block(gpu=True)</code> は <code>gpu_capability</code> で <code>&lt;style&gt;/kk</code> の有無を確認し、無ければ入力生成の時点で止める。</div>
+<ul>
+<li><strong>ASE 経由のみ</strong>（QHA・0 K 検証に使える、calphy の TI には使えない）：<code>alamode</code> 環境の MatterSim・SevenNet（torch あり）、mygardenx1 の tensorpotential（GRACE 全モデルの ASE calculator）と pyace。env/ftphase には torch・pyace は無い。</li>
+<li><strong>手元のポテンシャル</strong>：ACE Al–Li（<code>AlLi-6gen-18May.yace</code>、例 3〜8）、<code>potentials/grace/</code>（GRACE-FS-OAM.yaml：89 元素・6 Å、GRACE-1L-OMAT-medium-base-fp64 の kokkos.npz；他 44 モデルは <code>grace_models download</code>）、EAM（Al–Li workshop、Ni–Al Mishin 2009、Ag–Cu Williams 2006、Cu）、HDNNP の例ファイル。</li>
+<li><strong>使えないもの</strong>：MACE、SevenNet の LAMMPS 版（<code>e3gnn</code>）、NequIP/Allegro、CHGNet、DeePMD、UF3、POD。どのバイナリにも pair style が無く、calphy で使うには LAMMPS の別ビルド（ML-IAP + libtorch、または各プラグイン）が要る。</li>
+<li><strong>推奨</strong>：系専用の精度が欲しければ ACE（pacemaker で学習、mygardenx1 で可）。学習なしで多元素なら GRACE-FS-OAM（GPU で calphy まで通る唯一の基盤モデル）。2L/3L は精度が上がるが Kokkos 版は <code>*-medium-base</code> 系（uqv6）に限られる。</li>
+</ul>
+
+<h2>2. 補間関数を使わない経路（B 系）での可否と計算量</h2>
+<p>「補間関数を使わない」こと自体は MLIP を選ばない。差が出るのは、手法が pair style に課す条件（<code>fix sgcmc</code> だけ EAM 専用の高速経路）と、MC の試行ごとに全エネルギーを計算する分の計算量である。</p>
+<table><thead><tr><th>手法</th><th>使える MLIP</th><th>条件・計算量</th></tr></thead><tbody>
+<tr><td>半大正準 MC（<code>fix atom/swap</code> + MD）</td><td>すべて</td><td>試行ごとに全系のエネルギーを前後 2 回計算（<code>fix atom/swap</code> の文書）。コストは「試行数 × 全エネルギー 1 回」。EAM の Ag–Cu（2,048 原子、Δμ 36 点 × 3 温度、各点 20 + 20 ps）は 8 ランクで 25 分/等温線。ACE・GRACE-FS は 1 回のエネルギーが EAM の 50〜100 倍重く、GPU で 2,048 原子 0.05 s/回（<code>grace/fs/kk</code> の実測 2.6 s / 50 ステップ）として同じ試行数なら 1 点 1〜2 時間、1 系 100〜200 GPU 時間。試行数と Δμ 点数を絞れば日単位。GPU + <code>pace/kk</code> の組合せは未検証。</td></tr>
+<tr><td>分散拘束 SGC（<code>fix sgcmc</code>、VCSGC、Sadigh 2012）</td><td>高速な実装は EAM のみ（eam/alloy、eam/fs）</td><td>LAMMPS の文書どおり、他の pair style では「全エネルギー再計算・直列 1 プロセス」の汎用経路に落ちるので実質不可。VCSGC が要るなら CE 上の mchammer（<code>ftphase.ce.vcsgc_scan</code>）で代替。</td></tr>
+<tr><td>二相共存 MD（界面法）</td><td>すべて、GPU 可</td><td>通常の MD だけ。EAM の例（<code>agcu_sgcmc/coexist.py</code>、6,144 原子 × 400 ps）を ACE で GPU なら 1 本 15〜20 時間、2,048 原子なら数時間。融点・液相線向き。</td></tr>
+<tr><td>Gibbs–Duhem 積分</td><td>すべて</td><td>共存する 2 相の MD から ΔH・Δx を取って dμ/dT = −ΔS/Δx を積分。自作が要る。</td></tr>
+<tr><td>CE + MC（icet、SGC / VCSGC、<code>ftphase.ce</code>）</td><td>学習エネルギーの計算に ASE で呼べるものすべて（LAMMPSlib 経由の上記全部、MatterSim・SevenNet、tensorpotential）</td><td>MC は CE 上で走るので MLIP の重さは学習だけ（Ag–Cu の 631 構造で 3 分）。CE の打ち切り誤差（Ag–Cu で 9 meV/atom）と振動項の欠落が残る（<code>docs/ftphase.html</code> 3.9）。</td></tr>
+<tr><td>calphy TI + 離散凸包（A-1、関数なし）</td><td>第 1 節の全部、GPU は ACE・GRACE・SNAP</td><td>現行経路（05 の表 → 06 の凸包）から補間関数を外すだけ。B 系ではないが補間なし。</td></tr>
+</tbody></table>
+<div class="note"><strong>MLIP で B 系を回す順序</strong>：(1) 共存 MD で融点・液相線（GPU、ACE / GRACE-FS）。(2) 固溶限は <code>fix atom/swap</code> を GPU で試行数を減らして回すか、短距離秩序が本質の系では CE+MC。固溶限の温度依存に振動が効く系（Ag–Cu 型）では MD 込みの <code>fix atom/swap</code> が必要で、CE+MC では出ない。最初の一歩は Al–Li の ACE で <code>fix atom/swap</code> + <code>pace/kk</code> を 1 点（800 K、Δμ 1 つ）流して所要時間を測ること。</div>
+</body></html>
