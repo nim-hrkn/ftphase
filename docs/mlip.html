@@ -36,4 +36,15 @@
 <tr><td>calphy TI + 離散凸包（A-1、関数なし）</td><td>第 1 節の全部、GPU は ACE・GRACE・SNAP</td><td>現行経路（05 の表 → 06 の凸包）から補間関数を外すだけ。B 系ではないが補間なし。</td></tr>
 </tbody></table>
 <div class="note"><strong>MLIP で B 系を回す順序</strong>：(1) 共存 MD で融点・液相線（GPU、ACE / GRACE-FS）。(2) 固溶限は <code>fix atom/swap</code> を GPU で試行数を減らして回すか、短距離秩序が本質の系では CE+MC。固溶限の温度依存に振動が効く系（Ag–Cu 型）では MD 込みの <code>fix atom/swap</code> が必要で、CE+MC では出ない。最初の一歩は Al–Li の ACE で <code>fix atom/swap</code> + <code>pace/kk</code> を 1 点（800 K、Δμ 1 つ）流して所要時間を測ること。</div>
+<h2>3. float32 と float64（2026-10-24 測定、<code>env/lammps-gpu-grace/test/prec/</code>）</h2>
+<p>MACE・SevenNet の既定 float32 が TI の精度（1 meV/atom）に足りるかを測った。結論：<strong>足りる</strong>。float32 の丸めは 1 評価あたり 0.1〜0.2 µeV/atom で、TI の統計誤差（0.1〜1 meV/atom）より 3 桁小さい。</p>
+<table><thead><tr><th>量</th><th>GRACE-1L kokkos fp32 − fp64（2,048 原子、GPU）</th><th>GRACE-1L mixed − fp64</th><th>SevenNet-0 float32 の丸め（256 原子、CPU、並進・置換不変性から）</th></tr></thead><tbody>
+<tr><td>エネルギー</td><td>&lt; 0.001 meV/atom</td><td>&lt; 0.001 meV/atom</td><td>標準偏差 0.12 µeV/atom、最大 0.24 µeV/atom</td></tr>
+<tr><td>力</td><td>RMS 差 0.01 meV/Å、最大 0.1 meV/Å（力の RMS 0.67 eV/Å）</td><td>0</td><td>揺らぎ 0.00 meV/Å、合力 0.001 meV/Å</td></tr>
+<tr><td>圧力</td><td>−0.1 bar</td><td>−0.1 bar</td><td>—</td></tr>
+<tr><td>NVE 200 ステップ（2 fs）の全エネルギー漂動</td><td>−0.257 meV/atom（fp64 と同一）</td><td>同一</td><td>—</td></tr>
+<tr><td>速度（200 ステップ）</td><td>9.3 s（fp64 30.2 s、3.3 倍速）</td><td>11.5 s</td><td>—</td></tr>
+</tbody></table>
+<p>SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は、1 評価あたりのエネルギー丸め 0.05 meV（256 原子の総和）/0.02 Å に相当し、解析力の誤差ではない。SevenNet の float64 実行は <code>sevenn</code> 0.12 の checkpoint 互換パッチと fx 定数が float32 固定で失敗した。GRACE の fp32 版は径方向 MLP だけを cuBLAS fp32 にする設計で、総和は倍精度。</p>
+<div class="note">結論：calphy の TI（サーモスタット付き）では float32 で問題ない。float64 が要るのは長い NVE と、エネルギー差 1e-5 eV 級を直接使う構造最適化・フォノン有限差分（03A の変位 0.01 Å では SevenNet の有限差分力誤差 2.5 meV/Å が効くので float64 か変位 0.03 Å 以上）。</div>
 </body></html>

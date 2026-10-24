@@ -23,6 +23,22 @@
 - 使えないもの：MACE、SevenNet の LAMMPS 版（`e3gnn`）、NequIP/Allegro、CHGNet、DeePMD、UF3、POD（pair style が無い。別ビルドが要る）。
 - 推奨：系専用の精度は ACE（pacemaker、mygardenx1 で学習可）。学習なしで多元素は GRACE-FS-OAM（GPU で calphy まで通る唯一の基盤モデル）。
 
+## float32 と float64（2026-10-24 測定、`env/lammps-gpu-grace/test/prec/`）
+
+MACE・SevenNet の既定 float32 が TI の精度（1 meV/atom）に足りるかを測った。結論：**足りる**。float32 の丸めは 1 評価あたり 0.1〜0.2 µeV/atom で、TI の統計誤差（0.1〜1 meV/atom）より 3 桁小さい。
+
+| 量 | GRACE-1L kokkos fp32 − fp64（2,048 原子、GPU） | GRACE-1L mixed − fp64 | SevenNet-0 float32 の丸め（256 原子、CPU、並進・置換不変性からの推定） |
+|---|---|---|---|
+| エネルギー | < 0.001 meV/atom | < 0.001 meV/atom | 標準偏差 0.12 µeV/atom、最大 0.24 µeV/atom |
+| 力 | RMS 差 0.01 meV/Å、最大 0.1 meV/Å（力の RMS 0.67 eV/Å） | 0 | 不変性からの力の揺らぎ 0.00 meV/Å、合力 0.001 meV/Å |
+| 圧力 | −0.1 bar | −0.1 bar | — |
+| NVE 200 ステップ（2 fs）の全エネルギー漂動 | −0.257 meV/atom（fp64 と同一） | 同一 | — |
+| 速度（200 ステップ） | 9.3 s（fp64 30.2 s、**3.3 倍速**） | 11.5 s | — |
+
+SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あたりのエネルギー丸め 0.05 meV（256 原子の総和）/0.02 Å の値で、解析力そのものの誤差ではない。SevenNet を float64 で動かすことは試したが、`sevenn` 0.12 の checkpoint 互換パッチと fx 定数が float32 固定で失敗した（`model.double()` では直らない）。GRACE の fp32 版は径方向 MLP だけを cuBLAS の fp32 にする設計で、エネルギー総和は倍精度。
+
+結論：calphy の TI（NVT/NPT、サーモスタット付き）では float32 で問題ない。float64 が要るのは長い NVE（エネルギー保存）と、エネルギー差 1e-5 eV 級を直接使う構造最適化・フォノン有限差分（QHA の 03A で変位 0.01 Å を使うときは、SevenNet の有限差分力誤差 2.5 meV/Å が効くので float64 か変位 0.03 Å 以上にする）。
+
 ## 補間関数（CALPHAD 型）を使わない経路（B 系）での可否
 
 | 手法 | 使える MLIP | 条件・計算量 |
