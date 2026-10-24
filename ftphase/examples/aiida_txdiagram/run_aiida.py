@@ -23,6 +23,13 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 POT = os.path.join(ROOT, "pyiron-examples/workshop2022-phase-diagram/resources/lammps/potentials/ace/AlLi-6gen-18May.yace")
 LMP_GPU = os.path.join(ROOT, "env/lammps-gpu/bin/lmp_gpu")
+LMP_GPU_GRACE = os.path.join(ROOT, "env/lammps-gpu-grace/bin/lmp_gpugrace")   # 22Jul2025u6 + grace.patch: grace/fs/kk, grace/1l/kk, hybrid/scaled/kk
+# MLIP variants for the Al-Li comparison (same cells, same spec; only the potential, pair style and GPU binary change)
+MLIPS = {"ace": {"potential": POT, "pair_style": "pace", "pair_coeff": "* * {potential} Al Li", "model": "AlLi-6gen-18May.yace (ACE)", "lmp_gpu": LMP_GPU, "tag": ""},
+         "grace-fs": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-FS-OAM.yaml"), "pair_style": "grace/fs", "pair_coeff": "* * {potential} Al Li",
+                      "model": "GRACE-FS-OAM (foundation, FS, 6 A)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_fs"},
+         "grace-1l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-1L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/1l", "pair_coeff": "* * {potential} Al Li",
+                      "model": "GRACE-1L-OMAT-medium-base-fp64 (foundation, 1 layer, kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_1l"}}
 POT_AGCU = os.path.join(ROOT, "potentials/agcu/CuAg.eam.alloy")   # Williams, Mishin, Hamilton 2006 (NIST), setfl order Cu Ag
 
 
@@ -123,6 +130,7 @@ def main():
     ap.add_argument("--cpu-cores", type=int, default=4, help="LAMMPS ranks per calphy job with --no-gpu")
     ap.add_argument("--qha-cores", type=int, default=4)
     ap.add_argument("--dry-run", action="store_true", help="build the inputs, print them, do not submit")
+    ap.add_argument("--mlip", choices=sorted(MLIPS), default="ace", help="alli only: which potential (ace = AlLi-6gen ACE; grace-fs / grace-1l = GRACE foundation models, lmp_gpugrace)")
     ap.add_argument("--b32-ti", action="store_true", help="alli: add spec['solids_ti'] for B32 (calphy ts 700 -> 880 K, >= 2000-atom cells, GPU); unchanged QHA/liquid CalcJobs are reused from the cache when caching is enabled for ftphase.qha / ftphase.calphy")
     a = ap.parse_args()
 
@@ -135,6 +143,12 @@ def main():
     pot_fn, cand_fn, spec_fn, descr = SYSTEMS[a.system]
     spec = spec_fn(a.smoke, gpu)
     name = (a.name or {"alli": "alli_ace", "agcu": "agcu_eam"}[a.system]) + ("_smoke" if a.smoke else "")
+    lmp_gpu = LMP_GPU
+    if a.system == "alli" and a.mlip != "ace":
+        ml = MLIPS[a.mlip]
+        spec.update({"pair_style": ml["pair_style"], "pair_coeff": ml["pair_coeff"], "model": ml["model"]})
+        pot_fn = (lambda f=ml["potential"]: f); lmp_gpu = ml["lmp_gpu"]
+        name = (a.name or "alli" + ml["tag"]) + ("_smoke" if a.smoke else "")
     if a.b32_ti:
         assert a.system == "alli"
         # same B32 cells as the QHA series (16 atoms, 2x2x2 of the B32 cube -> 5x5x5 repeat = 2000 atoms); 700 -> 880 K covers the congruent melting
@@ -154,7 +168,7 @@ def main():
         "calphy_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1 if gpu else a.cpu_cores}, "max_wallclock_seconds": 48 * 3600,
                                          "queue_name": "debug", "withmpi": False,
                                          "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if gpu else "")}),
-        "calphy_extra": orm.Dict(dict={"gpu": True, "lammps_executable": LMP_GPU} if gpu else {"gpu": False, "cores": a.cpu_cores}),
+        "calphy_extra": orm.Dict(dict={"gpu": True, "lammps_executable": lmp_gpu} if gpu else {"gpu": False, "cores": a.cpu_cores}),
         "metadata": {"label": f"ftphase txdiagram {name}", "description": descr},
     }
     if a.dry_run:
@@ -162,7 +176,7 @@ def main():
         return
     node = submit(WorkflowFactory("ftphase.txdiagram"), **inputs)
     os.makedirs(os.path.join(HERE, "out"), exist_ok=True)
-    rec = {"pk": node.pk, "uuid": node.uuid, "name": name, "profile": a.profile, "submitted": time.strftime("%F %T"), "gpu": gpu, "smoke": a.smoke}
+    rec = {"pk": node.pk, "uuid": node.uuid, "name": name, "profile": a.profile, "submitted": time.strftime("%F %T"), "gpu": gpu, "smoke": a.smoke, "computer": a.computer, "mlip": a.mlip if a.system == "alli" else None}
     with open(os.path.join(HERE, "out", f"{name}.pk.json"), "w") as f:
         json.dump(rec, f, indent=1)
     with open(os.path.join(HERE, "out", "submissions.log"), "a") as f:
