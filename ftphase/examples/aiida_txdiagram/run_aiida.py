@@ -157,7 +157,8 @@ def main():
     ap.add_argument("--system", choices=sorted(SYSTEMS), default="alli", help="alli = ACE Al-Li (example 8), agcu = EAM Ag-Cu (example 9)")
     ap.add_argument("--name", default=None, help="run name (default: alli_ace or agcu_eam)")
     ap.add_argument("--smoke", action="store_true")
-    ap.add_argument("--computer", default="mygarden5")
+    ap.add_argument("--computer", default="mygarden5", help="computer for the calphy jobs (and for QHA unless --qha-computer)")
+    ap.add_argument("--qha-computer", default=None, help="run the QHA CalcJobs on another computer, e.g. mygardenx2 (CPU only: torch calculators switch to device cpu; GRACE 1L/2L/3L need a GPU for QHA and are refused)")
     ap.add_argument("--profile", default=os.environ.get("AIIDA_PROFILE", "ftphase"))
     ap.add_argument("--no-gpu", action="store_true", help="run calphy on CPU ranks (default: 1 GPU per liquid)")
     ap.add_argument("--cpu-cores", type=int, default=4, help="LAMMPS ranks per calphy job with --no-gpu")
@@ -177,6 +178,9 @@ def main():
     spec = spec_fn(a.smoke, gpu)
     name = (a.name or {"alli": "alli_ace", "agcu": "agcu_eam"}[a.system]) + ("_smoke" if a.smoke else "")
     lmp_gpu = LMP_GPU; torch_mlip = bool(a.system == "alli" and MLIPS[a.mlip].get("torch")); pot_qha = None
+    qha_cpu_host = a.qha_computer in ("mygardenx1", "mygardenx2")   # no GPU there
+    if qha_cpu_host and a.system == "alli" and MLIPS[a.mlip].get("qha_gpu") and not torch_mlip:
+        raise SystemExit(f"{a.mlip}: the QHA stage needs the GPU (Kokkos-only pair style); do not use --qha-computer {a.qha_computer}")
     if a.system == "alli" and a.mlip != "ace":
         ml = MLIPS[a.mlip]
         spec.update({"pair_style": ml["pair_style"], "pair_coeff": ml["pair_coeff"], "model": ml["model"]})
@@ -189,6 +193,8 @@ def main():
                 spec[k] = ml[k]
         if ml.get("torch"):   # stage 01 relaxations run in a subprocess of the calculator's env (the daemon has no torch)
             spec["qha_python"] = os.path.join(ROOT, "env", "mace" if ml["qha_calculator"] == "mace" else "torch", "bin", "python")
+            if qha_cpu_host:
+                spec["qha_device"] = "cpu"
         pot_fn = (lambda f=ml["potential"]: f); lmp_gpu = ml["lmp_gpu"]; pot_qha = ml.get("potential_qha")
         name = (a.name or "alli" + ml["tag"]) + ("_smoke" if a.smoke else "")
     if a.b32_ti:
@@ -203,11 +209,11 @@ def main():
         "spec": orm.Dict(dict=spec),
         "potential": orm.SinglefileData(file=pot_fn()),
         "candidates": cands,
-        "qha_code": orm.load_code(f"{MLIPS[a.mlip].get('qha_code', 'ftphase-qha') if a.system == 'alli' else 'ftphase-qha'}@{a.computer}"),
+        "qha_code": orm.load_code(f"{MLIPS[a.mlip].get('qha_code', 'ftphase-qha') if a.system == 'alli' else 'ftphase-qha'}@{a.qha_computer or a.computer}"),
         "calphy_code": orm.load_code(f"calphy@{a.computer}"),
         "qha_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1, "num_cores_per_mpiproc": a.qha_cores}, "max_wallclock_seconds": 24 * 3600,
                                       "queue_name": "debug", "withmpi": False,
-                                      "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if (a.system == "alli" and MLIPS[a.mlip].get("qha_gpu")) else "")}),
+                                      "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if (a.system == "alli" and MLIPS[a.mlip].get("qha_gpu") and not qha_cpu_host) else "")}),
         "calphy_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1 if (gpu or torch_mlip) else a.cpu_cores}, "max_wallclock_seconds": 48 * 3600,
                                          "queue_name": "debug", "withmpi": False,
                                          "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if (gpu or torch_mlip) else "")}),
@@ -221,7 +227,7 @@ def main():
         return
     node = submit(WorkflowFactory("ftphase.txdiagram"), **inputs)
     os.makedirs(os.path.join(HERE, "out"), exist_ok=True)
-    rec = {"pk": node.pk, "uuid": node.uuid, "name": name, "profile": a.profile, "submitted": time.strftime("%F %T"), "gpu": gpu, "smoke": a.smoke, "computer": a.computer, "mlip": a.mlip if a.system == "alli" else None}
+    rec = {"pk": node.pk, "uuid": node.uuid, "name": name, "profile": a.profile, "submitted": time.strftime("%F %T"), "gpu": gpu, "smoke": a.smoke, "computer": a.computer, "qha_computer": a.qha_computer or a.computer, "mlip": a.mlip if a.system == "alli" else None}
     with open(os.path.join(HERE, "out", f"{name}.pk.json"), "w") as f:
         json.dump(rec, f, indent=1)
     with open(os.path.join(HERE, "out", "submissions.log"), "a") as f:
