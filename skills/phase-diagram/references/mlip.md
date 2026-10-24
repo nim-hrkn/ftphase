@@ -67,6 +67,14 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 - 精度（float32）は制約にならない（上節）。制約は速度：2 層以上の等変モデル（MACE-MPA、SevenNet-Omni、eSEN）は GRACE-FS の 5〜20 倍遅く、例 8 規模で 1 本数時間〜半日。
 - 出典：Matbench Discovery leaderboard（https://matbench-discovery.materialsproject.org/）、lammps-metatomic（franken の interface_metatomic）、LAMMPS pair_style mliap、SevenNet / MACE / CURATOR の ML-IAP ガイド。
 
+## libtorch 系 MLIP を calphy で回すときの注意（2026-10-24、SevenNet で実際に起きた）
+
+- **`pair_style hybrid/scaled` の中でビリアルが消える**：LAMMPS はサブスタイルに F·r 方式のフラグ（VIRIAL_FDOTR）を渡さない。サブスタイルが自前のビリアルを `no_virial_fdotr_compute = 1` で宣言していないと（SevenNet 0.13 の `pair_e3gnn` がそう）、`if (vflag)` の分岐が飛んで圧力がゼロになり、calphy の NPT（液相の平衡化・reversible scaling）で箱が 12.9 → 91.6 Å に膨張、エネルギーが −10²² eV に発散する。単独の `pair_style e3gnn` では圧力が正しいので plain の MD では気づかない。修正：両コンストラクタに `no_virial_fdotr_compute = 1;` を入れる（`env/lammps-torch/build_sevenn.sh` が自動適用）。修正後は hybrid/scaled 下の軌道が plain と一致し、λ 倍の圧力になる。`pair_mace` は元から宣言済み。
+- **検査の手順（新しい pair style を calphy に載せる前に必ず）**：同じ構造で (1) plain、(2) `hybrid/scaled v_lam <style>`（λ = 1）、(3) λ = 1.222 の `run 0` の圧力を比べる（`env/lammps-torch/test/in.seq2`、`in.npt`）。(2) が (1) と一致し、(3) が 1.222 倍なら可。NPT 200〜500 ステップで体積が plain と同じ推移をすることも見る。
+- `pair_style mace` は `atom_modify map yes` と `newton on` が要る（無いと segfault）。calphy には `md.init_commands` で渡す（`calphy_block_extra`）。
+- SevenNet は OpenEquivariance 無しだと 1 s/step（256 原子）で calphy に使えない。`sevenn patch_lammps --oeq` でビルドし、モデルも `get_model -oeq` で展開する（16 倍速）。
+- 同じモデルを ASE（QHA 側）と LAMMPS（calphy 側）の 2 実装で評価することになるので、1 セルでエネルギーを突き合わせる：SevenNet-0 −835.881592（ASE）/ −835.88159180（LAMMPS）、MACE-MPA-0 float64 −831.078825 / float32 −831.07881959、GRACE-2L −830.201231 / −830.20123104 eV（256 原子）。
+
 ## 補間関数（CALPHAD 型）を使わない経路（B 系）での可否
 
 | 手法 | 使える MLIP | 条件・計算量 |
