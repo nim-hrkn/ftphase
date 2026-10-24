@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ftphase が用いるパッケージと調査したパッケージ</title>
+<style>body{font-family:system-ui,sans-serif;line-height:1.8;max-width:1100px;margin:2em auto;padding:0 1.2em;color:#172838}h1,h2,h3{line-height:1.4}table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.95em}th,td{border:1px solid #ccd5dd;padding:.5em .6em;text-align:left;vertical-align:top}th{background:#edf3f8}pre{background:#edf3f8;padding:1em;overflow:auto}code{font-family:monospace}.note{border-left:4px solid #3777a2;padding:.6em 1em;background:#f3f7fa}.warn{border-left:4px solid #c0392b;padding:.6em 1em;background:#fbf1ef}</style></head><body>
+<h1>ftphase が用いるパッケージと、調査したパッケージ</h1>
+<p>2026-10-25 時点。版は <code>env/ftphase</code>・<code>env/torch</code>・<code>env/mace</code> の <code>pip list</code> と <code>lmp -h</code> で確認した。工程番号は <code>docs/obsolete_workflow.html</code> 図 1（01 検証、02A 構造系列、03A 固相 QHA、03B 液相・固相 TI、04A 配置項、04B 量子補正、05 表、06 凸包、07 T–x 図）。関連：<code>docs/public-sources.html</code>（2026-10-21 の公開ソース調査）、<code>docs/mlip.html</code>（MLIP の可否）、<code>ftphase/README.md</code>。</p>
+
+<h2>1. ftphase のコードが import するパッケージ</h2>
+<table><thead><tr><th>パッケージ</th><th>版</th><th>ライセンス</th><th>ftphase での役割（モジュール、工程）</th></tr></thead><tbody>
+<tr><td>numpy / scipy / pandas</td><td>2.5.4 / 1.18.1 / 2.3.3</td><td>BSD</td><td>全モジュールの数値処理。scipy：EOS の fit（<code>qha</code>）、スプライン・最小化（<code>equilibrium</code>、<code>configurational</code> の Wagner–Schottky 最小化）、補間。pandas：自由エネルギー表 <code>FreeEnergyTable</code>（05）、二相域の記録（07）。</td></tr>
+<tr><td>ASE</td><td>3.29.0</td><td>LGPL-2.1+</td><td>構造の表現・入出力（<code>structures</code>、02A）、緩和（<code>validate.relax</code>、BFGS + FrechetCellFilter、01）、calculator の抽象化：LAMMPSlib（<code>extra_cmd_args</code> で Kokkos）、SevenNet・MACE の calculator（<code>aiida.runners.make_calculator</code>）。</td></tr>
+<tr><td>phonopy</td><td>4.8.3</td><td>BSD-3</td><td>調和フォノンと F_vib(T)、準調和（<code>qha.phonopy_free_energy</code>、<code>phonopy_volume_scan</code>、03A）。<code>primitive_matrix='auto'</code> の基本胞換算を <code>ftphase.qha</code> が吸収する。</td></tr>
+<tr><td>pymatgen</td><td>2026.9.24</td><td>MIT</td><td>CIF の読み込みと対称性解析（01、構造ファイルの取り込み）。</td></tr>
+<tr><td>spglib</td><td>2.8.0</td><td>BSD-3</td><td>緩和前後の空間群判定（<code>validate.relax</code>、01）。</td></tr>
+<tr><td>icet（+ mchammer）</td><td>4.0</td><td>MPL-2.0</td><td>SQS 生成（<code>structures.sqs_icet</code>、02A）、クラスター展開の列挙・ClusterSpace・fit データ（<code>ce.enumerate_training_structures</code>、<code>fit_cluster_expansion</code>、04A 経路 A）、mchammer の SGC / VCSGC MC（<code>ce.sgc_scan</code>、<code>vcsgc_scan</code>）、Wang–Landau の状態密度の受け口（E13）。</td></tr>
+<tr><td>trainstation</td><td>1.2</td><td>MPL-2.0</td><td>CE の交差検証 fit（ARDR、least-squares；<code>ce.fit_cluster_expansion</code>）。</td></tr>
+<tr><td>sqsgenerator</td><td>0.5.6</td><td>MIT</td><td>SQS 生成の代替（<code>structures.sqs_sqsgenerator</code>、0.5 API：<code>parse_config</code> → <code>optimize</code>）。icet より 20 倍速く、64 原子では差 ≤ 1.2 meV/atom。既定は icet。</td></tr>
+<tr><td>calphy</td><td>2.3.0（GitHub 67caa5b）</td><td>Academic Software License（非商用）</td><td>熱力学積分：Frenkel–Ladd / UFM の fe、reversible scaling の ts、alchemy、dcci。<code>calphy_io</code> が入力 YAML を生成（組成系列、Slurm キュー、GPU の KOKKOS 引数、<code>md.init_commands</code>）、結果（report.yaml、temperature_sweep.dat）を読む（03B）。AiiDA の CalcJob <code>ftphase.calphy</code> は <code>calphy_kernel</code> を直接実行。</td></tr>
+<tr><td>pyscal3</td><td>4.1.0</td><td>GPL-3</td><td>calphy の依存（固液判定 <code>tolerance.solid_fraction</code>）。ftphase は直接呼ばない。</td></tr>
+<tr><td>pycalphad</td><td>0.11.2（pip）</td><td>MIT</td><td>TDB の読み込みと簡易比較（<code>records.check_with_pycalphad</code>、05）。本線の凸包は自前（06）。calphy の <code>PhaseDiagram.to_tdb</code> の出力検証。</td></tr>
+<tr><td>PyYAML</td><td>6.0.3</td><td>MIT</td><td>calphy 入力の読み書き。</td></tr>
+<tr><td>matplotlib</td><td>3.11.2</td><td>PSF 系</td><td>T–x 図（<code>diagram.plot_tx</code>、07）、G–x 曲線、比較図。</td></tr>
+<tr><td>aiida-core</td><td>2.9.3</td><td>MIT</td><td>provenance 付きワークフロー：CalcJob <code>ftphase.qha</code>・<code>ftphase.calphy</code>、WorkChain <code>ftphase.txdiagram</code>、calcfunction <code>prepare_cells</code>・<code>assemble_diagram</code>。プロファイル <code>ftphase</code>（SQLite + RabbitMQ）、計算機 mygarden5 / mygarden6 / mygardenx2、キャッシュ（<code>caching.enabled_for</code>）。</td></tr>
+<tr><td>LAMMPS（Python モジュール + <code>lmp_mpi</code>）</td><td>22 Jul 2025（conda-forge、KOKKOS/CUDA、OpenMPI）</td><td>GPL-2</td><td>QHA と 01 の力・エネルギー（LAMMPSlib）、calphy の実行。pair style：<code>pace</code>、<code>grace/fs</code>、<code>grace/1l,2l,3l/kk</code>、<code>snap</code>、<code>mliap</code>、<code>mlip</code>、<code>hdnnp</code>、<code>m3gnet</code>、EAM、<code>hybrid/scaled</code>、<code>ufm</code>；fix <code>ti/spring</code>、<code>atom/swap</code>、<code>sgcmc</code>。<code>hybrid/scaled/kk</code> が無いので GPU の calphy は自前ビルド（下表）。</td></tr>
+</tbody></table>
+
+<h2>2. 自前ビルドの LAMMPS と MLIP 用パッケージ</h2>
+<table><thead><tr><th>もの</th><th>版 / 場所</th><th>ライセンス</th><th>役割</th></tr></thead><tbody>
+<tr><td><code>lmp_gpu</code></td><td>LAMMPS stable_30Sep2026、<code>env/lammps-gpu/</code></td><td>GPL-2</td><td>ACE の GPU calphy（<code>pace/kk product</code>、<code>hybrid/scaled/kk</code>、<code>snap/kk</code>）。</td></tr>
+<tr><td><code>lmp_gpugrace</code></td><td>stable_22Jul2025_update6 + conda-forge grace.patch（lammps-user-pace v.2025.12.4.p1）+ 移植した <code>hybrid/scaled/kk</code>、<code>env/lammps-gpu-grace/</code></td><td>GPL-2（lammps-user-pace）</td><td>GRACE の GPU calphy：<code>grace/fs/kk</code>、<code>grace/1l,2l,3l/kk</code>（fp32 / mixed 変種）。cuBLAS 必須。</td></tr>
+<tr><td><code>lmp_sevenn</code></td><td>stable_2Aug2023_update3 + SevenNet 0.13 パッチ（--oeq）+ <code>no_virial_fdotr_compute</code> 修正、<code>env/lammps-torch/</code></td><td>GPL-2 / SevenNet GPL-3</td><td>SevenNet の calphy（<code>e3gnn</code>、libtorch、OpenEquivariance）。</td></tr>
+<tr><td><code>lmp_mace</code></td><td>ACEsuit/lammps ブランチ mace（10 Sep 2025 系）、<code>env/lammps-torch/</code></td><td>GPL-2 / MACE MIT</td><td>MACE の calphy（<code>mace no_domain_decomposition</code>、要 <code>atom_modify map yes</code>）。</td></tr>
+<tr><td>PyTorch</td><td>2.11.0+cu128（<code>env/torch</code>、<code>env/mace</code>）</td><td>BSD-3</td><td>SevenNet / MACE の ASE calculator（QHA・01）と libtorch（上のビルド）。</td></tr>
+<tr><td>SevenNet（sevenn）</td><td>0.13.0、e3nn 0.6.0</td><td>GPL-3</td><td>基盤モデル 7net-0 / l3i5 / MF-ompa / omni。<code>get_model -oeq</code> で LAMMPS 用に展開。</td></tr>
+<tr><td>OpenEquivariance</td><td>0.7.0</td><td>MIT（要確認）</td><td>e3gnn のテンソル積加速（無いと 16 倍遅い）。</td></tr>
+<tr><td>MACE（mace-torch）</td><td>0.3.16、e3nn 0.4.4</td><td>MIT</td><td>MACE-MPA-0 / OMAT-0。<code>mace_create_lammps_model</code>。e3nn の版が SevenNet と衝突するので別環境。</td></tr>
+<tr><td>tensorpotential（GRACE）</td><td>mygardenx1 の env/ftphase</td><td>Academic Software License</td><td>GRACE モデルの取得・FS 形式書き出し（<code>grace_models</code>、<code>grace_utils export</code>）。LAMMPS の TF 版 pair style。</td></tr>
+<tr><td>pacemaker / ACE ポテンシャル</td><td><code>AlLi-6gen-18May.yace</code>（pyiron workshop）</td><td>—</td><td>系専用 MLIP（例 3〜8 の基準）。学習は本プロジェクトでは未実施。</td></tr>
+<tr><td>gnuplot、cuBLAS、OpenMPI、cmake、gxx 14、cuda-nvcc 12.8/12.9</td><td>conda-forge</td><td>各種</td><td>ビルドと実行の基盤。<code>mpirun</code> は必ず conda 版（PATH の Intel MPI は直列コピーを起動する）。</td></tr>
+</tbody></table>
+
+<h2>3. 上流の例題用環境（ftphase は使わない）</h2>
+<table><thead><tr><th>パッケージ</th><th>版</th><th>用途</th></tr></thead><tbody>
+<tr><td>pycalphad（<code>env/pycalphad</code>）</td><td>0.11.2 + jupyter</td><td>上流 17 ノートブックの実行（<code>pycalphad-examples/</code>）。</td></tr>
+<tr><td>pyiron_base / pyiron_atomistics（<code>env/pyiron</code>）</td><td>GitHub HEAD</td><td>potentials-workshop-2022 の Al–Li 例（calphy ライブラリモード）。</td></tr>
+<tr><td>aiida-alamode、ALAMODE、MatterSim、SevenNet（conda env <code>alamode</code>）</td><td>1.1.0 / 4.5 / 1.2.3</td><td>別プロジェクト。ftphase の 03A は phonopy で、ALAMODE は未接続。</td></tr>
+</tbody></table>
+
+<h2>4. 調査したが用いていないパッケージ</h2>
+<h3>4.1 OpenCalphad（2026-10-25 調査）</h3>
+<p>Bo Sundman らによる無償の CALPHAD 計算ソフト（Fortran 95/08、GPL v3）。安定版 V6（OC6055、Windows インストーラ 2022-07-17）、開発版は GitHub で 6.138（2026-10-12）。conda-forge・PyPI には無く、gfortran + LAPACK/BLAS（同梱可）+ gnuplot でソースからビルドする（OpenMP オプション）。</p>
+<table><thead><tr><th>区分</th><th>機能</th></tr></thead><tbody>
+<tr><td>モデル（GTP）</td><td>CEF（副格子 ≤ 9、分子・イオン・空孔）、部分イオン 2 副格子液体、秩序–不規則の分割（A1/L1₂/L1₀、A2/B2/B32/D0₃/L2₁）、Inden 磁性（修正版含む）、Einstein 温度、2 状態液体、体積・易動度・弾性定数などの性質パラメータ。MQMQA（修正準化学モデル）は 2025–26 の主開発対象で「fragile」、UNIQUAC は未完。</td></tr>
+<tr><td>平衡（HMS）</td><td>Hillert の算法、条件は組成・化学ポテンシャル・H・V・固定相・組成の式。グリッド最小化でミシビリティギャップ検出（fcc/bcc 秩序用・イオン結晶用の特別グリッド）。解析的 2 階微分 → Darken 安定行列・スピノーダル・Cp・拡散係数。OpenMP で複数平衡を並列。</td></tr>
+<tr><td>図（SMP）</td><td>STEP（性質図、相ごとの G 曲線）、MAP（二元相図・等温断面、タイライン）、不変反応からの出口、Scheil–Gulliver、パラ平衡 STEP、T0。出力は gnuplot と CSV（STEP のみ）。</td></tr>
+<tr><td>アセスメント</td><td>MINPACK LMDIF の最小二乗で実験・理論データ（平衡として入力）にパラメータを fit。不確かさ評価は着手段階。</td></tr>
+<tr><td>データベース</td><td>SGTE TDB 読み込み、FactSage 形式書き出し、XTDB（XML）は予備実装。高品質データベースは同梱しない。</td></tr>
+<tr><td>インターフェース</td><td>コマンドライン + マクロ、サードパーティ Windows GUI、OCASI（TQ 規格、iso-C binding、<code>OCisoCbinding/pyOC</code> に Python）。</td></tr>
+<tr><td>作者が挙げる問題</td><td>二元 MAP は「rudimentary」（線の欠落・準安定線、スタート点依存）、組成軸 STEP が二相域で停止、MAP 結果を保存できない、MQMQA は <code>-O1</code> 推奨。</td></tr>
+</tbody></table>
+<p><strong>本課題との関係</strong>：工程 05 → 06 は pycalphad と自前の凸包で済むので置き換える必然性はない。OC が優位なのは (1) LMDIF による TDB パラメータのアセスメント（calphy / QHA の G(x, T) 表を「実験平衡」として CEF に fit；pycalphad 側なら ESPEI が同等）、(2) Scheil・パラ平衡・T0、(3) MQMQA 液体、(4) OCASI による相場シミュレーションへの組込み。使うなら「05 で出した TDB（calphy の <code>to_tdb</code>）を OC の MAP で描き pycalphad と突き合わせる」検証用途が最も簡単。出典：<a href="https://www.opencalphad.com/index.php">opencalphad.com</a>、<a href="https://www.opencalphad.com/downloads/news-oc7.pdf">news-oc7.pdf（2022-07-16）</a>、<a href="https://github.com/sundmanbo/opencalphad">GitHub</a>（changes.txt）。</p>
+<h3>4.2 その他（<code>docs/public-sources.html</code> の 2026-10-21 調査）</h3>
+<ul>
+<li><strong>ESPEI</strong>（MIT）：pycalphad 上のパラメータ生成と MCMC アセスメント。05 の表を TDB にするときの候補。未使用。</li>
+<li><strong>smol</strong>（BSD）：クラスター展開と Wang–Landau。04A は icet で足りたので未使用（状態密度の受け口 E13 は対応）。</li>
+<li><strong>matcalc、mlipx</strong>：MLIP の検証ツール。01 は自前（<code>validate</code>）で済ませた。</li>
+<li><strong>exaPD</strong>：相図の高スループット枠組み。設計の参考のみ。</li>
+<li><strong>ATAT mcsqs</strong>：SQS の原典。icet / sqsgenerator で代替（<code>docs/obsolete_workflow.html</code> 2 補足）。</li>
+<li><strong>DeePMD-kit、NequIP/Allegro、PET（metatomic）、ORB、fairchem UMA</strong>：LAMMPS 接続の可否と導入順は <code>docs/mlip.html</code> 第 4 節。未導入。</li>
+</ul>
+</body></html>
