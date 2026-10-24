@@ -45,6 +45,7 @@ description: 0 Kの結晶構造を出発点に、MLIP、phonon/QHA、calphyの�
 ## 別の計算機への移行・再開
 
 - このプロジェクトの移行先はALAMODE・MLIP導入済み。既存環境を調べて利用し、AiiDA/MCPやcalphy/LAMMPSまで導入済みとは仮定しない。
+- どの MLIP がどのバイナリ・経路（calphy CPU/GPU、QHA、`fix atom/swap`、共存 MD、CE+MC）で使えるか、補間関数を使わない経路の計算量は [使える MLIP](references/mlip.md) を読む（長い版 `docs/mlip.html`）。
 - 移行・再開時は [移行先での確認と検証順](references/migration.md) を読む。プロジェクトの `docs/migration.html` に転送例と引き継ぎ文、`docs/obsolete_workflow.html` に最新の式と説明がある。
 - 実行パス・モデル・スケジューラを確認し、小規模接続検証の後に計算を拡大する。文書の数値例と移行先の実測結果を区別する。
 

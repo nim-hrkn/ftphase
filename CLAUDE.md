@@ -110,16 +110,18 @@ Checked 2026-10-21 on this host: `/home/kino/miniforge3/envs/alamode` holds aiid
 
 ## Layout and how the pieces relate
 
-- `skills/phase-diagram/SKILL.md` — the decision rules for phase-diagram work (method choice per phase type, thermodynamic must-dos). Read it before any phase-diagram question. It links to six references that must stay together with it:
+- `skills/phase-diagram/SKILL.md` — the decision rules for phase-diagram work (method choice per phase type, thermodynamic must-dos). Read it before any phase-diagram question. It links to seven references that must stay together with it:
   - `references/workflow.md` — the step-by-step calculation workflow with the key equations (QHA G(T,P), ideal-mixing S_conf, sublattice S_conf, UFM-based liquid TI, common-tangent condition).
   - `references/sources.md` — official docs consulted (calphy, LAMMPS hybrid/scaled, icet/mcsqs, ALAMODE, pycalphad) plus caveats about the Al–Li literature example and what the Saengdeejing PDF does and does not say.
   - `references/migration.md` — verification order when resuming on another machine.
   - `references/examples.md` — which upstream example (calphy / pycalphad / pyiron) covers which workflow stage, what none of them cover, and the run-time pitfalls found on 2026-10-21.
   - `references/ftphase.md` — module map, decision notes and verified facts for the project's `ftphase` package.
+  - `references/mlip.md` — which MLIP runs in which LAMMPS binary / route (calphy CPU/GPU, QHA, `fix atom/swap`, coexistence MD, CE+MC) and the cost of the interpolation-free (route B) methods per MLIP; long form `docs/mlip.html` (2026-10-24).
   - `references/public-sources.md` — public codes that can fill the uncovered stages (icet, sqsgenerator, matcalc, phonopy QHA, smol, ESPEI, exaPD) and the fact that the installed calphy 2.3.0 `calphy.phase_diagram.PhaseDiagram` already does CALPHAD-surface fitting, limited-range phases and TDB export (no upstream example).
 - `docs/obsolete_workflow.html` (+ `workflow.svg`) — the full design document with numbered stages 01→06 (02A/02B structure series, 03A solid QHA / 03B liquid TI, 04A configurational term, 05 common reference, 06 equilibrium) and equations labelled `eq-A1`…`eq-J2`. The skill references point here by relative path, so keep the `docs/`, `skills/`, `資料/` folder structure intact.
 - `docs/examples.html` — the executed examples mapped onto stages 01–07 with results, environments and pitfalls (Japanese; long form of `references/examples.md`).
 - `docs/ftphase.html` — design, verification and worked results of the `ftphase` package (Japanese; long form of `references/ftphase.md`).
+- `docs/mlip.html` — usable MLIPs per binary and per route, incl. route B without interpolation functions (2026-10-24).
 - `docs/public-sources.html` — survey (2026-10-21) of public source code for the stages no example covers, with licences, what was verified locally, and a recommended combination (long form of `references/public-sources.md`).
 - `docs/migration.html` — handoff procedure to the destination HPC (tarball + sha256 example, checklist of what to verify there).
 - `資料/` — source PDFs and the aiida-alamode intro HTML. Never modify the originals; write extracted text or analysis as separate files.
