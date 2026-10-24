@@ -30,11 +30,11 @@ MLIPS = {"ace": {"potential": POT, "pair_style": "pace", "pair_coeff": "* * {pot
                       "model": "GRACE-FS-OAM (foundation, FS, 6 A)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_fs"},
          # GRACE 1L/2L/3L exist only as Kokkos styles: calphy uses grace/<n>l (-> /kk on the GPU through -sf kk); the QHA stage runs
          # LAMMPSlib with the Kokkos arguments on the GPU too (the conda LAMMPS Kokkos is CUDA-only), so those QHA jobs request a GPU
-         "grace-1l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-1L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/1l", "pair_coeff": "* * {potential} Al Li",
+         "grace-1l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-1L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/1l/kk", "qha_pair_style": "grace/1l", "pair_coeff": "* * {potential} Al Li",
                       "model": "GRACE-1L-OMAT-medium-base-fp64 (foundation, 1 layer, kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_1l", "qha_gpu": True},
-         "grace-2l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-2L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/2l", "pair_coeff": "* * {potential} Al Li",
+         "grace-2l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-2L-OMAT-medium-base-fp64-kokkos.npz"), "pair_style": "grace/2l/kk", "qha_pair_style": "grace/2l", "pair_coeff": "* * {potential} Al Li",
                       "model": "GRACE-2L-OMAT-medium-base-fp64 (foundation, 2 layers, kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_2l", "qha_gpu": True},
-         "grace-3l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-3L-OMAT-large-kokkos.npz"), "pair_style": "grace/3l", "pair_coeff": "* * {potential} Al Li",
+         "grace-3l": {"potential": os.path.join(ROOT, "potentials/grace/GRACE-3L-OMAT-large-kokkos.npz"), "pair_style": "grace/3l/kk", "qha_pair_style": "grace/3l", "pair_coeff": "* * {potential} Al Li",
                       "model": "GRACE-3L-OMAT-large (foundation, 3 layers, fp32 kokkos export)", "lmp_gpu": LMP_GPU_GRACE, "tag": "_grace_3l", "qha_gpu": True}}
 KK_ARGS = ["-k", "on", "g", "1", "-sf", "kk", "-pk", "kokkos", "newton", "on", "neigh", "half"]
 # libtorch-type MLIPs: the pair style itself runs on the GPU (no Kokkos, no hybrid/scaled/kk); calphy drives the plain
