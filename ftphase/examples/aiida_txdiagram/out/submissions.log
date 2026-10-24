@@ -4,3 +4,18 @@
 {"pk": 191, "uuid": "7a860a1d-bbfd-4216-ac98-646b9ff3cd52", "name": "alli_ace", "profile": "ftphase", "submitted": "2026-10-23 11:34:50", "gpu": true, "smoke": false}
 {"pk": 346, "uuid": "31b19c3f-1d87-4943-ba82-66bbcb56f531", "name": "agcu_eam_smoke", "profile": "ftphase", "submitted": "2026-10-23 16:13:04", "gpu": true, "smoke": true}
 {"pk": 428, "uuid": "e57cf0ac-ba10-4f32-9c2a-ce8eba76f2c6", "name": "agcu_eam", "profile": "ftphase", "submitted": "2026-10-23 16:24:18", "gpu": true, "smoke": false}
+{"pk": 1128, "uuid": "bab2caf6-f6e7-4562-bc55-b9399e806cf4", "name": "alli_ace_b32ti", "profile": "ftphase", "submitted": "2026-10-24 00:10:00", "gpu": true, "smoke": false}
+{"pk": 1323, "uuid": "7e456327-90c2-4c8d-be7b-d387a6d0aabd", "name": "alli_grace_fs_smoke", "profile": "ftphase", "submitted": "2026-10-24 14:37:29", "gpu": true, "smoke": true, "computer": "mygarden5", "mlip": "grace-fs"}
+{"pk": 1384, "uuid": "d517cc45-91ff-4172-9dc0-598bed31f13d", "name": "alli_ace_m6_smoke", "profile": "ftphase", "submitted": "2026-10-24 14:43:10", "gpu": true, "smoke": true, "computer": "mygarden6", "mlip": "ace"}
+{"pk": 1469, "uuid": "bf364420-b8d7-4aa7-8309-285c1304102a", "name": "alli_grace_fs", "profile": "ftphase", "submitted": "2026-10-24 14:46:59", "gpu": true, "smoke": false, "computer": "mygarden5", "mlip": "grace-fs"}
+{"pk": 1481, "uuid": "57b3d6a0-e670-4f47-a9cb-fcda787ff1fa", "name": "alli_ace_m6", "profile": "ftphase", "submitted": "2026-10-24 14:47:01", "gpu": true, "smoke": false, "computer": "mygarden6", "mlip": "ace"}
+{"pk": 1742, "uuid": "b0793936-f6d2-4c20-98f6-e7feaf27a5ef", "name": "alli_grace_2l", "profile": "ftphase", "submitted": "2026-10-24 15:20:07", "gpu": true, "smoke": false, "computer": "mygarden5", "mlip": "grace-2l"}
+{"pk": 1754, "uuid": "8f51a678-6c89-47b9-95e8-a90dd0083477", "name": "alli_grace_1l", "profile": "ftphase", "submitted": "2026-10-24 15:20:09", "gpu": true, "smoke": false, "computer": "mygarden6", "mlip": "grace-1l"}
+{"pk": 1766, "uuid": "6d3948bf-f79c-4e15-a2f9-657dfc69a81d", "name": "alli_grace_3l", "profile": "ftphase", "submitted": "2026-10-24 15:20:11", "gpu": true, "smoke": false, "computer": "mygarden6", "mlip": "grace-3l"}
+{"pk": 1778, "uuid": "f8fc442b-01b9-43b3-92a4-73246a4cab3b", "name": "alli_grace_2l", "profile": "ftphase", "submitted": "2026-10-24 15:20:59", "gpu": true, "smoke": false, "computer": "mygarden5", "mlip": "grace-2l"}
+{"pk": 1790, "uuid": "10d84797-c802-48c5-bb3b-9735f341fc66", "name": "alli_grace_1l", "profile": "ftphase", "submitted": "2026-10-24 15:21:00", "gpu": true, "smoke": false, "computer": "mygarden6", "mlip": "grace-1l"}
+{"pk": 1802, "uuid": "12fef202-c1c0-4dce-9d12-99e532168b8e", "name": "alli_grace_3l", "profile": "ftphase", "submitted": "2026-10-24 15:21:02", "gpu": true, "smoke": false, "computer": "mygarden6", "mlip": "grace-3l"}
+{"pk": 2059, "uuid": "00954eb7-eac4-43c6-bea1-08d93fe85749", "name": "alli_sevenn_0_smoke", "profile": "ftphase", "submitted": "2026-10-24 15:41:04", "gpu": true, "smoke": true, "computer": "mygarden5", "mlip": "sevenn-0"}
+{"pk": 2102, "uuid": "5526e3f5-b72e-4356-aab7-31888957e833", "name": "alli_sevenn_0_smoke", "profile": "ftphase", "submitted": "2026-10-24 15:43:36", "gpu": true, "smoke": true, "computer": "mygarden5", "mlip": "sevenn-0"}
+{"pk": 2124, "uuid": "6ebd3e0e-6962-46f2-bf77-386de3e5c650", "name": "alli_sevenn_0_smoke", "profile": "ftphase", "submitted": "2026-10-24 15:44:11", "gpu": true, "smoke": true, "computer": "mygarden5", "mlip": "sevenn-0"}
+{"pk": 2144, "uuid": "d67a6693-c535-4f6b-9095-2e8cae60c3d9", "name": "alli_sevenn_0_smoke", "profile": "ftphase", "submitted": "2026-10-24 15:44:43", "gpu": true, "smoke": true, "computer": "mygarden5", "mlip": "sevenn-0"}

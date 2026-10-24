@@ -47,6 +47,9 @@ class QhaCalculation(CalcJob):
         pot_name = self.inputs.potential.filename
         inp = {"structure": "structure.extxyz", "potential": pot_name, "pair_style": p.pop("pair_style"), "pair_coeff": p.pop("pair_coeff"),
                "atom_types": p.pop("atom_types"), "parameters": p}
+        for k in ("cmdargs", "calculator", "device", "dtype", "modal"):   # optional: Kokkos arguments / torch-based ASE calculators (runners.make_calculator)
+            if k in p:
+                inp[k] = p.pop(k)
         with folder.open("input.json", "w") as f:
             json.dump(inp, f, indent=1)
         codeinfo = CodeInfo()

@@ -58,3 +58,13 @@ pyiron-examples/**/scratch/
 calphy-examples/potentials/
 # live log of the headless session (ftphase/examples/aiida_txdiagram/out/)
 headless_claude.log
+!env/torch_setup.sh
+!env/mace_setup.sh
+!env/lammps-torch/
+env/lammps-torch/*
+!env/lammps-torch/build_sevenn.sh
+!env/lammps-torch/build_mace.sh
+!env/lammps-torch/test/
+env/lammps-torch/test/*
+!env/lammps-torch/test/in.e3gnn
+!env/lammps-torch/test/in.mace

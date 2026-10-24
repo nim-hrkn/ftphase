@@ -25,6 +25,8 @@ class TxDiagramWorkChain(WorkChain):
         super().define(spec)
         spec.input("spec", valid_type=orm.Dict, help="system description (see ftphase.aiida.functions.prepare_cells / assemble_diagram)")
         spec.input("potential", valid_type=orm.SinglefileData)
+        spec.input("potential_qha", valid_type=orm.SinglefileData, required=False,
+                   help="potential file for stages 01/03A when it differs from the calphy one (torch MLIPs: checkpoint for the ASE calculator vs deployed TorchScript for LAMMPS)")
         spec.input_namespace("candidates", valid_type=orm.StructureData, dynamic=True, help="0 K candidate structures keyed by spec['candidates'] names (non-alphanumerics -> '_')")
         spec.input("qha_code", valid_type=orm.AbstractCode)
         spec.input("calphy_code", valid_type=orm.AbstractCode)
@@ -49,7 +51,7 @@ class TxDiagramWorkChain(WorkChain):
         spec.exit_code(410, "ERROR_ASSEMBLY", message="assemble_diagram raised (see the calcfunction report)")
 
     def prepare(self):
-        res = prepare_cells(self.inputs.spec, self.inputs.potential, **self.inputs.candidates)
+        res = prepare_cells(self.inputs.spec, self.inputs.potential_qha if "potential_qha" in self.inputs else self.inputs.potential, **self.inputs.candidates)
         self.ctx.solids = {k[len("solid_"):]: v for k, v in res.items() if k.startswith("solid_") and k != "solid_params"}
         self.ctx.liquids = {k[len("liquid_"):]: v for k, v in res.items() if k.startswith("liquid_") and k != "liquid_params"}
         self.ctx.solid_params = res["solid_params"]
@@ -66,14 +68,15 @@ class TxDiagramWorkChain(WorkChain):
         sol_p = self.ctx.solid_params.get_dict()
         for key, structure in self.ctx.solids.items():
             m = sol_p[key]
-            params = {"pair_style": sp["pair_style"], "pair_coeff": sp["pair_coeff"], "atom_types": sp["atom_types"], "supercell": m["supercell"], "mesh": m["mesh"],
+            params = {"pair_style": sp.get("qha_pair_style", sp["pair_style"]), "pair_coeff": sp["pair_coeff"], "atom_types": sp["atom_types"], "supercell": m["supercell"], "mesh": m["mesh"],
+                      **{k: sp[f"qha_{k}"] for k in ("cmdargs", "calculator", "device", "dtype", "modal") if f"qha_{k}" in sp},
                       "scales": qha.get("scales", [0.97, 0.98, 0.99, 1.0, 1.01, 1.02, 1.03, 1.04, 1.05]), "temperatures": Tq, "eos": qha.get("eos", "vinet"),
                       "imaginary": qha.get("imaginary", "drop"), "relax": qha.get("relax", {"do": True, "fmax": 1e-3, "cell": True, "hydrostatic": True}),
                       "pressure_GPa": float(qha.get("pressure_GPa", 0.0))}
             builder = QhaCalculation.get_builder()
             builder.code = self.inputs.qha_code
             builder.structure = structure
-            builder.potential = self.inputs.potential
+            builder.potential = self.inputs.potential_qha if "potential_qha" in self.inputs else self.inputs.potential
             builder.parameters = orm.Dict(dict=params)
             builder.metadata.options = self.inputs.qha_options.get_dict()
             builder.metadata.label = f"qha {key} {m['phase']} x={m['x']:.4f}"

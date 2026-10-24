@@ -39,9 +39,13 @@ def _key(s: str) -> str:
 
 
 def _calculator(spec: dict, potential_path: str):
-    from ftphase.aiida.runners import lammps_calculator
+    from ftphase.aiida.runners import make_calculator
 
-    return lammps_calculator(spec["pair_style"], spec["pair_coeff"].format(potential=potential_path), spec["atom_types"])
+    # same calculator as the QHA stage: spec["qha_*"] keys select Kokkos arguments (GRACE 1L/2L/3L on the GPU) or a torch-based
+    # ASE calculator (SevenNet / MACE); stage 01 then runs inside the daemon worker with that calculator
+    inp = {"pair_style": spec.get("qha_pair_style", spec["pair_style"]), "pair_coeff": spec["pair_coeff"], "atom_types": spec["atom_types"],
+           **{k: spec[f"qha_{k}"] for k in ("cmdargs", "calculator", "device", "dtype", "modal") if f"qha_{k}" in spec}}
+    return make_calculator(inp, potential_path)
 
 
 def _antisite_cells(atoms, x_element: str):
@@ -81,16 +85,38 @@ def prepare_cells(spec: orm.Dict, potential: orm.SinglefileData, **candidates: o
     sp = spec.get_dict()
     out = {}
     with potential.as_path() as ppath:
-        calc = _calculator(sp, str(ppath))
         rel = sp.get("relax", {})
         rows, relaxed = [], {}
-        for name, x in sp["candidates"].items():
-            at = candidates[_key(name)].get_ase()
-            r = relax(at, calc, fmax=float(rel.get("fmax", 1e-3)), cell=bool(rel.get("cell", True)))
-            relaxed[name] = r.atoms.copy()
-            relaxed[name].calc = None
-            rows.append({"name": name, "x": float(x), "e": r.energy_per_atom, "V": r.volume_per_atom, "sg_before": r.spacegroup_before,
-                         "sg_after": r.spacegroup_after, "converged": bool(r.converged), "transformed": bool(r.transformed)})
+        names = list(sp["candidates"])
+        if sp.get("qha_calculator", "lammps") != "lammps" and sp.get("qha_python"):
+            # torch-based calculator: relax in a subprocess of its own env (the daemon's env has no torch)
+            import json
+            import subprocess
+            import tempfile
+
+            from ase.io import read, write
+
+            with tempfile.TemporaryDirectory(prefix="ftphase_relax_") as td:
+                write(os.path.join(td, "in.extxyz"), [candidates[_key(n)].get_ase() for n in names])
+                inp = {"structures": os.path.join(td, "in.extxyz"), "potential": str(ppath), "relax": rel, "pair_style": sp.get("qha_pair_style", sp["pair_style"]),
+                       "pair_coeff": sp["pair_coeff"], "atom_types": sp["atom_types"], "output": os.path.join(td, "out.json"), "output_structures": os.path.join(td, "relaxed.extxyz"),
+                       **{k: sp[f"qha_{k}"] for k in ("cmdargs", "calculator", "device", "dtype", "modal") if f"qha_{k}" in sp}}
+                json.dump(inp, open(os.path.join(td, "input.json"), "w"))
+                env = {k: v for k, v in os.environ.items() if k not in ("PYTHONPATH", "PYTHONHOME")}
+                subprocess.run([sp["qha_python"], "-m", "ftphase.aiida.runners", "relax", os.path.join(td, "input.json")], check=True, cwd=td, env=env)
+                res = json.load(open(os.path.join(td, "out.json"))); rl = read(os.path.join(td, "relaxed.extxyz"), index=":")
+            for name, r, a in zip(names, res, rl):
+                relaxed[name] = a.copy(); relaxed[name].calc = None
+                rows.append({"name": name, "x": float(sp["candidates"][name]), **r})
+        else:
+            calc = _calculator(sp, str(ppath))
+            for name, x in sp["candidates"].items():
+                at = candidates[_key(name)].get_ase()
+                r = relax(at, calc, fmax=float(rel.get("fmax", 1e-3)), cell=bool(rel.get("cell", True)))
+                relaxed[name] = r.atoms.copy()
+                relaxed[name].calc = None
+                rows.append({"name": name, "x": float(x), "e": r.energy_per_atom, "V": r.volume_per_atom, "sg_before": r.spacegroup_before,
+                             "sg_after": r.spacegroup_after, "converged": bool(r.converged), "transformed": bool(r.transformed)})
         df = pd.DataFrame(rows)
         hull = hull_0K(df["name"], df["x"], df["e"])
         cmp = compare_ground_states(hull, sp.get("known_ground_states", []))
