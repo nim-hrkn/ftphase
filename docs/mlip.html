@@ -46,7 +46,7 @@
 <tr><td>速度（200 ステップ）</td><td>9.3 s（fp64 30.2 s、3.3 倍速）</td><td>11.5 s</td><td>—</td></tr>
 </tbody></table>
 <p>SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は、1 評価あたりのエネルギー丸め 0.05 meV（256 原子の総和）/0.02 Å に相当し、解析力の誤差ではない。SevenNet の float64 実行は <code>sevenn</code> 0.12 の checkpoint 互換パッチと fx 定数が float32 固定で失敗した。GRACE の fp32 版は径方向 MLP だけを cuBLAS fp32 にする設計で、総和は倍精度。</p>
-<div class="note">結論：calphy の TI（サーモスタット付き）では float32 で問題ない。float64 が要るのは長い NVE と、エネルギー差 1e-5 eV 級を直接使う構造最適化・フォノン有限差分（03A の変位 0.01 Å では SevenNet の有限差分力誤差 2.5 meV/Å が効くので float64 か変位 0.03 Å 以上）。</div>
+<div class="note"><strong>運用（2026-10-25、ユーザー決定）：MLIP 比較は全工程を単精度で行う</strong>（GRACE nL は QHA も calphy も <code>grace/&lt;n&gt;l/kk/fp32</code>、MACE は QHA も <code>default_dtype float32</code>、SevenNet は元から float32）。fp64 しか無いのは ACE（<code>pace</code>）と GRACE-FS（<code>grace/fs/kk</code>）。結論：calphy の TI（サーモスタット付き）では float32 で問題ない。float64 が要るのは長い NVE と、エネルギー差 1e-5 eV 級を直接使う構造最適化・フォノン有限差分（03A の変位 0.01 Å では SevenNet の有限差分力誤差 2.5 meV/Å が効くので float64 か変位 0.03 Å 以上）。</div>
 <h2>4. Matbench Discovery（2026-10-24 時点、43 モデル）のユニバーサルモデルと、この経路での可否</h2>
 <p>κ_SRME はフォノン熱伝導の誤差（小さいほど振動の記述が良く、QHA・TI に効く）。順位は leaderboard の CPS 順。出典：<a href="https://matbench-discovery.materialsproject.org/">Matbench Discovery</a>、<a href="https://franken.readthedocs.io/topics/interface_metatomic.html">lammps-metatomic（franken）</a>、<a href="https://doc.lammps.org/pair_mliap.html">LAMMPS pair_style mliap</a>、<a href="https://sevennet.readthedocs.io/en/latest/user_guide/lammps_mliap.html">SevenNet ML-IAP</a>、<a href="https://mace-docs.readthedocs.io/en/latest/guide/lammps_mliap.html">MACE ML-IAP</a>。</p>
 <table><thead><tr><th>順位</th><th>モデル</th><th>F1 / κ_SRME</th><th>LAMMPS 接続</th><th>導入作業</th><th>この経路での可否</th></tr></thead><tbody>
