@@ -31,7 +31,7 @@
 <tr><td><code>lmp_mace</code></td><td>ACEsuit/lammps ブランチ mace（10 Sep 2025 系）、<code>env/lammps-torch/</code></td><td>GPL-2 / MACE MIT</td><td>MACE の calphy（<code>mace no_domain_decomposition</code>、要 <code>atom_modify map yes</code>）。</td></tr>
 <tr><td>PyTorch</td><td>2.11.0+cu128（<code>env/torch</code>、<code>env/mace</code>）</td><td>BSD-3</td><td>SevenNet / MACE の ASE calculator（QHA・01）と libtorch（上のビルド）。</td></tr>
 <tr><td>SevenNet（sevenn）</td><td>0.13.0、e3nn 0.6.0</td><td>GPL-3</td><td>基盤モデル 7net-0 / l3i5 / MF-ompa / omni。<code>get_model -oeq</code> で LAMMPS 用に展開。</td></tr>
-<tr><td>OpenEquivariance</td><td>0.7.0</td><td>MIT（要確認）</td><td>e3gnn のテンソル積加速（無いと 16 倍遅い）。</td></tr>
+<tr><td>OpenEquivariance</td><td>0.7.0</td><td>BSD-3-Clause（LBNL、米国エネルギー省の資金による旨の NOTICE 付き；pip メタデータと同梱 LICENSE で確認、2026-10-25）</td><td>e3gnn のテンソル積加速（無いと 16 倍遅い）。</td></tr>
 <tr><td>MACE（mace-torch）</td><td>0.3.16、e3nn 0.4.4</td><td>MIT</td><td>MACE-MPA-0 / OMAT-0。<code>mace_create_lammps_model</code>。e3nn の版が SevenNet と衝突するので別環境。</td></tr>
 <tr><td>tensorpotential（GRACE）</td><td>mygardenx1 の env/ftphase</td><td>Academic Software License</td><td>GRACE モデルの取得・FS 形式書き出し（<code>grace_models</code>、<code>grace_utils export</code>）。LAMMPS の TF 版 pair style。</td></tr>
 <tr><td>pacemaker / ACE ポテンシャル</td><td><code>AlLi-6gen-18May.yace</code>（pyiron workshop）</td><td>—</td><td>系専用 MLIP（例 3〜8 の基準）。学習は本プロジェクトでは未実施。</td></tr>
