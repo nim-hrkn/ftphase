@@ -1,54 +1,56 @@
-# Same system, different MLIPs: ace (AlLi-6gen-18May.yace (ACE)) vs grace-fs (GRACE-FS-OAM (foundation, FS, 6 A))
+# Same system, different MLIPs: ace (AlLi-6gen-18May.yace (ACE)) vs grace-fs (GRACE-FS-OAM (foundation, FS, 6 A)) vs grace-1l (GRACE-1L-OMAT-medium-base-fp64 (foundation, 1 layer, kokkos export)) vs grace-2l (GRACE-2L-OMAT-medium-base-fp64 (foundation, 2 layers, kokkos export))
 
 ## 01: 0 K formation energies of the candidate phases (eV/atom, vs the pure end members of the same MLIP) and hull status
 
-| candidate | x | ace E_form | ace on hull | grace-fs E_form | grace-fs on hull |
-|---|---|---|---|---|---|
-| fcc-Al | 0.0 | +0.0000 | yes | +0.0000 | yes |
-| L12-Al3Li | 0.25 | -0.0941 | yes | -0.1301 | yes |
-| B32-AlLi | 0.5 | -0.1789 | yes | -0.2114 | yes |
-| bcc-Li | 1.0 | +0.0000 | yes | +0.0000 | yes |
+| candidate | x | ace E_form | ace on hull | grace-fs E_form | grace-fs on hull | grace-1l E_form | grace-1l on hull | grace-2l E_form | grace-2l on hull |
+|---|---|---|---|---|---|---|---|---|---|
+| fcc-Al | 0.0 | +0.0000 | yes | +0.0000 | yes | +0.0000 | yes | +0.0000 | yes |
+| L12-Al3Li | 0.25 | -0.0941 | yes | -0.1301 | yes | -0.0940 | yes | -0.0897 | yes |
+| B32-AlLi | 0.5 | -0.1789 | yes | -0.2114 | yes | -0.1776 | yes | -0.1763 | yes |
+| bcc-Li | 1.0 | +0.0000 | yes | +0.0000 | yes | +0.0000 | yes | +0.0000 | yes |
 
-Relaxed volumes (A^3/atom): ace: fcc-Al 16.54, bcc-Li 20.40, B32-AlLi 16.13, L12-Al3Li 16.26; grace-fs: fcc-Al 16.90, bcc-Li 18.91, B32-AlLi 15.77, L12-Al3Li 16.21
+Relaxed volumes (A^3/atom): ace: fcc-Al 16.54, bcc-Li 20.40, B32-AlLi 16.13, L12-Al3Li 16.26; grace-fs: fcc-Al 16.90, bcc-Li 18.91, B32-AlLi 15.77, L12-Al3Li 16.21; grace-1l: fcc-Al 16.43, bcc-Li 20.39, B32-AlLi 16.02, L12-Al3Li 16.25; grace-2l: fcc-Al 16.42, bcc-Li 20.28, B32-AlLi 15.85, L12-Al3Li 16.13
 
 ## 03A: solids, G(T) - G(lowest T) of the end members (eV/atom; vibrational + thermal expansion, classical level)
 
-| phase, x | T (K) | ace | grace-fs |
-|---|---|---|---|
-| fcc, x = 0.0 | 700 | -0.2124 (from 0 K) | -0.2812 (from 0 K) |
-| fcc, x = 0.0 | 800 | -0.2671 (from 0 K) | -0.3516 (from 0 K) |
-| B32, x = 0.5 | 700 | -0.1880 (from 0 K) | -0.1935 (from 0 K) |
-| B32, x = 0.5 | 800 | -0.2369 (from 0 K) | -0.2437 (from 0 K) |
-| Al3Li, x = 0.25 | 700 | -0.1932 (from 0 K) | -0.2164 (from 0 K) |
-| Al3Li, x = 0.25 | 800 | -0.2438 (from 0 K) | -0.2718 (from 0 K) |
+| phase, x | T (K) | ace | grace-fs | grace-1l | grace-2l |
+|---|---|---|---|---|---|
+| fcc, x = 0.0 | 700 | -0.2124 (from 0 K) | -0.2812 (from 0 K) | -0.2133 (from 0 K) | -0.2130 (from 0 K) |
+| fcc, x = 0.0 | 800 | -0.2671 (from 0 K) | -0.3516 (from 0 K) | -0.2680 (from 0 K) | -0.2677 (from 0 K) |
+| B32, x = 0.5 | 700 | -0.1880 (from 0 K) | -0.1935 (from 0 K) | -0.1872 (from 0 K) | -0.1863 (from 0 K) |
+| B32, x = 0.5 | 800 | -0.2369 (from 0 K) | -0.2437 (from 0 K) | -0.2361 (from 0 K) | -0.2354 (from 0 K) |
+| Al3Li, x = 0.25 | 700 | -0.1932 (from 0 K) | -0.2164 (from 0 K) | -0.1982 (from 0 K) | -0.1955 (from 0 K) |
+| Al3Li, x = 0.25 | 800 | -0.2438 (from 0 K) | -0.2718 (from 0 K) | -0.2495 (from 0 K) | -0.2466 (from 0 K) |
 
 ## 03A: fcc Al thermal expansion V(T)/V(T_min) and B32 anti-site cost
 
 * ace: fcc Al V(800 K)/V(0 K) = 1.0590; B32 G(x) at lowest T relative to x = 0.5: x=0.4375: -60.6 meV, x=0.5000: +0.0 meV, x=0.5625: +114.0 meV
 * grace-fs: fcc Al V(800 K)/V(0 K) = 1.1179; B32 G(x) at lowest T relative to x = 0.5: x=0.4375: -91.9 meV, x=0.5000: +0.0 meV, x=0.5625: +136.3 meV
+* grace-1l: fcc Al V(800 K)/V(0 K) = 1.0621; B32 G(x) at lowest T relative to x = 0.5: x=0.4375: -71.5 meV, x=0.5000: +0.0 meV, x=0.5625: +123.8 meV
+* grace-2l: fcc Al V(800 K)/V(0 K) = 1.0623; B32 G(x) at lowest T relative to x = 0.5: x=0.4375: -65.9 meV, x=0.5000: +0.0 meV, x=0.5625: +120.0 meV
 
 ## 03B: liquid minus solid at the same composition (eV/atom; negative = liquid stable)
 
-| x | solid | T (K) | ace | grace-fs |
-|---|---|---|---|---|
-| 0.0 | fcc | 700 | +0.0218 | +0.0252 |
-| 0.0 | fcc | 800 | +0.0102 | +0.0257 |
-| 0.0 | fcc | 900 | -0.0014 | +0.0276 |
-| 0.5 | B32 | 700 | +0.0216 | +0.0143 |
-| 0.5 | B32 | 800 | +0.0073 | -0.0002 |
-| 0.5 | B32 | 900 | -0.0079 | -0.0158 |
-| 0.25 | Al3Li | 700 | - | - |
-| 0.25 | Al3Li | 800 | - | - |
-| 0.25 | Al3Li | 900 | - | - |
+| x | solid | T (K) | ace | grace-fs | grace-1l | grace-2l |
+|---|---|---|---|---|---|---|
+| 0.0 | fcc | 700 | +0.0218 | +0.0252 | +0.0211 | +0.0253 |
+| 0.0 | fcc | 800 | +0.0102 | +0.0257 | +0.0088 | +0.0138 |
+| 0.0 | fcc | 900 | -0.0014 | +0.0276 | -0.0039 | +0.0025 |
+| 0.5 | B32 | 700 | +0.0216 | +0.0143 | +0.0161 | +0.0146 |
+| 0.5 | B32 | 800 | +0.0073 | -0.0002 | +0.0016 | +0.0011 |
+| 0.5 | B32 | 900 | -0.0079 | -0.0158 | -0.0139 | -0.0132 |
+| 0.25 | Al3Li | 700 | - | - | - | - |
+| 0.25 | Al3Li | 800 | - | - | - | - |
+| 0.25 | Al3Li | 900 | - | - | - | - |
 
 ## 06-07: diagram features
 
-| feature | ace | grace-fs |
-|---|---|---|
-| lowest T with liquid (eutectic bracket) | 770.0 K; [{'phase_a': 'fcc', 'x_a': 0.16364377524805, 'phase_b': 'liquid', 'x_b': 0.30798874073804}, {'phase_a': 'liquid', 'x_a': 0.3186591999339, 'phase_b': 'B32', 'x_b': 0.48252157594643}] | 750.0 K; [{'phase_a': 'fcc', 'x_a': 0.22897993508857, 'phase_b': 'liquid', 'x_b': 0.31614408553575}, {'phase_a': 'liquid', 'x_a': 0.3225, 'phase_b': 'B32', 'x_b': 0.4375}] |
-| pure Al melting bracket | [880.0, 890.0] | [950.0, 960.0] |
-| B32 + liquid present up to | 850 K | 800 K |
-| fcc solvus x_Li (fcc+B32 tangent) | 700 K: 0.140; 800 K: nan | 700 K: 0.225; 800 K: nan |
-| Al3Li appears | never | never |
-| same-phase segments (fit noise) | [{'phase': 'fcc', 'T': 700.0, 'x_a': 0.025241947403874, 'x_b': 0.11783408410735}, {'phase': 'fcc', 'T': 710.0, 'x_a': 0. | [] |
-| invariants | 760-770 K; 790-800 K; 850-860 K | 740-750 K; 800-810 K |
+| feature | ace | grace-fs | grace-1l | grace-2l |
+|---|---|---|---|---|
+| lowest T with liquid (eutectic bracket) | 770.0 K; [{'phase_a': 'fcc', 'x_a': 0.16364377524805, 'phase_b': 'liquid', 'x_b': 0.30798874073804}, {'phase_a': 'liquid', 'x_a': 0.3186591999339, 'phase_b': 'B32', 'x_b': 0.48252157594643}] | 750.0 K; [{'phase_a': 'fcc', 'x_a': 0.22897993508857, 'phase_b': 'liquid', 'x_b': 0.31614408553575}, {'phase_a': 'liquid', 'x_a': 0.3225, 'phase_b': 'B32', 'x_b': 0.4375}] | 730.0 K; [{'phase_a': 'fcc', 'x_a': 0.19933310830403, 'phase_b': 'liquid', 'x_b': 0.32749027318013}, {'phase_a': 'liquid', 'x_a': 0.34103111618082, 'phase_b': 'B32', 'x_b': 0.47651984883512}] | 760.0 K; [{'phase_a': 'fcc', 'x_a': 0.18077421020613, 'phase_b': 'liquid', 'x_b': 0.35424178872743}, {'phase_a': 'liquid', 'x_a': 0.37255999420705, 'phase_b': 'B32', 'x_b': 0.49778514103138}] |
+| pure Al melting bracket | [880.0, 890.0] | [950.0, 960.0] | None | None |
+| B32 + liquid present up to | 850 K | 800 K | 810 K | 810 K |
+| fcc solvus x_Li (fcc+B32 tangent) | 700 K: 0.140; 800 K: nan | 700 K: 0.225; 800 K: nan | 700 K: 0.194; 800 K: nan | 700 K: 0.168; 800 K: nan |
+| Al3Li appears | never | never | never | never |
+| same-phase segments (fit noise) | [{'phase': 'fcc', 'T': 700.0, 'x_a': 0.025241947403874, 'x_b': 0.11783408410735}, {'phase': 'fcc', 'T': 710.0, 'x_a': 0. | [] | [] | [] |
+| invariants | 760-770 K; 790-800 K; 850-860 K | 740-750 K; 800-810 K | 720-730 K; 810-820 K | 750-760 K; 810-820 K |
