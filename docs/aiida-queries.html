@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AiiDA ジョブの問い合わせ・制御の記録（MCP 設計資料）</title>
+<style>body{font-family:system-ui,sans-serif;line-height:1.8;max-width:1100px;margin:2em auto;padding:0 1.2em;color:#172838}h1,h2,h3{line-height:1.4}table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.95em}th,td{border:1px solid #ccd5dd;padding:.5em .6em;text-align:left;vertical-align:top}th{background:#edf3f8}pre{background:#edf3f8;padding:1em;overflow:auto;font-size:.9em}code{font-family:monospace}.note{border-left:4px solid #3777a2;padding:.6em 1em;background:#f3f7fa}.warn{border-left:4px solid #c0392b;padding:.6em 1em;background:#fbf1ef}</style></head><body>
+<h1>AiiDA ジョブの問い合わせ・制御：このプロジェクトで作ったスクリプトと問い合わせ事項</h1>
+<p>2026-10-23〜25 に <code>ftphase.txdiagram</code> WorkChain（プロファイル <code>ftphase</code>、計算機 mygarden5 / mygarden6 / mygardenx2）を回す中で実際に使った問い合わせと操作を、将来 Claude Cowork から使う <strong>AiiDA ジョブ制御用 MCP サーバ</strong>の設計資料としてまとめる。第 1 節が既存スクリプト、第 2 節が verdi コマンド、第 3 節が Python API の断片、第 4 節が「何を知りたかったか」の一覧、第 5 節が MCP のツール案と安全策。</p>
+<div class="note">前提（CLAUDE.md より）：verdi は必ず <code>env/ftphase/bin/verdi -p ftphase</code>（既定プロファイルは別プロジェクトの <code>alamode_pg</code>）。デーモン操作は <code>env/ftphase/bin</code> を PATH に入れてから（<code>daemon restart</code> は停止中だと失敗するので <code>daemon start 2</code>）。プラグインのソースを変えたら <code>pip install -e ./ftphase --no-deps</code> → デーモン再起動 → リモート計算機へ <code>sync_to_host.sh</code>。</div>
+
+<h2>1. 作成したスクリプト（<code>ftphase/examples/aiida_txdiagram/</code>、<code>ftphase/tools/</code>）</h2>
+<table><thead><tr><th>スクリプト</th><th>目的</th><th>入力</th><th>出力・副作用</th></tr></thead><tbody>
+<tr><td><code>setup_aiida.sh</code></td><td>プロファイル・計算機・コード・デーモンの初期設定（冪等）</td><td>環境変数 <code>CONDA_SH</code>、<code>AIIDA_EMAIL</code></td><td>profile <code>ftphase</code>（<code>verdi presto</code>、既定プロファイルは元に戻す）、computer mygarden5（core.local + slurm、prepend <code>unset PYTHONPATH PYTHONHOME</code>）、codes <code>ftphase-qha</code>・<code>calphy</code>、daemon 2 workers</td></tr>
+<tr><td><code>run_aiida.py</code></td><td>WorkChain の投入</td><td><code>--system alli|agcu</code>、<code>--mlip ace|grace-fs|grace-1l|grace-2l|grace-3l|sevenn-0|sevenn-mf-ompa|mace-mpa-0|mace-omat-0</code>、<code>--computer</code>（calphy 側）、<code>--qha-computer</code>（QHA 側、CPU ホスト可）、<code>--smoke</code>、<code>--no-gpu</code>、<code>--b32-ti</code>、<code>--dry-run</code>、<code>--name</code></td><td>spec（Dict）・ポテンシャル（SinglefileData、<code>potential_qha</code> 任意）・候補構造・コード・Slurm オプションを組み立てて <code>submit</code>。<code>out/&lt;name&gt;.pk.json</code>（pk、uuid、投入時刻、計算機、MLIP）と <code>out/submissions.log</code> を書く。dry-run は spec と入力の型を印字</td></tr>
+<tr><td><code>fetch_results.py &lt;pk|name&gt;</code></td><td>完了した WorkChain の出力を取り出す</td><td>pk / uuid / name（<code>out/&lt;name&gt;.pk.json</code> から解決）</td><td><code>out/&lt;name&gt;/</code> に REPORT.md、05/06/07 の TSV、図、summary.json、hull.json、solid/liquid_params.json、<strong><code>calcjobs.tsv</code>（CalcJob の pk・label・state・exit status・リモート作業ディレクトリ）</strong>；要約 JSON を印字</td></tr>
+<tr><td><code>rerun_solids_ti.py submit|assemble</code></td><td>既存 WorkChain の一部セルだけ CalcJob を追加投入し、元の出力ノードと合わせて再組立</td><td><code>--pk</code>、<code>--only key,...</code>、<code>--T-hi key=T</code></td><td>投入記録 <code>out/agcu_eam/solids_ti_2048.json</code>（key → pk、原子数、x、掃引）；assemble は元 WorkChain の QHA・液相ノード + 新 TI ノードで <code>assemble_diagram</code> を再実行</td></tr>
+<tr><td><code>reassemble_agcu.py --in DIR</code>、<code>nial_eam/reassemble_ws.py</code>、<code>b32_ti.py</code></td><td>取り出した表の後処理（相の分割、熱的欠陥モデル、TI 置換）</td><td>out ディレクトリ</td><td>新しい 07 の TSV・図・REPORT（AiiDA 外）</td></tr>
+<tr><td><code>mlip_compare.py label=outdir ...</code></td><td>複数 WorkChain の結果を工程別に比較</td><td>取り出し済みの out ディレクトリ</td><td><code>out/mlip_compare/REPORT.md</code>、<code>overlay.png</code></td></tr>
+<tr><td><code>ftphase/tools/aiida_zombies.py [--cancel]</code></td><td>kill した WorkChain に取り残された CalcJob と Slurm ジョブの検出・掃除</td><td>（なし）</td><td>caller が終了済みの未終了 CalcJob 一覧、各計算機の <code>aiida-&lt;pk&gt;</code> ジョブのうち終了済みプロセスに属するもの；<code>--cancel</code> で scancel + <code>process kill</code></td></tr>
+<tr><td><code>ftphase/tools/sync_to_host.sh HOST</code></td><td>コードとポテンシャルをリモート計算機へ同期（出力・env は除外、受け側で削除しない）</td><td>ホスト名</td><td>rsync</td></tr>
+</tbody></table>
+
+<h2>2. 使った verdi コマンド</h2>
+<table><thead><tr><th>コマンド</th><th>何を知るため／するために使ったか</th></tr></thead><tbody>
+<tr><td><code>process status &lt;pk&gt;</code></td><td>WorkChain の木（子 CalcJob の状態と exit code）。先頭行で WorkChain の状態（Waiting [1:run_calculations] / Finished [0] / Finished [401] / Excepted / Killed）、<code>grep -c "Finished \[0\]"</code> で進捗の数え上げ、<code>grep -v "Finished \[0\]"</code> で失敗・待ちだけ抽出</td></tr>
+<tr><td><code>process report &lt;pk&gt;</code></td><td>例外のトレースバック（prepare_cells の import エラー、Unrecognized pair style、パーサの exit code 300/320 の理由）</td></tr>
+<tr><td><code>process list [-a -p 1]</code></td><td>直近の WorkChain / CalcJob の一覧（pk、経過時間、状態、「Monitoring scheduler: job state QUEUED」など）</td></tr>
+<tr><td><code>process kill &lt;pk...&gt; -F -t 60</code></td><td>WorkChain の中止。<strong>子 CalcJob と Slurm ジョブは残ることがある</strong>（第 4 節）</td></tr>
+<tr><td><code>calcjob outputls &lt;pk&gt;</code> / <code>outputcat &lt;pk&gt; &lt;file&gt;</code> / <code>inputcat &lt;pk&gt; &lt;file&gt;</code></td><td>retrieved フォルダの一覧、<code>qha.err</code>・<code>calphy.err</code>・<code>_scheduler-stderr.txt</code>、投入スクリプト <code>_aiidasubmit.sh</code>（gres、conda activate）、<code>input.json</code>・<code>input.yaml</code>（pair_style、cmdargs、lammps_executable）。オプション名は位置引数（<code>-p</code> は無い）</td></tr>
+<tr><td><code>node show &lt;pk&gt;</code></td><td>ラベル、計算機、生成時刻</td></tr>
+<tr><td><code>node graph generate &lt;pk&gt; -f svg|png -O file [-a N -d M]</code></td><td>provenance 図（WorkChain 全体は 161 ノード・幅 18,000 pt になるので 1 本分を <code>-a 3 -d 2</code> で描く）。SVG は artifact 添付前に DOCTYPE を削る</td></tr>
+<tr><td><code>daemon status|start N|restart|incr N</code></td><td>ワーカー数の確認・再起動（プラグイン更新後）。PATH に verdi が無いと "Unable to find 'verdi' in the path"、停止中の restart は失敗</td></tr>
+<tr><td><code>computer setup|configure core.ssh|test|show|list</code></td><td>リモート計算機の登録（paramiko は ssh alias を解決しないので IP、鍵 <code>id_ed25519_aiida</code>、<code>--use-login-shell</code> はフラグ）、6 項目の接続テスト</td></tr>
+<tr><td><code>code create core.code.installed|list|show</code></td><td>実行ファイルと prepend（conda activate）の登録、計算機ごとの一覧</td></tr>
+<tr><td><code>config set --append caching.enabled_for aiida.calculations:ftphase.qha</code> / <code>config list caching</code></td><td>CalcJob のキャッシュ有効化（入力が同じ CalcJob は過去の結果を再利用：pk 1128 は 19 本中 16 本をキャッシュ）</td></tr>
+<tr><td><code>profile list|show</code></td><td>既定プロファイルの確認（変えない）</td></tr>
+</tbody></table>
+
+<h2>3. Python API の断片（verdi より速く・確実）</h2>
+<pre>from aiida import load_profile; load_profile("ftphase")
+from aiida.orm import load_node, QueryBuilder, WorkChainNode, CalcJobNode
+
+n = load_node(pk)
+n.process_state.value          # created / waiting / running / finished / excepted / killed
+n.exit_status                  # 0, 300 (QHA 出力なし), 320 (sweep なし), 401/402 (WorkChain: 子の失敗)
+n.label                        # "calphy lqd_x0.10 x=0.1016", "qha s00_fcc fcc x=0.0000"
+n.computer.label               # mygarden5 / mygarden6 / mygardenx2
+n.get_remote_workdir()         # Slurm ジョブのディレクトリ（ログ・calphy の seg ファイルを直接読む）
+n.caller                       # 親 WorkChain（kill 後の孤児判定に使う）
+n.base.caching.get_cache_source()   # キャッシュ元ノードの uuid（graph のリンクではない）
+n.base.links.get_incoming().all() / get_outgoing().all()   # link_label, node（入力・出力の追跡）
+
+# WorkChain の子 CalcJob を計算機・状態で集計
+qb = QueryBuilder().append(WorkChainNode, filters={"id": pk}, tag="w").append(CalcJobNode, with_incoming="w", project=["*"])
+# 未終了 CalcJob のうち親が終了済みのもの（孤児）
+qb = QueryBuilder().append(CalcJobNode, filters={"attributes.process_state": {"in": ["waiting", "running", "created"]}}, project=["*"])
+
+# 投入（run_aiida.py の中身）
+from aiida.engine import submit; from aiida.plugins import WorkflowFactory
+node = submit(WorkflowFactory("ftphase.txdiagram"), spec=orm.Dict(dict=spec), potential=orm.SinglefileData(file=path),
+              candidates={...}, qha_code=orm.load_code("ftphase-qha@mygardenx2"), calphy_code=orm.load_code("calphy@mygarden5"),
+              qha_options=orm.Dict(...), calphy_options=orm.Dict(...), calphy_extra=orm.Dict(...), potential_qha=..., metadata={...})</pre>
+
+<h2>4. 問い合わせ事項の一覧（何を、なぜ知りたかったか）</h2>
+<table><thead><tr><th>問い</th><th>使った手段</th><th>備考・落とし穴</th></tr></thead><tbody>
+<tr><td>この WorkChain は終わったか、何本中何本が終わったか</td><td><code>process status</code> + grep 数え上げ；背景ループで 60〜180 s ごとに確認し、終了語（Finished/Excepted/Killed）で抜ける</td><td>待ちループが 240 回で時間切れになるので長い待ちは 600 回 × 120 s 等にする</td></tr>
+<tr><td>どの子が失敗し、なぜか</td><td><code>process status</code> で Finished [300/320] を拾う → <code>process report</code> → <code>calcjob outputcat qha.err / calphy.err</code> → <code>get_remote_workdir()</code> で LAMMPS ログ（calphy の seg*.log、averaging.log）を直接読む</td><td>calphy の失敗は report.yaml 無し（320）としか出ないので、作業ディレクトリのログが必須</td></tr>
+<tr><td>どの計算機で走ったか</td><td>子 CalcJob の <code>computer.label</code> を集計</td><td>calcfunction（prepare_cells、assemble）はデーモンのホストで走る</td></tr>
+<tr><td>Slurm 側で実際に走っているか・待ちの原因</td><td>各ホストで <code>squeue -h -o "%i %j %T %M %b"</code>、<code>-t RUNNING</code>、<code>scontrol show node</code>（GRES）</td><td>ジョブ名 <code>aiida-&lt;pk&gt;</code> で CalcJob と対応づける</td></tr>
+<tr><td>kill した WorkChain の残骸</td><td><code>aiida_zombies.py</code>（孤児 CalcJob + 終了済みプロセスの Slurm ジョブ）</td><td>80 本の残骸が両 GPU を数時間塞いだ（2026-10-25）</td></tr>
+<tr><td>キャッシュが効いたか、元はどのノードか</td><td><code>base.caching.get_cache_source()</code>、子の状態が投入直後に finished になるか</td><td>graph には現れない</td></tr>
+<tr><td>provenance が繋がっているか</td><td><code>get_incoming/get_outgoing</code>、<code>node graph generate</code></td><td>全体図は巨大。1 本分を抜く</td></tr>
+<tr><td>投入前に入力が正しいか</td><td><code>run_aiida.py --dry-run</code>（spec、gres、lammps_executable、init_commands、potential_qha の有無）</td><td>MLIP ごとの分岐が多いので必須</td></tr>
+<tr><td>結果の数値</td><td><code>fetch_results.py</code> → REPORT.md / summary.json（最低液相温度、純端の融解区間、不変反応、同一相区間）、05 の表から工程別の差（<code>mlip_compare.py</code>）</td><td></td></tr>
+<tr><td>デーモンは生きているか、ワーカー数</td><td><code>daemon status</code></td><td>再起動失敗で全 WorkChain が止まっていたことが 1 回</td></tr>
+</tbody></table>
+
+<h2>5. MCP サーバのツール案（Claude Cowork 用）</h2>
+<p>方針：<strong>読み取り系は無確認、投入・中止・デーモン操作・scancel は確認付き</strong>。プロファイルは引数で明示（既定 <code>ftphase</code>、<code>alamode_pg</code> は読み取りのみ許可）。すべて JSON を返し、長い出力（ログ、graph）はファイルパスを返す。実装は <code>env/ftphase/bin/python</code> から AiiDA API を直接呼ぶ（verdi の subprocess より速く、PATH の問題も避けられる）。</p>
+<table><thead><tr><th>ツール</th><th>引数</th><th>返すもの</th><th>備考</th></tr></thead><tbody>
+<tr><td><code>list_workchains</code></td><td>profile, limit, state, label_contains</td><td>pk, uuid, label, state, exit, created, computer 集計</td><td><code>process list</code> 相当</td></tr>
+<tr><td><code>workchain_status</code></td><td>pk</td><td>状態、子の集計 {finished_ok, failed(exit code 別), waiting, running}, 失敗した子の pk・label、進捗 %</td><td><code>process status</code> の構造化</td></tr>
+<tr><td><code>calcjob_detail</code></td><td>pk</td><td>label, computer, state, exit, scheduler job id/state, remote_workdir, 入力の要点（pair_style, cmdargs, lammps_executable, gres）</td><td></td></tr>
+<tr><td><code>calcjob_log</code></td><td>pk, file(qha.err|calphy.err|_scheduler-stderr.txt|_aiidasubmit.sh|input.yaml|input.json|remote:&lt;glob&gt;), tail</td><td>テキスト（末尾 N 行）</td><td>retrieved に無ければ remote_workdir から読む（calphy の seg ログ）</td></tr>
+<tr><td><code>failure_summary</code></td><td>pk</td><td>失敗した子ごとに report の最後の例外行 + stderr の末尾 + 推定原因（既知パターン：pair style 未認識、MeltedError、virial ゼロ、import エラー）</td><td>第 4 節の手順の自動化</td></tr>
+<tr><td><code>queue</code></td><td>host(all)</td><td>各ホストの squeue（running/pending、gres、経過）、GRES の空き</td><td>ssh alias と IP の対応は設定ファイルに</td></tr>
+<tr><td><code>zombies</code></td><td>cancel(bool, 要確認)</td><td>孤児 CalcJob と残骸 Slurm ジョブ；cancel で scancel + kill</td><td><code>aiida_zombies.py</code></td></tr>
+<tr><td><code>submit_txdiagram</code></td><td>system, mlip, computer, qha_computer, smoke, name, extra_spec, dry_run</td><td>dry_run: spec と入力の要約；本投入: pk, uuid, name（要確認）</td><td><code>run_aiida.py</code> をライブラリ化して呼ぶ</td></tr>
+<tr><td><code>kill</code></td><td>pks, cascade(bool)</td><td>kill した pk 一覧；cascade で子 CalcJob と Slurm ジョブも</td><td>要確認。cascade を既定 on にする</td></tr>
+<tr><td><code>fetch_results</code></td><td>pk|name, out_dir</td><td>出力ファイル一覧と summary.json の要点</td><td><code>fetch_results.py</code></td></tr>
+<tr><td><code>compare_runs</code></td><td>[label=pk|dir...]</td><td>REPORT.md のパスと 06–07 の表</td><td><code>mlip_compare.py</code></td></tr>
+<tr><td><code>cache_info</code></td><td>pk</td><td>子ごとの cache_source（uuid、元 WorkChain）</td><td></td></tr>
+<tr><td><code>provenance_graph</code></td><td>pk, ancestors, descendants, format</td><td>SVG/PNG のパス、ノード数</td><td>DOCTYPE 除去済み SVG</td></tr>
+<tr><td><code>daemon</code></td><td>action(status|start|restart|incr), workers</td><td>ワーカー数、PID</td><td>restart は停止中なら start に読み替える；要確認</td></tr>
+<tr><td><code>wait_for</code></td><td>pks, poll_s, timeout_s</td><td>終了時の状態（長い待ちはサーバ側でなくクライアントの再呼び出しで）</td><td>MCP では長時間ブロックしない設計にする</td></tr>
+</tbody></table>
+<div class="warn">安全策：(1) 書き込み系はすべて確認を要求し、対象 pk のラベルと計算機を表示してから実行。(2) <code>alamode_pg</code> プロファイルとそのデーモンには触れない。(3) kill は必ず cascade（子 CalcJob + scancel）。(4) 投入前に dry_run を強制できるオプション。(5) リモート計算機のパッケージ同期状態（<code>ftphase/src</code> の git hash を各ホストで比較）を <code>queue</code> か <code>submit</code> の事前チェックに含める（古いコピーで QHA が全滅した事例）。</div>
+</body></html>
