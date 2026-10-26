@@ -59,9 +59,9 @@ MLIPS.update({
     "sevenn-mf-ompa": {"potential": os.path.join(_SEV, "7net-mf-ompa_mpa_oeq.pt"), "potential_qha": _sevenn_ckpt("SevenNet_MF_ompa"), "pair_style": "e3gnn", "pair_coeff": "* * {potential} Al Li",
                        "model": "SevenNet-MF-ompa (modal mpa; oeq deployment)", "lmp_gpu": LMP_SEVENN, "tag": "_sevenn_mf_ompa", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "sevenn", "qha_modal": "mpa"},
     "mace-mpa-0": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
-                   "model": "MACE-MPA-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32", "calphy_block_extra": {"md": {"init_commands": ["atom_modify map yes", "newton on"]}}},
+                   "model": "MACE-MPA-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
     "mace-omat-0": {"potential": os.path.join(_MAC, "maceomat0mediummodel.model-lammps.pt"),   # (float64 TorchScript; make a -f32 copy with mace_create_lammps_model --dtype float32 before using it) "potential_qha": os.path.join(_MAC, "maceomat0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
-                    "model": "MACE-OMAT-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_omat_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32", "calphy_block_extra": {"md": {"init_commands": ["atom_modify map yes", "newton on"]}}},
+                    "model": "MACE-OMAT-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_omat_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
 })
 POT_AGCU = os.path.join(ROOT, "potentials/agcu/CuAg.eam.alloy")   # Williams, Mishin, Hamilton 2006 (NIST), setfl order Cu Ag
 
