@@ -18,6 +18,19 @@ make install 2>&1 | tail -1
 TL=$(python -c 'import torch, os; print(os.path.join(os.path.dirname(torch.__file__), "lib"))')
 cat > "$ROOT/bin/lmp_mace.sh" <<EOW
 #!/bin/bash
+# libtorch on the library path, and "atom_modify map yes" prepended to the -in script: pair_style mace segfaults
+# without an atom map, and calphy 2.3's executable runner rejects atom_modify as an md.init_commands entry
+export LD_LIBRARY_PATH=$TL:$CONDA_PREFIX/lib:\${LD_LIBRARY_PATH:-}
+args=("\$@")
+for ((i=0; i<\${#args[@]}; i++)); do
+  if [ "\${args[\$i]}" = "-in" ] && [ -f "\${args[\$((i+1))]}" ]; then
+    f="\${args[\$((i+1))]}"; t="\${f}.mace.lmp"
+    { echo "atom_modify map yes"; cat "\$f"; } > "\$t"; args[\$((i+1))]="\$t"
+  fi
+done
+exec $ROOT/bin/lmp_mace "\${args[@]}"
+EOW
+#!/bin/bash
 export LD_LIBRARY_PATH=$TL:$CONDA_PREFIX/lib:\${LD_LIBRARY_PATH:-}
 exec $ROOT/bin/lmp_mace "\$@"
 EOW
