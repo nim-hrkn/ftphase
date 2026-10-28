@@ -39,6 +39,25 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 
 結論：calphy の TI（NVT/NPT、サーモスタット付き）では float32 で問題ない。**運用（2026-10-25、ユーザー決定）：MLIP 比較は全工程を単精度で行う**（GRACE nL は QHA も calphy も `grace/<n>l/kk/fp32`、MACE は QHA も `default_dtype float32`、SevenNet は元から float32）。fp64 しか無いのは ACE（`pace`）と GRACE-FS（`grace/fs/kk`）。float64 が要るのは長い NVE（エネルギー保存）と、エネルギー差 1e-5 eV 級を直接使う構造最適化・フォノン有限差分（QHA の 03A で変位 0.01 Å を使うときは、SevenNet の有限差分力誤差 2.5 meV/Å が効くので float64 か変位 0.03 Å 以上にする）。
 
+## MLIP 比較の結果（ACE Al–Li、同じ WorkChain、2026-10-28 完了）
+
+| MLIP | E_form Al₃Li / B32 (meV/atom) | V fcc Al / bcc Li (Å³/atom) | S fcc Al 300 K（k_B、古典） | Al 融点（固液 G 交点、K） | 最低の不変反応（K） | fcc 固溶限 700 K |
+|---|---|---|---|---|---|---|
+| ACE | −94 / −179 | 16.54 / 20.40 | 3.31 | 888 | 760–770 | 0.140 |
+| GRACE-FS-OAM | −130 / −211 | 16.90 / 18.91 | 4.54 | > 925（QHA 打ち切り） | 740–750 | 0.225 |
+| GRACE-1L | −94 / −178 | 16.43 / 20.39 | 3.32 | 870 | 720–730 | 0.194 |
+| GRACE-2L | −90 / −176 | 16.42 / 20.28 | 3.31 | 922 | 750–760 | 0.168 |
+| SevenNet-0 | −111 / −182 | 16.46 / 20.14 | 4.42 | > 1100 | 930–940（B32+fcc → fcc+液相） | 0.250 |
+| SevenNet-MF-ompa | −93 / −186 | 16.55 / 20.43 | 3.60 | 992 | 850–860 | 0.132 |
+| MACE-MPA-0 | −87 / −178 | 16.47 / 20.17 | 3.64 | 1038 | 770–780 | 0.209 |
+| 実験 / DFT | ≈−100 / ≈−190（DFT） | 16.6 / 21.3 | — | 933.5 | 875（共晶、x ≈ 0.24） | ≈0.12 |
+
+- 0 K の生成エネルギーと体積は GRACE-FS 以外ほぼ一致（差 ≤ 20 meV/atom）。相図の差は振動（03A）と液相（03B）から来る。
+- 固相の振動エントロピーが ACE より大きい MLIP（GRACE-FS、SevenNet-0：+1.1〜1.2 k_B；MF-ompa、MACE：+0.3 k_B）は固相を過安定化し、Al 融点を上げる。SevenNet-0 は 1100 K まで Al が融けない。
+- 共晶・固溶限が実験に最も近いのは SevenNet-MF-ompa（850–860 K、0.132）。ただし Al 融点は 60 K 高い。ACE と GRACE-1L/2L は共晶が 100–150 K 低い。
+- 単精度で実行（2026-10-25 のユーザー決定）。GRACE-3L は液相 1 本 6〜11 h のため比較から外した（2026-10-28）。
+- 同じ spec・同じセル（seed 固定）・同じ温度格子・同じ fit；工程ごとの差の表と重ね描き図は `ftphase/examples/aiida_txdiagram/out/mlip_compare/`（REPORT.md、overlay.png）。
+
 ## Matbench Discovery（2026-10-24 時点、43 モデル）のユニバーサルモデルと、この経路での可否
 
 κ_SRME はフォノン熱伝導の誤差（小さいほど振動の記述が良く、QHA・TI に効く）。順位は leaderboard の CPS 順。

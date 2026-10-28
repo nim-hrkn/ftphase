@@ -81,4 +81,16 @@
 <li>QHA 側（ASE calculator）と calphy 側（LAMMPS pair style）は同じ重みの別実装なので、1 セルでエネルギーを突き合わせる：SevenNet-0 −835.881592（ASE）/ −835.88159180（LAMMPS）、MACE-MPA-0 float64 −831.078825 / float32 −831.07881959、GRACE-2L −830.201231（LAMMPSlib）/ −830.20123104（lmp_gpugrace）eV、256 原子。工程 01 の緩和も QHA と同じ計算器で行う（torch 系は同じ env のサブプロセス）。</li>
 <li>環境：MACE（e3nn 0.4.4 固定）と SevenNet 0.13（e3nn 0.6）は同居できないので <code>env/mace</code> と <code>env/torch</code> に分ける。libtorch の cmake は従来型の CUDA 配置を要求する（conda の <code>targets/x86_64-linux/include</code> を <code>include/</code> にリンク）。</li>
 </ul>
+<h2>6. MLIP 比較の結果（ACE Al–Li、同じ WorkChain、2026-10-28 完了）</h2>
+<table><thead><tr><th>MLIP</th><th>E_form Al₃Li / B32 (meV/atom)</th><th>V fcc Al / bcc Li (Å³/atom)</th><th>S fcc Al 300 K（k_B、古典）</th><th>Al 融点（固液 G 交点、K）</th><th>最低の不変反応（K）</th><th>fcc 固溶限 700 K</th></tr></thead><tbody>
+<tr><td>ACE</td><td>−94 / −179</td><td>16.54 / 20.40</td><td>3.31</td><td>888</td><td>760–770</td><td>0.140</td></tr>
+<tr><td>GRACE-FS-OAM</td><td>−130 / −211</td><td>16.90 / 18.91</td><td>4.54</td><td>> 925（QHA 打ち切り）</td><td>740–750</td><td>0.225</td></tr>
+<tr><td>GRACE-1L</td><td>−94 / −178</td><td>16.43 / 20.39</td><td>3.32</td><td>870</td><td>720–730</td><td>0.194</td></tr>
+<tr><td>GRACE-2L</td><td>−90 / −176</td><td>16.42 / 20.28</td><td>3.31</td><td>922</td><td>750–760</td><td>0.168</td></tr>
+<tr><td>SevenNet-0</td><td>−111 / −182</td><td>16.46 / 20.14</td><td>4.42</td><td>> 1100</td><td>930–940（B32+fcc → fcc+液相）</td><td>0.250</td></tr>
+<tr><td>SevenNet-MF-ompa</td><td>−93 / −186</td><td>16.55 / 20.43</td><td>3.60</td><td>992</td><td>850–860</td><td>0.132</td></tr>
+<tr><td>MACE-MPA-0</td><td>−87 / −178</td><td>16.47 / 20.17</td><td>3.64</td><td>1038</td><td>770–780</td><td>0.209</td></tr>
+<tr><td>実験 / DFT</td><td>≈−100 / ≈−190（DFT）</td><td>16.6 / 21.3</td><td>—</td><td>933.5</td><td>875（共晶、x ≈ 0.24）</td><td>≈0.12</td></tr>
+</tbody></table>
+<ul><li>0 K の生成エネルギーと体積は GRACE-FS 以外ほぼ一致（差 ≤ 20 meV/atom）。相図の差は振動（03A）と液相（03B）から来る。</li><li>固相の振動エントロピーが ACE より大きい MLIP（GRACE-FS、SevenNet-0：+1.1〜1.2 k_B；MF-ompa、MACE：+0.3 k_B）は固相を過安定化し、Al 融点を上げる。SevenNet-0 は 1100 K まで Al が融けない。</li><li>共晶・固溶限が実験に最も近いのは SevenNet-MF-ompa（850–860 K、0.132）。ただし Al 融点は 60 K 高い。ACE と GRACE-1L/2L は共晶が 100–150 K 低い。</li><li>単精度で実行（2026-10-25 のユーザー決定）。GRACE-3L は液相 1 本 6〜11 h のため比較から外した（2026-10-28）。</li><li>同じ spec・同じセル（seed 固定）・同じ温度格子・同じ fit；工程ごとの差の表と重ね描き図は <code>\1</code>（REPORT.md、overlay.png）。</li></ul>
 </body></html>
