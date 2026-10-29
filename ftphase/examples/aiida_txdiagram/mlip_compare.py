@@ -114,7 +114,7 @@ def main():
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     fig, ax = plt.subplots(figsize=(7, 5))
-    colors = ["tab:blue", "tab:red", "tab:green", "tab:purple"]
+    colors = ["tab:blue", "tab:red", "tab:green", "tab:purple", "tab:orange", "tab:brown", "tab:pink", "tab:gray", "tab:olive", "tab:cyan"]
     for (k, c) in zip(labels, colors):
         reg = runs[k]["reg"]; reg = reg[reg.phase_a != reg.phase_b]
         ax.plot(reg.x_a, reg["T"], ".", color=c, ms=3, label=f"{k}: {runs[k]['model'][:28]}"); ax.plot(reg.x_b, reg["T"], ".", color=c, ms=3)
