@@ -9,6 +9,7 @@ Both run inside one Slurm job with --gres=gpu:1 and 4 CPUs (the QHA setting); wa
 
     python prepare.py            -> runs/<host>/<mlip>/{qha,liq}/ + run.sbatch per MLIP
     python prepare.py --submit   also sbatch them (mygarden5 locally, mygarden6 over ssh)
+    python prepare.py --submit --only=grace-1l,grace-2l,mace-mpa-0    a subset
 """
 import json, os, shutil, subprocess, sys
 from aiida import load_profile
@@ -27,6 +28,11 @@ MLIPS = {  # name: (qha CalcJob pk, liquid CalcJob pk, qha potential file, liqui
                  {"pair_style": "grace/fs", "cmdargs": KK}),
     "sevenn-0": (3875, 3901, None, "potentials/sevenn/7net-0_oeq.pt", "torch", {"device": "cuda"}),
     "sevenn-mf-ompa": (3936, 3962, None, "potentials/sevenn/7net-mf-ompa_mpa_oeq.pt", "torch", {"device": "cuda"}),
+    # second batch (2026-10-29): the other MLIPs of the phase-diagram comparison, single precision as in the comparison
+    "grace-1l": (3307, 3339, "potentials/grace/GRACE-1L-OMAT-medium-base-fp64-kokkos.npz", "potentials/grace/GRACE-1L-OMAT-medium-base-fp64-kokkos.npz", "ftphase", {}),
+    "grace-2l": (3367, 3393, "potentials/grace/GRACE-2L-OMAT-medium-base-fp64-kokkos.npz", "potentials/grace/GRACE-2L-OMAT-medium-base-fp64-kokkos.npz", "ftphase", {}),
+    "mace-mpa-0": (4324, 4362, "potentials/mace/macempa0mediummodel.model", "potentials/mace/macempa0mediummodel.model-lammps-f32.pt", "mace",
+                   {"device": "cuda", "cmdargs": []}),
 }
 HOSTS = ["mygarden5", "mygarden6"]
 
@@ -52,7 +58,7 @@ def stage(host, name):
     inp.update(over); json.dump(inp, open(q, "w"), indent=1)
     lp = os.path.join(ROOT, lpot); shutil.copy(lp, os.path.join(base, "liq", os.path.basename(lp)))
     sb = f"""#!/bin/bash
-#SBATCH -J bench-{name} -p debug -N 1 -n 1 -c 4 --gres=gpu:1 --hint=nomultithread --exclusive
+#SBATCH -J bench-{name} -p debug -N 1 -n 1 -c 4 --gres=gpu:1 --hint=nomultithread 
 #SBATCH -o {base}/slurm.out -e {base}/slurm.err
 unset PYTHONPATH PYTHONHOME
 source /home/kino/miniforge3/etc/profile.d/conda.sh
@@ -70,7 +76,9 @@ nvidia-smi --query-gpu=name,driver_version --format=csv,noheader >> {base}/times
 
 
 if __name__ == "__main__":
-    scripts = {h: [stage(h, m) for m in MLIPS] for h in HOSTS}
+    only = [a.split("=", 1)[1].split(",") for a in sys.argv if a.startswith("--only=")]
+    names = only[0] if only else list(MLIPS)
+    scripts = {h: [stage(h, m) for m in names] for h in HOSTS}
     print("staged", sum(len(v) for v in scripts.values()), "jobs")
     if "--submit" in sys.argv:
         subprocess.run(["rsync", "-a", os.path.join(HERE, "runs", "mygarden6") + "/", f"mygarden6:{os.path.join(HERE, 'runs', 'mygarden6')}/"], check=True)
