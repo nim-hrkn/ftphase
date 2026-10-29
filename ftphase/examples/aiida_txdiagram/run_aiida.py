@@ -115,8 +115,71 @@ def make_spec_agcu(smoke: bool, gpu: bool):
     return spec
 
 
+POT_NIAL = os.path.join(ROOT, "potentials/nial/Mishin-Ni-Al-2009.eam.alloy")   # Purja Pun & Mishin 2009 (NIST)
+
+
+def candidates_nial():
+    from ase import Atoms
+    from ase.build import bulk
+    from ase.spacegroup import crystal
+
+    return {"fcc-Al": (bulk("Al", "fcc", a=4.05, cubic=True), 0.0), "fcc-Ni": (bulk("Ni", "fcc", a=3.52, cubic=True), 1.0),
+            "B2-NiAl": (Atoms("NiAl", scaled_positions=[(0, 0, 0), (0.5, 0.5, 0.5)], cell=[2.88] * 3, pbc=True), 0.5),
+            "L12-Ni3Al": (Atoms("AlNi3", scaled_positions=[(0, 0, 0), (0.5, 0.5, 0), (0.5, 0, 0.5), (0, 0.5, 0.5)], cell=[3.57] * 3, pbc=True), 0.75),
+            "Ni2Al3": (crystal(["Al", "Al", "Ni"], [(0, 0, 0), (1 / 3, 2 / 3, 0.149), (1 / 3, 2 / 3, 0.648)], spacegroup=164, cellpar=[4.03, 4.03, 4.89, 90, 90, 120]), 0.4),
+            "NiAl3": (crystal(["Al", "Al", "Ni"], [(0.183, 0.069, 0.334), (0.039, 0.25, 0.842), (0.876, 0.25, 0.443)], spacegroup=62, cellpar=[6.61, 7.37, 4.81, 90, 90, 90]), 0.25)}
+
+
+def make_spec_nial(smoke: bool, gpu: bool):
+    """Ni-Al (example 7 in the WorkChain): fcc(Al) and fcc(Ni) random solutions, B2 NiAl with Ni anti-sites
+    (Ni-rich) and Ni vacancies (Al-rich), L1_2 Ni3Al with anti-sites on both sides, Ni2Al3 / NiAl3 point phases,
+    liquid 0 <= x_Ni <= 1 in steps of 0.1 (Al lattice for x <= 0.5, Ni lattice above) swept from 2000 K down to a
+    composition-dependent stop temperature (as in nial_eam/pipeline.py).  Solids by QHA only."""
+    t_stop = {0.0: 850.0, 0.1: 850.0, 0.2: 950.0, 0.3: 1100.0, 0.4: 1300.0, 0.5: 1500.0, 0.6: 1450.0, 0.7: 1350.0, 0.8: 1400.0, 0.9: 1450.0, 1.0: 1500.0}
+    spec = {
+        "elements": ["Al", "Ni"], "masses": [26.9815, 58.6934], "x_element": "Ni", "model": "Mishin-Ni-Al-2009.eam.alloy (Purja Pun & Mishin 2009 EAM)",
+        "pair_style": "eam/alloy", "pair_coeff": "* * {potential} Al Ni", "atom_types": {"Al": 1, "Ni": 2},
+        "candidates": {"fcc-Al": 0.0, "fcc-Ni": 1.0, "B2-NiAl": 0.5, "L12-Ni3Al": 0.75, "Ni2Al3": 0.4, "NiAl3": 0.25},
+        "known_ground_states": ["fcc-Al", "fcc-Ni", "B2-NiAl", "L12-Ni3Al", "Ni2Al3", "NiAl3"],
+        "relax": {"fmax": 1e-3, "cell": True},
+        "solids": [
+            {"phase": "fccAl", "kind": "solution", "base": "fcc-Al", "repeat": [2, 2, 2], "x": [0.0, 1 / 32, 2 / 32], "n_configs": 1, "series": "random", "seed": 0, "supercell": [2, 2, 2], "mesh": 60.0},
+            {"phase": "fccNi", "kind": "solution", "base": "fcc-Ni", "repeat": [2, 2, 2], "x": [0.75, 0.8125, 0.875, 0.9375, 1.0], "n_configs": 1, "series": "random", "seed": 0, "supercell": [2, 2, 2], "mesh": 60.0},
+            {"phase": "B2", "kind": "limited", "base": "B2-NiAl", "repeat": [3, 3, 3], "seed": 1, "supercell": [2, 2, 2], "mesh": 60.0,
+             "defects": [{"replace": ["Al", "Ni"], "n": 1}, {"replace": ["Al", "Ni"], "n": 2}, {"replace": ["Al", "Ni"], "n": 4}, {"replace": ["Al", "Ni"], "n": 6},
+                         {"vacancy": "Ni", "n": 1}, {"vacancy": "Ni", "n": 2}, {"vacancy": "Ni", "n": 3}]},
+            {"phase": "L12", "kind": "limited", "base": "L12-Ni3Al", "repeat": [2, 2, 2], "seed": 2, "supercell": [2, 2, 2], "mesh": 60.0,
+             "defects": [{"replace": ["Al", "Ni"], "n": 1}, {"replace": ["Ni", "Al"], "n": 1}]},
+            {"phase": "Ni2Al3", "kind": "point", "base": "Ni2Al3", "x": [0.4], "supercell": [3, 3, 2], "mesh": 60.0},
+            {"phase": "NiAl3", "kind": "point", "base": "NiAl3", "x": [0.25], "supercell": [2, 2, 2], "mesh": 60.0},
+        ],
+        "liquids": {"base": "fcc-Al", "base_hi": [0.5, "fcc-Ni"], "repeat": [4, 4, 4], "x": [round(0.1 * i, 1) for i in range(11)], "seed": 100,
+                    "T_sweep": [2000.0, 850.0], "T_override": {f"{k:.1f}": v for k, v in t_stop.items()}, "n_repeats": 1, "n_equilibration_steps": 10000,
+                    "n_switching_steps": [10000, 10000], "n_iterations": 3, "mode": "ts", "pressure": 0.0},
+        "qha": {"T_max": 2000.0, "T_step": 25.0, "scales": [0.96, 0.98, 1.0, 1.02, 1.04, 1.06, 1.08], "eos": "vinet", "imaginary": "drop",
+                "relax": {"do": True, "fmax": 1e-3, "cell": True, "hydrostatic": True}},
+        "assemble": {"T_min": 900.0, "T_max": 2000.0, "T_step": 10.0, "liquid_partial": True, "drop_edge_beyond_liquid": False,
+                     "fits": {"fccAl": "poly", "fccNi": "poly", "liquid": "rk", "B2": "poly", "L12": "poly"}, "poly_order": 3,
+                     "poly_orders": {"liquid": 4, "fccAl": 2, "fccNi": 3, "B2": 1, "L12": 1},
+                     "config_terms": {"fccAl": "ideal", "fccNi": "ideal", "B2": "sublattice:b2_triple_defect", "L12": "sublattice:b32_antisite@0.75"},
+                     "entropy_models": {"B2": ["b2_triple_defect", 0.5], "L12": ["b32_antisite@0.75", 0.75]},
+                     "sigma": {"fccAl": 0.002, "fccNi": 0.002, "B2": 0.002, "L12": 0.002, "Ni2Al3": 0.002, "NiAl3": 0.002, "liquid": 0.0014},
+                     "hull": {"min_width": 0.005, "gap_tol": 2.5}, "sensitivity_samples": 30, "liquid_sigma_floor": 0.0014, "T_residuals": 1500.0,
+                     "title": "EAM Ni-Al (Purja Pun & Mishin 2009), 0 GPa: QHA solids + calphy liquid [AiiDA]", "xlabel": "x_Ni"},
+    }
+    if smoke:
+        spec["solids"] = [dict(spec["solids"][0], x=[0.0], supercell=[1, 1, 1], mesh=[4, 4, 4]), dict(spec["solids"][1], x=[1.0], supercell=[1, 1, 1], mesh=[4, 4, 4]),
+                          dict(spec["solids"][2], repeat=[2, 2, 2], defects=[{"replace": ["Al", "Ni"], "n": 1}, {"vacancy": "Ni", "n": 1}], supercell=[1, 1, 1], mesh=[4, 4, 4])]
+        spec["liquids"].update({"x": [0.0, 0.5, 1.0], "repeat": [3, 3, 3], "T_sweep": [2000.0, 1700.0], "T_override": {}, "n_equilibration_steps": 1000, "n_switching_steps": [1000, 1000], "n_iterations": 1})
+        spec["qha"].update({"T_step": 100.0, "scales": [0.97, 0.985, 1.0, 1.015, 1.03, 1.05]})
+        spec["assemble"].update({"T_min": 1700.0, "T_max": 2000.0, "sensitivity_samples": 5, "title": "smoke test Ni-Al"})
+    return spec
+
+
 SYSTEMS = {"alli": (lambda: POT, lambda: candidates(), lambda sm, g: make_spec(sm, g), "ACE Al-Li T-x diagram, stages 01-07 with provenance"),
-           "agcu": (lambda: POT_AGCU, candidates_agcu, make_spec_agcu, "EAM Ag-Cu T-x diagram (eutectic + fcc miscibility gap), stages 01-07 with provenance")}
+           "agcu": (lambda: POT_AGCU, candidates_agcu, make_spec_agcu, "EAM Ag-Cu T-x diagram (eutectic + fcc miscibility gap), stages 01-07 with provenance"),
+           "nial": (lambda: POT_NIAL, candidates_nial, make_spec_nial, "Ni-Al T-x diagram (B2/L1_2 with composition width), stages 01-07 with provenance")}
+SYSTEM_TAG = {"alli": "Al-Li", "agcu": "Ag-Cu", "nial": "Ni-Al"}
 
 
 def make_spec(smoke: bool, gpu: bool):
@@ -154,7 +217,7 @@ def make_spec(smoke: bool, gpu: bool):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--system", choices=sorted(SYSTEMS), default="alli", help="alli = ACE Al-Li (example 8), agcu = EAM Ag-Cu (example 9)")
+    ap.add_argument("--system", choices=sorted(SYSTEMS), default="alli", help="alli = ACE Al-Li (example 8), agcu = EAM Ag-Cu (example 9), nial = EAM Ni-Al (example 7 in the WorkChain)")
     ap.add_argument("--name", default=None, help="run name (default: alli_ace or agcu_eam)")
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--computer", default="mygarden5", help="computer for the calphy jobs (and for QHA unless --qha-computer)")
@@ -176,16 +239,24 @@ def main():
     gpu = not a.no_gpu
     pot_fn, cand_fn, spec_fn, descr = SYSTEMS[a.system]
     spec = spec_fn(a.smoke, gpu)
-    name = (a.name or {"alli": "alli_ace", "agcu": "agcu_eam"}[a.system]) + ("_smoke" if a.smoke else "")
-    lmp_gpu = LMP_GPU; torch_mlip = bool(a.system == "alli" and MLIPS[a.mlip].get("torch")); pot_qha = None
+    name = (a.name or {"alli": "alli_ace", "agcu": "agcu_eam", "nial": "nial_eam"}[a.system]) + ("_smoke" if a.smoke else "")
+    use_mlip = a.mlip != "ace"           # "ace" = the system's own potential (ACE for Al-Li, EAM for Ag-Cu and Ni-Al)
+    lmp_gpu = LMP_GPU; torch_mlip = bool(use_mlip and MLIPS[a.mlip].get("torch")); pot_qha = None
+    if a.system != "alli" and not use_mlip:
+        lmp_gpu = LMP_GPU
     qha_cpu_host = a.qha_computer in ("mygardenx1", "mygardenx2")   # no GPU there
-    if qha_cpu_host and a.system == "alli" and MLIPS[a.mlip].get("qha_gpu") and not torch_mlip:
+    if qha_cpu_host and use_mlip and MLIPS[a.mlip].get("qha_gpu") and not torch_mlip:
         raise SystemExit(f"{a.mlip}: the QHA stage needs the GPU (Kokkos-only pair style); do not use --qha-computer {a.qha_computer}")
-    if a.system == "alli" and a.mlip != "ace":
+    if use_mlip:
         ml = MLIPS[a.mlip]
-        spec.update({"pair_style": ml["pair_style"], "pair_coeff": ml["pair_coeff"], "model": ml["model"]})
+        spec.update({"pair_style": ml["pair_style"], "pair_coeff": ml["pair_coeff"].replace("Al Li", " ".join(spec["elements"])), "model": ml["model"]})
         if "assemble" in spec and "title" in spec["assemble"]:
-            spec["assemble"]["title"] = spec["assemble"]["title"].replace("ACE Al-Li", f"{ml['model'].split(' (')[0]} Al-Li")
+            if a.system == "alli":
+                spec["assemble"]["title"] = spec["assemble"]["title"].replace("ACE Al-Li", f"{ml['model'].split(' (')[0]} Al-Li")
+            else:
+                spec["assemble"]["title"] = f"{ml['model'].split(' (')[0]} {SYSTEM_TAG[a.system]}, 0 GPa: QHA solids + calphy liquid [AiiDA]"
+        if a.system != "alli":
+            spec.pop("solids_ti", None)   # MLIP comparison: solids by QHA only (user decision 2026-10-30)
         if ml.get("qha_gpu"):
             spec["qha_cmdargs"] = KK_ARGS
         for k in ("qha_pair_style", "qha_calculator", "qha_device", "qha_dtype", "qha_modal"):
@@ -196,7 +267,7 @@ def main():
             if qha_cpu_host:
                 spec["qha_device"] = "cpu"
         pot_fn = (lambda f=ml["potential"]: f); lmp_gpu = ml["lmp_gpu"]; pot_qha = ml.get("potential_qha")
-        name = (a.name or "alli" + ml["tag"]) + ("_smoke" if a.smoke else "")
+        name = (a.name or a.system + ml["tag"]) + ("_smoke" if a.smoke else "")
     if a.b32_ti:
         assert a.system == "alli"
         # same B32 cells as the QHA series (16 atoms, 2x2x2 of the B32 cube -> 5x5x5 repeat = 2000 atoms); 700 -> 880 K covers the congruent melting
@@ -209,11 +280,11 @@ def main():
         "spec": orm.Dict(dict=spec),
         "potential": orm.SinglefileData(file=pot_fn()),
         "candidates": cands,
-        "qha_code": orm.load_code(f"{MLIPS[a.mlip].get('qha_code', 'ftphase-qha') if a.system == 'alli' else 'ftphase-qha'}@{a.qha_computer or a.computer}"),
+        "qha_code": orm.load_code(f"{MLIPS[a.mlip].get('qha_code', 'ftphase-qha') if use_mlip else 'ftphase-qha'}@{a.qha_computer or a.computer}"),
         "calphy_code": orm.load_code(f"calphy@{a.computer}"),
         "qha_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1, "num_cores_per_mpiproc": a.qha_cores}, "max_wallclock_seconds": 24 * 3600,
                                       "queue_name": "debug", "withmpi": False,
-                                      "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if (a.system == "alli" and MLIPS[a.mlip].get("qha_gpu") and not qha_cpu_host) else "")}),
+                                      "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if (use_mlip and MLIPS[a.mlip].get("qha_gpu") and not qha_cpu_host) else "")}),
         "calphy_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1 if (gpu or torch_mlip) else a.cpu_cores}, "max_wallclock_seconds": 48 * 3600,
                                          "queue_name": "debug", "withmpi": False,
                                          "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if (gpu or torch_mlip) else "")}),
@@ -227,7 +298,7 @@ def main():
         return
     node = submit(WorkflowFactory("ftphase.txdiagram"), **inputs)
     os.makedirs(os.path.join(HERE, "out"), exist_ok=True)
-    rec = {"pk": node.pk, "uuid": node.uuid, "name": name, "profile": a.profile, "submitted": time.strftime("%F %T"), "gpu": gpu, "smoke": a.smoke, "computer": a.computer, "qha_computer": a.qha_computer or a.computer, "mlip": a.mlip if a.system == "alli" else None}
+    rec = {"pk": node.pk, "uuid": node.uuid, "name": name, "profile": a.profile, "submitted": time.strftime("%F %T"), "gpu": gpu, "smoke": a.smoke, "computer": a.computer, "qha_computer": a.qha_computer or a.computer, "mlip": a.mlip}
     with open(os.path.join(HERE, "out", f"{name}.pk.json"), "w") as f:
         json.dump(rec, f, indent=1)
     with open(os.path.join(HERE, "out", "submissions.log"), "a") as f:
