@@ -35,7 +35,11 @@ AiiDA 層（`ftphase.aiida`、2026-10-23）：CalcJob `ftphase.qha`（1 セル�
 - 計算機 `mygarden5`（core.local + core.slurm、`~/aiida_run/ftphase`）、コード `ftphase-qha@mygarden5`・`calphy@mygarden5`、デーモン 2 worker（`setup_aiida.sh`）。投入は `run_aiida.py`（`--smoke` / `--dry-run` / `--no-gpu`）、取り出しは `fetch_results.py`。
 - プラグインを変えたら `pip install -e ./ftphase --no-deps` → `verdi -p ftphase daemon restart`。
 - 失敗は `process status` の exit code（QHA 300 出力無し、calphy 300/310/320、WorkChain 401/402/410）→ `calcjob outputcat <pk> -p qha.err`。失敗セルは除外して組み立てるので、直したら再投入。
-- 落とし穴：デーモンが `PYTHONPATH` を書き出して計算ノードの base `conda` を壊す（計算機 prepend に `unset PYTHONPATH PYTHONHOME`）。QHA の走査範囲は 1100 K で 1.05 以上。WorkChain を kill しても子が残ることがある。
+- 落とし穴：デーモンが `PYTHONPATH` を書き出して計算ノードの base `conda` を壊す（計算機 prepend に `unset PYTHONPATH PYTHONHOME`）。QHA の走査範囲は 1100 K で 1.05 以上。
+- WorkChain を kill しても子の CalcJob と Slurm ジョブが残る（2026-10-25 に 80 本が GPU を数時間占有）。kill の後は必ず `ftphase/tools/aiida_zombies.py`（一覧、`--cancel` で scancel + kill）。
+- キャッシュ（`caching.enabled_for` = ftphase.qha / ftphase.calphy）は入力が同じ CalcJob を再利用するが、**失敗した CalcJob も再利用される**（AiiDA 2.9）。失敗の後は `node.base.caching.is_valid_cache = False` にしてから再投入する。工程 01 の緩和を GPU の単精度でやり直すと構造がわずかに変わり、キャッシュは効かない。
+- 計算機を増やしたら、その計算機の各 env に `pip install -e ./ftphase --no-deps`（`ftphase-qha-run` などの入口）と `sync_to_host.sh <host>` を行う。どちらかが欠けると QHA が全滅する（mygarden6：古いコピーで「Unrecognized pair style」、mygardenx2：入口が無く「No such file」）。
+- 計算機の分担：GPU は mygarden5・mygarden6（calphy と GRACE nL の QHA）、CPU は mygardenx2（`--qha-computer mygardenx2` で QHA を逃がす）・mygardenx1。AiiDA の問い合わせ手順と MCP の設計は `docs/aiida-queries.html`。
 
 ## 検証済みの事実（2026-10-21）
 

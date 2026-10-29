@@ -56,7 +56,27 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 - 固相の振動エントロピーが ACE より大きい MLIP（GRACE-FS、SevenNet-0：+1.1〜1.2 k_B；MF-ompa、MACE：+0.3 k_B）は固相を過安定化し、Al 融点を上げる。SevenNet-0 は 1100 K まで Al が融けない。
 - 共晶・固溶限が実験に最も近いのは SevenNet-MF-ompa（850–860 K、0.132）。ただし Al 融点は 60 K 高い。ACE と GRACE-1L/2L は共晶が 100–150 K 低い。
 - 単精度で実行（2026-10-25 のユーザー決定）。GRACE-3L は液相 1 本 6〜11 h のため比較から外した（2026-10-28）。
-- 同じ spec・同じセル（seed 固定）・同じ温度格子・同じ fit；工程ごとの差の表と重ね描き図は `ftphase/examples/aiida_txdiagram/out/mlip_compare/`（REPORT.md、overlay.png）。
+- 同じ spec・同じセル（seed 固定）・同じ温度格子・同じ fit；工程ごとの差の表と重ね描き図は `ftphase/examples/aiida_txdiagram/out/mlip_compare/`（REPORT.md、overlay.png、7 図を並べた panels.png）。
+- **Matbench Discovery との関係**：κ_SRME（フォノン）が相図の結果と対応した（SevenNet-0 は 0.767 で最悪 → Al が融けない；SevenNet-MF-ompa は 0.317 → 共晶が実験に最も近い）。F1（0 K の安定性）は対応しない（0 K の生成エネルギーは 7 種でほぼ同じ）。κ_SRME だけでも足りない：MACE-MPA-0（0.412）も Al 融点が 105 K 高い。Matbench に液相の指標は無いので、基盤モデルを相図に使う前に純元素の融点を確かめる。今回使った GRACE-FS-OAM と OMAT-medium-base 版は表に未掲載（同じ層数の OAM 版を参考値にした）。
+
+### 計算時間（2026-10-29、`ftphase/examples/mlip_bench/`、同じ入力を GPU 1 枚・CPU 4 コアで単独実行）
+
+| MLIP | QHA 1 本（fcc 32 原子、phonopy 256 原子 × 9 体積、GPU） | 液相 calphy 1 本（256 原子、3 反復） | 液相の ACE 比 |
+|---|---|---|---|
+| ACE | 0.6〜1 分 | 9.5 分 | 1 |
+| GRACE-FS-OAM | 18 分（CPU なら 0.3 分） | 26 分 | 2.7 |
+| GRACE-1L-OMAT（fp32） | 2.5 分 | 28 分 | 2.9 |
+| SevenNet-0 | 2.0 分 | 35 分 | 3.7 |
+| GRACE-2L-OMAT（fp32） | 0.9 分 | 98 分 | 10 |
+| SevenNet-MF-ompa | 19 分 | 204 分 | 21 |
+| MACE-MPA-0（float32） | 3.0 分 | 573 分 | 60 |
+
+- 比較計算の液相も Slurm の `--gres=gpu:1` で GPU を専有していたので、比較計算の実行時間は単独実行と 10 % 以内で一致する（測り直す必要は無い）。QHA は計算した装置が MLIP ごとに違ったので、比べるなら装置を揃える。
+- conda 版 LAMMPS の Kokkos は古い GPU 向け（CC 5.0）にビルドされているので、ACE と GRACE-FS の QHA は CPU の方が速い。
+
+### Ni–Al・Ag–Cu への展開（2026-10-30）
+
+`run_aiida.py --system nial|agcu --mlip <name>` で同じ WorkChain を回せる（Ni–Al は B2 の Ni 反サイト・Ni 空孔、L1₂ の反サイト、Ni₂Al₃・NiAl₃、液相 11 組成を 2000 K から組成別の停止温度まで；Ag–Cu は fcc 全組成と液相 7 組成）。MLIP の場合は固相を QHA だけにする（2,000 原子の固相 TI は MLIP では 1 セル数十 GPU 時間）。GRACE-FS・GRACE-1L・SevenNet-0 で投入済み（pk 4784–4928）。
 
 ## Matbench Discovery（2026-10-24 時点、43 モデル）のユニバーサルモデルと、この経路での可否
 
