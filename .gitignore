@@ -68,3 +68,7 @@ env/lammps-torch/*
 env/lammps-torch/test/*
 !env/lammps-torch/test/in.e3gnn
 !env/lammps-torch/test/in.mace
+
+# not published: copyrighted source documents and third-party potential files
+資料/
+potentials/
