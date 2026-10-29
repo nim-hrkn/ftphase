@@ -34,6 +34,46 @@ def _site_model(name: str, stoich_x=None):
     return partial(f, stoich_x=stoich_x) if stoich_x is not None else f
 
 
+def _series(base, xel, others, xs, seed, n_configs):
+    """composition_series that also works when the host of ``base`` is the x element itself (Ni-rich fcc, Ni-side
+    liquid): then the other element is substituted with fraction 1 - x and x is converted back.
+    Returns [(x_target, x_actual, seed, atoms, counts)]."""
+    from ftphase.structures import composition_series
+
+    host = set(base.get_chemical_symbols())
+    if host == {xel}:
+        sub = [e for e in others if e != xel][0]
+        res = composition_series(base, sub, [1.0 - v for v in xs if v < 1.0], seed=seed, n_configs=n_configs)
+        return [(1.0 - m.x_target, 1.0 - m.x_actual, m.seed, m.atoms, m.counts) for m in res]
+    res = composition_series(base, xel, [v for v in xs if v > 0], seed=seed, n_configs=n_configs)
+    return [(m.x_target, m.x_actual, m.seed, m.atoms, m.counts) for m in res]
+
+
+def _defect_cells(base, xel, ops, seed=0):
+    """Defect series of an ordered cell: ops = [{"replace": [from_el, to_el], "n": k} | {"vacancy": el, "n": k}].
+    Atoms are chosen at random (seed) among the sites of the named element; returns [(x, atoms, label)]."""
+    rng = np.random.default_rng(seed)
+    out = []
+    for op in ops:
+        at = base.copy()
+        syms = np.array(at.get_chemical_symbols())
+        if "replace" in op:
+            a, b = op["replace"]
+            idx = rng.choice(np.where(syms == a)[0], int(op["n"]), replace=False)
+            for i in idx:
+                at[int(i)].symbol = b
+            label = f"{op['n']} {b} on {a} sites"
+        else:
+            el = op["vacancy"]
+            idx = sorted(rng.choice(np.where(syms == el)[0], int(op["n"]), replace=False), reverse=True)
+            for i in idx:
+                del at[int(i)]
+            label = f"{op['n']} {el} vacancies"
+        sy = at.get_chemical_symbols()
+        out.append((sy.count(xel) / len(sy), at, label))
+    return out
+
+
 def _key(s: str) -> str:
     return "".join(c if c.isalnum() else "_" for c in s)
 
@@ -131,6 +171,11 @@ def prepare_cells(spec: orm.Dict, potential: orm.SinglefileData, **candidates: o
         cells = []
         if s["kind"] == "point":
             cells.append((float(s["x"][0]) if s.get("x") else float(sp["candidates"][s["base"]]), 0, base.copy()))
+        elif s.get("defects"):
+            x0 = float(sp["candidates"][s["base"]])
+            cells.append((x0, 0, base.copy()))
+            for x, at, _label in _defect_cells(base, xel, s["defects"], seed=int(s.get("seed", 0))):
+                cells.append((float(x), 0, at))
         elif s.get("antisites"):
             x0 = float(sp["candidates"][s["base"]])
             cells.append((x0, 0, base.copy()))
@@ -148,11 +193,12 @@ def prepare_cells(spec: orm.Dict, potential: orm.SinglefileData, **candidates: o
                                     len(base), method="supercells", n_steps=ic.get("n_steps", 5000), seed=int(s.get("seed", 0)), supercells=[base.copy()])
                 cells.append((n_b / len(base), 0, at))
         else:
-            if 0.0 in [float(v) for v in s["x"]]:
-                cells.append((0.0, 0, base.copy()))
-            xs = [float(v) for v in s["x"] if v > 0]
-            for m in composition_series(base, xel, xs, seed=int(s.get("seed", 0)), n_configs=int(s.get("n_configs", 1))):
-                cells.append((float(m.x_actual), int(m.seed), m.atoms.copy()))
+            host_is_x = set(base.get_chemical_symbols()) == {xel}
+            x_host = 1.0 if host_is_x else 0.0
+            if any(abs(float(v) - x_host) < 1e-9 for v in s["x"]):
+                cells.append((x_host, 0, base.copy()))
+            for x_t, x_a, sd, at, _c in _series(base, xel, sp["elements"], [float(v) for v in s["x"]], int(s.get("seed", 0)), int(s.get("n_configs", 1))):
+                cells.append((float(x_a), int(sd), at.copy()))
         for x, cfg, at in cells:
             key = f"s{k:02d}_{_key(s['phase'])}"
             at.calc = None
@@ -171,10 +217,18 @@ def prepare_cells(spec: orm.Dict, potential: orm.SinglefileData, **candidates: o
         override = {float(a): float(b) for a, b in lq.get("T_override", {}).items()}
         xs = [float(v) for v in lq["x"]]
         members = []
-        if 0.0 in xs:
-            members.append((0.0, 0.0, 0, base.copy(), {e: base.get_chemical_symbols().count(e) for e in sp["elements"]}))
-        for m in composition_series(base, xel, [v for v in xs if v > 0], seed=int(lq.get("seed", 100)), n_configs=1):
-            members.append((m.x_target, m.x_actual, m.seed, m.atoms.copy(), m.counts))
+        # optional second base for the x element's side, e.g. "base_hi": [0.5, "fcc-Ni"]: x > 0.5 from the Ni lattice
+        split, base_hi = (lq["base_hi"][0], relaxed[lq["base_hi"][1]].repeat(tuple(lq.get("repeat", [4, 4, 4])))) if lq.get("base_hi") else (2.0, None)
+        lo_x = [v for v in xs if v <= split]; hi_x = [v for v in xs if v > split]
+        for b, group in ((base, lo_x), (base_hi, hi_x)):
+            if not group:
+                continue
+            host_x = 1.0 if set(b.get_chemical_symbols()) == {xel} else 0.0
+            if any(abs(v - host_x) < 1e-9 for v in group):
+                members.append((host_x, host_x, 0, b.copy(), {e: b.get_chemical_symbols().count(e) for e in sp["elements"]}))
+            for x_t, x_a, sd, at, counts in _series(b, xel, sp["elements"], group, int(lq.get("seed", 100)), 1):
+                members.append((x_t, x_a, sd, at.copy(), counts))
+        members.sort(key=lambda m: m[0])
         for rep in range(int(lq.get("n_repeats", 1))):
             for x_t, x_a, seed, at, counts in members:
                 tag = f"lqd_x{x_t:.2f}" + (f"_r{rep}" if rep else "")
@@ -320,11 +374,19 @@ def assemble_diagram(spec: orm.Dict, solid_params: orm.Dict, liquid_params: orm.
     ti = interpolate_T(tab, T_diag)
     # keep only temperatures where every liquid composition has data
     cover = ti.df[ti.df.phase == "liquid"].groupby("T")["x"].agg(["min", "max", "size"])
-    ok_T = cover[(cover["min"] <= liq["x"].min() + 1e-6) & (cover["max"] >= liq["x"].max() - 1e-6) & (cover["size"] >= min(3, liq["x"].nunique()))].index
+    if asm.get("liquid_partial", False):
+        # liquids end at composition-dependent T_stop (Ni-Al): keep every T with >= 3 liquid compositions; segments
+        # whose liquid end sits at the sampled liquid range edge (not 0 or 1) are removed after the scan
+        ok_T = cover[cover["size"] >= 3].index
+    else:
+        ok_T = cover[(cover["min"] <= liq["x"].min() + 1e-6) & (cover["max"] >= liq["x"].max() - 1e-6) & (cover["size"] >= min(3, liq["x"].nunique()))].index
     ti = FreeEnergyTable.from_dataframe(ti.df[ti.df["T"].isin(ok_T)], ti.meta)
     Ts = np.array(sorted(ti.df["T"].unique()))
     summary["T_grid"] = [float(Ts.min()), float(Ts.max()), int(Ts.size)]
-    ent = {ph: (_site_model(v[0]), float(v[1])) for ph, v in asm.get("entropy_models", {}).items() if ph in phases}
+    def _sm(name):
+        n, _, st = name.partition("@")
+        return _site_model(n, float(st) if st else None)
+    ent = {ph: (_sm(v[0]), float(v[1])) for ph, v in asm.get("entropy_models", {}).items() if ph in phases}
     hull_kw = asm.get("hull", {"min_width": 0.005, "gap_tol": 2.5})
     builder = builder_from_table(ti, fit=asm.get("fit", "spline"), fits=asm.get("fits", {}), poly_order=int(asm.get("poly_order", 3)),
                                  poly_orders=asm.get("poly_orders", {}), entropy_models=ent or None)
@@ -335,6 +397,18 @@ def assemble_diagram(spec: orm.Dict, solid_params: orm.Dict, liquid_params: orm.
     if asm.get("drop_edge_beyond_liquid", True) and x_liq_max < 1.0 - 1e-6:
         edge = reg["x_a"] >= x_liq_max - 1e-6
         summary["edge_segments_dropped"] = int(edge.sum())
+        reg = reg[~edge].reset_index(drop=True)
+    if asm.get("liquid_partial", False) and len(reg):
+        lr = ti.df[ti.df.phase == "liquid"].groupby("T")["x"].agg(["min", "max"])
+        def _edge(r):
+            if r["T"] not in lr.index:
+                return False
+            lo, hi = lr.loc[r["T"], "min"], lr.loc[r["T"], "max"]
+            ends = [r["x_a"]] if r["phase_a"] == "liquid" else []
+            ends += [r["x_b"]] if r["phase_b"] == "liquid" else []
+            return any((abs(e - hi) < 1e-3 and hi < 1 - 1e-6) or (abs(e - lo) < 1e-3 and lo > 1e-6) for e in ends)
+        edge = reg.apply(_edge, axis=1)
+        summary["liquid_edge_segments_dropped"] = int(edge.sum())
         reg = reg[~edge].reset_index(drop=True)
     inv = invariants(reg)
     sig = {ph: float(asm.get("sigma", {}).get(ph, 0.002)) for ph in set(reg.phase_a) | set(reg.phase_b) | phases}
