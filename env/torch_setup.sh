@@ -8,5 +8,12 @@ mamba create -y -p "$ROOT/env/torch" -c conda-forge python=3.12 phonopy ase pyma
 conda activate "$ROOT/env/torch"
 pip install torch --index-url https://download.pytorch.org/whl/cu128
 pip install sevenn mace-torch
+# 2026-10-30: MatterSim (ML-IAP wrapper mattersim.lammps.mliap_wrapper) and the ML-IAP runtime deps. The PyPI torchvision pulled in by
+# mattersim does not match torch 2.11.0 ("operator torchvision::nms does not exist"): take torchvision/torchaudio from the cu128 index.
+pip install mattersim cupy-cuda12x
+pip install --force-reinstall --no-deps --index-url https://download.pytorch.org/whl/cu128 torchvision torchaudio
+pip install --no-deps --no-build-isolation "$ROOT/env/lammps-gpu/src/python"   # pure-Python lammps package (MLIAPUnified base class)
+# 2026-10-30: NequIP / Allegro (ML-IAP export: nequip-prepare-lmp-mliap nequip.net:mir-group/NequIP-OAM-L:0.1 X.nequip.lmp.pt --modifiers enable_OpenEquivariance)
+pip install nequip nequip-allegro        # 0.19.1 / 0.8.3; adds lightning, keeps torch/e3nn/sevenn/mattersim unchanged
 pip install -e "$ROOT/ftphase" --no-deps
 python -c "import torch, sevenn, mace; print('torch', torch.__version__, 'cuda', torch.cuda.is_available(), 'sevenn', sevenn.__version__, 'mace', mace.__version__)"

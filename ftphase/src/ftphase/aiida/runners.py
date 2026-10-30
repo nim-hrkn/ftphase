@@ -36,6 +36,26 @@ def make_calculator(inp: dict, pot: str):
     if kind == "mace":
         from mace.calculators import MACECalculator  # type: ignore
         return MACECalculator(model_paths=pot, device="cuda" if dev == "auto" else dev, default_dtype=inp.get("dtype", "float64"))
+    if kind == "mattersim":   # MatterSim checkpoint (.pth) or version name; float32 M3GNet, env/torch (mattersim 1.2.5)
+        from mattersim.forcefield import MatterSimCalculator  # type: ignore
+        return MatterSimCalculator(load_path=pot, device="cuda" if dev == "auto" else dev)
+    if kind == "nequip":      # nequip >= 0.7: the ASE calculator needs an AOTInductor-compiled model (.nequip.pt2, device specific);
+        # a package file (.nequip.zip) or a nequip.net:ID is compiled here for this job's device (nequip-compile, ~2 min, needs cuda.h on CPATH)
+        import subprocess
+        import sys as _sys
+        import tempfile
+
+        from nequip.ase import NequIPCalculator  # type: ignore
+        device = "cuda" if dev == "auto" else dev
+        if not pot.endswith(".nequip.pt2"):
+            out = os.path.join(tempfile.mkdtemp(prefix="nequip_compile_"), "model.nequip.pt2")
+            env = dict(os.environ)
+            inc = os.path.join(os.path.dirname(os.path.dirname(_sys.executable)), "include")
+            env["CPATH"] = inc + (":" + env["CPATH"] if env.get("CPATH") else "")
+            env.setdefault("TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD", "1")
+            subprocess.run([os.path.join(os.path.dirname(_sys.executable), "nequip-compile"), pot, out, "--mode", "aotinductor", "--device", device, "--target", "ase"], check=True, env=env)
+            pot = out
+        return NequIPCalculator.from_compiled_model(pot, device=device, chemical_species_to_atom_type_map=inp.get("species_map") or {s: s for s in inp.get("atom_types", {})})
     raise ValueError(f"unknown calculator {kind!r}")
 
 
@@ -76,7 +96,7 @@ def qha_main(argv=None):
     if p.get("relax", {}).get("do", True):
         r = relax(atoms, calc, fmax=float(p["relax"].get("fmax", 1e-3)), cell=bool(p["relax"].get("cell", True)), hydrostatic=bool(p["relax"].get("hydrostatic", True)))
         atoms = r.atoms.copy()
-        out.update({"E0_eV_per_atom": r.energy_per_atom, "V0_A3_per_atom": r.volume_per_atom, "spacegroup_before": r.spacegroup_before,
+        out.update({"E0_eV_per_atom": float(r.energy_per_atom), "V0_A3_per_atom": float(r.volume_per_atom), "spacegroup_before": r.spacegroup_before,   # float(): numpy float32 (MatterSim) would be str()-ed by json default=str
                     "spacegroup_after": r.spacegroup_after, "relax_converged": bool(r.converged), "transformed": bool(r.transformed)})
     atoms.calc = None
     T = np.asarray(p["temperatures"], dtype=float)
@@ -137,7 +157,8 @@ def relax_main(argv=None):
     for at in structures:
         r = relax(at, calc, fmax=float(rel.get("fmax", 1e-3)), cell=bool(rel.get("cell", True)))
         a = r.atoms.copy(); a.calc = None; out_atoms.append(a)
-        rows.append({"e": r.energy_per_atom, "V": r.volume_per_atom, "sg_before": r.spacegroup_before, "sg_after": r.spacegroup_after, "converged": bool(r.converged), "transformed": bool(r.transformed)})
+        # float(): MatterSim returns numpy float32 energies, which json cannot serialise
+        rows.append({"e": float(r.energy_per_atom), "V": float(r.volume_per_atom), "sg_before": r.spacegroup_before, "sg_after": r.spacegroup_after, "converged": bool(r.converged), "transformed": bool(r.transformed)})
     write(inp.get("output_structures", "relaxed.extxyz"), out_atoms)
     json.dump(rows, open(inp.get("output", "output.json"), "w"), indent=1)
 

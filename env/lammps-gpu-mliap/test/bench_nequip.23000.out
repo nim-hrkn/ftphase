@@ -1,0 +1,28 @@
+released 25 held AiiDA jobs
+host mygarden5 job 23000 2026年 10月 30日 金曜日 21:12:28 JST
+NVIDIA GeForce RTX 3060, 0 %, 1 MiB
+other GPU processes: 0
+--- ASE reference: nequip-compile aotinductor --target ase on this GPU
+ASE reference FAILED
+      |          ^~~~~~~~
+compilation terminated.
+
+compile+ref wall 130 s
+--- correctness (run 0 pe / press): v0 plain, v1 hs lambda=1, v2 hs lambda=1.222, v3 0.7 model + 0.3 ufm; then s/step of the 100-step NVE run (108 atoms)
+oeq v0 pe=-404.08095 press=2017.7395 | pe=-392.70496 press=-87851.199 | pe=-392.70496 press=-83674.744 | pe=-390.7418 press=-77025.703 |  0.0125 s/step(108)  wall 59 s
+oeq v1 pe=-404.08095 press=2017.7302 | pe=-392.70497 press=-87851.199 | pe=-392.70497 press=-83674.74 | pe=-390.7418 press=-77025.703 |  0.0125 s/step(108)  wall 40 s
+oeq v2 pe=-493.87663 press=2466.1227 | pe=-479.97265 press=-107373.66 | pe=-479.97264 press=-103197.21 | pe=-477.64192 press=-95274.914 |  0.0125 s/step(108)  wall 40 s
+oeq v3 pe=-282.32279 press=2608.8569 | pe=-274.55825 press=-60795.484 | pe=-274.55824 press=-56619.027 | pe=-273.1187 press=-51800.31 |  0.0135 s/step(108)  wall 41 s
+oeq_nocompile v0 pe=-404.081 press=2017.6631 | pe=-392.70499 press=-87851.266 | pe=-392.70499 press=-83674.803 | pe=-390.74184 press=-77025.765 |  0.0162 s/step(108)  wall 12 s
+oeq_nocompile v1 pe=-404.08099 press=2017.662 | pe=-392.70499 press=-87851.259 | pe=-392.70499 press=-83674.807 | pe=-390.74184 press=-77025.764 |  0.0161 s/step(108)  wall 12 s
+oeq_nocompile v2 pe=-493.87668 press=2466.0255 | pe=-479.97269 press=-107373.74 | pe=-479.97267 press=-103197.29 | pe=-477.64197 press=-95274.994 |  0.0163 s/step(108)  wall 13 s
+oeq_nocompile v3 pe=-282.32282 press=2608.8079 | pe=-274.55826 press=-60795.528 | pe=-274.55826 press=-56619.073 | pe=-273.11872 press=-51800.357 |  0.0174 s/step(108)  wall 12 s
+plain v0 pe=-404.08095 press=2017.7335 | pe=-392.70496 press=-87851.203 | pe=-392.70496 press=-83674.739 | pe=-390.7418 press=-77025.697 |  0.0765 s/step(108)  wall 129 s
+plain v1 pe=-404.08095 press=2017.7305 | pe=-392.70497 press=-87851.203 | pe=-392.70496 press=-83674.74 | pe=-390.7418 press=-77025.703 |  0.0764 s/step(108)  wall 71 s
+plain v2 pe=-493.87663 press=2466.1166 | pe=-479.97264 press=-107373.68 | pe=-479.97264 press=-103197.21 | pe=-477.64193 press=-95274.915 |  0.0772 s/step(108)  wall 71 s
+plain v3 pe=-282.32278 press=2608.8588 | pe=-274.55825 press=-60795.481 | pe=-274.55824 press=-56619.027 | pe=-273.1187 press=-51800.31 |  0.0781 s/step(108)  wall 72 s
+--- 256 atoms, 100 NVE steps
+oeq 256 atoms: 0.0286 s/step
+plain 256 atoms: 0.1980 s/step
+1 MiB
+done 2026年 10月 30日 金曜日 21:26:20 JST

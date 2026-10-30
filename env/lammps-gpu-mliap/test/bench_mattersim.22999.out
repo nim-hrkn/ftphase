@@ -1,0 +1,22 @@
+released 31 held AiiDA jobs
+host mygarden5 job 22999 2026年 10月 30日 金曜日 17:47:59 JST
+NVIDIA GeForce RTX 3060, 0 %, 1 MiB
+other GPU processes: 0
+--- ASE reference (CPU, float32): mattersim-v1.0.0-5M: natoms 108 pe -403.17511 eV  press -3403.488 bar  pxx -3403.496 pxy 0.002;mattersim-v1.0.0-1M: natoms 108 pe -401.87140 eV  press -369.930 bar  pxx -369.940 pxy -0.000;
+--- correctness (run 0 pe / press): v0 plain, v1 hs lambda=1, v2 hs lambda=1.222, v3 0.7 model + 0.3 ufm; then s/step of the 100-step NVE run (108 atoms)
+ms5M v0 pe=-403.17578 press=-3403.3906 | pe=-391.66455 press=-93137.544 | pe=-391.66455 press=-88961.088 | pe=-389.43051 press=-82689.634 |  0.0907 s/step(108)  wall 30 s
+ms5M v1 pe=-403.17578 press=-3403.3863 | pe=-391.66455 press=-93137.544 | pe=-391.66455 press=-88961.089 | pe=-389.43051 press=-82689.633 |  0.0184 s/step(108)  wall 12 s
+ms5M v2 pe=-492.77031 press=-4159.6954 | pe=-478.70103 press=-113834.76 | pe=-478.70103 press=-109658.3 | pe=-476.06054 press=-102238.83 |  0.0180 s/step(108)  wall 11 s
+ms5M v3 pe=-281.68916 press=-1185.9321 | pe=-273.82995 press=-64495.929 | pe=-273.82995 press=-60319.468 | pe=-272.18368 press=-55730.281 |  0.0205 s/step(108)  wall 12 s
+ms5M_nocompile v0 pe=-403.17572 press=-3403.4417 | pe=-391.66486 press=-93137.662 | pe=-391.66486 press=-88961.202 | pe=-389.43048 press=-82689.627 |  0.0239 s/step(108)  wall 8 s
+ms5M_nocompile v1 pe=-403.17572 press=-3403.4359 | pe=-391.66486 press=-93137.665 | pe=-391.66486 press=-88961.202 | pe=-389.43048 press=-82689.63 |  0.0237 s/step(108)  wall 9 s
+ms5M_nocompile v2 pe=-492.77024 press=-4159.7667 | pe=-478.7014 press=-113834.9 | pe=-478.7014 press=-109658.44 | pe=-476.06054 press=-102238.83 |  0.0233 s/step(108)  wall 9 s
+ms5M_nocompile v3 pe=-281.68912 press=-1185.9617 | pe=-273.83017 press=-64496.012 | pe=-273.83017 press=-60319.553 | pe=-272.18368 press=-55730.28 |  0.0248 s/step(108)  wall 10 s
+ms1M v0 pe=-401.87122 press=-370.00582 | pe=-390.11102 press=-89043.211 | pe=-390.11102 press=-84866.747 | pe=-387.97589 press=-77347.287 |  0.0120 s/step(108)  wall 12 s
+ms1M v1 pe=-401.87122 press=-370.00454 | pe=-390.11102 press=-89043.202 | pe=-390.11102 press=-84866.756 | pe=-387.97589 press=-77347.286 |  0.0119 s/step(108)  wall 11 s
+ms1M v2 pe=-491.17584 press=-452.2252 | pe=-476.80227 press=-108830.57 | pe=-476.80227 press=-104654.1 | pe=-474.27398 press=-95715.379 |  0.0119 s/step(108)  wall 10 s
+ms1M v3 pe=-280.77597 press=937.43894 | pe=-272.74248 press=-61629.89 | pe=-272.74248 press=-57453.431 | pe=-271.17244 press=-51987.56 |  0.0142 s/step(108)  wall 11 s
+--- 256 atoms, 100 NVE steps
+ms5M 256 atoms: 0.0398 s/step
+ms1M 256 atoms: 0.0152 s/step
+done 2026年 10月 30日 金曜日 17:51:04 JST

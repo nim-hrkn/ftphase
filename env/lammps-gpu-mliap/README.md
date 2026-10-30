@@ -71,4 +71,54 @@ mode ts, 256 Al atoms 1100 -> 700 K, same settings as the example-8 job pk 4356 
 −4.187605 eV/atom, 700-1000 K within +0.10..+0.15 meV/atom (independent seeds; liquid run-to-run spread is 0.1-0.5 meV/atom);
 0.085 s/step vs 0.157, calphy wall 5.14 h vs 9.57 h. No `atom_modify map yes` needed. Details in that folder's README.
 
-Still open: multi-rank (`forward_exchange`) is untested; cuEquivariance is not installed; the WorkChain still uses `pair_style mace`.
+The WorkChain (`run_aiida.py --mlip mace-mpa-0`) uses this route since 2026-10-30 (`calphy_gpu: True`; old route `--mlip mace-mpa-0-pairstyle`;
+smoke pk 6160). Deploying to another calphy host means copying `bin/` + `lib/` and adding cupy-cuda12x + the lammps python package to its env/mace.
+
+## MatterSim (Slurm 22999, 2026-10-30, `test/bench_mattersim.sbatch`, `test/bench_mattersim.22999.out`)
+
+mattersim 1.2.5 (pip, in env/torch; its PyPI torchvision 0.26.0 breaks torch 2.11.0 with "operator torchvision::nms does not exist",
+reinstall torchvision/torchaudio from the cu128 index) ships the official ML-IAP wrapper `mattersim.lammps.mliap_wrapper.MatterSimMLIAP`
+(M3GNet, fp32, forward/reverse exchange, `torch.compile` on the GPU by default). Export: `test/mattersim_to_mliap.py` ->
+`potentials/mattersim/mattersim-v1.0.0-{5M,1M}_mliap{,_nocompile}.pt`; wrapper `bin/lmp_mliap_mattersim.sh` (PYTHONHOME env/torch).
+Correctness (108-atom `test/conf.data`, `run 0`): 5M pe −403.17578 eV vs ASE calculator −403.17511 (6 µeV/atom), press −3403.39 vs −3403.49 bar;
+1M −401.87122 vs −401.87140; `hybrid/scaled/kk` λ=1 identical, λ=1.222 exact, 0.7 model + 0.3 ufm sane. No `atom_modify` needed.
+
+| s/step | 108 atoms | 256 atoms |
+|---|---|---|
+| MatterSim-v1 5M (compiled; first launch +20 s compile) | 0.018 | 0.040 |
+| MatterSim-v1 5M (nocompile) | 0.024 | — |
+| MatterSim-v1 1M (compiled) | 0.012 | 0.015 |
+| MACE-MPA-0 fp32 ML-IAP / SevenNet-0 OEQ ML-IAP (for reference) | 0.037 / 0.011 | 0.090 / 0.013 |
+
+WorkChain: `run_aiida.py --mlip mattersim-5m|mattersim-1m` (`qha_calculator: mattersim` -> `MatterSimCalculator(load_path=<.pth>)` in
+`ftphase/src/ftphase/aiida/runners.py`; the runner now casts energies to float because MatterSim returns numpy float32, which json cannot
+serialise: smoke pk 6231 failed on that, pk 6244 resubmitted). The wrapper sets `TORCHINDUCTOR_FX_GRAPH_CACHE/AUTOGRAD_CACHE=1` and
+`TORCHINDUCTOR_CACHE_DIR=~/.cache/torchinductor_mattersim` so calphy's ~20 LAMMPS launches per job share the compile cache.
+
+## NequIP-OAM-L 0.1 (Slurm 23000, 2026-10-30, `test/bench_nequip.sbatch`, `test/bench_nequip.23000.out`)
+
+nequip 0.19.1 + nequip-allegro 0.8.3 (pip, env/torch; adds lightning, torch/e3nn/sevenn/mattersim unchanged). Model choice and sources:
+`ftphase/examples/mlip_bench/nequip_allegro_survey.md` (MIR group package files, CC-BY-4.0, Zenodo 18775904; copy in
+`potentials/nequip/NequIP-OAM-L-0.1.nequip.zip`, cache `~/.nequip/model_cache/`). Export (CPU, ~1 min each):
+`nequip-prepare-lmp-mliap nequip.net:mir-group/NequIP-OAM-L:0.1 X.nequip.lmp.pt [--modifiers enable_OpenEquivariance] [--no-compile]`
+-> `potentials/nequip/NequIP-OAM-L-0.1{,-nocompile,-plain}.nequip.lmp.pt` (117 MB each: the package is embedded). Wrapper `bin/lmp_mliap_nequip.sh`
+(PYTHONHOME env/torch, inductor cache dir `~/.cache/torchinductor_nequip`). Model: r_c 6 Å, 6 layers, float32, ZBL on.
+
+Correctness (108-atom `test/conf.data`, `run 0`): ML-IAP pe −404.08095 eV, press 2017.74 bar; the package model evaluated eagerly in Python
+(`test/nequip_ref_eager.py`, nequip data pipeline, CPU) gives −404.08091 eV, 2017.68 bar (0.4 µeV/atom). All three exports agree to 5e-5 eV;
+`hybrid/scaled/kk` λ=1 identical, λ=1.222 exact, 0.7 model + 0.3 ufm sane. `atom_modify map yes` is in `in.kk` (nequip docs use it).
+
+| s/step | 108 atoms | 256 atoms |
+|---|---|---|
+| OpenEquivariance, compiled (first launch ~60 s, warm ~40 s per LAMMPS start) | 0.0125 | 0.029 |
+| OpenEquivariance, eager | 0.016 | — |
+| plain e3nn | 0.077 | 0.198 |
+| MatterSim 5M / MACE-MPA-0 fp32 / SevenNet-0 OEQ (ML-IAP, reference) | 0.018 / 0.037 / 0.011 | 0.040 / 0.090 / 0.013 |
+
+ASE calculator: nequip >= 0.7 only loads AOTInductor-compiled models (`nequip-compile --mode aotinductor --target ase`). The GPU compile
+needs `cuda.h` on `CPATH` (`env/torch/include`; the sbatch sets it now, the first run failed without it); the CPU compile fails with an inductor
+codegen error under g++ 13 ("'decltype' evaluates to 'float'", torch 2.11), so the CPU reference uses the eager path above. The WorkChain
+runner (`qha_calculator: nequip`) compiles the package for the job's device at start (~2 min) unless it is given a `.nequip.pt2`;
+`run_aiida.py --mlip nequip-oam-l` (dry run OK, not yet run).
+
+TODO (deferred, user decision 2026-10-30): multi-rank (`forward_exchange`) is untested; cuEquivariance is not installed.

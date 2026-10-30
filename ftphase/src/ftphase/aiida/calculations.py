@@ -109,7 +109,8 @@ class CalphyCalculation(CalcJob):
         cores = int(p.get("cores", self.inputs.metadata.options.resources.get("num_mpiprocs_per_machine", 1)))
         queue = {"scheduler": "local", "cores": 1 if gpu else cores}
         block = calculation_block(
-            p.get("name", prefix), p["mode"], elements, list(p["masses"]), f"__WORKDIR__/{data_name}", p["pair_style"],
+            p.get("name", prefix), p["mode"], elements, list(p["masses"]), f"__WORKDIR__/{data_name}",
+            p["pair_style"].format(potential=f"__WORKDIR__/{pot_name}"),      # ML-IAP: "mliap unified {potential} 0" carries the model in pair_style
             p["pair_coeff"].format(potential=f"__WORKDIR__/{pot_name}"), p["temperature"], pressure=float(p.get("pressure", 0.0)),
             reference_phase=p.get("reference_phase", "solid"), n_equilibration_steps=int(p.get("n_equilibration_steps", 10000)),
             n_switching_steps=p.get("n_switching_steps", 25000), n_iterations=int(p.get("n_iterations", 1)), queue=queue,

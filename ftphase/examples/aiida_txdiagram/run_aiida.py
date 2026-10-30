@@ -44,6 +44,14 @@ KK_ARGS = ["-k", "on", "g", "1", "-sf", "kk", "-pk", "kokkos", "newton", "on", "
 # checkpoint / .model file, while calphy gets the deployed TorchScript file -> WorkChain input potential_qha.
 _SEV = os.path.join(ROOT, "potentials/sevenn"); _MAC = os.path.join(ROOT, "potentials/mace")
 LMP_SEVENN = os.path.join(ROOT, "env/lammps-torch/bin/lmp_sevenn.sh"); LMP_MACE = os.path.join(ROOT, "env/lammps-torch/bin/lmp_mace.sh")
+# ML-IAP unified (2026-10-30): lmp_gpumliap runs the pickled MACE model inside LAMMPS (Kokkos coupling, hybrid/scaled/kk); the model path
+# goes into pair_style ("mliap unified {potential} 0"), and calphy gets the Kokkos cmdargs through calphy_extra gpu=True ("calphy_gpu").
+# Verified against pair_style mace: ftphase/examples/calphy_mliap_mace (G within 0.15 meV/atom, 1.85x faster). Only on hosts with env/lammps-gpu-mliap.
+LMP_MLIAP_MACE = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_mace.sh")
+LMP_MLIAP_MATTERSIM = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_mattersim.sh")   # PYTHONHOME env/torch (mattersim 1.2.5)
+_MS = os.path.join(ROOT, "potentials", "mattersim")
+LMP_MLIAP_NEQUIP = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_nequip.sh")   # PYTHONHOME env/torch (nequip 0.19.1 + openequivariance)
+_NQ = os.path.join(ROOT, "potentials", "nequip")
 
 
 def _sevenn_ckpt(name):
@@ -58,8 +66,22 @@ MLIPS.update({
                  "model": "SevenNet-0 (11Jul2024, MPtrj; oeq deployment)", "lmp_gpu": LMP_SEVENN, "tag": "_sevenn_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "sevenn"},
     "sevenn-mf-ompa": {"potential": os.path.join(_SEV, "7net-mf-ompa_mpa_oeq.pt"), "potential_qha": _sevenn_ckpt("SevenNet_MF_ompa"), "pair_style": "e3gnn", "pair_coeff": "* * {potential} Al Li",
                        "model": "SevenNet-MF-ompa (modal mpa; oeq deployment)", "lmp_gpu": LMP_SEVENN, "tag": "_sevenn_mf_ompa", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "sevenn", "qha_modal": "mpa"},
-    "mace-mpa-0": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
-                   "model": "MACE-MPA-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
+    "mace-mpa-0": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-mliap_lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mliap unified {potential} 0", "pair_coeff": "* * Al Li",
+                   "model": "MACE-MPA-0 medium (float32, ML-IAP)", "lmp_gpu": LMP_MLIAP_MACE, "tag": "_mace_mpa_0", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
+    # MatterSim (M3GNet, float32) through ML-IAP unified (official MatterSimMLIAP export, test/mattersim_to_mliap.py; Slurm 22999: ASE energy
+    # within 6 ueV/atom, hybrid/scaled/kk correct, 5M 0.040 s/step at 256 atoms). QHA: MatterSimCalculator in env/torch on the checkpoint.
+    "mattersim-5m": {"potential": os.path.join(_MS, "mattersim-v1.0.0-5M_mliap.pt"), "potential_qha": os.path.join(_MS, "mattersim-v1.0.0-5M.pth"), "pair_style": "mliap unified {potential} 0", "pair_coeff": "* * Al Li",
+                     "model": "MatterSim-v1.0.0-5M (float32, ML-IAP)", "lmp_gpu": LMP_MLIAP_MATTERSIM, "tag": "_mattersim_5m", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "mattersim"},
+    "mattersim-1m": {"potential": os.path.join(_MS, "mattersim-v1.0.0-1M_mliap.pt"), "potential_qha": os.path.join(_MS, "mattersim-v1.0.0-1M.pth"), "pair_style": "mliap unified {potential} 0", "pair_coeff": "* * Al Li",
+                     "model": "MatterSim-v1.0.0-1M (float32, ML-IAP)", "lmp_gpu": LMP_MLIAP_MATTERSIM, "tag": "_mattersim_1m", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "mattersim"},
+    # NequIP-OAM-L 0.1 (MIR group, CC-BY-4.0; Matbench F1 0.893, kappa_SRME 0.166) through ML-IAP unified: nequip-prepare-lmp-mliap export with
+    # OpenEquivariance (Slurm 23000: hybrid/scaled/kk correct, 0.0125/0.029 s/step at 108/256 atoms). QHA: the package file is AOTI-compiled for the
+    # job's device inside the runner (nequip-compile --target ase, ~2 min) and used through NequIPCalculator.
+    "nequip-oam-l": {"potential": os.path.join(_NQ, "NequIP-OAM-L-0.1.nequip.lmp.pt"), "potential_qha": os.path.join(_NQ, "NequIP-OAM-L-0.1.nequip.zip"), "pair_style": "mliap unified {potential} 0", "pair_coeff": "* * Al Li",
+                     "model": "NequIP-OAM-L 0.1 (ML-IAP, OpenEquivariance)", "lmp_gpu": LMP_MLIAP_NEQUIP, "tag": "_nequip_oam_l", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "nequip"},
+    # the pair_style mace route of pk 4293 (env/lammps-torch, lmp_mace.sh prepends atom_modify map yes), kept for comparison runs
+    "mace-mpa-0-pairstyle": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
+                   "model": "MACE-MPA-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0_pairstyle", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
     "mace-omat-0": {"potential": os.path.join(_MAC, "maceomat0mediummodel.model-lammps.pt"),   # (float64 TorchScript; make a -f32 copy with mace_create_lammps_model --dtype float32 before using it) "potential_qha": os.path.join(_MAC, "maceomat0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
                     "model": "MACE-OMAT-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_omat_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
 })
@@ -288,7 +310,8 @@ def main():
         "calphy_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1 if (gpu or torch_mlip) else a.cpu_cores}, "max_wallclock_seconds": 48 * 3600,
                                          "queue_name": "debug", "withmpi": False,
                                          "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if (gpu or torch_mlip) else "")}),
-        "calphy_extra": orm.Dict(dict={"gpu": False, "cores": 1, "lammps_executable": lmp_gpu, **({"extra": MLIPS[a.mlip]["calphy_block_extra"]} if MLIPS[a.mlip].get("calphy_block_extra") else {})} if torch_mlip else ({"gpu": True, "lammps_executable": lmp_gpu} if gpu else {"gpu": False, "cores": a.cpu_cores})),
+        "calphy_extra": orm.Dict(dict={"gpu": False, "cores": 1, "lammps_executable": lmp_gpu, **({"extra": MLIPS[a.mlip]["calphy_block_extra"]} if MLIPS[a.mlip].get("calphy_block_extra") else {})} if (torch_mlip and not MLIPS[a.mlip].get("calphy_gpu"))
+                                  else ({"gpu": True, "lammps_executable": lmp_gpu} if (gpu or torch_mlip) else {"gpu": False, "cores": a.cpu_cores})),   # calphy_gpu (ML-IAP): Kokkos cmdargs + hybrid/scaled/kk like ACE/GRACE
         "metadata": {"label": f"ftphase txdiagram {name}", "description": descr},
     }
     if pot_qha:
