@@ -18,6 +18,10 @@ conda activate "$ENV"
 set -u
 export NVCC_WRAPPER_DEFAULT_COMPILER=x86_64-conda-linux-gnu-g++
 export OMPI_CXX="$SRC/lib/kokkos/bin/nvcc_wrapper"
+# LAMMPS source patch (env/patches/README.md, 2026-10-30): CommBrick pair comm buffer growth. Needed for the host path of the
+# Kokkos ML-IAP forward_exchange (CPU build env/lammps-cpu-mliap); harmless for the device path used here. The installed
+# lmp_gpumliap of 2026-10-30 predates the patch (same source tree otherwise).
+patch -p1 -N -r - -d "$SRC" < "$ROOT/../patches/lammps-30Sep2026-comm_brick-pair-comm-buffers.patch" || true
 mkdir -p "$ROOT/build" && cd "$ROOT/build"
 cmake "$SRC/cmake" \
   -D CMAKE_BUILD_TYPE=Release \

@@ -1,0 +1,22 @@
+host mygarden5 job 23008 2026年 10月 30日 金曜日 22:22:34 JST cpus 4
+FAILED ms5M np=1 v0: cpu_ms5M_np1_v0.err:AttributeError: 'mliap_unified_couple.MLIAPDataPy' object has no attribute 'forward_exchange'
+ms5M np=1 v0  0.0000 s/step(108)  wall 7 s
+FAILED ms5M np=1 v3: cpu_ms5M_np1_v3.err:AttributeError: 'mliap_unified_couple.MLIAPDataPy' object has no attribute 'forward_exchange'
+ms5M np=1 v3  0.0000 s/step(108)  wall 6 s
+FAILED ms5M np=4 v0: cpu_ms5M_np4_v0.err:AttributeError: 'mliap_unified_couple.MLIAPDataPy' object has no attribute 'forward_exchange'
+ms5M np=4 v0  0.0000 s/step(108)  wall 7 s
+FAILED ms5M np=4 v3: cpu_ms5M_np4_v3.err:AttributeError: 'mliap_unified_couple.MLIAPDataPy' object has no attribute 'forward_exchange'
+ms5M np=4 v3  0.0000 s/step(108)  wall 7 s
+FAILED ms5M 256 np=4: cpu_ms5M_256.err:AttributeError: 'mliap_unified_couple.MLIAPDataPy' object has no attribute 'forward_exchange'
+ms5M 256 atoms np=4: 0.0000 s/step
+FAILED nequip_plain np=1 v0: cpu_nequip_plain_np1_v0.err:W1030 22:23:52.819000 3229244 site-packages/torch/_functorch/_aot_autograd/graph_compile.py:2122] [7/0]     raise InductorError(e, currentframe()).with_traceback(
+nequip_plain np=1 v0  0.0000 s/step(108)  wall 80 s
+FAILED nequip_plain np=1 v3: cpu_nequip_plain_np1_v3.err:W1030 22:25:05.298000 3232232 site-packages/torch/_functorch/_aot_autograd/graph_compile.py:2122] [7/0]     raise InductorError(e, currentframe()).with_traceback(
+nequip_plain np=1 v3  0.0000 s/step(108)  wall 46 s
+FAILED nequip_plain np=4 v0: cpu_nequip_plain_np4_v0.err:W1030 22:25:43.032000 3233465 site-packages/torch/_functorch/_aot_autograd/graph_compile.py:2122] [7/0]     raise InductorError(e, currentframe()).with_traceback(
+nequip_plain np=4 v0  0.0000 s/step(108)  wall 49 s
+FAILED nequip_plain np=4 v3: cpu_nequip_plain_np4_v3.err:W1030 22:26:33.461000 3234779 site-packages/torch/_functorch/_aot_autograd/graph_compile.py:2122] [7/0]     raise InductorError(e, currentframe()).with_traceback(
+nequip_plain np=4 v3  0.0000 s/step(108)  wall 648 s
+FAILED nequip_plain 256 np=4: cpu_nequip_plain_256.err:W1030 22:37:12.292000 3241060 site-packages/torch/_functorch/_aot_autograd/graph_compile.py:2122] [7/0]     raise InductorError(e, currentframe()).with_traceback(
+nequip_plain 256 atoms np=4: 0.0000 s/step
+done 2026年 10月 30日 金曜日 22:37:27 JST

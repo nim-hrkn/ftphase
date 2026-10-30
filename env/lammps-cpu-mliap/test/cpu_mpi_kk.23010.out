@@ -1,0 +1,12 @@
+host mygarden5 job 23010 2026年 10月 30日 金曜日 23:58:40 JST cpus 4
+ms5M np=1 v0 pe=-403.17566 press=-3403.4585 | pe=-391.66479 press=-93137.681 | pe=-391.66479 press=-88961.224 | pe=-389.43048 press=-82689.641 |  0.4581 s/step(108)  wall 62 s
+ms5M np=1 v3 pe=-281.68908 press=-1185.9804 | pe=-273.83012 press=-64496.024 | pe=-273.83012 press=-60319.567 | pe=-272.18368 press=-55730.29 |  0.4535 s/step(108)  wall 63 s
+ms5M np=4 v0 pe=-403.1757 press=-3403.4603 | pe=-391.66483 press=-93137.691 | pe=-391.66483 press=-88961.234 | pe=-389.43048 press=-82689.64 |  0.2176 s/step(108)  wall 33 s
+ms5M np=4 v3 pe=-281.6891 press=-1185.977 | pe=-273.83013 press=-64496.029 | pe=-273.83013 press=-60319.573 | pe=-272.18369 press=-55730.291 |  0.2295 s/step(108)  wall 36 s
+ms5M 256 atoms np=4: 0.7264 s/step
+nequip_plain np=1 v0 pe=-404.08091 press=2017.6658 | pe=-392.70495 press=-87851.351 | pe=-392.70495 press=-83674.894 | pe=-390.74184 press=-77025.77 |  2.3958 s/step(108)  wall 302 s
+nequip_plain np=1 v3 pe=-282.32276 press=2608.8143 | pe=-274.55824 press=-60795.595 | pe=-274.55824 press=-56619.138 | pe=-273.11872 press=-51800.351 |  2.3580 s/step(108)  wall 300 s
+nequip_plain np=4 v0 pe=-404.08096 press=2017.6694 | pe=-392.705 press=-87851.307 | pe=-392.705 press=-83674.85 | pe=-390.74185 press=-77025.772 |  1.0671 s/step(108)  wall 139 s
+nequip_plain np=4 v3 pe=-282.32279 press=2608.8153 | pe=-274.55827 press=-60795.563 | pe=-274.55827 press=-56619.107 | pe=-273.11872 press=-51800.352 |  1.0835 s/step(108)  wall 142 s
+nequip_plain 256 atoms np=4: 2.9823 s/step
+done 2026年 10月 31日 土曜日 00:24:25 JST

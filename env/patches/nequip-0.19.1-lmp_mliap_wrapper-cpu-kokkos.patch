@@ -1,0 +1,17 @@
+--- a/nequip/integrations/lammps_mliap/lmp_mliap_wrapper.py
++++ b/nequip/integrations/lammps_mliap/lmp_mliap_wrapper.py
+@@ -139,8 +139,13 @@
+         model.is_compile_graph_model = False
+ 
+         # set device and "compile" model
++        # PhaseDiagram patch (2026-10-30): a KOKKOS build with the OpenMP/Serial backend (lmp_cpumliap) also uses the Kokkos
++        # coupling, but its arrays live on the host; pick cuda only when a GPU is actually available.
+         self.device = (
+-            "cuda" if "kokkos" in lmp_data.__class__.__module__.lower() else "cpu"
++            "cuda"
++            if "kokkos" in lmp_data.__class__.__module__.lower()
++            and torch.cuda.is_available()
++            else "cpu"
+         )
+         model = prepare_model_for_compile(model, self.device)
+ 

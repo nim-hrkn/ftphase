@@ -16,6 +16,7 @@ PREP=$ROOT/env/torch/bin/nequip-prepare-lmp-mliap
 "$PREP" "$SRC" "$OUT/$NAME.nequip.lmp.pt" --modifiers "$MODIFIER"
 "$PREP" "$SRC" "$OUT/$NAME-nocompile.nequip.lmp.pt" --modifiers "$MODIFIER" --no-compile
 "$PREP" "$SRC" "$OUT/$NAME-plain.nequip.lmp.pt"
+"$PREP" "$SRC" "$OUT/$NAME-plain-nocompile.nequip.lmp.pt" --no-compile   # the one for CPU runs: torch.compile on the CPU fails under g++ 13 (torch 2.11)
 if [[ "$SRC" == nequip.net:* ]]; then
   z=$(ls -t ~/.nequip/model_cache/*.nequip.zip 2>/dev/null | head -1); [ -n "$z" ] && cp -n "$z" "$OUT/$NAME.nequip.zip" || true
 elif [[ "$SRC" == *.nequip.zip ]]; then cp -n "$SRC" "$OUT/$NAME.nequip.zip" || true; fi
