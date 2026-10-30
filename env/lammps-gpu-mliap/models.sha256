@@ -1,0 +1,13 @@
+6f4420f487c0c185f311c4d313999daddc5c3628312f2d4d0d44f770774612ce  potentials/mattersim/mattersim-v1.0.0-1M_mliap.pt
+b6356acd34cf69ab298d406cfc3d9dbf1bdc8249c8f4f418574c3d617f21b350  potentials/mattersim/mattersim-v1.0.0-1M_mliap_nocompile.pt
+0fc3c2b0484d64978ff84dacef413e57eabaa6629bab56b5dd5645441f429ac0  potentials/mattersim/mattersim-v1.0.0-5M_mliap.pt
+d39639fb3aa2ccb2b3226658396f7466e7c1eca0fb961b7eb2f36ed835379178  potentials/mattersim/mattersim-v1.0.0-5M_mliap_nocompile.pt
+28b0b0b0f13efefee06b47ea4c9105a26bd3e2c8396da193430da96b3b49a8be  potentials/mattersim/mattersim-v1.0.0-1M.pth
+e3df9fa708725e3d453140646c7d1838324b347a3d1214cf1440522146f872b5  potentials/mattersim/mattersim-v1.0.0-5M.pth
+1061768ddc7f749f1e071af0759a6b54b65265e40ef44707ac7c13f04784cfbe  potentials/nequip/NequIP-OAM-L-0.1-nocompile.nequip.lmp.pt
+64bf639eff794164fa005889e651fe3c12d67d6f7d768ff560923b10540d6f66  potentials/nequip/NequIP-OAM-L-0.1-plain.nequip.lmp.pt
+fc9af53ae8736cc464dc3aed707322b142a635c82a1f47ce8177548866030ddb  potentials/nequip/NequIP-OAM-L-0.1.nequip.lmp.pt
+5d01a4fab228abb3cdb6ace0033f93993729956bca6a42234a2a8816825b9a0f  potentials/nequip/NequIP-OAM-L-0.1.nequip.zip
+7179c44d559aebc228a602a909ad3a6eb64ea490c441c1f488373dda44f4a4d8  potentials/mace/macempa0mediummodel.model-mliap_lammps-f32.pt
+a307acbf1e15c7146769b0d9684c74835af41f52e38aff07340cc2b7315b360a  potentials/mace/macempa0mediummodel.model-mliap_lammps.pt
+cfb4b2e5972a0eac7526b7eca8ef84fb64e3cdb96c2eda4960bcfdfd641581a3  potentials/sevenn/7net-0_mliap_oeq.pt
