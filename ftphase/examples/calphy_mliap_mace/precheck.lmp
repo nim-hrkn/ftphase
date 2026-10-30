@@ -1,0 +1,14 @@
+units metal
+boundary p p p
+atom_style atomic
+read_data lqd_x0.00.data
+mass 1 26.9815
+mass 2 6.94
+thermo_style custom step pe press vol
+pair_style mliap unified /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/mace/macempa0mediummodel.model-mliap_lammps-f32.pt 0
+pair_coeff * * Al Li
+run 0
+variable lam equal 1.0
+pair_style hybrid/scaled v_lam mliap unified /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/mace/macempa0mediummodel.model-mliap_lammps-f32.pt 0
+pair_coeff * * mliap Al Li
+run 0

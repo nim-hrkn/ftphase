@@ -21,7 +21,7 @@
 <ul>
 <li><strong>ASE 経由のみ</strong>（QHA・0 K 検証に使える、calphy の TI には使えない）：<code>alamode</code> 環境の MatterSim・SevenNet（torch あり）、mygardenx1 の tensorpotential（GRACE 全モデルの ASE calculator）と pyace。env/ftphase には torch・pyace は無い。</li>
 <li><strong>手元のポテンシャル</strong>：ACE Al–Li（<code>AlLi-6gen-18May.yace</code>、例 3〜8）、<code>potentials/grace/</code>（GRACE-FS-OAM.yaml：89 元素・6 Å、GRACE-1L-OMAT-medium-base-fp64 の kokkos.npz；他 44 モデルは <code>grace_models download</code>）、EAM（Al–Li workshop、Ni–Al Mishin 2009、Ag–Cu Williams 2006、Cu）、HDNNP の例ファイル。</li>
-<li><strong>使えないもの</strong>：MACE、SevenNet の LAMMPS 版（<code>e3gnn</code>）、NequIP/Allegro、CHGNet、DeePMD、UF3、POD。どのバイナリにも pair style が無く、calphy で使うには LAMMPS の別ビルド（ML-IAP + libtorch、または各プラグイン）が要る。</li>
+<li><strong>2026-10-24 時点で使えなかったもの</strong>：MACE、SevenNet の LAMMPS 版（<code>e3gnn</code>）、NequIP/Allegro、CHGNet、DeePMD、UF3、POD。その後 MACE・SevenNet は専用ビルド <code>env/lammps-torch</code>（10-24）と ML-IAP unified の <code>lmp_gpumliap</code>（10-30、§7）で使える。残り：fairchem（UMA/eSEN）は <code>fix external</code> のみで <code>hybrid/scaled</code> に入らず calphy 不可、ORB・CHGNet は公式経路なし。</li>
 <li><strong>推奨</strong>：系専用の精度が欲しければ ACE（pacemaker で学習、mygardenx1 で可）。学習なしで多元素なら GRACE-FS-OAM（GPU で calphy まで通る唯一の基盤モデル）。2L/3L は精度が上がるが Kokkos 版は <code>*-medium-base</code> 系（uqv6）に限られる。</li>
 </ul>
 
@@ -68,7 +68,7 @@
 </tbody></table>
 <ul>
 <li>「今すぐ可」は GRACE 系だけ（Kokkos 版が <code>lmp_gpugrace</code> にある）。層数の比較 FS → 1L → 2L → 3L は追加ビルドなし。</li>
-<li>libtorch 型（PET、NequIP、Allegro、SevenNet、MACE、DeePMD）は pair style 自身が GPU で動くので Kokkos も <code>hybrid/scaled/kk</code> も不要。通常ビルドに組み込めば calphy の全モードが GPU で走る。導入順：DeePMD（conda）→ SevenNet（Python 導入済み）→ MACE / NequIP → PET。</li>
+<li>libtorch 型（PET、NequIP、Allegro、SevenNet、MACE、DeePMD）は pair style 自身が GPU で動くので Kokkos も <code>hybrid/scaled/kk</code> も不要。通常ビルドに組み込めば calphy の全モードが GPU で走る。導入順：DeePMD（conda）→ SevenNet（Python 導入済み）→ MACE / NequIP → PET。<strong>2026-10-30 追記</strong>：モデルごとのビルドの代わりに ML-IAP unified（1 本の <code>lmp_gpumliap</code>）で MACE・SevenNet が動き、MatterSim・NequIP も同じ口で入る（§7）。</li>
 <li>上位 4 つ（Prophet、TECE、EquFlash、EquiformerV3）は LAMMPS 接続が見つからず、ASE 経由の 01・03A まで。ORB v3 と eSEN は要確認。</li>
 <li>精度（float32）は制約にならない（第 3 節）。制約は速度：2 層以上の等変モデルは GRACE-FS の 5〜20 倍遅く、例 8 規模で 1 本数時間〜半日。</li>
 </ul>
@@ -93,4 +93,65 @@
 <tr><td>実験 / DFT</td><td>≈−100 / ≈−190（DFT）</td><td>16.6 / 21.3</td><td>—</td><td>933.5</td><td>875（共晶、x ≈ 0.24）</td><td>≈0.12</td></tr>
 </tbody></table>
 <ul><li>0 K の生成エネルギーと体積は GRACE-FS 以外ほぼ一致（差 ≤ 20 meV/atom）。相図の差は振動（03A）と液相（03B）から来る。</li><li>固相の振動エントロピーが ACE より大きい MLIP（GRACE-FS、SevenNet-0：+1.1〜1.2 k_B；MF-ompa、MACE：+0.3 k_B）は固相を過安定化し、Al 融点を上げる。SevenNet-0 は 1100 K まで Al が融けない。</li><li>共晶・固溶限が実験に最も近いのは SevenNet-MF-ompa（850–860 K、0.132）。ただし Al 融点は 60 K 高い。ACE と GRACE-1L/2L は共晶が 100–150 K 低い。</li><li>単精度で実行（2026-10-25 のユーザー決定）。GRACE-3L は液相 1 本 6〜11 h のため比較から外した（2026-10-28）。</li><li>同じ spec・同じセル（seed 固定）・同じ温度格子・同じ fit；工程ごとの差の表と重ね描き図は <code>\1</code>（REPORT.md、overlay.png）。</li></ul>
+<h2>7. LAMMPS が MLIP を使う仕組みと、ML-IAP unified の検証（2026-10-30）</h2>
+<table><thead><tr><th>仕組み</th><th>内容</th><th>手元</th></tr></thead><tbody>
+<tr><td>組み込み pair style（C++）</td><td><code>pace</code>, <code>snap</code>, <code>mlip</code>(MTP), <code>hdnnp</code>, <code>m3gnet</code>。LAMMPS 本体のパッケージ</td><td>conda 版 <code>lmp_mpi</code> に全部</td></tr>
+<tr><td>fork / パッチの pair style（libtorch・TF）</td><td><code>e3gnn</code>(SevenNet), <code>mace</code>, <code>grace/*</code>, <code>nequip</code>/<code>allegro</code>, <code>metatomic</code>(PET), <code>matgl</code>。<strong>本体には未統合</strong>（stable_30Sep2026 の <code>src/ML-PACE</code> も pace のみ）。モデルごとに別ビルド</td><td><code>lmp_sevenn</code>, <code>lmp_mace</code>, <code>lmp_gpugrace</code></td></tr>
+<tr><td>Kokkos 版 <code>/kk</code></td><td>GPU 実行と calphy の <code>hybrid/scaled/kk</code></td><td>GRACE・ACE（<code>lmp_gpugrace</code>, <code>lmp_gpu</code>）、ML-IAP（<code>lmp_gpumliap</code>）</td></tr>
+<tr><td><strong>ML-IAP <code>unified</code></strong>（PYTHON + ML-IAP + Cython）</td><td><code>pair_style mliap unified model.pt 0</code>：pickle した Python オブジェクト（<code>MLIAPUnified</code> 派生）を LAMMPS 内蔵の Python に読み込む。非 Kokkos 版は numpy、Kokkos 版（<code>mliap_unified_couple_kokkos</code>）は cupy/torch の GPU 配列を直接渡し、<code>forward_exchange</code> で多層 GNN のゴースト原子を層ごとに交換（多 rank 対応）</td><td>conda 版 <code>liblammps.so</code> に両カップリングあり、<code>env/lammps-gpu-mliap/bin/lmp_gpumliap</code>（30Sep2026 + KOKKOS + ML-IAP + PYTHON、共有ライブラリ）は Kokkos 版 + <code>hybrid/scaled/kk</code></td></tr>
+<tr><td><code>plugin load</code></td><td>DeePMD の <code>libdeepmd_lmp.so</code></td><td>conda 版に PLUGIN あり、未使用</td></tr>
+<tr><td><code>fix external</code></td><td>fairchem（UMA/eSEN/eqV2）の <code>lmp_fc</code>。pair style ではないので <code>hybrid/scaled</code> に入らず <strong>calphy 不可</strong></td><td>—</td></tr>
+</tbody></table>
+<h3>7.1 検証（Slurm 22988、GPU 専有、108 原子 Al–Li セル、<code>env/lammps-gpu-mliap/test/</code>）</h3>
+<table><thead><tr><th>モデル</th><th>plain：pe (eV), 圧力 (bar)</th><th>hybrid/scaled/kk λ=1</th><th>λ=1.222</th><th>0.7 model + 0.3 ufm</th><th>既存 pair style</th></tr></thead><tbody>
+<tr><td>MACE-MPA-0 fp64（ML-IAP）</td><td>−403.92008, 607.25954</td><td>全桁一致</td><td>正確に ×1.222</td><td>−282.210（= 0.7·E + UFM 0.53 eV）、圧力 1622</td><td><code>pair_style mace</code>：−403.92008, 607.2595</td></tr>
+<tr><td>MACE-MPA-0 fp32（ML-IAP）</td><td>−403.92018, 607.457</td><td>一致（0.01 bar）</td><td>×1.222</td><td>同上</td><td><code>pair_style mace</code> fp32：−403.92018</td></tr>
+<tr><td>SevenNet-0 OEQ（ML-IAP）</td><td>−401.71027, 65.576</td><td>一致</td><td>×1.222</td><td>−280.663、圧力 1242</td><td><code>e3gnn</code> oeq：−401.71027, 65.562</td></tr>
+<tr><td>SevenNet-0 非 OEQ（ML-IAP）</td><td colspan="5"><strong>失敗</strong>：内蔵 Python の torch autograd 逆伝播で <code>free(): corrupted unsorted chunks</code>（env/torch の python から conda liblammps を駆動すると動く）。OEQ 版の export を使う</td></tr>
+</tbody></table>
+<p><code>pair_mliap</code> は F·r 方式でビリアルを返すので、§5 の <code>e3gnn</code> の圧力ゼロ問題は起きない。conda 版の ML-IAP（LJ 実装）でも同じ 4 ケースが一致した（<code>test/lj_hybrid_scaled_check.py</code>）。</p>
+<h3>7.2 速度（s/step、100 NVE ステップ、1 rank + 4 CPU、RTX 3060 専有）</h3>
+<table><thead><tr><th></th><th>108 原子</th><th>256 原子</th></tr></thead><tbody>
+<tr><td>MACE-MPA-0 fp64 — ML-IAP / <code>pair_style mace</code></td><td>0.391 / 0.467</td><td>0.944 / 1.036</td></tr>
+<tr><td>MACE-MPA-0 fp32 — ML-IAP / <code>pair_style mace</code></td><td><strong>0.037</strong> / 0.098</td><td><strong>0.090</strong> / 0.177</td></tr>
+<tr><td>SevenNet-0 OEQ — ML-IAP / <code>e3gnn</code></td><td>0.0111 / <strong>0.0076</strong></td><td>0.0132 / <strong>0.0095</strong></td></tr>
+<tr><td>SevenNet-0 非 OEQ — <code>e3gnn</code></td><td>0.0368</td><td>—</td></tr>
+</tbody></table>
+<p>MACE fp32 は ML-IAP の方が 2〜2.6 倍速く（例 8 の MACE 液相 573 分/本が半減する見込み）、SevenNet は専用 <code>e3gnn</code> + OEQ の方が 1.4 倍速い。Slurm 外で AiiDA の calphy ジョブと GPU を共有しながら測った値は比較に使わない（測定は AiiDA の GPU ジョブを <code>scontrol hold</code> して行った）。</p>
+<h3>7.3 落とし穴と手順</h3>
+<ul>
+<li>組み込み Python は libpython 3.12.15（実行時は env/ftphase から解決、同版）。<code>PYTHONHOME=env/mace</code> または <code>env/torch</code> で切り替える（<code>bin/lmp_mliap_mace.sh</code> / <code>lmp_mliap_sevenn.sh</code>）。その env に <code>cupy-cuda12x</code>（14.2.0、導入済み）、純 Python の <code>lammps</code> パッケージ（ラッパーの基底クラス <code>lammps.mliap.mliap_unified_abc</code>；<code>pip install env/lammps-gpu/src/python</code>、導入済み）、<code>TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1</code> が要る。</li>
+<li>MACE の export：<code>mace_create_lammps_model --format mliap</code>（mace-torch 0.3.16）は cuEquivariance 変換を強制して失敗（"Unexpected key(s) ... symmetric_contractions.weight"）。<code>test/mace_to_mliap.py &lt;model&gt; [float32]</code> が変換なしで書き出す（<code>potentials/mace/*-mliap_lammps{,-f32}.pt</code>）。</li>
+<li>SevenNet の export：<code>PYTHONPATH=&lt;lammps python package&gt; sevenn get_model 7net-0 -mliap -oeq</code>（GPU が見える状態で）。<code>potentials/sevenn/7net-0_mliap_oeq.pt</code>。</li>
+<li>22Jul2025 の <code>lammps.mliap.loader.activate_mliappy</code> は Kokkos モジュール名を知らないので、Python から駆動するときは <code>activate_mliappy_kokkos</code> と <code>mliap_unified_couple_kokkos.load_from_python</code> を使う（<code>test/mliap_kk.py</code>）。env/mace の h5py は conda liblammps の libhdf5 と衝突する（<code>import mace.data</code> を先に）。</li>
+<li>ビルド（<code>build.sh</code>、3 回で成功）：<code>set -u</code> は <code>conda activate</code> の後；共有ライブラリの応答ファイルを <code>nvcc_wrapper</code> が展開できないので <code>CMAKE_CXX_USE_RESPONSE_FILE_FOR_*=OFF</code>；FindPython が env/ftphase の libpython を拾うので <code>Python_*</code> を明示；<code>CMAKE_INSTALL_RPATH='$ORIGIN/../lib'</code>。</li>
+<li>calphy からの実行（2026-10-30、Slurm 22990、<code>ftphase/examples/calphy_mliap_mace/</code>）：<code>calculation_block(gpu=True, lammps_executable=…/lmp_mliap_mace.sh, pair_style="mliap unified &lt;f32 model&gt; 0", pair_coeff="* * Al Li")</code> で Al 256 原子の液相 ts 1100→700 K を、例 8 のジョブ pk 4356（<code>pair_style mace</code> fp32、<code>lmp_mace.sh</code>）と同じ設定で流した。結果は下表。<code>atom_modify map yes</code> は不要（precheck：plain と <code>hybrid/scaled/kk</code> λ=1 で pe −957.44065 / −957.44066 eV）。</li>
+<li>未了：多 rank（<code>forward_exchange</code>）、cuEquivariance、WorkChain の <code>MLIPS["mace-mpa-0"]</code> の切り替え（まだ <code>pair_style mace</code>）。</li>
+</ul>
+<table>
+<caption>calphy 液相 TI：ML-IAP unified vs <code>pair_style mace</code>（MACE-MPA-0 fp32、Al 256 原子、ts 1100→700 K、P = 0、各 10,000 ステップ × 3 反復、RTX 3060 1 枚；乱数種は独立）</caption>
+<tr><th></th><th><code>pair_style mace</code> fp32（pk 4356）</th><th>ML-IAP unified fp32（Slurm 22990）</th><th>差（meV/atom）</th></tr>
+<tr><td>G(1100 K)（eV/atom）</td><td>−4.187605</td><td>−4.187613</td><td>−0.01</td></tr>
+<tr><td>G(1000 K)</td><td>−4.110988 ± 0.00015</td><td>−4.110843 ± 0.00006</td><td>+0.15</td></tr>
+<tr><td>G(900 K)</td><td>−4.037360 ± 0.00012</td><td>−4.037227 ± 0.00010</td><td>+0.13</td></tr>
+<tr><td>G(800 K)</td><td>−3.967606 ± 0.00015</td><td>−3.967502 ± 0.00010</td><td>+0.10</td></tr>
+<tr><td>G(700 K)</td><td>−3.901996 ± 0.00017</td><td>−3.901848 ± 0.00008</td><td>+0.15</td></tr>
+<tr><td>体積（Å³/atom、1100 K）</td><td>19.4262</td><td>19.4139</td><td></td></tr>
+<tr><td>ts_dissipation（eV/atom）</td><td>0.00098</td><td>0.00105（既定しきい値 0.001 をわずかに超過、flag true）</td><td></td></tr>
+<tr><td>LAMMPS s/step（10,000 ステップ区間の中央値）</td><td>0.157</td><td>0.085</td><td>1.84 倍速</td></tr>
+<tr><td>calphy 壁時計</td><td>9.57 h</td><td>5.14 h</td><td>1.86 倍速</td></tr>
+</table>
+<p>差 0.1〜0.15 meV/atom は液相 TI の run 間ばらつき（例 6 で 0.1〜0.5 meV/atom）の範囲で、ML-IAP 経由の力とビリアルが <code>pair_style mace</code> と同じであることの calphy レベルの確認になる。参照ジョブは期間中に GPU を他の AiiDA ジョブと共有した可能性があるので <code>pair_style mace</code> 側の s/step は上限。ML-IAP の 0.085 s/step は専有ベンチマーク（0.090 s/step @256 原子）と一致する。時間測定のため投入時に保留中の AiiDA GPU ジョブ 45 本を <code>scontrol hold</code> し、本ジョブが走り出した直後に release した。</p>
+<h3>7.4 他の MLIP の LAMMPS 接続（一次資料の調査、2026-10-30）</h3>
+<table><thead><tr><th>MLIP</th><th>経路</th><th>作業量</th><th>calphy（hybrid/scaled）</th></tr></thead><tbody>
+<tr><td>NequIP / Allegro ≥0.7</td><td><code>pair_nequip_allegro</code> プラグイン（<code>nequip-compile</code> の AOTI <code>.pt2</code>）、または <code>nequip-prepare-lmp-mliap</code> → ML-IAP</td><td>別ビルド 1〜2 h / ML-IAP なら <code>lmp_gpumliap</code> のまま</td><td>可。<code>nequip</code> は 1 rank、Allegro は多 GPU</td></tr>
+<tr><td>MatterSim</td><td>公式 <code>MatterSimMLIAP</code> → ML-IAP（層ごとの forward/reverse exchange あり）</td><td><code>lmp_gpumliap</code> のまま</td><td>可（Python と 1e-6 eV/atom 一致と公表）</td></tr>
+<tr><td>MatGL（TensorNet, M3GNet）</td><td><code>pair_style matgl(/kk)</code>、<code>mgl create-lammps-model --dtype float32</code></td><td>別ビルド（libtorch）</td><td>可（原子別ビリアルなし、Kokkos は 1 GPU）</td></tr>
+<tr><td>DeePMD（DPA-3）</td><td><code>pair_style deepmd</code>、conda-forge <code>deepmd-kit lammps</code> または <code>plugin load libdeepmd_lmp.so</code></td><td>conda 1 コマンド</td><td>可</td></tr>
+<tr><td>PET / UPET（PET-MAD, PET-OMat）</td><td><code>pair_style metatomic(/kk)</code>、conda <code>lammps-metatomic</code>、<code>mtt export</code></td><td>conda（Kokkos 版は GPU アーキ別）</td><td>可（GPU は 1 rank/GPU）</td></tr>
+<tr><td>fairchem（UMA, eSEN, eqV2）</td><td><code>fairchem-lammps</code> の <code>lmp_fc</code> = <code>fix external pf/callback</code>（pair_style 禁止、単一 run）</td><td>pip</td><td><strong>不可</strong></td></tr>
+<tr><td>ORB v3 / CHGNet</td><td>公式経路なし（ORB は v1 の非公式パッチ、CHGNet は AdvanceSoft fork）</td><td>—</td><td>実質不可</td></tr>
+<tr><td>GRACE</td><td>fork / conda <code>grace.patch</code>（本体未統合）</td><td>導入済み</td><td>可（検証済み）</td></tr>
+</tbody></table>
+<p>出典：pair_nequip_allegro README、nequip docs（mliap）、mace-docs（lammps_mliap）、sevennet docs（lammps_mliap）、deepmd docs（dpa3、lammps-command）、metatomic docs（lammps）、fairchem docs/core/common_tasks/lammps.md、mattersim docs/user_guide/lammps.rst、matgl/lammps、lammps.org/ecosystem/ml-interop、docs.lammps.org/pair_mliap、LAMMPS src/KOKKOS/mliap_unified_couple_kokkos.pyx、src/pair_hybrid_scaled.cpp。</p>
 </body></html>

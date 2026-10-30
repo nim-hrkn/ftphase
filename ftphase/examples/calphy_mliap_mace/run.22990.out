@@ -1,0 +1,28 @@
+host mygarden5 job 22990 start 2026年 10月 30日 金曜日 07:35:43 JST
+NVIDIA GeForce RTX 3060, 0 %, 387 MiB
+other GPU processes: 2
+precheck pe press vol: -957.44065 8.5827064 4216.0381
+precheck pe press vol: -957.44066 8.5744294 4216.0381
+calphy_kernel exit 0, wall 18514 s, end 2026年 10月 30日 金曜日 12:44:23 JST
+lqd_x0.00-ts-lqd_x0.00.data-liquid-1100-0/report.yaml
+average:
+  density: 0.051513503458888776
+  vol_atom: 19.413889051506686
+input:
+  concentration: 1.0 0.0
+  element: Al Li
+  lattice: lqd_x0.00.data
+  pressure: 0.0
+  temperature: 1100
+results:
+  com_correction: 0.0
+  dissipation: 0.0010597481629360435
+  einstein_crystal: 0.0
+  error: 0.00020156610468632173
+  free_energy: -4.187612735712195
+  pv: 0.0
+  reference_system: 0.9105339928258646
+  ts_dissipation: 0.0010514555174947887
+  ts_dissipation_high: true
+  unit: eV/atom
+  work: 4.071203114009147

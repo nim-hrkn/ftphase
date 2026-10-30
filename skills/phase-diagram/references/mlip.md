@@ -14,13 +14,13 @@
 | MTP（MLIP-2） | `mlip` | ○ | × | × |
 | n2p2（HDNNP） | `hdnnp` | ○ | × | × |
 | M3GNet | `m3gnet` | ○（conda 版のみ） | × | × |
-| ML-IAP（PyTorch/NequIP 等のモデル） | `mliap`, `mliap/kk` | ○（conda 版のみ、要モデル） | × | × |
+| ML-IAP unified（MACE、SevenNet、MatterSim、NequIP、MatGL の Python モデル） | `mliap`, `mliap/kk` | ○（conda 版、Kokkos 結合あり） | × | × — **4 本目 `env/lammps-gpu-mliap/bin/lmp_gpumliap` で ○**（下の「LAMMPS が MLIP を使う仕組み」） |
 | RANN | `rann` | × | ○ | × |
 
 - GPU の calphy は `hybrid/scaled/kk` が要るので自前ビルドの 2 つだけ。conda 版 LAMMPS は GRACE の kk 版を持つが calphy の GPU 実行には使えない。`calculation_block(gpu=True)` が `<style>/kk` の有無で弾く。
 - ASE 経由のみ（QHA・0 K 検証に使える、calphy には使えない）：`alamode` 環境の MatterSim・SevenNet、mygardenx1 の tensorpotential（GRACE 全モデル）・pyace。env/ftphase には torch・pyace は無い。
 - 手元のポテンシャル：ACE Al–Li（`AlLi-6gen-18May.yace`）、`potentials/grace/`（GRACE-FS-OAM.yaml、GRACE-1L-OMAT-medium-base-fp64 kokkos.npz；他 44 モデルは `grace_models download`）、EAM（Al–Li、Ni–Al Mishin 2009、Ag–Cu Williams 2006、Cu）。
-- 使えないもの：MACE、SevenNet の LAMMPS 版（`e3gnn`）、NequIP/Allegro、CHGNet、DeePMD、UF3、POD（pair style が無い。別ビルドが要る）。
+- 2026-10-24 時点で使えなかったもの：MACE、SevenNet の LAMMPS 版（`e3gnn`）、NequIP/Allegro、CHGNet、DeePMD、UF3、POD。その後 MACE・SevenNet は専用ビルド `env/lammps-torch`（10-24）と ML-IAP unified の `lmp_gpumliap`（10-30）で使える。残り：fairchem（UMA/eSEN）は `fix external` のみで `hybrid/scaled` に入らず calphy 不可、ORB・CHGNet は公式経路なし。
 - 推奨：系専用の精度は ACE（pacemaker、mygardenx1 で学習可）。学習なしで多元素は GRACE-FS-OAM（GPU で calphy まで通る唯一の基盤モデル）。
 
 ## float32 と float64（2026-10-24 測定、`env/lammps-gpu-grace/test/prec/`）
@@ -101,7 +101,7 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 | — | GRACE-FS-OAM（表外、FS 型） | — | `grace/fs/kk`（導入済み） | 導入済み | 実行中（pk 1469、Al–Li 比較） |
 
 - 「今すぐ可」は GRACE 系だけ（Kokkos 版が `lmp_gpugrace` にある）。層数の比較 FS → 1L → 2L → 3L は追加ビルドなし。
-- libtorch 型（PET、NequIP、Allegro、SevenNet、MACE、DeePMD）は pair style 自身が GPU で動くので Kokkos も `hybrid/scaled/kk` も不要。通常ビルドに組み込めば calphy の全モードが GPU で走る。導入順：DeePMD（conda）→ SevenNet（Python 導入済み）→ MACE / NequIP → PET。
+- libtorch 型（PET、NequIP、Allegro、SevenNet、MACE、DeePMD）は pair style 自身が GPU で動くので Kokkos も `hybrid/scaled/kk` も不要。通常ビルドに組み込めば calphy の全モードが GPU で走る。導入順：DeePMD（conda）→ SevenNet（Python 導入済み）→ MACE / NequIP → PET。**2026-10-30 追記**：モデルごとのビルドの代わりに ML-IAP unified（1 本の `lmp_gpumliap`）で MACE・SevenNet が動き、MatterSim（公式 `MatterSimMLIAP`）・NequIP（`nequip-prepare-lmp-mliap`）も同じ口で入る（下節）。
 - 上位 4 つ（Prophet、TECE、EquFlash、EquiformerV3）は LAMMPS 接続が見つからず、ASE 経由の 01・03A まで。ORB v3 と eSEN は要確認。
 - 精度（float32）は制約にならない（上節）。制約は速度：2 層以上の等変モデル（MACE-MPA、SevenNet-Omni、eSEN）は GRACE-FS の 5〜20 倍遅く、例 8 規模で 1 本数時間〜半日。
 - 出典：Matbench Discovery leaderboard（https://matbench-discovery.materialsproject.org/）、lammps-metatomic（franken の interface_metatomic）、LAMMPS pair_style mliap、SevenNet / MACE / CURATOR の ML-IAP ガイド。
@@ -127,3 +127,24 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 
 - 「補間式を使わない」こと自体は MLIP を選ばない。EAM でしか安くないのは `fix sgcmc` だけ。
 - MLIP で B 系を回す順序：(1) 共存 MD で融点・液相線（GPU、ACE / GRACE-FS）、(2) 固溶限は `fix atom/swap` を GPU で試行数を減らして、または CE+MC（短距離秩序が本質の系）。固溶限の温度依存に振動が効く系（Ag–Cu 型）では MD 込みの `fix atom/swap` が必要で、CE+MC では出ない。
+
+## LAMMPS が MLIP を使う仕組みと、ML-IAP unified の検証（2026-10-30）
+
+| 仕組み | 内容 | 手元 |
+|---|---|---|
+| 組み込み pair style（C++） | `pace`, `snap`, `mlip`(MTP), `hdnnp`, `m3gnet`。LAMMPS 本体のパッケージ | conda 版 `lmp_mpi` に全部 |
+| fork / パッチの pair style（libtorch・TF） | `e3gnn`(SevenNet), `mace`, `grace/*`, `nequip`/`allegro`, `metatomic`(PET), `matgl`。**本体には未統合**（stable_30Sep2026 の `src/ML-PACE` も pace のみ）。モデルごとに別ビルド | `lmp_sevenn`, `lmp_mace`, `lmp_gpugrace` |
+| Kokkos 版 `/kk` | GPU 実行と calphy の `hybrid/scaled/kk` | GRACE・ACE（`lmp_gpugrace`, `lmp_gpu`）、ML-IAP（`lmp_gpumliap`） |
+| **ML-IAP `unified`**（PYTHON + ML-IAP + Cython） | `pair_style mliap unified model.pt 0`：pickle した Python オブジェクト（`MLIAPUnified` 派生）を LAMMPS 内蔵の Python に読み込む。非 Kokkos 版は numpy、Kokkos 版（`mliap_unified_couple_kokkos`）は cupy/torch の GPU 配列を直接渡し、`forward_exchange` で多層 GNN のゴースト原子を層ごとに交換（多 rank 対応） | conda 版 `liblammps.so` に両カップリングあり（`PyInit_mliap_unified_couple[_kokkos]`）、`lmp_gpumliap` は Kokkos 版 + `hybrid/scaled/kk` |
+| `plugin load` | DeePMD の `libdeepmd_lmp.so` | conda 版に PLUGIN あり、未使用 |
+| `fix external` | fairchem（UMA/eSEN/eqV2）の `lmp_fc`。pair style ではないので `hybrid/scaled` に入らず **calphy 不可** | — |
+
+検証（`env/lammps-gpu-mliap/README.md`、Slurm 22988、GPU 専有、108 原子 Al–Li セル）：
+
+- `hybrid/scaled` 下のビリアル：ML-IAP の LJ 実装（conda 版）、MACE-MPA-0 fp64/fp32、SevenNet-0 OEQ の全部で plain = λ=1、λ=1.222 で pe・圧力が正確に 1.222 倍、0.7 model + 0.3 ufm（calphy の液相経路）で圧力非ゼロ。`pair_mliap` は F·r 方式で、SevenNet `e3gnn` の圧力ゼロ問題は起きない。
+- エネルギー一致：MACE fp64 −403.92008 eV / 607.25954 bar（`pair_style mace` と全桁一致）、fp32 −403.92018（差 1 µeV/atom）、SevenNet-0 OEQ −401.71027 eV（`e3gnn` と一致）。
+- 速度（s/step、108 / 256 原子、RTX 3060 専有）：MACE fp64 ML-IAP 0.391 / 0.944 vs `pair_style mace` 0.467 / 1.036；**MACE fp32 ML-IAP 0.037 / 0.090 vs `pair_style mace` 0.098 / 0.177（2〜2.6 倍速）**；SevenNet-0 OEQ ML-IAP 0.0111 / 0.0132 vs `e3gnn` 0.0076 / 0.0095（専用 pair style の方が 1.4 倍速）。MACE の液相 calphy（573 分/本）は ML-IAP fp32 で半減する見込み。
+- 落とし穴：(1) ラッパーの基底クラスのため組み込み Python の env（PYTHONHOME）に `lammps` 純 Python パッケージと `cupy-cuda12x` が要る；(2) `mace_create_lammps_model --format mliap` は cuEquivariance 変換を強制して失敗 → `test/mace_to_mliap.py`；(3) SevenNet は **OEQ 版の export だけ**動く（非 OEQ は内蔵 Python の torch autograd で heap 破損）；(4) 22Jul2025 の `lammps.mliap.loader` は Kokkos モジュール名を知らない（`activate_mliappy_kokkos` を使う）；(5) env/mace の h5py と conda liblammps の libhdf5 が衝突（`import mace.data` を先に）；(6) ビルドは `set -u` の位置、応答ファイル、FindPython、rpath の 4 点（README）。
+- 他の MLIP の接続経路（一次資料、2026-10-30）：NequIP/Allegro ≥0.7 は `pair_nequip_allegro`（AOTI）か `nequip-prepare-lmp-mliap`→ML-IAP；MatterSim は公式 `MatterSimMLIAP`→ML-IAP（層ごと exchange あり）；MatGL（TensorNet/M3GNet）は `pair_style matgl(/kk)` 別ビルド；DeePMD（DPA-3）は conda `deepmd-kit lammps` / `plugin load`；PET/UPET は `pair_style metatomic(/kk)`（conda `lammps-metatomic`）；fairchem は `fix external` のみ（calphy 不可）；ORB v3・CHGNet は公式経路なし。GRACE は fork / conda `grace.patch` のまま本体未統合。
+- calphy からの実行（2026-10-30、Slurm 22990、`ftphase/examples/calphy_mliap_mace/`）：`calculation_block(gpu=True, lammps_executable=…/lmp_mliap_mace.sh, pair_style="mliap unified <f32 model> 0", pair_coeff="* * Al Li")` で Al 256 原子の液相 ts 1100→700 K を例 8 のジョブ pk 4356（`pair_style mace` fp32）と同設定で流した。G(1100 K) −4.187613 vs −4.187605 eV/atom、700〜1000 K で +0.10〜+0.15 meV/atom（乱数種が異なる独立 run；液相の run 間ばらつき 0.1〜0.5 meV/atom の範囲）。0.085 vs 0.157 s/step、calphy 壁時計 5.14 h vs 9.57 h（1.85 倍速）。`atom_modify map yes` は不要。`ts_dissipation` 1.05 meV/atom は既定しきい値 1 meV をわずかに超過（参照 0.98）。
+- 未了：多 rank（`forward_exchange`）、cuEquivariance、WorkChain の `MLIPS["mace-mpa-0"]` の切り替え（まだ `pair_style mace`）。

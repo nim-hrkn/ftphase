@@ -1,0 +1,38 @@
+host mygarden5 job 22988 2026年 10月 30日 金曜日 02:46:40 JST
+NVIDIA GeForce RTX 3060, 0 %, 387 MiB
+other GPU processes: 2
+--- correctness (run 0 pe / press): v0 plain, v1 hs lambda=1, v2 hs lambda=1.222, v3 0.7 model + 0.3 ufm
+mace64 v0 pe=-403.92008 press=607.25954 | pe=-391.88887 press=-90253.539 | pe=-391.88887 press=-86077.083 | pe=-389.98288 press=-81544.512 |  0.3909 s/step(108)
+mace64 v1 pe=-403.92008 press=607.25954 | pe=-391.88887 press=-90253.539 | pe=-391.88887 press=-86077.083 | pe=-389.98288 press=-81544.512 |  0.3897 s/step(108)
+mace64 v2 pe=-493.68001 press=742.20597 | pe=-478.9752 press=-110309.86 | pe=-478.9752 press=-106133.4 | pe=-476.70806 press=-100748.93 |  0.3915 s/step(108)
+mace64 v3 pe=-282.21017 press=1621.5272 | pe=-273.98697 press=-62477.124 | pe=-273.98697 press=-58300.667 | pe=-272.59248 press=-55000.84 |  0.3924 s/step(108)
+mace32 v0 pe=-403.92018 press=607.45696 | pe=-391.88887 press=-90253.539 | pe=-391.88887 press=-86077.083 | pe=-389.9829 press=-81544.505 |  0.0370 s/step(108)
+mace32 v1 pe=-403.92018 press=607.47111 | pe=-391.88887 press=-90253.539 | pe=-391.88887 press=-86077.083 | pe=-389.9829 press=-81544.504 |  0.0371 s/step(108)
+mace32 v2 pe=-493.68013 press=742.45486 | pe=-478.9752 press=-110309.87 | pe=-478.9752 press=-106133.42 | pe=-476.70807 press=-100748.91 |  0.0371 s/step(108)
+mace32 v3 pe=-282.21024 press=1621.6794 | pe=-273.98698 press=-62477.124 | pe=-273.98698 press=-58300.668 | pe=-272.59249 press=-55000.845 |  0.0376 s/step(108)
+FAILED sevenn0 v0: kk_sevenn0_v0.err:[mygarden5:2791348] *** End of error message ***
+sevenn0 v0  0.0000 s/step(108)
+FAILED sevenn0 v1: kk_sevenn0_v1.err:[mygarden5:2791433] *** End of error message ***
+sevenn0 v1  0.0000 s/step(108)
+FAILED sevenn0 v2: kk_sevenn0_v2.err:[mygarden5:2791532] *** End of error message ***
+sevenn0 v2  0.0000 s/step(108)
+FAILED sevenn0 v3: kk_sevenn0_v3.err:[mygarden5:2791600] *** End of error message ***
+sevenn0 v3  0.0000 s/step(108)
+sevenn0oeq v0 pe=-401.71027 press=65.576024 | pe=-390.5694 press=-85643.758 | pe=-390.5694 press=-81467.303 | pe=-389.44641 press=-77137.384 |  0.0111 s/step(108)
+sevenn0oeq v1 pe=-401.71027 press=65.576769 | pe=-390.5694 press=-85643.758 | pe=-390.5694 press=-81467.304 | pe=-389.44638 press=-77137.384 |  0.0113 s/step(108)
+sevenn0oeq v2 pe=-490.97912 press=80.146965 | pe=-477.36251 press=-104675.69 | pe=-477.36251 press=-100499.23 | pe=-476.01582 press=-95289.323 |  0.0113 s/step(108)
+sevenn0oeq v3 pe=-280.6633 press=1242.3484 | pe=-273.06335 press=-59250.277 | pe=-273.06332 press=-55073.821 | pe=-272.24569 press=-51975.14 |  0.0117 s/step(108)
+--- libtorch pair styles, 108 atoms
+pair mace fp64 pe0=-403.92008 0.4667 s/step
+pair mace fp32 pe0=-403.92018 0.0979 s/step
+pair e3gnn oeq pe0=-401.71027 0.0076 s/step
+pair e3gnn no-oeq pe0=-401.71027 0.0368 s/step
+--- 256 atoms
+mliap mace fp64 256: pe0=-849.899 0.9444 s/step
+mliap mace fp32 256: pe0=-849.89867 0.0899 s/step
+mliap sevenn0 oeq 256: pe0=-853.58685 0.0132 s/step
+mliap sevenn0 256: pe0= 0.0000 s/step
+pair mace fp64 256: pe0=-849.899 1.0361 s/step
+pair mace fp32 256: pe0=-849.89892 0.1773 s/step
+pair e3gnn oeq 256: pe0=-853.58685 0.0095 s/step
+done 2026年 10月 30日 金曜日 02:58:55 JST
