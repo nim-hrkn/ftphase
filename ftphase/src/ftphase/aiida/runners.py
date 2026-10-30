@@ -53,6 +53,8 @@ def make_calculator(inp: dict, pot: str):
             inc = os.path.join(os.path.dirname(os.path.dirname(_sys.executable)), "include")
             env["CPATH"] = inc + (":" + env["CPATH"] if env.get("CPATH") else "")
             env.setdefault("TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD", "1")
+            # torch's AOTInductor needs CUDA_HOME for a cuda device; env/torch carries the conda cuda toolkit (nvcc, include/)
+            env.setdefault("CUDA_HOME", os.path.dirname(os.path.dirname(_sys.executable)))
             subprocess.run([os.path.join(os.path.dirname(_sys.executable), "nequip-compile"), pot, out, "--mode", "aotinductor", "--device", device, "--target", "ase"], check=True, env=env)
             pot = out
         return NequIPCalculator.from_compiled_model(pot, device=device, chemical_species_to_atom_type_map=inp.get("species_map") or {s: s for s in inp.get("atom_types", {})})
