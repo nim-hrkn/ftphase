@@ -1,0 +1,12 @@
+{
+ "pk": 4784,
+ "uuid": "57947059-9c7e-42f0-92db-2ee82c9e039f",
+ "name": "nial_grace_fs",
+ "profile": "ftphase",
+ "submitted": "2026-10-30 01:28:22",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden5",
+ "qha_computer": "mygardenx2",
+ "mlip": "grace-fs"
+}

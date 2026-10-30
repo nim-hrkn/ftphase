@@ -1,0 +1,12 @@
+{
+ "pk": 4928,
+ "uuid": "88afb12a-7f52-41f2-a856-89f478cb9d03",
+ "name": "agcu_sevenn_0",
+ "profile": "ftphase",
+ "submitted": "2026-10-30 01:28:32",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden6",
+ "qha_computer": "mygardenx2",
+ "mlip": "sevenn-0"
+}

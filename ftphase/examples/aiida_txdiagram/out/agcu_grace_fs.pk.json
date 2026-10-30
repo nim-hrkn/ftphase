@@ -1,0 +1,12 @@
+{
+ "pk": 4869,
+ "uuid": "b9d41cd5-b436-41d7-a414-c64c53724fae",
+ "name": "agcu_grace_fs",
+ "profile": "ftphase",
+ "submitted": "2026-10-30 01:28:27",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden6",
+ "qha_computer": "mygardenx2",
+ "mlip": "grace-fs"
+}

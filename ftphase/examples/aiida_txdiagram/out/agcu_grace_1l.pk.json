@@ -1,0 +1,12 @@
+{
+ "pk": 4900,
+ "uuid": "59831f06-991f-4869-82fb-99116a52813f",
+ "name": "agcu_grace_1l",
+ "profile": "ftphase",
+ "submitted": "2026-10-30 01:28:30",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden5",
+ "qha_computer": "mygarden5",
+ "mlip": "grace-1l"
+}

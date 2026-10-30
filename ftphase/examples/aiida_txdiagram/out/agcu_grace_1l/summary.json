@@ -1,0 +1,126 @@
+{
+ "started": "2026-10-31 03:31:10",
+ "solids_used": [
+  "s00_fcc",
+  "s01_fcc",
+  "s02_fcc",
+  "s03_fcc",
+  "s04_fcc",
+  "s05_fcc",
+  "s06_fcc",
+  "s07_fcc",
+  "s08_fcc",
+  "s09_fcc",
+  "s10_fcc",
+  "s11_fcc",
+  "s12_fcc",
+  "s13_fcc",
+  "s14_fcc",
+  "s15_fcc",
+  "s16_fcc",
+  "s17_fcc",
+  "s18_fcc",
+  "s19_fcc",
+  "s20_fcc",
+  "s21_fcc",
+  "s22_fcc",
+  "s23_fcc",
+  "s24_fcc"
+ ],
+ "solids_missing": [],
+ "liquids_used": [
+  "lqd_x0_00",
+  "lqd_x0_20",
+  "lqd_x0_40",
+  "lqd_x0_50",
+  "lqd_x0_60",
+  "lqd_x0_80",
+  "lqd_x1_00"
+ ],
+ "liquids_missing": [],
+ "liquid_x_available": [
+  0.0,
+  0.19921875,
+  0.3984375,
+  0.5,
+  0.6015625,
+  0.80078125,
+  1.0
+ ],
+ "liquid_runs_per_x": {
+  "0.0000": 1,
+  "0.1992": 1,
+  "0.3984": 1,
+  "0.5000": 1,
+  "0.6016": 1,
+  "0.8008": 1,
+  "1.0000": 1
+ },
+ "liquid_T_min_K": {
+  "0.0000": 1050.0,
+  "0.1992": 950.0,
+  "0.3984": 950.0,
+  "0.5000": 950.0,
+  "0.6016": 950.0,
+  "0.8008": 950.0,
+  "1.0000": 1100.0
+ },
+ "table_check": [
+  "mixed quantum/classical treatment: ['classical', 'classical+harmonic-correction'] (see ftphase.quantum)"
+ ],
+ "T_grid": [
+  1100.0,
+  1400.0,
+  31
+ ],
+ "lowest_T_with_liquid_K": 1100.0,
+ "coexistence_at_that_T": [
+  {
+   "phase_a": "liquid",
+   "x_a": 0.02,
+   "phase_b": "fcc",
+   "x_b": 0.025
+  },
+  {
+   "phase_a": "fcc",
+   "x_a": 0.17023698029151,
+   "phase_b": "liquid",
+   "x_b": 0.23218042154102
+  },
+  {
+   "phase_a": "liquid",
+   "x_a": 0.30514524463469,
+   "phase_b": "fcc",
+   "x_b": 0.97519813374184
+  }
+ ],
+ "pure_A_melting_bracket_K": null,
+ "invariants": [],
+ "regions_at_700K": [],
+ "regions_at_800K": [],
+ "regions_at_900K": [],
+ "regions_at_1000K": [],
+ "same_phase_segments": [],
+ "fit_residuals": {
+  "T": 1100.0,
+  "rows": [
+   {
+    "T": 1100.0,
+    "phase": "fcc",
+    "rmse_eV": 0.0019968048632114,
+    "flag": false
+   },
+   {
+    "T": 1100.0,
+    "phase": "liquid",
+    "rmse_eV": 3.0524091870596e-05,
+    "flag": false
+   }
+  ]
+ },
+ "sigma_used_eV": {
+  "fcc": 0.002,
+  "liquid": 0.0014
+ },
+ "finished": "2026-10-31 03:31:17"
+}
