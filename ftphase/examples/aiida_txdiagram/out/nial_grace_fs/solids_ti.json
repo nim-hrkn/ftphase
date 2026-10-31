@@ -2,13 +2,13 @@
  "pk_workchain": 4784,
  "jobs": {
   "s00_fccAl": {
-   "pk": 6613,
+   "pk": 6732,
    "phase": "fccAl",
    "x": 0.0,
    "n_atoms": 2048,
    "T_sweep": [
-    600.0,
-    920.0
+    500.0,
+    860.0
    ]
   },
   "s03_fccNi": {

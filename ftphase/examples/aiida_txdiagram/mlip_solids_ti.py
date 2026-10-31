@@ -4,7 +4,7 @@ because QHA puts the melting points of several MLIPs far off (GRACE-FS / SevenNe
 Ni3Al; fcc Ag, fcc Cu), one CalphyCalculation each, on the calphy code of the original WorkChain.
 
     python mlip_solids_ti.py submit                 all six WorkChains (records out/<name>/solids_ti.json)
-    python mlip_solids_ti.py submit --names nial_sevenn_0 --only s03_fccNi --T-hi s03_fccNi=1700
+    python mlip_solids_ti.py submit --names nial_grace_fs --only s00_fccAl --T-lo s00_fccAl=500 --T-hi s00_fccAl=860
     python mlip_solids_ti.py status
     python mlip_solids_ti.py melt                   solid(TI)-liquid crossings -> out/mlip_compare_nial_agcu/melting_ti.tsv
     python mlip_solids_ti.py assemble [--names ..]  assemble_diagram with the TI sweeps -> out/<name>_ti/
@@ -43,7 +43,7 @@ def _rec_path(name):
     return os.path.join(OUT, name, "solids_ti.json")
 
 
-def submit(names, only=None, t_hi=None):
+def submit(names, only=None, t_hi=None, t_lo=None):
     from aiida import orm
     from aiida.engine import submit as aiida_submit
     from aiida.plugins import CalculationFactory
@@ -65,7 +65,7 @@ def submit(names, only=None, t_hi=None):
             structure = prep.outputs[f"solid_{key}"]
             n_rep = max(1, int(np.ceil((MIN_ATOMS / m["n_atoms"]) ** (1 / 3) - 1e-9)))
             big = repeat_structure(structure, orm.Int(n_rep))
-            T_sw = list(CELLS[name[:4]][cell]); T_sw[1] = float((t_hi or {}).get(key, T_sw[1]))
+            T_sw = list(CELLS[name[:4]][cell]); T_sw[1] = float((t_hi or {}).get(key, T_sw[1])); T_sw[0] = float((t_lo or {}).get(key, T_sw[0]))
             params = {"name": f"sol_{key}", "folder_prefix": f"sol_{key}", "mode": "ts", "elements": sp["elements"], "masses": sp["masses"], "pair_style": sp["pair_style"],
                       "pair_coeff": sp["pair_coeff"], "temperature": T_sw, "pressure": 0.0, "reference_phase": "solid", "n_equilibration_steps": 10000,
                       "n_switching_steps": [10000, 10000], "n_iterations": 1}
@@ -105,6 +105,10 @@ def melt(names):
         for key, j in json.load(open(_rec_path(name)))["jobs"].items():
             n = orm.load_node(j["pk"])
             liq = t[(t.phase == "liquid") & np.isclose(t.x, j["x"], atol=2e-3)].groupby("T")["G"].mean()
+            alli = os.path.join(OUT, "alli" + name[4:], "05_free_energies.tsv")
+            if name.startswith("nial") and j["x"] == 0.0 and os.path.exists(alli):   # pure-Al liquid of the Al-Li run (same MLIP) reaches 700 K; agrees within 0.6 meV/atom
+                ta = pd.read_csv(alli, sep="\t"); la = ta[(ta.phase == "liquid") & np.isclose(ta.x, 0.0)].groupby("T")["G"].mean()
+                liq = pd.concat([la[la.index < liq.index.min()], liq]).sort_index()
             qha = t[(t.phase == j["phase"]) & np.isclose(t.x, j["x"])].groupby("T")["G"].mean()
             r = {"run": name, "cell": key, "phase": j["phase"], "x": j["x"], "T_expt": EXPT.get((name[:4], j["phase"], j["x"])), "state": n.process_state.value, "exit": n.exit_status}
             if n.is_finished_ok and "sweep" in n.outputs and len(liq) > 1:
@@ -161,6 +165,7 @@ if __name__ == "__main__":
     ap.add_argument("--names", default=",".join(RUNS)); ap.add_argument("--profile", default="ftphase")
     ap.add_argument("--only", default=None, help="comma-separated solid keys to (re)submit")
     ap.add_argument("--T-hi", dest="t_hi", default=None, help="sweep-end overrides key=T,key=T")
+    ap.add_argument("--T-lo", dest="t_lo", default=None, help="sweep-start overrides key=T,key=T")
     a = ap.parse_args()
     from aiida import load_profile
 
@@ -168,4 +173,5 @@ if __name__ == "__main__":
     names = a.names.split(",")
     only = set(a.only.split(",")) if a.only else None
     t_hi = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in a.t_hi.split(",")} if a.t_hi else None
-    {"submit": lambda: submit(names, only, t_hi), "status": lambda: status(names), "melt": lambda: melt(names), "assemble": lambda: assemble(names)}[a.cmd]()
+    t_lo = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in a.t_lo.split(",")} if a.t_lo else None
+    {"submit": lambda: submit(names, only, t_hi, t_lo), "status": lambda: status(names), "melt": lambda: melt(names), "assemble": lambda: assemble(names)}[a.cmd]()
