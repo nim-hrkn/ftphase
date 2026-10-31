@@ -20,9 +20,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "out")
 MIN_ATOMS = 2000
 RUNS = {"nial_grace_fs": 4784, "nial_grace_1l": 4798, "nial_sevenn_0": 4813, "agcu_grace_fs": 4869, "agcu_grace_1l": 4900, "agcu_sevenn_0": 4928}
-#: (phase, x) -> sweep [T_lo, T_hi]; T_hi about 1.2 T_m(expt) so that a cell does not melt during the sweep (stage-5 Ni-Al EAM caps)
-CELLS = {"nial": {("fccAl", 0.0): [600.0, 1150.0], ("fccNi", 1.0): [1200.0, 1950.0], ("B2", 0.5): [1300.0, 2000.0], ("L12", 0.75): [1200.0, 1900.0]},
-         "agcu": {("fcc", 0.0): [800.0, 1350.0], ("fcc", 1.0): [900.0, 1500.0]}}
+#: (phase, x) -> sweep [T_lo, T_hi]; T_hi about 1.05 T_m(expt).  The first try with 1.2 T_m (pk 6503-6595) failed: GRACE-FS
+#: fcc Al melted at ~1000 K on the way to 1150 K (MeltedError, pk 6503), so the MLIP melting points are near the experimental
+#: ones and a superheated cell does not survive 1.2 T_m.  A crossing above T_hi is reported as "> T_hi" plus a linear extrapolation.
+CELLS = {"nial": {("fccAl", 0.0): [600.0, 920.0], ("fccNi", 1.0): [1200.0, 1800.0], ("B2", 0.5): [1300.0, 2000.0], ("L12", 0.75): [1200.0, 1750.0]},
+         "agcu": {("fcc", 0.0): [800.0, 1250.0], ("fcc", 1.0): [900.0, 1420.0]}}
 EXPT = {("nial", "fccAl", 0.0): 933, ("nial", "fccNi", 1.0): 1728, ("nial", "B2", 0.5): 1911, ("nial", "L12", 0.75): 1645, ("agcu", "fcc", 0.0): 1235, ("agcu", "fcc", 1.0): 1358}
 
 
@@ -112,6 +114,9 @@ def melt(names):
                 d = np.interp(grid, liq.index, liq.values) - np.interp(grid, Ts, Gs) if grid.size else np.array([])
                 s = np.where(np.diff(np.sign(d)) != 0)[0]
                 r["T_m_ti"] = f"{grid[s[0]]:.0f}" if s.size else ("> %.0f" % hi if d.size and d[-1] > 0 else "< %.0f" % lo if d.size else "no overlap")
+                if not s.size and d.size > 20:   # linear extrapolation of dG = G_liq - G_sol from the last/first 20 % of the overlap
+                    k = max(5, d.size // 5); sl = slice(-k, None) if d[-1] > 0 else slice(0, k)
+                    c = np.polyfit(grid[sl], d[sl], 1); r["T_m_extrap"] = round(float(-c[1] / c[0])) if c[0] != 0 else None
                 tm = 0.5 * (Ts.min() + Ts.max())
                 r["qha_minus_ti_meV@%s" % "mid"] = round(float((np.interp(tm, qha.index, qha.values) - np.interp(tm, Ts, Gs)) * 1000), 1) if len(qha) else None
                 r["T_mid"] = round(float(tm))
