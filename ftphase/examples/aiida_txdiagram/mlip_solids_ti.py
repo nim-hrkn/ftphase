@@ -101,7 +101,8 @@ def melt(names):
     for name in names:
         if not os.path.exists(_rec_path(name)):
             continue
-        t = pd.read_csv(os.path.join(OUT, name, "05_free_energies.tsv"), sep="\t")
+        ti_tab = os.path.join(OUT, name + "_ti", "05_free_energies.tsv")   # after `assemble`: includes rerun liquids
+        t = pd.read_csv(ti_tab if os.path.exists(ti_tab) else os.path.join(OUT, name, "05_free_energies.tsv"), sep="\t")
         for key, j in json.load(open(_rec_path(name)))["jobs"].items():
             n = orm.load_node(j["pk"])
             liq = t[(t.phase == "liquid") & np.isclose(t.x, j["x"], atol=2e-3)].groupby("T")["G"].mean()
@@ -114,7 +115,8 @@ def melt(names):
             if name.startswith("nial") and j["x"] == 0.0 and os.path.exists(alli):   # pure-Al liquid of the Al-Li run (same MLIP) reaches 700 K; agrees within 0.6 meV/atom
                 ta = pd.read_csv(alli, sep="\t"); la = ta[(ta.phase == "liquid") & np.isclose(ta.x, 0.0)].groupby("T")["G"].mean()
                 liq = pd.concat([la[la.index < liq.index.min()], liq]).sort_index()
-            qha = t[(t.phase == j["phase"]) & np.isclose(t.x, j["x"])].groupby("T")["G"].mean()
+            t0 = pd.read_csv(os.path.join(OUT, name, "05_free_energies.tsv"), sep="\t")   # QHA-only table of the original run
+            qha = t0[(t0.phase == j["phase"]) & np.isclose(t0.x, j["x"])].groupby("T")["G"].mean()
             r = {"run": name, "cell": key, "phase": j["phase"], "x": j["x"], "T_expt": EXPT.get((name[:4], j["phase"], j["x"])), "state": n.process_state.value, "exit": n.exit_status}
             if n.is_finished_ok and "sweep" in n.outputs and len(liq) > 1:
                 Ts, Gs = n.outputs.sweep.get_array("temperature"), n.outputs.sweep.get_array("free_energy")
@@ -155,6 +157,12 @@ def assemble(names):
             n = orm.load_node(j["pk"])
             if n.is_finished_ok and "sweep" in n.outputs:
                 nodes[f"sti_{key}"] = n.outputs.sweep
+        lr = os.path.join(OUT, name, "liquids_rerun.json")   # liquids rerun after a fix (agcu_sevenn_0: pair_e3gnn nedges bound)
+        if os.path.exists(lr):
+            for tag, j in json.load(open(lr))["jobs"].items():
+                n = orm.load_node(j["pk"])
+                if n.is_finished_ok and "sweep" in n.outputs:
+                    nodes[f"liq_{''.join(c if c.isalnum() else '_' for c in tag)}"] = n.outputs.sweep
         res = assemble_diagram(wc.inputs.spec, prep.outputs.solid_params, prep.outputs.liquid_params, **nodes)
         out = os.path.join(OUT, name + "_ti"); os.makedirs(out, exist_ok=True)
         for label, fn in (("report", "REPORT.md"), ("figure", "07_phase_diagram.png"), ("free_energies", "05_free_energies.tsv"), ("regions", "07_two_phase_regions.tsv"), ("invariants", "07_invariants.tsv")):

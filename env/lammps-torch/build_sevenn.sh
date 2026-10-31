@@ -15,6 +15,10 @@ if [ ! -d lammps_sevenn ]; then
   for f in lammps_sevenn/src/pair_e3gnn.cpp lammps_sevenn/src/pair_e3gnn_parallel.cpp; do
     grep -q no_virial_fdotr_compute "$f" || sed -i -E '0,/^(Pair[A-Za-z0-9_]+::Pair[A-Za-z0-9_]+\(LAMMPS \*lmp\)[^{]*\{)/s//\1\n  no_virial_fdotr_compute = 1;/' "$f"
   done
+  # Fix (2026-10-31): nedges_upper_bound = 1.2 x an earlier step's edge count is exceeded when a shell just outside the
+  # cutoff moves in (fcc Cu on heating; calphy Ag-Cu Cu-side liquids and Cu solid TI died with "nedges exceeded
+  # nedges_upper_bound").  Use the full-list length as the bound, heap buffers instead of stack VLAs.
+  patch -d lammps_sevenn -p1 < "$P/env/patches/sevenn-0.13-pair_e3gnn-nedges-bound.patch"
 fi
 export TORCH_CUDA_ARCH_LIST="8.6"
 mkdir -p build_sevenn && cd build_sevenn

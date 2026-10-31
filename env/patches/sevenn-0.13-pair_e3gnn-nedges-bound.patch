@@ -1,0 +1,32 @@
+--- a/src/pair_e3gnn.cpp	2026-10-31 18:16:15.013025718 +0900
++++ b/src/pair_e3gnn.cpp	2026-10-31 18:16:15.023737232 +0900
+@@ -110,19 +110,19 @@
+   int *numneigh = list->numneigh;      // j loop cond
+   int **firstneigh = list->firstneigh; // j list
+ 
+-  int bound;
+-  if (this->nedges_bound == -1) {
+-    bound = std::accumulate(numneigh, numneigh + nlocal, 0);
+-  } else {
+-    bound = this->nedges_bound;
+-  }
+-  const int nedges_upper_bound = bound;
++  // ftphase fix (2026-10-31): the upstream bound (1.2 x the edge count of an earlier step) is exceeded when a neighbour
++  // shell just outside the cutoff moves inside it (fcc Cu on heating) and the error fires before the bound is raised.
++  // The full neighbour list (cutoff + skin) holds every in-cutoff pair, so its length is a safe bound; heap buffers
++  // instead of variable-length stack arrays (2000+ atoms overflow the 8 MB stack).
++  const int nedges_upper_bound = std::accumulate(numneigh, numneigh + nlocal, 0);
+ 
+   std::vector<long> node_type;
+ 
+-  float edge_vec[nedges_upper_bound][3];
+-  long edge_idx_src[nedges_upper_bound];
+-  long edge_idx_dst[nedges_upper_bound];
++  std::vector<float> edge_vec_buf(3 * (size_t)nedges_upper_bound);
++  std::vector<long> edge_idx_src_buf(nedges_upper_bound), edge_idx_dst_buf(nedges_upper_bound);
++  float (*edge_vec)[3] = reinterpret_cast<float (*)[3]>(edge_vec_buf.data());
++  long *edge_idx_src = edge_idx_src_buf.data();
++  long *edge_idx_dst = edge_idx_dst_buf.data();
+ 
+   for (int ii = 0; ii < inum; ii++) {
+     // populate tag_map of local atoms

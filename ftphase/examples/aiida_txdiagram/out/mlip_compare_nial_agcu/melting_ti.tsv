@@ -7,12 +7,12 @@ nial_grace_1l	s00_fccAl	fccAl	0.0	933	finished	0.0	874	0.1	760.0
 nial_grace_1l	s03_fccNi	fccNi	1.0	1728	finished	0.0	1715	1.6	1500.0
 nial_grace_1l	s08_B2	B2	0.5	1911	finished	0.0	1797	-16.8	1650.0
 nial_grace_1l	s16_L12	L12	0.75	1645	finished	0.0	1615	-0.4	1475.0
-nial_sevenn_0	s00_fccAl	fccAl	0.0	933	waiting				
+nial_sevenn_0	s00_fccAl	fccAl	0.0	933	finished	0.0	784	-53.1	760.0
 nial_sevenn_0	s03_fccNi	fccNi	1.0	1728	waiting				
 nial_sevenn_0	s08_B2	B2	0.5	1911	waiting				
 nial_sevenn_0	s16_L12	L12	0.75	1645	waiting				
 agcu_grace_fs	s00_fcc	fcc	0.0	1235	waiting				
-agcu_grace_fs	s23_fcc	fcc	1.0	1358	waiting				
+agcu_grace_fs	s23_fcc	fcc	1.0	1358	finished	0.0	1190	-11.1	1160.0
 agcu_grace_1l	s00_fcc	fcc	0.0	1235	waiting				
 agcu_grace_1l	s23_fcc	fcc	1.0	1358	waiting				
 agcu_sevenn_0	s00_fcc	fcc	0.0	1235	waiting				

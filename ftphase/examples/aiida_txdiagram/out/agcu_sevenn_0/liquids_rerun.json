@@ -1,0 +1,22 @@
+{
+ "pk_workchain": 4928,
+ "note": "Cu-side liquids rerun with the nedges-bound fix of pair_e3gnn (2026-10-31)",
+ "jobs": {
+  "lqd_x0.50": {
+   "pk": 6769,
+   "old_pk": 5304
+  },
+  "lqd_x0.60": {
+   "pk": 6770,
+   "old_pk": 5308
+  },
+  "lqd_x0.80": {
+   "pk": 6771,
+   "old_pk": 5310
+  },
+  "lqd_x1.00": {
+   "pk": 6772,
+   "old_pk": 5314
+  }
+ }
+}
