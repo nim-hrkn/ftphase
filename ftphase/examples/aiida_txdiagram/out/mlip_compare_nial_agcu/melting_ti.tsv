@@ -1,19 +1,19 @@
-run	cell	phase	x	T_expt	state	exit	T_m_ti	qha_minus_ti_meV@mid	T_mid
-nial_grace_fs	s00_fccAl	fccAl	0.0	933	waiting				
-nial_grace_fs	s03_fccNi	fccNi	1.0	1728	finished	0.0	1654	-6.3	1500.0
-nial_grace_fs	s08_B2	B2	0.5	1911	finished	0.0	1670	-37.3	1650.0
-nial_grace_fs	s16_L12	L12	0.75	1645	finished	0.0	1512	-8.2	1475.0
-nial_grace_1l	s00_fccAl	fccAl	0.0	933	finished	0.0	874	0.1	760.0
-nial_grace_1l	s03_fccNi	fccNi	1.0	1728	finished	0.0	1715	1.6	1500.0
-nial_grace_1l	s08_B2	B2	0.5	1911	finished	0.0	1797	-16.8	1650.0
-nial_grace_1l	s16_L12	L12	0.75	1645	finished	0.0	1615	-0.4	1475.0
-nial_sevenn_0	s00_fccAl	fccAl	0.0	933	finished	0.0	784	-53.1	760.0
-nial_sevenn_0	s03_fccNi	fccNi	1.0	1728	waiting				
-nial_sevenn_0	s08_B2	B2	0.5	1911	waiting				
-nial_sevenn_0	s16_L12	L12	0.75	1645	waiting				
-agcu_grace_fs	s00_fcc	fcc	0.0	1235	waiting				
-agcu_grace_fs	s23_fcc	fcc	1.0	1358	finished	0.0	1190	-11.1	1160.0
-agcu_grace_1l	s00_fcc	fcc	0.0	1235	waiting				
-agcu_grace_1l	s23_fcc	fcc	1.0	1358	waiting				
-agcu_sevenn_0	s00_fcc	fcc	0.0	1235	waiting				
-agcu_sevenn_0	s23_fcc	fcc	1.0	1358	waiting				
+run	cell	phase	x	T_expt	state	exit	T_m_ti	T_m_extrap	qha_minus_ti_meV@mid	T_mid
+nial_grace_fs	s00_fccAl	fccAl	0.0	933	finished	0	< 700	626.0	-27.6	640
+nial_grace_fs	s03_fccNi	fccNi	1.0	1728	finished	0	1654		-6.3	1500
+nial_grace_fs	s08_B2	B2	0.5	1911	finished	0	1670		-37.3	1650
+nial_grace_fs	s16_L12	L12	0.75	1645	finished	0	1512		-8.2	1475
+nial_grace_1l	s00_fccAl	fccAl	0.0	933	finished	0	874		0.1	760
+nial_grace_1l	s03_fccNi	fccNi	1.0	1728	finished	0	1715		1.6	1500
+nial_grace_1l	s08_B2	B2	0.5	1911	finished	0	1797		-16.8	1650
+nial_grace_1l	s16_L12	L12	0.75	1645	finished	0	1615		-0.4	1475
+nial_sevenn_0	s00_fccAl	fccAl	0.0	933	finished	0	784		-53.1	760
+nial_sevenn_0	s03_fccNi	fccNi	1.0	1728	finished	0	< 1500	1461.0	24.0	1500
+nial_sevenn_0	s08_B2	B2	0.5	1911	finished	0	1964		-88.3	1650
+nial_sevenn_0	s16_L12	L12	0.75	1645	finished	0	1567		-39.1	1475
+agcu_grace_fs	s00_fcc	fcc	0.0	1235	finished	0	< 1050	930.0	-7.5	975
+agcu_grace_fs	s23_fcc	fcc	1.0	1358	finished	0	1190		-11.1	1160
+agcu_grace_1l	s00_fcc	fcc	0.0	1235	finished	0	< 1050	988.0	-7.6	1025
+agcu_grace_1l	s23_fcc	fcc	1.0	1358	finished	0	1310		-2.3	1160
+agcu_sevenn_0	s00_fcc	fcc	0.0	1235	finished	0	< 1050	949.0	-7.8	975
+agcu_sevenn_0	s23_fcc	fcc	1.0	1358	finished	0	1182		-11.9	1125
