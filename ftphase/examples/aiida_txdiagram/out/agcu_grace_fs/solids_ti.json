@@ -2,13 +2,13 @@
  "pk_workchain": 4869,
  "jobs": {
   "s00_fcc": {
-   "pk": 6677,
+   "pk": 6758,
    "phase": "fcc",
    "x": 0.0,
    "n_atoms": 2048,
    "T_sweep": [
     800.0,
-    1250.0
+    1150.0
    ]
   },
   "s23_fcc": {

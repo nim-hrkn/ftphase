@@ -105,6 +105,11 @@ def melt(names):
         for key, j in json.load(open(_rec_path(name)))["jobs"].items():
             n = orm.load_node(j["pk"])
             liq = t[(t.phase == "liquid") & np.isclose(t.x, j["x"], atol=2e-3)].groupby("T")["G"].mean()
+            lx = t[t.phase == "liquid"].x.unique()
+            if liq.empty and (lx < j["x"]).any() and (lx > j["x"]).any():   # e.g. L1_2 x=0.75: linear interpolation in x between the neighbouring liquid compositions (common temperatures)
+                lt = t[t.phase == "liquid"]; xs = np.sort(lt.x.unique()); xl, xh = xs[xs < j["x"]].max(), xs[xs > j["x"]].min()
+                gl, gh = (lt[np.isclose(lt.x, v)].groupby("T")["G"].mean() for v in (xl, xh)); Tc = gl.index.intersection(gh.index)
+                w = (j["x"] - xl) / (xh - xl); liq = (1 - w) * gl[Tc] + w * gh[Tc]
             alli = os.path.join(OUT, "alli" + name[4:], "05_free_energies.tsv")
             if name.startswith("nial") and j["x"] == 0.0 and os.path.exists(alli):   # pure-Al liquid of the Al-Li run (same MLIP) reaches 700 K; agrees within 0.6 meV/atom
                 ta = pd.read_csv(alli, sep="\t"); la = ta[(ta.phase == "liquid") & np.isclose(ta.x, 0.0)].groupby("T")["G"].mean()
