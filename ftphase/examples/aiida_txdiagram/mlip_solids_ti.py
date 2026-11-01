@@ -93,6 +93,9 @@ HOST2 = {"nial_grace_fs": ("calphy@mygardenx2", 12), "agcu_grace_fs": ("calphy@m
          "agcu_grace_1l": ("calphy@mygarden5", None), "nial_sevenn_0": ("calphy@mygarden5", None), "agcu_sevenn_0": ("calphy@mygarden6", None)}
 
 
+NONCUBIC = ("NiAl3", "Ni2Al3")   #: phases calphy's melt detection cannot classify
+
+
 def stage2_range(name, m):
     """Sweep [T_lo, T_hi] for an alloy cell, or None for cells that keep QHA (Ag-Cu 0.25 < x < 0.75, inside the miscibility gap, as in the
     EAM run) and for the stage-1 cells.  T_hi = the stage-1 melting point of the phase (alloy cells melt lower than the stoichiometric one,
@@ -152,6 +155,9 @@ def submit2(names, only=None, t_hi=None, t_lo=None, dry=False):
                       "pair_coeff": sp["pair_coeff"], "temperature": T_sw, "pressure": 0.0, "reference_phase": "solid", "n_equilibration_steps": 10000,
                       "n_switching_steps": [10000, 10000], "n_iterations": 1}
             params.update(extra)
+            if m["phase"] in NONCUBIC:   # calphy's solid detection (CNA) only knows bcc/fcc/hcp/sc/dia: an orthorhombic NiAl3 cell is
+                # reported as melted right after equilibration (GRACE-FS pk 7666).  Switch it off; check the sweep volume for a jump instead.
+                params["extra"] = {**params.get("extra", {}), "tolerance": {"solid_fraction": 0.0}}
             b = Calphy.get_builder()
             b.code = code; b.structure = big; b.potential = wc.inputs.potential; b.parameters = orm.Dict(dict=params)
             b.metadata.options = opts

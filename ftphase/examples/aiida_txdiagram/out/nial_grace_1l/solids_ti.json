@@ -224,7 +224,7 @@
    "code": "calphy@mygarden6"
   },
   "s19_Ni2Al3": {
-   "pk": 7076,
+   "pk": 7923,
    "phase": "Ni2Al3",
    "x": 0.4,
    "n_atoms": 2560,
@@ -236,7 +236,7 @@
    "code": "calphy@mygarden6"
   },
   "s20_NiAl3": {
-   "pk": 7081,
+   "pk": 7928,
    "phase": "NiAl3",
    "x": 0.25,
    "n_atoms": 2000,
