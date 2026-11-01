@@ -5,6 +5,8 @@ Ni3Al; fcc Ag, fcc Cu), one CalphyCalculation each, on the calphy code of the or
 
     python mlip_solids_ti.py submit                 all six WorkChains (records out/<name>/solids_ti.json)
     python mlip_solids_ti.py submit --names nial_grace_fs --only s00_fccAl --T-lo s00_fccAl=500 --T-hi s00_fccAl=860
+    python mlip_solids_ti.py submit2 [--dry]        stage 2 (2026-11-01): every alloy cell, sweep caps from the stage-1 melting points
+    python mlip_solids_ti.py liqlow [--dry]         Ag-Cu liquids from (old lowest T + 100 K) down to 750 K (records out/<name>/liquids_low.json)
     python mlip_solids_ti.py status
     python mlip_solids_ti.py melt                   solid(TI)-liquid crossings -> out/mlip_compare_nial_agcu/melting_ti.tsv
     python mlip_solids_ti.py assemble [--names ..]  assemble_diagram with the TI sweeps -> out/<name>_ti/
@@ -79,6 +81,153 @@ def submit(names, only=None, t_hi=None, t_lo=None):
             print(name, key, node.pk, len(big.sites), "atoms", T_sw, wc.inputs.calphy_code.full_label)
         with open(_rec_path(name), "w") as f:
             json.dump(rec, f, indent=1)
+
+
+#: stage-1 solid(TI)-liquid crossings (K, melting_ti.tsv; "~" values extrapolated) -> sweep caps of the stage-2 alloy cells
+TM1 = {"nial_grace_fs": {"fccAl": 630, "fccNi": 1654, "B2": 1670, "L12": 1512}, "nial_grace_1l": {"fccAl": 874, "fccNi": 1715, "B2": 1797, "L12": 1615},
+       "nial_sevenn_0": {"fccAl": 784, "fccNi": 1461, "B2": 1964, "L12": 1567},
+       "agcu_grace_fs": {"Ag": 930, "Cu": 1190}, "agcu_grace_1l": {"Ag": 988, "Cu": 1310}, "agcu_sevenn_0": {"Ag": 949, "Cu": 1182}}
+#: where the stage-2 jobs of each run go (user 2026-11-01: laurel, mygardenx1/x2, mygarden5/6 GPUs allowed; mygardenx1 was full,
+#: laurel has no ftphase env): GRACE-FS on the mygardenx2 CPUs (grace/fs + hybrid/scaled in the conda LAMMPS), the rest on the GPUs
+HOST2 = {"nial_grace_fs": ("calphy@mygardenx2", 12), "agcu_grace_fs": ("calphy@mygardenx2", 12), "nial_grace_1l": ("calphy@mygarden6", None),
+         "agcu_grace_1l": ("calphy@mygarden5", None), "nial_sevenn_0": ("calphy@mygarden5", None), "agcu_sevenn_0": ("calphy@mygarden6", None)}
+
+
+def stage2_range(name, m):
+    """Sweep [T_lo, T_hi] for an alloy cell, or None for cells that keep QHA (Ag-Cu 0.25 < x < 0.75, inside the miscibility gap, as in the
+    EAM run) and for the stage-1 cells.  T_hi = the stage-1 melting point of the phase (alloy cells melt lower than the stoichiometric one,
+    so no superheating margin); point phases: 0.9 x the Al-B2 interpolation; Ag-Cu: T_m(end) x (1 - 0.6 d), d = distance from that end."""
+    tm, ph, x = TM1[name], m["phase"], m["x"]
+    if name.startswith("nial"):
+        lo = {"fccAl": 600.0, "fccNi": 1200.0, "B2": 1300.0, "L12": 1200.0, "Ni2Al3": 900.0, "NiAl3": 900.0}[ph]
+        if ph in tm:
+            if (ph, x) in CELLS["nial"]:
+                return None
+            hi = float(tm[ph])
+        else:
+            hi = 0.9 * float(np.interp(x, [0.0, 0.5], [tm["fccAl"], tm["B2"]]))
+    else:
+        if x in (0.0, 1.0) or 0.25 < x < 0.75:
+            return None
+        d, end = (x, "Ag") if x < 0.5 else (1.0 - x, "Cu")
+        lo, hi = 700.0, tm[end] * (1.0 - 0.6 * d)
+    return [float(round(min(lo, 0.8 * hi))), float(round(hi))]
+
+
+def submit2(names, only=None, t_hi=None, t_lo=None, dry=False):
+    """Stage 2: every alloy cell (stage2_range), on HOST2[name]."""
+    from aiida import orm
+    from aiida.engine import submit as aiida_submit
+    from aiida.plugins import CalculationFactory
+
+    from ftphase.aiida.functions import repeat_structure
+
+    Calphy = CalculationFactory("ftphase.calphy")
+    for name in names:
+        wc, kids, prep = _workchain(RUNS[name])
+        sp = wc.inputs.spec.get_dict(); sol_p = prep.outputs.solid_params.get_dict()
+        code_label, cores = HOST2[name]
+        code = orm.load_code(code_label)
+        if cores:   # CPU host: calphy starts `cores` LAMMPS ranks itself; plain (non-Kokkos) pair style
+            extra = {"gpu": False, "cores": cores}
+            opts = {"resources": {"num_machines": 1, "num_mpiprocs_per_machine": cores}, "max_wallclock_seconds": 172800, "queue_name": "debug",
+                    "withmpi": False, "custom_scheduler_commands": "#SBATCH --hint=nomultithread"}
+        else:
+            extra = wc.inputs.calphy_extra.get_dict() if "calphy_extra" in wc.inputs else {}
+            opts = wc.inputs.calphy_options.get_dict()
+        rec = json.load(open(_rec_path(name))) if os.path.exists(_rec_path(name)) else {"pk_workchain": RUNS[name], "jobs": {}}
+        for key, m in sorted(sol_p.items()):
+            T_sw = stage2_range(name, m)
+            if T_sw is None or (only and key not in only) or (not only and key in rec["jobs"]):
+                continue
+            T_sw[1] = float((t_hi or {}).get(key, T_sw[1])); T_sw[0] = float((t_lo or {}).get(key, T_sw[0]))
+            if dry:
+                print(name, key, m["phase"], round(m["x"], 4), T_sw, code_label); continue
+            structure = prep.outputs[f"solid_{key}"]
+            n_rep = max(1, int(np.ceil((MIN_ATOMS / m["n_atoms"]) ** (1 / 3) - 1e-9)))
+            big = repeat_structure(structure, orm.Int(n_rep))
+            params = {"name": f"sol_{key}", "folder_prefix": f"sol_{key}", "mode": "ts", "elements": sp["elements"], "masses": sp["masses"], "pair_style": sp["pair_style"],
+                      "pair_coeff": sp["pair_coeff"], "temperature": T_sw, "pressure": 0.0, "reference_phase": "solid", "n_equilibration_steps": 10000,
+                      "n_switching_steps": [10000, 10000], "n_iterations": 1}
+            params.update(extra)
+            b = Calphy.get_builder()
+            b.code = code; b.structure = big; b.potential = wc.inputs.potential; b.parameters = orm.Dict(dict=params)
+            b.metadata.options = opts
+            b.metadata.label = f"calphy solid ti2 {name} {key} {m['phase']} x={m['x']:.4f} ({len(big.sites)} atoms)"
+            node = aiida_submit(b)
+            rec["jobs"][key] = {"pk": node.pk, "phase": m["phase"], "x": m["x"], "n_atoms": len(big.sites), "T_sweep": T_sw, "stage": 2, "code": code_label}
+            print(name, key, node.pk, len(big.sites), "atoms", T_sw, code_label)
+        if not dry:
+            with open(_rec_path(name), "w") as f:
+                json.dump(rec, f, indent=1)
+
+
+LIQ_LOW = 750.0   #: Ag-Cu liquids are extended to this temperature (stage-1: the MLIP Ag melting points 930-990 K lie below the 1050 K liquid end)
+
+
+def submit_liq_low(names, dry=False):
+    """Ag-Cu: a second calphy ts liquid run per composition from (old lowest T + 100 K) down to LIQ_LOW, same cell and settings;
+    assemble() splices it below the old sweep (merge_sweeps).  GRACE-FS runs on the mygardenx2 CPUs, the others on their GPU."""
+    from aiida import orm
+    from aiida.engine import submit as aiida_submit
+
+    for name in [n for n in names if n.startswith("agcu")]:
+        wc, kids, prep = _workchain(RUNS[name])
+        base = {n.label.split()[1]: n for n in kids.get("CalphyCalculation", []) if n.label.startswith("calphy lqd") and n.is_finished_ok}
+        lr = os.path.join(OUT, name, "liquids_rerun.json")
+        if os.path.exists(lr):
+            for tag, j in json.load(open(lr))["jobs"].items():
+                n = orm.load_node(j["pk"])
+                if n.is_finished_ok:
+                    base[tag] = n
+        code_label, cores = HOST2[name]
+        path = os.path.join(OUT, name, "liquids_low.json")
+        rec = json.load(open(path)) if os.path.exists(path) else {"pk_workchain": RUNS[name], "T_low": LIQ_LOW, "jobs": {}}
+        for tag, old in sorted(base.items()):
+            if tag in rec["jobs"]:
+                continue
+            p = old.inputs.parameters.get_dict()
+            T_hi = float(min(p["temperature"])) + 100.0
+            p.update({"temperature": [T_hi, LIQ_LOW], "name": tag + "_low", "folder_prefix": tag + "_low"})
+            b = old.get_builder_restart()
+            if cores:
+                p.pop("lammps_executable", None); p.update({"gpu": False, "cores": cores})
+                b.code = orm.load_code(code_label)
+                b.metadata.options = {"resources": {"num_machines": 1, "num_mpiprocs_per_machine": cores}, "max_wallclock_seconds": 172800, "queue_name": "debug",
+                                      "withmpi": False, "custom_scheduler_commands": "#SBATCH --hint=nomultithread"}
+            b.parameters = orm.Dict(dict=p)
+            b.metadata.label = f"calphy {tag} low {T_hi:.0f}->{LIQ_LOW:.0f} K"
+            if dry:
+                print(name, tag, old.pk, p["temperature"], b.code.full_label); continue
+            n = aiida_submit(b)
+            rec["jobs"][tag] = {"pk": n.pk, "base_pk": old.pk, "temperature": p["temperature"]}
+            print(name, tag, old.pk, "->", n.pk, p["temperature"], b.code.full_label)
+        if not dry:
+            with open(path, "w") as f:
+                json.dump(rec, f, indent=1)
+
+
+def _merge_sweeps():
+    from aiida.engine import calcfunction
+
+    @calcfunction
+    def merge_sweeps(hi, lo):
+        """Splice two calphy ts sweeps of the same liquid: `hi` where it exists, `lo` below hi's lowest temperature.  The offset of lo
+        against hi in their overlap is stored (attribute overlap_offset_meV) but not applied."""
+        from aiida import orm
+
+        Th, Gh, Eh = (hi.get_array(k) for k in ("temperature", "free_energy", "error"))
+        Tl, Gl, El = (lo.get_array(k) for k in ("temperature", "free_energy", "error"))
+        ov = (Tl >= Th.min()) & (Tl <= Th.max())
+        off = float(np.mean(Gl[ov] - np.interp(Tl[ov], Th[::-1], Gh[::-1]) if Th[0] > Th[-1] else Gl[ov] - np.interp(Tl[ov], Th, Gh))) if ov.any() else float("nan")
+        keep = Tl < Th.min()
+        out = orm.ArrayData()
+        for k, a, b in (("temperature", Th, Tl), ("free_energy", Gh, Gl), ("error", Eh, El)):
+            out.set_array(k, np.concatenate([a, b[keep]]))
+        out.base.attributes.set("overlap_offset_meV", off * 1000)
+        return out
+
+    return merge_sweeps
 
 
 def status(names):
@@ -157,12 +306,26 @@ def assemble(names):
             n = orm.load_node(j["pk"])
             if n.is_finished_ok and "sweep" in n.outputs:
                 nodes[f"sti_{key}"] = n.outputs.sweep
+        sol_p = prep.outputs.solid_params.get_dict()   # identical pure-element twins (e.g. Ag-Cu s23/s24 at x=1) share the TI sweep
+        for key, m in sol_p.items():
+            if f"sti_{key}" not in nodes and m["x"] in (0.0, 1.0):
+                twin = next((k for k, j in rec["jobs"].items() if f"sti_{k}" in nodes and j["phase"] == m["phase"] and j["x"] == m["x"]), None)
+                if twin:
+                    nodes[f"sti_{key}"] = nodes[f"sti_{twin}"]
         lr = os.path.join(OUT, name, "liquids_rerun.json")   # liquids rerun after a fix (agcu_sevenn_0: pair_e3gnn nedges bound)
         if os.path.exists(lr):
             for tag, j in json.load(open(lr))["jobs"].items():
                 n = orm.load_node(j["pk"])
                 if n.is_finished_ok and "sweep" in n.outputs:
                     nodes[f"liq_{''.join(c if c.isalnum() else '_' for c in tag)}"] = n.outputs.sweep
+        ll = os.path.join(OUT, name, "liquids_low.json")   # Ag-Cu liquids extended to LIQ_LOW: spliced below the old sweep
+        if os.path.exists(ll):
+            merge = _merge_sweeps()
+            for tag, j in json.load(open(ll))["jobs"].items():
+                n, k = orm.load_node(j["pk"]), f"liq_{''.join(c if c.isalnum() else '_' for c in tag)}"
+                if n.is_finished_ok and "sweep" in n.outputs and k in nodes:
+                    nodes[k] = merge(nodes[k], n.outputs.sweep)
+                    print(name, tag, "low sweep spliced, overlap offset %.2f meV/atom" % nodes[k].base.attributes.get("overlap_offset_meV"))
         res = assemble_diagram(wc.inputs.spec, prep.outputs.solid_params, prep.outputs.liquid_params, **nodes)
         out = os.path.join(OUT, name + "_ti"); os.makedirs(out, exist_ok=True)
         for label, fn in (("report", "REPORT.md"), ("figure", "07_phase_diagram.png"), ("free_energies", "05_free_energies.tsv"), ("regions", "07_two_phase_regions.tsv"), ("invariants", "07_invariants.tsv")):
@@ -174,10 +337,11 @@ def assemble(names):
 
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=["submit", "status", "melt", "assemble"])
+    ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=["submit", "submit2", "liqlow", "status", "melt", "assemble"])
     ap.add_argument("--names", default=",".join(RUNS)); ap.add_argument("--profile", default="ftphase")
     ap.add_argument("--only", default=None, help="comma-separated solid keys to (re)submit")
     ap.add_argument("--T-hi", dest="t_hi", default=None, help="sweep-end overrides key=T,key=T")
+    ap.add_argument("--dry", action="store_true", help="submit2: print the cells and sweeps only")
     ap.add_argument("--T-lo", dest="t_lo", default=None, help="sweep-start overrides key=T,key=T")
     a = ap.parse_args()
     from aiida import load_profile
@@ -187,4 +351,4 @@ if __name__ == "__main__":
     only = set(a.only.split(",")) if a.only else None
     t_hi = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in a.t_hi.split(",")} if a.t_hi else None
     t_lo = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in a.t_lo.split(",")} if a.t_lo else None
-    {"submit": lambda: submit(names, only, t_hi, t_lo), "status": lambda: status(names), "melt": lambda: melt(names), "assemble": lambda: assemble(names)}[a.cmd]()
+    {"submit": lambda: submit(names, only, t_hi, t_lo), "submit2": lambda: submit2(names, only, t_hi, t_lo, a.dry), "liqlow": lambda: submit_liq_low(names, a.dry), "status": lambda: status(names), "melt": lambda: melt(names), "assemble": lambda: assemble(names)}[a.cmd]()

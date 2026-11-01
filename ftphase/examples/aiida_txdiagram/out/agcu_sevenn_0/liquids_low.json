@@ -1,0 +1,62 @@
+{
+ "pk_workchain": 4928,
+ "T_low": 750.0,
+ "jobs": {
+  "lqd_x0.00": {
+   "pk": 7495,
+   "base_pk": 5290,
+   "temperature": [
+    1150.0,
+    750.0
+   ]
+  },
+  "lqd_x0.20": {
+   "pk": 7497,
+   "base_pk": 5295,
+   "temperature": [
+    1050.0,
+    750.0
+   ]
+  },
+  "lqd_x0.40": {
+   "pk": 7499,
+   "base_pk": 5300,
+   "temperature": [
+    1050.0,
+    750.0
+   ]
+  },
+  "lqd_x0.50": {
+   "pk": 7501,
+   "base_pk": 6769,
+   "temperature": [
+    1050.0,
+    750.0
+   ]
+  },
+  "lqd_x0.60": {
+   "pk": 7503,
+   "base_pk": 6770,
+   "temperature": [
+    1050.0,
+    750.0
+   ]
+  },
+  "lqd_x0.80": {
+   "pk": 7505,
+   "base_pk": 6771,
+   "temperature": [
+    1050.0,
+    750.0
+   ]
+  },
+  "lqd_x1.00": {
+   "pk": 7507,
+   "base_pk": 6772,
+   "temperature": [
+    1200.0,
+    750.0
+   ]
+  }
+ }
+}

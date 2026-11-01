@@ -5,7 +5,8 @@
 # ASE reference from an AOTInductor compile of the same package on this GPU, correctness under hybrid/scaled/kk (in.kk v0..v3),
 # and s/step for 100 NVE steps on 108 and 256 atoms; OpenEquivariance compiled / OEQ no-compile / plain exports.
 R=/home/kino/kino/Claude/Projects/PhaseDiagram; E=$R/env; P=$R/potentials/nequip; T=$E/lammps-gpu-mliap/test
-cd $T
+M=${M:-NequIP-OAM-L-0.1}; SRC=${SRC:-nequip.net:mir-group/NequIP-OAM-L:0.1}   # sbatch --export=ALL,M=NequIP-OAM-M-0.1,SRC=$P/NequIP-OAM-M-0.1.nequip.zip
+if [ "$M" != NequIP-OAM-L-0.1 ]; then mkdir -p $T/$M; cp -n $T/in.kk $T/in.time256 $T/conf.data $T/nequip_ref.py $T/$M/ 2>/dev/null; cd $T/$M; else cd $T; fi
 source /home/kino/miniforge3/etc/profile.d/conda.sh; conda activate $E/ftphase; set -u
 KK="-k on g 1 -sf kk -pk kokkos newton on neigh half"
 LMP=$E/lammps-gpu-mliap/bin/lmp_mliap_nequip.sh
@@ -17,11 +18,10 @@ export CPATH=$E/torch/include:${CPATH:-}   # AOTInductor's device_utils.h needs 
 echo "host $(hostname) job $SLURM_JOB_ID $(date)"; nvidia-smi --query-gpu=name,utilization.gpu,memory.used --format=csv,noheader
 echo "other GPU processes: $(nvidia-smi --query-compute-apps=pid --format=csv,noheader | wc -l)"
 rate() { awk '/^Loop time/{t=$4} END{printf "%.4f", t/100}' "$1"; }
-M=NequIP-OAM-L-0.1
 echo "--- ASE reference: nequip-compile aotinductor --target ase on this GPU"
 rm -f nequip_ref.txt
 t0=$(date +%s)
-$E/torch/bin/nequip-compile nequip.net:mir-group/NequIP-OAM-L:0.1 $P/$M-ase.nequip.pt2 --mode aotinductor --device cuda --target ase > compile_nequip.log 2>&1 \
+$E/torch/bin/nequip-compile $SRC $P/$M-ase.nequip.pt2 --mode aotinductor --device cuda --target ase > compile_nequip.log 2>&1 \
   && $PY nequip_ref.py $P/$M-ase.nequip.pt2 "$M (AOTI, cuda)" cuda 2>&1 | grep -v Warn | tail -1 || { echo "ASE reference FAILED"; tail -3 compile_nequip.log; }
 echo "compile+ref wall $(( $(date +%s) - t0 )) s"
 echo "--- correctness (run 0 pe / press): v0 plain, v1 hs lambda=1, v2 hs lambda=1.222, v3 0.7 model + 0.3 ufm; then s/step of the 100-step NVE run (108 atoms)"

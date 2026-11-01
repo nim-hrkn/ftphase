@@ -79,6 +79,9 @@ MLIPS.update({
     # job's device inside the runner (nequip-compile --target ase, ~2 min) and used through NequIPCalculator.
     "nequip-oam-l": {"potential": os.path.join(_NQ, "NequIP-OAM-L-0.1.nequip.lmp.pt"), "potential_qha": os.path.join(_NQ, "NequIP-OAM-L-0.1.nequip.zip"), "pair_style": "mliap unified {potential} 0", "pair_coeff": "* * Al Li",
                      "model": "NequIP-OAM-L 0.1 (ML-IAP, OpenEquivariance)", "lmp_gpu": LMP_MLIAP_NEQUIP, "tag": "_nequip_oam_l", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "nequip"},
+    # NequIP-OAM-M 0.1 (Zenodo 10.5281/zenodo.18775904 "0.1a", md5 e5b44583f4421be702b35d76503754cd), same export and QHA route as OAM-L (2026-11-01)
+    "nequip-oam-m": {"potential": os.path.join(_NQ, "NequIP-OAM-M-0.1.nequip.lmp.pt"), "potential_qha": os.path.join(_NQ, "NequIP-OAM-M-0.1.nequip.zip"), "pair_style": "mliap unified {potential} 0", "pair_coeff": "* * Al Li",
+                     "model": "NequIP-OAM-M 0.1 (ML-IAP, OpenEquivariance)", "lmp_gpu": LMP_MLIAP_NEQUIP, "tag": "_nequip_oam_m", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "nequip"},
     # the pair_style mace route of pk 4293 (env/lammps-torch, lmp_mace.sh prepends atom_modify map yes), kept for comparison runs
     "mace-mpa-0-pairstyle": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
                    "model": "MACE-MPA-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0_pairstyle", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},

@@ -20,6 +20,198 @@
     900.0,
     1420.0
    ]
+  },
+  "s01_fcc": {
+   "pk": 7086,
+   "phase": "fcc",
+   "x": 0.03125,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    969.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s02_fcc": {
+   "pk": 7091,
+   "phase": "fcc",
+   "x": 0.03125,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    969.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s03_fcc": {
+   "pk": 7096,
+   "phase": "fcc",
+   "x": 0.0625,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    951.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s04_fcc": {
+   "pk": 7101,
+   "phase": "fcc",
+   "x": 0.0625,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    951.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s05_fcc": {
+   "pk": 7106,
+   "phase": "fcc",
+   "x": 0.125,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    914.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s06_fcc": {
+   "pk": 7111,
+   "phase": "fcc",
+   "x": 0.125,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    914.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s07_fcc": {
+   "pk": 7116,
+   "phase": "fcc",
+   "x": 0.25,
+   "n_atoms": 2048,
+   "T_sweep": [
+    672.0,
+    840.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s08_fcc": {
+   "pk": 7121,
+   "phase": "fcc",
+   "x": 0.25,
+   "n_atoms": 2048,
+   "T_sweep": [
+    672.0,
+    840.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s15_fcc": {
+   "pk": 7126,
+   "phase": "fcc",
+   "x": 0.75,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    1114.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s16_fcc": {
+   "pk": 7131,
+   "phase": "fcc",
+   "x": 0.75,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    1114.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s17_fcc": {
+   "pk": 7136,
+   "phase": "fcc",
+   "x": 0.875,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    1212.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s18_fcc": {
+   "pk": 7141,
+   "phase": "fcc",
+   "x": 0.875,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    1212.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s19_fcc": {
+   "pk": 7146,
+   "phase": "fcc",
+   "x": 0.9375,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    1261.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s20_fcc": {
+   "pk": 7151,
+   "phase": "fcc",
+   "x": 0.9375,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    1261.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s21_fcc": {
+   "pk": 7156,
+   "phase": "fcc",
+   "x": 0.96875,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    1285.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
+  },
+  "s22_fcc": {
+   "pk": 7161,
+   "phase": "fcc",
+   "x": 0.96875,
+   "n_atoms": 2048,
+   "T_sweep": [
+    700.0,
+    1285.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden5"
   }
  }
 }

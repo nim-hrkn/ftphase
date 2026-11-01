@@ -1,0 +1,12 @@
+{
+ "pk": 7404,
+ "uuid": "2c7f88e2-7ff8-4db4-bc29-8505d75f5a72",
+ "name": "alli_nequip_oam_m",
+ "profile": "ftphase",
+ "submitted": "2026-11-01 20:25:16",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden5",
+ "qha_computer": "mygarden5",
+ "mlip": "nequip-oam-m"
+}
