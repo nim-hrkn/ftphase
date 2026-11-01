@@ -104,6 +104,8 @@ def stage2_range(name, m):
             if (ph, x) in CELLS["nial"]:
                 return None
             hi = float(tm[ph])
+            if ph == "fccNi":   # random fcc with Al melts below pure Ni (GRACE-FS x=0.75 melted at the 1654 K cap, pk 7596)
+                hi *= 1.0 - 0.4 * (1.0 - x)
         else:
             hi = 0.9 * float(np.interp(x, [0.0, 0.5], [tm["fccAl"], tm["B2"]]))
     else:
