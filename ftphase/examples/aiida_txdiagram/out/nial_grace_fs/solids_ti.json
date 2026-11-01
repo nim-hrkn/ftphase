@@ -52,6 +52,198 @@
    ],
    "stage": 2,
    "code": "calphy@mygardenx2"
+  },
+  "s02_fccAl": {
+   "pk": 7591,
+   "phase": "fccAl",
+   "x": 0.0625,
+   "n_atoms": 2048,
+   "T_sweep": [
+    504.0,
+    630.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s04_fccNi": {
+   "pk": 7596,
+   "phase": "fccNi",
+   "x": 0.75,
+   "n_atoms": 2048,
+   "T_sweep": [
+    1200.0,
+    1654.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s05_fccNi": {
+   "pk": 7601,
+   "phase": "fccNi",
+   "x": 0.8125,
+   "n_atoms": 2048,
+   "T_sweep": [
+    1200.0,
+    1654.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s06_fccNi": {
+   "pk": 7606,
+   "phase": "fccNi",
+   "x": 0.875,
+   "n_atoms": 2048,
+   "T_sweep": [
+    1200.0,
+    1654.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s07_fccNi": {
+   "pk": 7611,
+   "phase": "fccNi",
+   "x": 0.9375,
+   "n_atoms": 2048,
+   "T_sweep": [
+    1200.0,
+    1654.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s09_B2": {
+   "pk": 7616,
+   "phase": "B2",
+   "x": 0.51851851851852,
+   "n_atoms": 3456,
+   "T_sweep": [
+    1300.0,
+    1670.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s10_B2": {
+   "pk": 7621,
+   "phase": "B2",
+   "x": 0.53703703703704,
+   "n_atoms": 3456,
+   "T_sweep": [
+    1300.0,
+    1670.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s11_B2": {
+   "pk": 7626,
+   "phase": "B2",
+   "x": 0.57407407407407,
+   "n_atoms": 3456,
+   "T_sweep": [
+    1300.0,
+    1670.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s12_B2": {
+   "pk": 7631,
+   "phase": "B2",
+   "x": 0.61111111111111,
+   "n_atoms": 3456,
+   "T_sweep": [
+    1300.0,
+    1670.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s13_B2": {
+   "pk": 7636,
+   "phase": "B2",
+   "x": 0.49056603773585,
+   "n_atoms": 3392,
+   "T_sweep": [
+    1300.0,
+    1670.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s14_B2": {
+   "pk": 7641,
+   "phase": "B2",
+   "x": 0.48076923076923,
+   "n_atoms": 3328,
+   "T_sweep": [
+    1300.0,
+    1670.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s15_B2": {
+   "pk": 7646,
+   "phase": "B2",
+   "x": 0.47058823529412,
+   "n_atoms": 3264,
+   "T_sweep": [
+    1300.0,
+    1670.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s17_L12": {
+   "pk": 7651,
+   "phase": "L12",
+   "x": 0.78125,
+   "n_atoms": 2048,
+   "T_sweep": [
+    1200.0,
+    1512.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s18_L12": {
+   "pk": 7656,
+   "phase": "L12",
+   "x": 0.71875,
+   "n_atoms": 2048,
+   "T_sweep": [
+    1200.0,
+    1512.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s19_Ni2Al3": {
+   "pk": 7661,
+   "phase": "Ni2Al3",
+   "x": 0.4,
+   "n_atoms": 2560,
+   "T_sweep": [
+    900.0,
+    1316.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
+  },
+  "s20_NiAl3": {
+   "pk": 7666,
+   "phase": "NiAl3",
+   "x": 0.25,
+   "n_atoms": 2000,
+   "T_sweep": [
+    828.0,
+    1035.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygardenx2"
   }
  }
 }
