@@ -1,0 +1,117 @@
+{
+ "started": "2026-11-02 02:09:03",
+ "solids_used": [
+  "s00_fcc",
+  "s01_fcc",
+  "s02_fcc",
+  "s03_fcc",
+  "s04_fcc",
+  "s05_fcc",
+  "s06_fcc",
+  "s07_fcc",
+  "s08_fcc",
+  "s09_Al3Li",
+  "s10_B32",
+  "s11_B32",
+  "s12_B32"
+ ],
+ "solids_missing": [],
+ "liquids_used": [
+  "lqd_x0_00",
+  "lqd_x0_10",
+  "lqd_x0_20",
+  "lqd_x0_30",
+  "lqd_x0_40",
+  "lqd_x0_50"
+ ],
+ "liquids_missing": [],
+ "liquid_x_available": [
+  0.0,
+  0.1015625,
+  0.19921875,
+  0.30078125,
+  0.3984375,
+  0.5
+ ],
+ "liquid_runs_per_x": {
+  "0.0000": 1,
+  "0.1016": 1,
+  "0.1992": 1,
+  "0.3008": 1,
+  "0.3984": 1,
+  "0.5000": 1
+ },
+ "liquid_T_min_K": {
+  "0.0000": 700.0,
+  "0.1016": 800.0,
+  "0.1992": 700.0,
+  "0.3008": 700.0,
+  "0.3984": 700.0,
+  "0.5000": 700.0
+ },
+ "table_check": [
+  "mixed quantum/classical treatment: ['classical', 'classical+harmonic-correction'] (see ftphase.quantum)"
+ ],
+ "T_grid": [
+  700.0,
+  1100.0,
+  41
+ ],
+ "edge_segments_dropped": 36,
+ "lowest_T_with_liquid_K": 700.0,
+ "coexistence_at_that_T": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.22385193251296,
+   "phase_b": "liquid",
+   "x_b": 0.34196774401748
+  }
+ ],
+ "pure_A_melting_bracket_K": [
+  770.0,
+  780.0
+ ],
+ "invariants": [],
+ "regions_at_700K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.22385193251296,
+   "phase_b": "liquid",
+   "x_b": 0.34196774401748
+  }
+ ],
+ "regions_at_800K": [],
+ "regions_at_900K": [],
+ "regions_at_1000K": [],
+ "same_phase_segments": [],
+ "fit_residuals": {
+  "T": 900.0,
+  "rows": [
+   {
+    "T": 900.0,
+    "phase": "B32",
+    "rmse_eV": 0.0,
+    "flag": false
+   },
+   {
+    "T": 900.0,
+    "phase": "fcc",
+    "rmse_eV": 6.5479892113563e-05,
+    "flag": false
+   },
+   {
+    "T": 900.0,
+    "phase": "liquid",
+    "rmse_eV": 0.00026701098234819,
+    "flag": false
+   }
+  ]
+ },
+ "sigma_used_eV": {
+  "Al3Li": 0.002,
+  "liquid": 0.0014,
+  "B32": 0.002,
+  "fcc": 0.002
+ },
+ "finished": "2026-11-02 02:09:10"
+}
