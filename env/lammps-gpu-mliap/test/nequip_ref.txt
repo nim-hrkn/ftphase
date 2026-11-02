@@ -1,1 +1,3 @@
 NequIP-OAM-L-0.1 (package, eager, cpu): natoms 108 r_max 6.0 dtype float32 pe -404.08091 eV  press 2017.675 bar  pxx 2017.675 pxy 0.000
+NequIP-OAM-M-0.1 (eager, cpu): natoms 108 r_max 6.0 dtype float32 pe -403.60196 eV  press -3875.425 bar  pxx -3875.426 pxy 0.000
+NequIP-OAM-S-0.1 (package, eager, cpu): natoms 108 r_max 4.5 dtype float32 pe -398.15594 eV  press 7056.751 bar  pxx 7056.753 pxy 0.002
