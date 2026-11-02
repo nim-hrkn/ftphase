@@ -59,8 +59,10 @@
    ],
    "failed_pk": [
     7479,
-    7801
-   ]
+    7801,
+    8067
+   ],
+   "abandoned": "2026-11-02: GRACE-FS pure-Cu liquid crystallizes below ~950 K in every try (T_m 1190 K); the x=1 liquid stays at the original 1100 K end"
   }
  }
 }
