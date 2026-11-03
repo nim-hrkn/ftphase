@@ -121,4 +121,21 @@ codegen error under g++ 13 ("'decltype' evaluates to 'float'", torch 2.11), so t
 runner (`qha_calculator: nequip`) compiles the package for the job's device at start (~2 min) unless it is given a `.nequip.pt2`;
 `run_aiida.py --mlip nequip-oam-l` (dry run OK, not yet run).
 
-TODO (deferred, user decision 2026-10-30): multi-rank (`forward_exchange`) is untested; cuEquivariance is not installed.
+## cuEquivariance for MACE (Slurm 23174, 2026-11-03, `test/bench_cueq.sbatch`, `test/bench_cueq.23174.out`)
+
+`cuequivariance` / `cuequivariance-torch` / `cuequivariance-ops-torch-cu12` 0.13.0 in env/mace (no dependency conflicts). With them the
+official exporter works: `mace_create_lammps_model <copy of the .model> --format mliap --dtype float32` ->
+`potentials/mace/macempa0mediummodel-cueq.model-mliap_lammps.pt` (the tensor products become `cuequivariance_torch` modules; the file is
+named after the input model, so export from a copy to keep the e3nn files). GPU held exclusively, 108-atom cell `run 0`: pe −403.92018 eV,
+press 607.453 bar = the e3nn export (−403.92018, 607.451); `hybrid/scaled/kk` λ=1 and the ufm mix identical to the e3nn run.
+
+| s/step | 108 atoms | 256 atoms |
+|---|---|---|
+| MACE-MPA-0 fp32, cuEquivariance ML-IAP | 0.0173 | 0.0198 |
+| MACE-MPA-0 fp32, e3nn ML-IAP | 0.0371 | 0.0900 |
+| MACE-MPA-0 fp32, `pair_style mace` (lmp_mace) | 0.098 | 0.177 |
+
+4.5x faster than the e3nn ML-IAP export at 256 atoms (9x the original pair style); the WorkChain's `mace-mpa-0` entry uses the cueq file
+since 2026-11-03. cueq kernels are CUDA-only: for the CPU use `-mliap_lammps-f32-cpu.pt`.
+
+Multi-rank `forward_exchange`: verified on the CPU build with 4 and 12 ranks (env/lammps-cpu-mliap); multi-GPU untested (one GPU per host).

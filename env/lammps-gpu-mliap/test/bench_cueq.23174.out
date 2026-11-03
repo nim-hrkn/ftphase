@@ -1,0 +1,12 @@
+released 54 held AiiDA jobs
+host mygarden5 job 23174 2026年 11月  3日 火曜日 22:51:31 JST
+NVIDIA GeForce RTX 3060, 0 %, 1 MiB
+cueq v0 pe=-403.92018 press=607.45319 | pe=-391.88887 press=-90253.545 | pe=-391.88887 press=-86077.092 | pe=-389.9829 press=-81544.51 |  0.0173 s/step(108)  wall 15 s
+cueq v1 pe=-403.92017 press=607.44983 | pe=-391.88887 press=-90253.545 | pe=-391.88887 press=-86077.088 | pe=-389.9829 press=-81544.517 |  0.0174 s/step(108)  wall 16 s
+cueq v3 pe=-282.21024 press=1621.6551 | pe=-273.98698 press=-62477.127 | pe=-273.98698 press=-58300.673 | pe=-272.59249 press=-55000.845 |  0.0175 s/step(108)  wall 15 s
+cueq 256 atoms: 0.0198 s/step
+e3nn v0 pe=-403.92018 press=607.45082 | pe=-391.88887 press=-90253.539 | pe=-391.88887 press=-86077.084 | pe=-389.9829 press=-81544.508 |  0.0371 s/step(108)  wall 13 s
+e3nn v1 pe=-403.92018 press=607.44608 | pe=-391.88887 press=-90253.538 | pe=-391.88887 press=-86077.087 | pe=-389.9829 press=-81544.513 |  0.0371 s/step(108)  wall 12 s
+e3nn v3 pe=-282.21024 press=1621.6787 | pe=-273.98698 press=-62477.125 | pe=-273.98698 press=-58300.67 | pe=-272.59249 press=-55000.854 |  0.0376 s/step(108)  wall 13 s
+e3nn 256 atoms: 0.0900 s/step
+done 2026年 11月  3日 火曜日 22:53:29 JST

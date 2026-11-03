@@ -66,8 +66,9 @@ MLIPS.update({
                  "model": "SevenNet-0 (11Jul2024, MPtrj; oeq deployment)", "lmp_gpu": LMP_SEVENN, "tag": "_sevenn_0", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "sevenn"},
     "sevenn-mf-ompa": {"potential": os.path.join(_SEV, "7net-mf-ompa_mpa_oeq.pt"), "potential_qha": _sevenn_ckpt("SevenNet_MF_ompa"), "pair_style": "e3gnn", "pair_coeff": "* * {potential} Al Li",
                        "model": "SevenNet-MF-ompa (modal mpa; oeq deployment)", "lmp_gpu": LMP_SEVENN, "tag": "_sevenn_mf_ompa", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "sevenn", "qha_modal": "mpa"},
-    "mace-mpa-0": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-mliap_lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mliap unified {potential} 0", "pair_coeff": "* * Al Li",
-                   "model": "MACE-MPA-0 medium (float32, ML-IAP)", "lmp_gpu": LMP_MLIAP_MACE, "tag": "_mace_mpa_0", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
+    # cuEquivariance fp32 export (2026-11-03): 0.020 s/step at 256 atoms vs 0.090 for the e3nn export (-mliap_lammps-f32.pt), same energies
+    "mace-mpa-0": {"potential": os.path.join(_MAC, "macempa0mediummodel-cueq.model-mliap_lammps.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mliap unified {potential} 0", "pair_coeff": "* * Al Li",
+                   "model": "MACE-MPA-0 medium (float32, ML-IAP, cuEquivariance)", "lmp_gpu": LMP_MLIAP_MACE, "tag": "_mace_mpa_0", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
     # MatterSim (M3GNet, float32) through ML-IAP unified (official MatterSimMLIAP export, test/mattersim_to_mliap.py; Slurm 22999: ASE energy
     # within 6 ueV/atom, hybrid/scaled/kk correct, 5M 0.040 s/step at 256 atoms). QHA: MatterSimCalculator in env/torch on the checkpoint.
     "mattersim-5m": {"potential": os.path.join(_MS, "mattersim-v1.0.0-5M_mliap.pt"), "potential_qha": os.path.join(_MS, "mattersim-v1.0.0-5M.pth"), "pair_style": "mliap unified {potential} 0", "pair_coeff": "* * Al Li",
