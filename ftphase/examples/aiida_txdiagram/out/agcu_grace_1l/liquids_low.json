@@ -59,7 +59,8 @@
    "temperature": [
     1200.0,
     750.0
-   ]
+   ],
+   "abandoned": "2026-11-04: GRACE-1L pure-Cu liquid crystallized on the way to 750 K (T_m 1310 K), not retried (same for GRACE-FS and SevenNet-0); x=1 keeps the 1100 K end"
   }
  }
 }
