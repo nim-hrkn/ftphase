@@ -59,7 +59,8 @@
    "temperature": [
     1200.0,
     750.0
-   ]
+   ],
+   "abandoned": "2026-11-04: SevenNet-0 pure-Cu liquid crystallized on the way to 750 K (T_m 1182 K), not retried (GRACE-FS crystallized below ~950 K in three tries); x=1 keeps the 1100 K end of pk 6772"
   }
  }
 }
