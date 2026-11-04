@@ -205,10 +205,74 @@ def make_spec_nial(smoke: bool, gpu: bool):
     return spec
 
 
+def candidates_ptrh():
+    """Pt-Rh (2026-11-04): fcc ends, the fcc-based ordered phases of Saengdeejing et al., npj Comput. Mater. 12, 362 (2026):
+    PtRh '40' (NbP type, I4_1/amd, tI8), PtRh3 D0_22 (I4/mmm, tI8) and its anti-structure Pt3Rh D0_22 (stable only in PFP)."""
+    from ase.build import bulk
+    from pymatgen.core import Lattice, Structure
+    from pymatgen.io.ase import AseAtomsAdaptor
+
+    def tet(sg, a, c, species, coords):
+        return AseAtomsAdaptor.get_atoms(Structure.from_spacegroup(sg, Lattice.tetragonal(a, c), species, coords))
+
+    return {"fcc-Pt": (bulk("Pt", "fcc", a=3.924, cubic=True), 0.0), "fcc-Rh": (bulk("Rh", "fcc", a=3.803, cubic=True), 1.0),
+            "PtRh-40": (tet("I4_1/amd", 3.899, 7.811, ["Pt", "Rh"], [[0, 0, 0], [0, 0, 0.5]]), 0.5),
+            "PtRh3-D022": (tet("I4/mmm", 3.867, 7.738, ["Pt", "Rh", "Rh"], [[0, 0, 0], [0, 0, 0.5], [0, 0.5, 0.25]]), 0.75),
+            "Pt3Rh-D022": (tet("I4/mmm", 3.937, 7.861, ["Rh", "Pt", "Pt"], [[0, 0, 0], [0, 0, 0.5], [0, 0.5, 0.25]]), 0.25)}
+
+
+def make_spec_ptrh(smoke: bool, gpu: bool):
+    """Pt-Rh with a universal MLIP (--mlip required): fcc solution 0 <= x_Rh <= 1 (random 32-atom cells, 2 configurations),
+    the ordered phases PtRh (40), PtRh3 and Pt3Rh (D0_22) with anti-site defect cells and the analytic two-sublattice
+    entropy (same CEF approximation as the paper), liquid 0..1 swept from 2500 K down (T_m Pt 2041 K, Rh 2237 K).
+    Solids by QHA (classical level in the assembly); the ordering reactions of the paper lie at 146-258 K, the melting
+    range needs the 2000-atom solid TI of mlip_solids_ti.py afterwards.  Assembly 100-2400 K."""
+    xs = [0.0, 1 / 32, 2 / 32, 4 / 32, 8 / 32, 12 / 32, 16 / 32, 20 / 32, 24 / 32, 28 / 32, 30 / 32, 31 / 32, 1.0]
+    spec = {
+        "elements": ["Pt", "Rh"], "masses": [195.084, 102.9055], "x_element": "Rh", "model": "(set by --mlip)",
+        "pair_style": "eam/alloy", "pair_coeff": "* * {potential} Pt Rh", "atom_types": {"Pt": 1, "Rh": 2},
+        "candidates": {"fcc-Pt": 0.0, "fcc-Rh": 1.0, "PtRh-40": 0.5, "PtRh3-D022": 0.75, "Pt3Rh-D022": 0.25},
+        "known_ground_states": ["fcc-Pt", "fcc-Rh", "PtRh-40", "PtRh3-D022"],
+        "relax": {"fmax": 1e-3, "cell": True},
+        "solids": [
+            {"phase": "fcc", "kind": "solution", "base": "fcc-Pt", "repeat": [2, 2, 2], "x": xs, "n_configs": 2, "series": "random", "seed": 0, "supercell": [2, 2, 2], "mesh": 60.0},
+            {"phase": "PtRh", "kind": "limited", "base": "PtRh-40", "repeat": [2, 2, 1], "seed": 1, "supercell": [2, 2, 2], "mesh": 60.0,
+             "defects": [{"replace": ["Pt", "Rh"], "n": 1}, {"replace": ["Pt", "Rh"], "n": 2}, {"replace": ["Rh", "Pt"], "n": 1}, {"replace": ["Rh", "Pt"], "n": 2}]},
+            {"phase": "PtRh3", "kind": "limited", "base": "PtRh3-D022", "repeat": [2, 2, 1], "seed": 2, "supercell": [2, 2, 2], "mesh": 60.0,
+             "defects": [{"replace": ["Pt", "Rh"], "n": 1}, {"replace": ["Pt", "Rh"], "n": 2}, {"replace": ["Rh", "Pt"], "n": 1}, {"replace": ["Rh", "Pt"], "n": 2}, {"replace": ["Rh", "Pt"], "n": 3}]},
+            {"phase": "Pt3Rh", "kind": "limited", "base": "Pt3Rh-D022", "repeat": [2, 2, 1], "seed": 3, "supercell": [2, 2, 2], "mesh": 60.0,
+             "defects": [{"replace": ["Rh", "Pt"], "n": 1}, {"replace": ["Rh", "Pt"], "n": 2}, {"replace": ["Pt", "Rh"], "n": 1}, {"replace": ["Pt", "Rh"], "n": 2}, {"replace": ["Pt", "Rh"], "n": 3}]},
+        ],
+        "liquids": {"base": "fcc-Pt", "base_hi": [0.5, "fcc-Rh"], "repeat": [4, 4, 4], "x": [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0], "seed": 100,
+                    "T_sweep": [2500.0, 1900.0], "T_override": {"0.8": 2000.0, "1.0": 2100.0}, "n_repeats": 1, "n_equilibration_steps": 10000,
+                    "n_switching_steps": [10000, 10000], "n_iterations": 3, "mode": "ts", "pressure": 0.0},
+        "qha": {"T_max": 2400.0, "T_step": 25.0, "scales": [0.96, 0.98, 1.0, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12], "eos": "vinet", "imaginary": "drop",
+                "relax": {"do": True, "fmax": 1e-3, "cell": True, "hydrostatic": True}},
+        "assemble": {"T_min": 100.0, "T_max": 2400.0, "T_step": 10.0, "liquid_partial": True, "drop_edge_beyond_liquid": False,
+                     "fits": {"fcc": "rk", "liquid": "rk", "PtRh": "poly", "PtRh3": "poly", "Pt3Rh": "poly"}, "poly_order": 3,
+                     "poly_orders": {"fcc": 4, "liquid": 4, "PtRh": 1, "PtRh3": 1, "Pt3Rh": 1},
+                     "config_terms": {"fcc": "ideal", "PtRh": "sublattice:b32_antisite", "PtRh3": "sublattice:b32_antisite@0.75", "Pt3Rh": "sublattice:b32_antisite@0.25"},
+                     "entropy_models": {"PtRh": ["b32_antisite", 0.5], "PtRh3": ["b32_antisite@0.75", 0.75], "Pt3Rh": ["b32_antisite@0.25", 0.25]},
+                     "sigma": {"fcc": 0.002, "PtRh": 0.002, "PtRh3": 0.002, "Pt3Rh": 0.002, "liquid": 0.0014},
+                     "hull": {"min_width": 0.005, "gap_tol": 2.5}, "sensitivity_samples": 30, "liquid_sigma_floor": 0.0014, "T_residuals": 2000.0,
+                     "title": "Pt-Rh, 0 GPa: QHA solids + calphy liquid [AiiDA]", "xlabel": "x_Rh"},
+    }
+    if smoke:
+        spec["solids"] = [dict(spec["solids"][0], x=[0.0, 0.5, 1.0], n_configs=1, supercell=[1, 1, 1], mesh=[4, 4, 4]),
+                          dict(spec["solids"][1], repeat=[1, 1, 1], defects=[{"replace": ["Pt", "Rh"], "n": 1}], supercell=[1, 1, 1], mesh=[4, 4, 4])]
+        spec["liquids"].update({"x": [0.0, 1.0], "repeat": [3, 3, 3], "T_sweep": [2500.0, 2200.0], "T_override": {}, "n_equilibration_steps": 1000, "n_switching_steps": [1000, 1000], "n_iterations": 1})
+        spec["qha"].update({"T_step": 100.0, "scales": [0.97, 0.99, 1.01, 1.03, 1.06, 1.09]})
+        spec["assemble"].update({"T_min": 2000.0, "T_max": 2400.0, "sensitivity_samples": 5, "title": "smoke test Pt-Rh"})
+    if not gpu:
+        spec["liquids"]["cpu"] = True
+    return spec
+
+
 SYSTEMS = {"alli": (lambda: POT, lambda: candidates(), lambda sm, g: make_spec(sm, g), "ACE Al-Li T-x diagram, stages 01-07 with provenance"),
            "agcu": (lambda: POT_AGCU, candidates_agcu, make_spec_agcu, "EAM Ag-Cu T-x diagram (eutectic + fcc miscibility gap), stages 01-07 with provenance"),
-           "nial": (lambda: POT_NIAL, candidates_nial, make_spec_nial, "Ni-Al T-x diagram (B2/L1_2 with composition width), stages 01-07 with provenance")}
-SYSTEM_TAG = {"alli": "Al-Li", "agcu": "Ag-Cu", "nial": "Ni-Al"}
+           "nial": (lambda: POT_NIAL, candidates_nial, make_spec_nial, "Ni-Al T-x diagram (B2/L1_2 with composition width), stages 01-07 with provenance"),
+           "ptrh": (lambda: None, candidates_ptrh, make_spec_ptrh, "Pt-Rh T-x diagram with a universal MLIP (fcc + ordered PtRh/PtRh3/Pt3Rh + liquid), stages 01-07 with provenance")}
+SYSTEM_TAG = {"alli": "Al-Li", "agcu": "Ag-Cu", "nial": "Ni-Al", "ptrh": "Pt-Rh"}
 
 
 def make_spec(smoke: bool, gpu: bool):
@@ -244,6 +308,20 @@ def make_spec(smoke: bool, gpu: bool):
     return spec
 
 
+def _load_code(label):
+    """load_code that tolerates the duplicate (identical, unused) registrations of ftphase-qha-torch/-mace@mygarden6 (pk 2390/2395, 2391/2396)."""
+    from aiida import orm
+    from aiida.common.exceptions import MultipleObjectsError
+
+    try:
+        return orm.load_code(label)
+    except MultipleObjectsError:
+        name, _, comp = label.partition("@")
+        qb = orm.QueryBuilder().append(orm.Computer, filters={"label": comp}, tag="c").append(orm.Code, with_computer="c", filters={"label": name}, project=["*"])
+        codes = sorted((r[0] for r in qb.all()), key=lambda c: c.pk)
+        return codes[0]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--system", choices=sorted(SYSTEMS), default="alli", help="alli = ACE Al-Li (example 8), agcu = EAM Ag-Cu (example 9), nial = EAM Ni-Al (example 7 in the WorkChain)")
@@ -268,8 +346,10 @@ def main():
     gpu = not a.no_gpu
     pot_fn, cand_fn, spec_fn, descr = SYSTEMS[a.system]
     spec = spec_fn(a.smoke, gpu)
-    name = (a.name or {"alli": "alli_ace", "agcu": "agcu_eam", "nial": "nial_eam"}[a.system]) + ("_smoke" if a.smoke else "")
-    use_mlip = a.mlip != "ace"           # "ace" = the system's own potential (ACE for Al-Li, EAM for Ag-Cu and Ni-Al)
+    name = (a.name or {"alli": "alli_ace", "agcu": "agcu_eam", "nial": "nial_eam", "ptrh": "ptrh"}[a.system]) + ("_smoke" if a.smoke else "")
+    use_mlip = a.mlip != "ace"
+    if a.system == "ptrh" and not use_mlip:
+        raise SystemExit("ptrh has no system-specific potential: give --mlip (e.g. nequip-oam-m, mace-mpa-0, sevenn-mf-ompa, grace-2l)")           # "ace" = the system's own potential (ACE for Al-Li, EAM for Ag-Cu and Ni-Al)
     lmp_gpu = LMP_GPU; torch_mlip = bool(use_mlip and MLIPS[a.mlip].get("torch")); pot_qha = None
     if a.system != "alli" and not use_mlip:
         lmp_gpu = LMP_GPU
@@ -309,7 +389,7 @@ def main():
         "spec": orm.Dict(dict=spec),
         "potential": orm.SinglefileData(file=pot_fn()),
         "candidates": cands,
-        "qha_code": orm.load_code(f"{MLIPS[a.mlip].get('qha_code', 'ftphase-qha') if use_mlip else 'ftphase-qha'}@{a.qha_computer or a.computer}"),
+        "qha_code": _load_code(f"{MLIPS[a.mlip].get('qha_code', 'ftphase-qha') if use_mlip else 'ftphase-qha'}@{a.qha_computer or a.computer}"),
         "calphy_code": orm.load_code(f"calphy@{a.computer}"),
         "qha_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1, "num_cores_per_mpiproc": a.qha_cores}, "max_wallclock_seconds": 24 * 3600,
                                       "queue_name": "debug", "withmpi": False,
