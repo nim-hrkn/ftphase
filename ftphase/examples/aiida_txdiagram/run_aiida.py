@@ -246,7 +246,7 @@ def make_spec_ptrh(smoke: bool, gpu: bool):
         "liquids": {"base": "fcc-Pt", "base_hi": [0.5, "fcc-Rh"], "repeat": [4, 4, 4], "x": [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0], "seed": 100,
                     "T_sweep": [2500.0, 1900.0], "T_override": {"0.8": 2000.0, "1.0": 2100.0}, "n_repeats": 1, "n_equilibration_steps": 10000,
                     "n_switching_steps": [10000, 10000], "n_iterations": 3, "mode": "ts", "pressure": 0.0},
-        "qha": {"T_max": 2400.0, "T_step": 25.0, "scales": [0.96, 0.98, 1.0, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12], "eos": "vinet", "imaginary": "drop",
+        "qha": {"T_max": 2400.0, "T_step": 25.0, "scales": [0.96, 0.98, 1.0, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12], "eos": "vinet", "imaginary": "drop",   # linear scales; fcc Pt needs V/V0 1.14 (a-scale 1.045) at 2400 K (GRACE-2L smoke)
                 "relax": {"do": True, "fmax": 1e-3, "cell": True, "hydrostatic": True}},
         "assemble": {"T_min": 100.0, "T_max": 2400.0, "T_step": 10.0, "liquid_partial": True, "drop_edge_beyond_liquid": False,
                      "fits": {"fcc": "rk", "liquid": "rk", "PtRh": "poly", "PtRh3": "poly", "Pt3Rh": "poly"}, "poly_order": 3,
@@ -260,7 +260,8 @@ def make_spec_ptrh(smoke: bool, gpu: bool):
     if smoke:
         spec["solids"] = [dict(spec["solids"][0], x=[0.0, 0.5, 1.0], n_configs=1, supercell=[1, 1, 1], mesh=[4, 4, 4]),
                           dict(spec["solids"][1], repeat=[1, 1, 1], defects=[{"replace": ["Pt", "Rh"], "n": 1}], supercell=[1, 1, 1], mesh=[4, 4, 4])]
-        spec["liquids"].update({"x": [0.0, 1.0], "repeat": [3, 3, 3], "T_sweep": [2500.0, 2200.0], "T_override": {}, "n_equilibration_steps": 1000, "n_switching_steps": [1000, 1000], "n_iterations": 1})
+        # >= 3 liquid compositions: the assembly keeps only temperatures with >= 3 liquid points (liquid_partial), 2 gave an empty grid (pk 8702)
+        spec["liquids"].update({"x": [0.0, 0.5, 1.0], "repeat": [3, 3, 3], "T_sweep": [2500.0, 2200.0], "T_override": {}, "n_equilibration_steps": 1000, "n_switching_steps": [1000, 1000], "n_iterations": 1})
         spec["qha"].update({"T_step": 100.0, "scales": [0.97, 0.99, 1.01, 1.03, 1.06, 1.09]})
         spec["assemble"].update({"T_min": 2000.0, "T_max": 2400.0, "sensitivity_samples": 5, "title": "smoke test Pt-Rh"})
     if not gpu:
