@@ -1,0 +1,14 @@
+# single energy/pressure evaluation of conf.data (108-atom Al-Li) with an ML-IAP unified model: -var pot <model>
+units metal
+boundary p p p
+atom_style atomic
+atom_modify map yes
+newton on
+comm_style tiled
+read_data conf.data
+mass 1 26.9815
+mass 2 6.94
+thermo_style custom step pe press pxx pxy vol
+pair_style mliap unified ${pot} 0
+pair_coeff * * Al Li
+run 0
