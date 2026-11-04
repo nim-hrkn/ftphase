@@ -1,0 +1,10 @@
+[32m2026-11-04 20:29:06.099[0m | [1mINFO    [0m | [36mmattersim.forcefield.potential[0m:[36mfrom_checkpoint[0m:[36m938[0m - [1mLoading the model from /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/mattersim/mattersim-v1.0.0-5M.pth[0m
+fcc-Pt                     x=0.00 E_form=    0.0 meV/atom V=15.729 Fm-3m (225) 
+fcc-Rh                     x=1.00 E_form=    0.0 meV/atom V=14.271 Fm-3m (225) 
+PtRh-40 (I4_1/amd)         x=0.50 E_form=  -19.5 meV/atom V=15.028 I4_1/amd (141) 
+PtRh-L1_0 (P4/mmm)         x=0.50 E_form=  -17.7 meV/atom V=15.028 P4/mmm (123) 
+PtRh3-D0_22 (I4/mmm)       x=0.75 E_form=  -21.9 meV/atom V=14.656 I4/mmm (139) 
+PtRh3-L1_2 (Pm-3m)         x=0.75 E_form=  -21.5 meV/atom V=14.650 Pm-3m (221) 
+Pt3Rh-D0_22 (I4/mmm)       x=0.25 E_form=  -10.4 meV/atom V=15.386 I4/mmm (139) 
+Pt3Rh-L1_2 (Pm-3m)         x=0.25 E_form=   -8.7 meV/atom V=15.391 Pm-3m (221) 
+wrote /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/ptrh/out/screen_mattersim-5m.tsv

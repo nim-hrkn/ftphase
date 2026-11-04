@@ -1,0 +1,9 @@
+structure	x_Rh	E_per_atom_eV	E_form_eV_per_atom	V_per_atom_A3	spacegroup_after	converged
+fcc-Pt	0.0000	-6.066694	0.00000	15.7312	Fm-3m (225)	True
+fcc-Rh	1.0000	-7.341955	0.00000	14.2366	Fm-3m (225)	True
+PtRh-40 (I4_1/amd)	0.5000	-6.712539	-0.00821	14.9692	I4_1/amd (141)	True
+PtRh-L1_0 (P4/mmm)	0.5000	-6.715807	-0.01148	14.9568	P4/mmm (123)	True
+PtRh3-D0_22 (I4/mmm)	0.7500	-7.034881	-0.01174	14.5957	I4/mmm (139)	True
+PtRh3-L1_2 (Pm-3m)	0.7500	-7.036656	-0.01352	14.5914	Pm-3m (221)	True
+Pt3Rh-D0_22 (I4/mmm)	0.2500	-6.393418	-0.00791	15.3418	I4/mmm (139)	True
+Pt3Rh-L1_2 (Pm-3m)	0.2500	-6.394370	-0.00886	15.3371	Pm-3m (221)	True

@@ -1,0 +1,11 @@
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/torch/lib/python3.12/site-packages/sevenn/calculator.py:93: UserWarning: No tensor product accelerator is enabled for SevenNetCalculator. SevenNet may run much slower without a TP accelerator. Please refer to the accelerator section of the documentation.
+  util.warn_no_tp_accelerator('SevenNetCalculator')
+fcc-Pt                     x=0.00 E_form=    0.0 meV/atom V=15.750 Fm-3m (225) 
+fcc-Rh                     x=1.00 E_form=    0.0 meV/atom V=14.256 Fm-3m (225) 
+PtRh-40 (I4_1/amd)         x=0.50 E_form=  -30.3 meV/atom V=15.053 I4_1/amd (141) 
+PtRh-L1_0 (P4/mmm)         x=0.50 E_form=  -26.7 meV/atom V=14.978 P4/mmm (123) 
+PtRh3-D0_22 (I4/mmm)       x=0.75 E_form=  -19.6 meV/atom V=14.626 I4/mmm (139) 
+PtRh3-L1_2 (Pm-3m)         x=0.75 E_form=  -18.8 meV/atom V=14.603 Pm-3m (221) 
+Pt3Rh-D0_22 (I4/mmm)       x=0.25 E_form=  -26.0 meV/atom V=15.401 I4/mmm (139) 
+Pt3Rh-L1_2 (Pm-3m)         x=0.25 E_form=  -22.3 meV/atom V=15.360 Pm-3m (221) 
+wrote /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/ptrh/out/screen_sevenn-0.tsv
