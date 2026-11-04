@@ -31,6 +31,11 @@
 
 | run | MLIP | 計算機 | pk | 状態 |
 |---|---|---|---|---|
-| ptrh_grace_2l_smoke | GRACE-2L-OMAT fp32 | mygarden6 | 8702 | 2026-11-04 20:27 投入 |
+| ptrh_grace_2l_smoke | GRACE-2L-OMAT fp32 | mygarden6 | 8702 → 8858 | 8702 は計算 7 本成功・組立のみ失敗（液相 2 組成では組立格子が空）。spec を液相 3 組成に直した 8858 が 11-05 01:19 に Finished [0]（T 格子 2200–2400 K） |
+| ptrh_nequip_oam_m_smoke | NequIP-OAM-M | mygarden6 | 8750 → 8929 | 8750 は同じ組立失敗、8929 を自動再投入（11-04 21:45） |
+| ptrh_mace_mpa_0_smoke | MACE-MPA-0 cueq | mygarden6 / QHA mygardenx2 | 8764 → 9006 | 同上（11-04 23:31） |
+| ptrh_grace_2l | GRACE-2L-OMAT fp32 | mygarden6 | 9105 | 本番、11-05 01:21 自動投入（fcc 26 + 規則相 16 セルの QHA、液相 7 本） |
+
+`autosubmit.sh`（切り離して常駐）が smoke の終了を 2 分ごとに見て、組立失敗なら修正 spec で smoke を再投入、exit 0 なら本番を投入する。ログ `out/autosubmit.log`。
 
 mygarden5 の GPU は Stage-2 の固相 TI ジョブが 20 本待ちなので、Pt–Rh は mygarden6 で回す。mygarden6 には ML-IAP（`env/lammps-gpu-mliap`、env/torch の cupy・nequip・mattersim、env/mace の cuequivariance、potentials/nequip）が無かったので rsync で配備中（2026-11-04）。
