@@ -17,12 +17,12 @@ TDB 本体は ORCHID に同梱されない（Hallstedt, Calphad 89 (2025) 102833
 ## 経路 1: `sgte_diagrams.py`
 
 ```
-./env/ftphase/bin/python -I ftphase/examples/orchid_calphad/sgte_diagrams.py     # -> out/
+./env/ftphase/bin/python -I ftphase/examples/orchid_calphad/sgte_diagrams.py     # -> ftphase/examples/orchid_calphad/out/
 ```
 
 `orchid_calphad/out/sgte_<sys>.png` は系内の全評価、`orchid_calphad/out/overlay_<sys>.png` は MLIP/EAM の図に参照評価（Al–Li `AlLi-20Lon`、
-Al–Ni `AlNi-01Dup-4sl`、Ag–Cu `AgCu-04Wit-LB`）の境界（黒）と不変反応（破線）を重ねたもの。`out/sgte_invariants.tsv`
-に全評価の不変反応、`out/REPORT.md` に評価一覧・参照不変反応・run の不変反応。
+Al–Ni `AlNi-01Dup-4sl`、Ag–Cu `AgCu-04Wit-LB`）の境界（黒）と不変反応（破線）を重ねたもの。`orchid_calphad/out/sgte_invariants.tsv`
+に全評価の不変反応、`orchid_calphad/out/REPORT.md` に評価一覧・参照不変反応・run の不変反応。
 
 読み:
 
