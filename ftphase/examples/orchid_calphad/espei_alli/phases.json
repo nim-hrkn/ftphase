@@ -1,0 +1,11 @@
+{
+  "components": ["AL", "LI", "VA"],
+  "phases": {
+    "LIQUID": {"sublattice_model": [["AL", "LI"]], "sublattice_site_ratios": [1]},
+    "FCC_A1": {"sublattice_model": [["AL", "LI"], ["VA"]], "sublattice_site_ratios": [1, 1]},
+    "BCC_A2": {"sublattice_model": [["AL", "LI"], ["VA"]], "sublattice_site_ratios": [1, 3]},
+    "ALLI_B32": {"sublattice_model": [["AL", "LI"], ["AL", "LI"]], "sublattice_site_ratios": [0.5, 0.5]},
+    "AL2LI3": {"sublattice_model": [["AL"], ["LI"]], "sublattice_site_ratios": [2, 3]},
+    "AL4LI9": {"sublattice_model": [["AL"], ["LI"]], "sublattice_site_ratios": [4, 9]}
+  }
+}

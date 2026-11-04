@@ -1,0 +1,22 @@
+# ESPEI step 3: continue from alli-mcmc.tdb with the phase-boundary data weighted 5x (the first run stayed in a local
+# optimum with Al2Li3 melting congruently at ~1070 K although the derived liquid-stability points at 1020 K say liquid)
+system:
+  phase_models: phases.json
+  datasets: datasets
+mcmc:
+  iterations: 600
+  save_interval: 10
+  chains_per_parameter: 2
+  chain_std_deviation: 0.3
+  input_db: alli-mcmc.tdb
+  scheduler: dask
+  cores: 8
+  deterministic: true
+  data_weights: {ZPF: 5.0, ACR: 1.0, HM: 1.0, SM: 1.0, CPM: 1.0}
+  symbols: [VV0000, VV0001, VV0004, VV0006, VV0007, VV0008, VV0009, VV0010, VV0011, VV0012, VV0013, VV0014]
+output:
+  output_db: alli-mcmc2.tdb
+  tracefile: trace2.npy
+  probfile: lnprob2.npy
+  verbosity: 1
+  logfile: mcmc2.log

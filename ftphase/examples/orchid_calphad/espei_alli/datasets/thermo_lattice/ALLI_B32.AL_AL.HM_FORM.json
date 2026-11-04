@@ -1,0 +1,36 @@
+{
+ "components": [
+  "AL"
+ ],
+ "phases": [
+  "ALLI_B32"
+ ],
+ "output": "HM_FORM",
+ "conditions": {
+  "P": 101325.0,
+  "T": 298.15
+ },
+ "solver": {
+  "mode": "manual",
+  "sublattice_site_ratios": [
+   0.5,
+   0.5
+  ],
+  "sublattice_configurations": [
+   [
+    "AL",
+    "AL"
+   ]
+  ]
+ },
+ "values": [
+  [
+   [
+    10083.0
+   ]
+  ]
+ ],
+ "weight": 1.0,
+ "reference": "SGTE unary (Dinsdale 1991) lattice stability GBCCAL - GHSERAL = 10083 - 4.813 T (H = 10083, S = +4.813); bcc Li = GHSERLI",
+ "comment": "route-2: pure end member of ALLI_B32 placed at the bcc lattice stability (per mole of atoms)"
+}

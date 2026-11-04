@@ -1,0 +1,36 @@
+{
+ "lqd_x0_00": {
+  "tag": "lqd_x0.00",
+  "x_target": 0.0,
+  "x_actual": 0.0,
+  "seed": 0,
+  "repeat": 0,
+  "counts": {
+   "Al": 108,
+   "Li": 0
+  },
+  "temperature": [
+   1100.0,
+   900.0
+  ],
+  "mode": "ts",
+  "n_atoms": 108
+ },
+ "lqd_x0_20": {
+  "tag": "lqd_x0.20",
+  "x_target": 0.2,
+  "x_actual": 0.2037037037037,
+  "seed": 100,
+  "repeat": 0,
+  "counts": {
+   "Al": 86,
+   "Li": 22
+  },
+  "temperature": [
+   1100.0,
+   900.0
+  ],
+  "mode": "ts",
+  "n_atoms": 108
+ }
+}

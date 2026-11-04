@@ -1,0 +1,8 @@
+T_low	T_high	pairs_below	pairs_above
+1240.0	1250.0	['B2+B2', 'B2+L12', 'B2+Ni2Al3', 'L12+fccNi', 'Ni2Al3+NiAl3', 'NiAl3+fccAl']	['B2+L12', 'B2+Ni2Al3', 'L12+fccNi', 'Ni2Al3+NiAl3', 'NiAl3+fccAl']
+1250.0	1260.0	['B2+L12', 'B2+Ni2Al3', 'L12+fccNi', 'Ni2Al3+NiAl3', 'NiAl3+fccAl']	['B2+L12', 'B2+NiAl3', 'L12+fccNi', 'NiAl3+fccAl']
+1350.0	1360.0	['B2+L12', 'B2+NiAl3', 'L12+fccNi', 'NiAl3+fccAl']	['B2+L12', 'B2+NiAl3', 'L12+fccNi', 'NiAl3+liquid', 'fccAl+liquid']
+1440.0	1450.0	['B2+L12', 'B2+NiAl3', 'L12+fccNi', 'NiAl3+liquid', 'fccAl+liquid']	['B2+L12', 'B2+liquid', 'L12+fccNi', 'fccAl+liquid']
+1450.0	1460.0	['B2+L12', 'B2+liquid', 'L12+fccNi', 'fccAl+liquid']	['B2+L12', 'B2+liquid', 'fccAl+liquid']
+1490.0	1500.0	['B2+L12', 'B2+liquid', 'fccAl+liquid']	['B2+L12', 'B2+liquid', 'L12+liquid', 'fccAl+liquid']
+1680.0	1690.0	['B2+L12', 'B2+liquid', 'L12+liquid', 'fccAl+liquid']	['B2+B2', 'B2+L12', 'B2+liquid', 'L12+liquid', 'fccAl+liquid']

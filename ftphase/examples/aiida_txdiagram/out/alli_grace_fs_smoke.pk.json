@@ -1,0 +1,11 @@
+{
+ "pk": 1323,
+ "uuid": "7e456327-90c2-4c8d-be7b-d387a6d0aabd",
+ "name": "alli_grace_fs_smoke",
+ "profile": "ftphase",
+ "submitted": "2026-10-24 14:37:29",
+ "gpu": true,
+ "smoke": true,
+ "computer": "mygarden5",
+ "mlip": "grace-fs"
+}

@@ -1,0 +1,6 @@
+espei_alli/*.npy
+espei_alli/*.log
+espei_alli/*.stdout
+espei_alli/dask-worker-space/
+espei_alli/alli-mcmc2-interim.tdb
+npj_ptrh/paper.txt

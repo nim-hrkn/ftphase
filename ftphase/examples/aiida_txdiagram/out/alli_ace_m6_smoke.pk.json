@@ -1,0 +1,11 @@
+{
+ "pk": 1384,
+ "uuid": "d517cc45-91ff-4172-9dc0-598bed31f13d",
+ "name": "alli_ace_m6_smoke",
+ "profile": "ftphase",
+ "submitted": "2026-10-24 14:43:10",
+ "gpu": true,
+ "smoke": true,
+ "computer": "mygarden6",
+ "mlip": "ace"
+}

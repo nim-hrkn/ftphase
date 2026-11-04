@@ -1,0 +1,38 @@
+{
+ "components": [
+  "AL",
+  "LI",
+  "VA"
+ ],
+ "phases": [
+  "ALLI_B32"
+ ],
+ "output": "HM_FORM",
+ "conditions": {
+  "P": 101325.0,
+  "T": 298.15
+ },
+ "solver": {
+  "mode": "manual",
+  "sublattice_site_ratios": [
+   0.5,
+   0.5
+  ],
+  "sublattice_configurations": [
+   [
+    "LI",
+    "AL"
+   ]
+  ]
+ },
+ "values": [
+  [
+   [
+    -20700.0
+   ]
+  ]
+ ],
+ "weight": 1.0,
+ "reference": "ORCHID literature values v2026.10, experimental HM_FORM of AlLi (B32), ids ORC-YQCPH2UMXQ.eaa1b2",
+ "comment": "route-2: B32 end member LI:AL set to the experimental formation enthalpy of AlLi (B32) (-20.7 kJ/mol-atom, mean of 1 accepted experimental records); LI:AL by symmetry"
+}

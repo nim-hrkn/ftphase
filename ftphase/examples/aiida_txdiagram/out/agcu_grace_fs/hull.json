@@ -1,0 +1,56 @@
+{
+ "relaxed": [
+  {
+   "name": "fcc-Ag",
+   "x": 0.0,
+   "e": -2.8294600627007,
+   "V": 17.82051653608,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "fcc-Cu",
+   "x": 1.0,
+   "e": -4.0894848468731,
+   "V": 11.862364026065,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  }
+ ],
+ "hull": [
+  {
+   "name": "fcc-Ag",
+   "x": 0.0,
+   "e": -2.8294600627007,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Cu",
+   "x": 1.0,
+   "e": -4.0894848468731,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  }
+ ],
+ "ground_state_check": [
+  {
+   "name": "fcc-Ag",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Cu",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  }
+ ],
+ "potential": "GRACE-FS-OAM.yaml",
+ "finished": "2026-10-30 01:28:41"
+}

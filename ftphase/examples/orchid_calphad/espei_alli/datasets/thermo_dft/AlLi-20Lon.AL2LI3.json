@@ -1,0 +1,177 @@
+{
+ "components": [
+  "AL",
+  "LI",
+  "VA"
+ ],
+ "phases": [
+  "AL2LI3"
+ ],
+ "solver": {
+  "mode": "manual",
+  "sublattice_site_ratios": [
+   2.0,
+   3.0
+  ],
+  "sublattice_configurations": [
+   [
+    "AL",
+    "LI"
+   ],
+   [
+    "AL",
+    "LI"
+   ]
+  ]
+ },
+ "conditions": {
+  "P": 101325,
+  "T": 298.15
+ },
+ "output": "HM_FORM",
+ "values": [
+  [
+   [
+    -19000.0,
+    -21100.0
+   ]
+  ]
+ ],
+ "reference": "Long 2020, doi:10.1007/s11669-020-00827-z",
+ "bibtex": "long2020_2df2a2",
+ "weight": [
+  0.056395,
+  0.056395
+ ],
+ "tags": [
+  "dft_literature",
+  "orchid"
+ ],
+ "comment": "0 K DFT used as 298.15 K enthalpy. ORCHID DFT formation enthalpies (literature), Version 1, machine-extracted; TDB AlLi-20Lon.tdb (sha256 936c9bbf5ba6a80591c009adb7f6d302de6cc8d07a2f57b2f26edc3efe340e7e), phase AL2LI3. Ids, in value order: ORC-WGEKYGWHWE.0c2bd4 ORC-WV7L2XRBME.03f062. eV/atom x 96485.33212 = J/mol-atom.",
+ "orchid": {
+  "evidence_class": "dft",
+  "dft_source": "literature",
+  "tdb": {
+   "name": "AlLi-20Lon.tdb",
+   "path": "databases/sgte-binary/AlLi-20Lon.tdb",
+   "sha256": "936c9bbf5ba6a80591c009adb7f6d302de6cc8d07a2f57b2f26edc3efe340e7e",
+   "phase": "AL2LI3"
+  },
+  "registry_phase": "phase:al-li:al2li3",
+  "mapping": [
+   {
+    "id": "ORC-WGEKYGWHWE.0c2bd4",
+    "compound": "Al2Li3",
+    "basis": "registry paper_label",
+    "space_group": null,
+    "match_quality": null
+   },
+   {
+    "id": "ORC-WV7L2XRBME.03f062",
+    "compound": "Al2Li3",
+    "basis": "registry paper_label",
+    "space_group": null,
+    "match_quality": null
+   }
+  ],
+  "papers": [
+   "doi:10.1007/s11669-020-00827-z"
+  ],
+  "dois": [
+   "10.1007/s11669-020-00827-z"
+  ],
+  "status": "Version 1, machine-extracted",
+  "temperature_note": "0 K DFT used as 298.15 K enthalpy"
+ },
+ "orchid_uncertainty": {
+  "unit": "J/mol-atom",
+  "default_sigma": {
+   "value": 500.0,
+   "name": "ESPEI experimental reference sigma_HM = 500 J/mol (used only to convert the calibrated DFT sigma into an ESPEI weight)"
+  },
+  "weight_rule": "weight per value = 500 J/mol / calibrated sigma_DFT (leave-system-out robust sigma of the value's stratum; bias recorded, not applied)",
+  "sigma_rule": "sigma_effective = max(sqrt(max(printed, reading, method)^2 + composition^2 + conversion^2), scatter) (literature release `uncertainty_budget`; components kept per value in `budget`); DFT: sigma_method = calibrated sigma_DFT, no printed sigma",
+  "values": [
+   {
+    "sigma": 8866.0,
+    "sigma_basis": "dft_calibrated",
+    "calibration": {
+     "source": "literature",
+     "stratum": "metal",
+     "used": "stratum",
+     "leave_system_out": true,
+     "system_left_out": "AL-LI",
+     "n": 215,
+     "sigma_robust_kJ": 8.866,
+     "bias_median_kJ_not_applied": 2.2,
+     "ci95_sigma_robust_kJ_full_stratum": [
+      6.672,
+      9.877
+     ],
+     "n_full_stratum": 230
+    },
+    "weight_used": 0.056395,
+    "weight_meaning": "ESPEI's experimental reference sigma_HM (500 J/mol) / calibrated DFT sigma: the conversion that makes ESPEI use the calibrated sigma; 500 J/mol is not a DFT uncertainty",
+    "dft_value_printed": {
+     "value": -19.0,
+     "unit": "kJ/mol-atom"
+    },
+    "id": "ORC-WGEKYGWHWE.0c2bd4",
+    "compound": "Al2Li3",
+    "budget": {
+     "sigma_printed": null,
+     "sigma_reading": null,
+     "sigma_method": 8866.0,
+     "sigma_composition": null,
+     "sigma_scatter": null,
+     "sigma_conversion": null,
+     "sigma_effective": 8866.0,
+     "method_class": "dft_literature",
+     "method_basis": "calibrated (leave-system-out robust sigma of DFT - experiment)",
+     "method_n_pairs": 215,
+     "method_entry": "dft/CALIBRATION.json#lso/literature|metal|AL-LI"
+    }
+   },
+   {
+    "sigma": 8866.0,
+    "sigma_basis": "dft_calibrated",
+    "calibration": {
+     "source": "literature",
+     "stratum": "metal",
+     "used": "stratum",
+     "leave_system_out": true,
+     "system_left_out": "AL-LI",
+     "n": 215,
+     "sigma_robust_kJ": 8.866,
+     "bias_median_kJ_not_applied": 2.2,
+     "ci95_sigma_robust_kJ_full_stratum": [
+      6.672,
+      9.877
+     ],
+     "n_full_stratum": 230
+    },
+    "weight_used": 0.056395,
+    "weight_meaning": "ESPEI's experimental reference sigma_HM (500 J/mol) / calibrated DFT sigma: the conversion that makes ESPEI use the calibrated sigma; 500 J/mol is not a DFT uncertainty",
+    "dft_value_printed": {
+     "value": -21.1,
+     "unit": "kJ/mol-atom"
+    },
+    "id": "ORC-WV7L2XRBME.03f062",
+    "compound": "Al2Li3",
+    "budget": {
+     "sigma_printed": null,
+     "sigma_reading": null,
+     "sigma_method": 8866.0,
+     "sigma_composition": null,
+     "sigma_scatter": null,
+     "sigma_conversion": null,
+     "sigma_effective": 8866.0,
+     "method_class": "dft_literature",
+     "method_basis": "calibrated (leave-system-out robust sigma of DFT - experiment)",
+     "method_n_pairs": 215,
+     "method_entry": "dft/CALIBRATION.json#lso/literature|metal|AL-LI"
+    }
+   }
+  ]
+ }
+}

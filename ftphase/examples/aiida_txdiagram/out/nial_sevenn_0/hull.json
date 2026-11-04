@@ -1,0 +1,148 @@
+{
+ "relaxed": [
+  {
+   "name": "fcc-Al",
+   "x": 0.0,
+   "e": -3.7195401191711,
+   "V": 16.456822661499,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "fcc-Ni",
+   "x": 1.0,
+   "e": -5.7684416770935,
+   "V": 10.760906222825,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "B2-NiAl",
+   "x": 0.5,
+   "e": -5.4137115478516,
+   "V": 12.02067002685,
+   "sg_before": "Pm-3m (221)",
+   "sg_after": "Pm-3m (221)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "L12-Ni3Al",
+   "x": 0.75,
+   "e": -5.7008409500122,
+   "V": 11.243567803947,
+   "sg_before": "Pm-3m (221)",
+   "sg_after": "Pm-3m (221)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "Ni2Al3",
+   "x": 0.4,
+   "e": -5.1643772125244,
+   "V": 13.778051851044,
+   "sg_before": "P-3m1 (164)",
+   "sg_after": "P-3m1 (164)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "NiAl3",
+   "x": 0.25,
+   "e": -4.6557779312134,
+   "V": 14.745478165493,
+   "sg_before": "Pnma (62)",
+   "sg_after": "Pnma (62)",
+   "converged": true,
+   "transformed": false
+  }
+ ],
+ "hull": [
+  {
+   "name": "fcc-Al",
+   "x": 0.0,
+   "e": -3.7195401191711,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "NiAl3",
+   "x": 0.25,
+   "e": -4.6557779312134,
+   "e_form": -0.42401242256165,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "Ni2Al3",
+   "x": 0.4,
+   "e": -5.1643772125244,
+   "e_form": -0.62527647018433,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "B2-NiAl",
+   "x": 0.5,
+   "e": -5.4137115478516,
+   "e_form": -0.66972064971924,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "L12-Ni3Al",
+   "x": 0.75,
+   "e": -5.7008409500122,
+   "e_form": -0.44462466239929,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Ni",
+   "x": 1.0,
+   "e": -5.7684416770935,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  }
+ ],
+ "ground_state_check": [
+  {
+   "name": "fcc-Al",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Ni",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "B2-NiAl",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "L12-Ni3Al",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "Ni2Al3",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "NiAl3",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  }
+ ],
+ "potential": "checkpoint_sevennet_0.pth",
+ "finished": "2026-10-30 01:29:15"
+}

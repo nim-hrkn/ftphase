@@ -1,0 +1,21 @@
+pk	label	state	exit	remote_workdir
+3398	prepare_cells	finished	0	
+3438	qha s00_fcc fcc x=0.0000	finished	0	/home/kino/aiida_run/ftphase/66/41/5aaa-b1b3-4682-8454-d70e780fbbfa
+3440	qha s01_fcc fcc x=0.0625	killed	None	/home/kino/aiida_run/ftphase/47/69/fdac-9fc3-410c-84dc-662f4b755a96
+3445	qha s02_fcc fcc x=0.0625	finished	0	/home/kino/aiida_run/ftphase/25/1d/8ade-7d28-4e38-aefe-64fb3dc65c95
+3447	qha s03_fcc fcc x=0.1250	killed	None	/home/kino/aiida_run/ftphase/e3/ae/28c1-2f08-4f6c-90db-90c511e1038f
+3449	qha s04_fcc fcc x=0.1250	finished	0	/home/kino/aiida_run/ftphase/5a/88/9e42-3637-4594-9870-7d577ab4ec0b
+3451	qha s05_fcc fcc x=0.1875	killed	None	/home/kino/aiida_run/ftphase/fa/28/6704-1a58-47f3-80be-729fc11a2ce5
+3453	qha s06_fcc fcc x=0.1875	finished	0	/home/kino/aiida_run/ftphase/cd/40/387b-8bfd-426c-852c-633891628ab5
+3455	qha s07_fcc fcc x=0.2500	killed	None	/home/kino/aiida_run/ftphase/14/8a/d965-8851-4d26-8842-fc0ed1aad767
+3457	qha s08_fcc fcc x=0.2500	finished	0	/home/kino/aiida_run/ftphase/64/c5/8815-2074-45eb-bed5-be29660e1b0b
+3459	qha s09_Al3Li Al3Li x=0.2500	killed	None	/home/kino/aiida_run/ftphase/ae/6f/01ad-c31b-49c9-bf31-b2b2ffa96b2b
+3461	qha s10_B32 B32 x=0.5000	finished	0	/home/kino/aiida_run/ftphase/c6/8b/35c0-2985-4abd-a51e-3c3a1029128d
+3463	qha s11_B32 B32 x=0.4375	killed	None	/home/kino/aiida_run/ftphase/41/8f/6114-1f47-4dd9-9df6-31024882754d
+3465	qha s12_B32 B32 x=0.5625	finished	0	/home/kino/aiida_run/ftphase/94/79/7a20-6818-42e1-b7bf-f9265af2601a
+3467	calphy lqd_x0.00 x=0.0000	killed	None	/home/kino/aiida_run/ftphase/50/4b/a6fb-50b2-46f7-b0fc-e2567ef1fc2a
+3469	calphy lqd_x0.10 x=0.1016	finished	0	/home/kino/aiida_run/ftphase/d8/b9/dac7-ac7c-4bfd-bcd2-09d91f42d6ef
+3471	calphy lqd_x0.20 x=0.1992	killed	None	/home/kino/aiida_run/ftphase/d5/64/cfe5-a66d-4ebb-96fc-185b3c2bc9e0
+3473	calphy lqd_x0.30 x=0.3008	killed	None	/home/kino/aiida_run/ftphase/1e/92/93a2-dfc3-45e4-9421-e1fbe1878052
+3475	calphy lqd_x0.40 x=0.3984	killed	None	/home/kino/aiida_run/ftphase/a1/87/8f50-3aa1-44ac-b0ea-d66222a105b2
+3477	calphy lqd_x0.50 x=0.5000	killed	None	/home/kino/aiida_run/ftphase/80/40/2ad5-1303-4f03-b210-21c63d122e30

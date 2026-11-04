@@ -1,0 +1,22 @@
+pk	label	state	exit	remote_workdir
+1482	prepare_cells	finished	0	
+1566	qha s00_fcc fcc x=0.0000	finished	0	/home/kino/aiida_run/ftphase/cc/f6/53a0-8301-4aa2-81cc-8513fa4943a8
+1568	qha s01_fcc fcc x=0.0625	finished	0	/home/kino/aiida_run/ftphase/5b/da/c99f-6a6e-4d7d-a206-971d1fade8b2
+1570	qha s02_fcc fcc x=0.0625	finished	0	/home/kino/aiida_run/ftphase/d8/4d/5f62-b410-43c5-8526-63dc1e1d7b65
+1572	qha s03_fcc fcc x=0.1250	finished	0	/home/kino/aiida_run/ftphase/1a/f4/7a92-94a1-4016-bf7e-6216b7af97c8
+1574	qha s04_fcc fcc x=0.1250	finished	0	/home/kino/aiida_run/ftphase/97/dc/5774-1baa-410b-8841-b22e376c3ce1
+1576	qha s05_fcc fcc x=0.1875	finished	0	/home/kino/aiida_run/ftphase/84/83/4971-e7bb-4a78-9e9e-edb61eaef55b
+1578	qha s06_fcc fcc x=0.1875	finished	0	/home/kino/aiida_run/ftphase/11/e1/5910-6cd7-451d-bf8e-34ade8551c46
+1580	qha s07_fcc fcc x=0.2500	finished	0	/home/kino/aiida_run/ftphase/f3/2b/41aa-0b04-4ea0-a1b2-a42603046928
+1582	qha s08_fcc fcc x=0.2500	finished	0	/home/kino/aiida_run/ftphase/bd/a4/aa62-b0d7-4bf0-ad25-2e4d028f9c62
+1584	qha s09_Al3Li Al3Li x=0.2500	finished	0	/home/kino/aiida_run/ftphase/50/52/9fea-1506-46ed-ba6a-eadc72777be8
+1586	qha s10_B32 B32 x=0.5000	finished	0	/home/kino/aiida_run/ftphase/6d/2c/d8d3-0e29-403b-9cd4-fe9c48daa91e
+1588	qha s11_B32 B32 x=0.4375	finished	0	/home/kino/aiida_run/ftphase/15/ed/8e25-8a74-46e9-8691-d32df7aa39a1
+1590	qha s12_B32 B32 x=0.5625	finished	0	/home/kino/aiida_run/ftphase/7b/b7/bb1a-e62e-4d36-8715-fa270a2b150c
+1592	calphy lqd_x0.00 x=0.0000	finished	0	/home/kino/aiida_run/ftphase/ae/ff/1c94-1499-4016-a6de-87a0a8311dac
+1594	calphy lqd_x0.10 x=0.1016	finished	0	/home/kino/aiida_run/ftphase/53/c9/bbaa-5d87-4c52-833d-6613bdb61f2f
+1596	calphy lqd_x0.20 x=0.1992	finished	0	/home/kino/aiida_run/ftphase/12/74/09bc-eb85-4192-a13e-90c1f51a9437
+1598	calphy lqd_x0.30 x=0.3008	finished	0	/home/kino/aiida_run/ftphase/4f/f0/03d7-193b-4360-b145-2c830fd94e05
+1600	calphy lqd_x0.40 x=0.3984	finished	0	/home/kino/aiida_run/ftphase/35/24/bc0a-aef5-4c01-9769-c5222b1446ac
+1602	calphy lqd_x0.50 x=0.5000	finished	0	/home/kino/aiida_run/ftphase/da/92/dddb-6e60-4504-8070-63fdd36f419b
+2066	assemble_diagram	finished	0	

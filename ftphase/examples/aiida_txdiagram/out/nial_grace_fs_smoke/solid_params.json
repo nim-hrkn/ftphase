@@ -1,0 +1,105 @@
+{
+ "s00_fccAl": {
+  "phase": "fccAl",
+  "kind": "solution",
+  "x": 0.0,
+  "config": 0,
+  "n_atoms": 32,
+  "supercell": [
+   1,
+   1,
+   1
+  ],
+  "mesh": [
+   4,
+   4,
+   4
+  ],
+  "counts": {
+   "Al": 32
+  }
+ },
+ "s01_fccNi": {
+  "phase": "fccNi",
+  "kind": "solution",
+  "x": 1.0,
+  "config": 0,
+  "n_atoms": 32,
+  "supercell": [
+   1,
+   1,
+   1
+  ],
+  "mesh": [
+   4,
+   4,
+   4
+  ],
+  "counts": {
+   "Ni": 32
+  }
+ },
+ "s02_B2": {
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.5,
+  "config": 0,
+  "n_atoms": 16,
+  "supercell": [
+   1,
+   1,
+   1
+  ],
+  "mesh": [
+   4,
+   4,
+   4
+  ],
+  "counts": {
+   "Al": 8,
+   "Ni": 8
+  }
+ },
+ "s03_B2": {
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.5625,
+  "config": 0,
+  "n_atoms": 16,
+  "supercell": [
+   1,
+   1,
+   1
+  ],
+  "mesh": [
+   4,
+   4,
+   4
+  ],
+  "counts": {
+   "Al": 7,
+   "Ni": 9
+  }
+ },
+ "s04_B2": {
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.46666666666667,
+  "config": 0,
+  "n_atoms": 15,
+  "supercell": [
+   1,
+   1,
+   1
+  ],
+  "mesh": [
+   4,
+   4,
+   4
+  ],
+  "counts": {
+   "Al": 8,
+   "Ni": 7
+  }
+ }
+}

@@ -1,0 +1,11 @@
+# ESPEI step 1: single-phase parameter generation (end members from the thermochemical datasets, SGTE91 unary)
+system:
+  phase_models: phases.json
+  datasets: datasets
+generate_parameters:
+  excess_model: linear
+  ref_state: SGTE91
+output:
+  output_db: alli-gen.tdb
+  verbosity: 2
+  logfile: gen.log

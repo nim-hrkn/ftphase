@@ -1,0 +1,170 @@
+{
+ "started": "2026-10-30 01:27:34",
+ "solids_used": [
+  "s00_fccAl",
+  "s01_fccNi",
+  "s02_B2",
+  "s03_B2",
+  "s04_B2"
+ ],
+ "solids_missing": [],
+ "liquids_used": [
+  "lqd_x0_00",
+  "lqd_x0_50",
+  "lqd_x1_00"
+ ],
+ "liquids_missing": [],
+ "liquid_x_available": [
+  0.0,
+  0.5,
+  1.0
+ ],
+ "liquid_runs_per_x": {
+  "0.0000": 1,
+  "0.5000": 1,
+  "1.0000": 1
+ },
+ "liquid_T_min_K": {
+  "0.0000": 1699.999,
+  "0.5000": 1699.999,
+  "1.0000": 1699.999
+ },
+ "degraded_to_point": [
+  "fccAl",
+  "fccNi"
+ ],
+ "table_check": [
+  "mixed quantum/classical treatment: ['classical', 'classical+harmonic-correction'] (see ftphase.quantum)"
+ ],
+ "T_grid": [
+  1700.0,
+  2000.0,
+  31
+ ],
+ "liquid_edge_segments_dropped": 0,
+ "lowest_T_with_liquid_K": 1700.0,
+ "coexistence_at_that_T": [
+  {
+   "phase_a": "liquid",
+   "x_a": 0.41380472544041,
+   "phase_b": "B2",
+   "x_b": 0.48075096072923
+  },
+  {
+   "phase_a": "B2",
+   "x_a": 0.5625,
+   "phase_b": "liquid",
+   "x_b": 0.6575
+  }
+ ],
+ "pure_A_melting_bracket_K": null,
+ "invariants": [
+  {
+   "T_low": 1800.0,
+   "T_high": 1810.0,
+   "pairs_below": [
+    "B2+B2",
+    "B2+liquid"
+   ],
+   "pairs_above": [
+    "B2+liquid"
+   ]
+  }
+ ],
+ "regions_at_700K": [],
+ "regions_at_800K": [],
+ "regions_at_900K": [],
+ "regions_at_1000K": [],
+ "same_phase_segments": [
+  {
+   "phase": "B2",
+   "T": 1700.0,
+   "x_a": 0.49235265856233,
+   "x_b": 0.51506418153731
+  },
+  {
+   "phase": "B2",
+   "T": 1710.0,
+   "x_a": 0.49224336161419,
+   "x_b": 0.515276156725
+  },
+  {
+   "phase": "B2",
+   "T": 1720.0,
+   "x_a": 0.49213381464791,
+   "x_b": 0.51548849934837
+  },
+  {
+   "phase": "B2",
+   "T": 1730.0,
+   "x_a": 0.49202405876188,
+   "x_b": 0.51570128914847
+  },
+  {
+   "phase": "B2",
+   "T": 1740.0,
+   "x_a": 0.49191406142416,
+   "x_b": 0.51591441725331
+  },
+  {
+   "phase": "B2",
+   "T": 1750.0,
+   "x_a": 0.49180379752421,
+   "x_b": 0.51612785547797
+  },
+  {
+   "phase": "B2",
+   "T": 1760.0,
+   "x_a": 0.49169335273429,
+   "x_b": 0.51634165456113
+  },
+  {
+   "phase": "B2",
+   "T": 1770.0,
+   "x_a": 0.49158273036294,
+   "x_b": 0.51655577608083
+  },
+  {
+   "phase": "B2",
+   "T": 1780.0,
+   "x_a": 0.49147183948144,
+   "x_b": 0.51677013376313
+  },
+  {
+   "phase": "B2",
+   "T": 1790.0,
+   "x_a": 0.49136079417004,
+   "x_b": 0.51698477100437
+  },
+  {
+   "phase": "B2",
+   "T": 1800.0,
+   "x_a": 0.49124960902963,
+   "x_b": 0.51719972360441
+  }
+ ],
+ "fit_residuals": {
+  "T": 1700.0,
+  "rows": [
+   {
+    "T": 1700.0,
+    "phase": "B2",
+    "rmse_eV": 3.4399002279594e-15,
+    "flag": false
+   },
+   {
+    "T": 1700.0,
+    "phase": "liquid",
+    "rmse_eV": 0.0,
+    "flag": false
+   }
+  ]
+ },
+ "sigma_used_eV": {
+  "liquid": 0.0014,
+  "B2": 0.002,
+  "fccNi": 0.002,
+  "fccAl": 0.002
+ },
+ "finished": "2026-10-30 01:27:37"
+}

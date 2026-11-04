@@ -1,0 +1,90 @@
+run	system	T_low	T_high	kind	phases	x_run	n_exp	T_exp_median	T_exp_min	T_exp_max	dT_exp	n_model	T_model_median	x_lit	status
+agcu_eam	AG-CU	1170.0	1180.0	artefact	fcc+fcc	"{""fcc"": 0.118}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+agcu_eam_2048	AG-CU	1140.0	1150.0	artefact	fcc+fcc	"{""fcc"": 0.125}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+agcu_eam_2048	AG-CU	1150.0	1160.0	artefact	fcc+fcc	"{""fcc"": 0.11}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+agcu_eam_2048	AG-CU	1190.0	1200.0	artefact	fcc+fcc	"{""fcc"": 0.11}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+agcu_grace_1l_ti	AG-CU	1110.0	1120.0	artefact	fcc+fcc	"{""fcc"": 0.578}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+agcu_grace_fs	AG-CU	1110.0	1120.0	artefact	liquid+liquid	"{""liquid"": 0.393}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+agcu_grace_fs	AG-CU	1310.0	1320.0	melting	fcc+liquid	"{""liquid"": 0.98, ""fcc"": 0.991}"	0					0		null	no literature record with this phase set
+agcu_grace_fs_ti	AG-CU	1100.0	1110.0	artefact	liquid+liquid	"{""liquid"": 0.394}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+agcu_grace_fs_ti	AG-CU	1220.0	1230.0	melting	fcc+liquid	"{""liquid"": 0.929, ""fcc"": 0.96}"	0					0		null	no literature record with this phase set
+agcu_grace_fs_ti	AG-CU	1240.0	1250.0	liquid_reaches	fcc+liquid	"{""liquid"": 0.846, ""fcc"": 0.976}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+agcu_grace_fs_ti	AG-CU	1250.0	1260.0	melting	fcc+liquid	"{""liquid"": 0.846, ""fcc"": 0.976}"	0					0		null	no literature record with this phase set
+agcu_grace_fs_ti	AG-CU	1290.0	1300.0	liquid_reaches	fcc+liquid	"{""liquid"": 0.963, ""fcc"": 0.986}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+agcu_grace_fs_ti	AG-CU	1300.0	1310.0	melting	fcc+liquid	"{""liquid"": 0.963, ""fcc"": 0.986}"	0					0		null	no literature record with this phase set
+agcu_sevenn_0	AG-CU	1240.0	1250.0	artefact	fcc+fcc	"{""fcc"": 0.54}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+agcu_sevenn_0_ti	AG-CU	1130.0	1140.0	artefact	fcc+fcc	"{""fcc"": 0.553}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+agcu_sevenn_0_ti	AG-CU	1140.0	1150.0	artefact	fcc+fcc	"{""fcc"": 0.572}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+agcu_sevenn_0_ti	AG-CU	1150.0	1160.0	artefact	fcc+fcc	"{""fcc"": 0.572}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+alli_ace	AL-LI	760.0	770.0	reaction	B32+fcc+liquid	"{""fcc"": 0.164, ""B32"": 0.482, ""liquid"": 0.32}"	4	872.0	863.0	875.0	-107.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_ace	AL-LI	790.0	800.0	artefact	fcc+fcc	"{""fcc"": 0.068}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+alli_ace	AL-LI	850.0	860.0	melting	B32+liquid	"{""liquid"": 0.493, ""B32"": 0.51}"	1	970.0	970.0	970.0	-115.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
+alli_ace_b32ti	AL-LI	760.0	770.0	reaction	B32+fcc+liquid	"{""fcc"": 0.167, ""B32"": 0.489, ""liquid"": 0.328}"	4	872.0	863.0	875.0	-107.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_ace_b32ti	AL-LI	790.0	800.0	artefact	fcc+fcc	"{""fcc"": 0.068}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+alli_ace_b32ti	AL-LI	840.0	850.0	melting	B32+liquid	"{""liquid"": 0.476, ""B32"": 0.51}"	1	970.0	970.0	970.0	-125.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
+alli_ace_m6	AL-LI	760.0	770.0	reaction	B32+fcc+liquid	"{""fcc"": 0.164, ""B32"": 0.483, ""liquid"": 0.313}"	4	872.0	863.0	875.0	-107.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_ace_m6	AL-LI	790.0	800.0	artefact	fcc+fcc	"{""fcc"": 0.068}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+alli_ace_m6	AL-LI	850.0	860.0	melting	B32+liquid	"{""liquid"": 0.494, ""B32"": 0.511}"	1	970.0	970.0	970.0	-115.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
+alli_grace_1l	AL-LI	720.0	730.0	reaction	B32+fcc+liquid	"{""fcc"": 0.201, ""B32"": 0.476, ""liquid"": 0.334}"	4	872.0	863.0	875.0	-147.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_grace_1l	AL-LI	810.0	820.0	melting	B32+liquid	"{""liquid"": 0.489, ""B32"": 0.506}"	1	970.0	970.0	970.0	-155.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
+alli_grace_2l	AL-LI	750.0	760.0	reaction	B32+fcc+liquid	"{""fcc"": 0.182, ""B32"": 0.497, ""liquid"": 0.363}"	4	872.0	863.0	875.0	-117.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_grace_2l	AL-LI	810.0	820.0	melting	B32+liquid	"{""liquid"": 0.481, ""B32"": 0.514}"	1	970.0	970.0	970.0	-155.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
+alli_grace_fs	AL-LI	740.0	750.0	reaction	B32+fcc+liquid	"{""fcc"": 0.23, ""B32"": 0.438, ""liquid"": 0.319}"	4	872.0	863.0	875.0	-127.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_grace_fs	AL-LI	800.0	810.0	melting	B32+liquid	"{""liquid"": 0.447, ""B32"": 0.462}"	1	970.0	970.0	970.0	-165.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
+alli_mace_mpa_0	AL-LI	770.0	780.0	reaction	B32+fcc+liquid	"{""fcc"": 0.236, ""B32"": 0.49, ""liquid"": 0.386}"	4	872.0	863.0	875.0	-97.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_mace_mpa_0	AL-LI	820.0	830.0	melting	B32+liquid	"{""liquid"": 0.474, ""B32"": 0.509}"	1	970.0	970.0	970.0	-145.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
+alli_nequip_oam_m	AL-LI	800.0	810.0	reaction	B32+fcc+liquid	"{""fcc"": 0.172, ""B32"": 0.498, ""liquid"": 0.323}"	4	872.0	863.0	875.0	-67.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_nequip_oam_m	AL-LI	890.0	900.0	melting	B32+liquid	"{""liquid"": 0.459, ""B32"": 0.512}"	1	970.0	970.0	970.0	-75.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
+alli_sevenn_0	AL-LI	930.0	940.0	reaction	B32+fcc+liquid	"{""fcc"": 0.25, ""B32"": 0.482, ""liquid"": 0.5}"	4	872.0	863.0	875.0	63.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_sevenn_0	AL-LI	1000.0	1010.0	artefact	fcc+fcc	"{""fcc"": 0.247}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+alli_sevenn_mf_ompa	AL-LI	850.0	860.0	reaction	B32+fcc+liquid	"{""fcc"": 0.166, ""B32"": 0.502, ""liquid"": 0.326}"	4	872.0	863.0	875.0	-17.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_sevenn_mf_ompa	AL-LI	910.0	920.0	melting	B32+liquid	"{""liquid"": 0.464, ""B32"": 0.513}"	1	970.0	970.0	970.0	-55.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
+nial_grace_1l	AL-NI	1040.0	1050.0	liquid_reaches	NiAl3+liquid	"{""liquid"": 0.195, ""NiAl3"": 0.25}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_grace_1l	AL-NI	1090.0	1100.0	reaction	B2+NiAl3+liquid	"{""NiAl3"": 0.25, ""B2"": 0.471, ""liquid"": 0.262}"	0					0		null	no literature record with this phase set
+nial_grace_1l	AL-NI	1630.0	1640.0	reaction	B2+L12+liquid	"{""B2"": 0.611, ""L12"": 0.781, ""liquid"": 0.7}"	8	1642.0	1633.15	1653.15	-7.0	8	1642.075	"{""L"": 0.752, ""\u03b3\u2032"": 0.76, ""bcc"": 0.7, ""B2"": 0.71, ""L12"": 0.76, ""\u03b3'"": 0.76}"	matched
+nial_grace_1l	AL-NI	1660.0	1670.0	reaction	L12+fccNi+liquid	"{""L12"": 0.781, ""fccNi"": 0.912, ""liquid"": 0.885}"	8	1645.0	1635.15	1656.15	20.0	8	1643.15	"{""\u03b3\u2032"": 0.766, ""L"": 0.755, ""fcc"": 0.785, ""(Ni)"": 0.785, ""L12"": 0.762, ""\u03b3'"": 0.761, ""\u03b3"": 0.785}"	matched
+nial_grace_1l	AL-NI	1690.0	1700.0	melting	fccNi+liquid	"{""liquid"": 0.942, ""fccNi"": 0.952}"	0					0		null	no literature record with this phase set
+nial_grace_1l	AL-NI	1730.0	1740.0	artefact	B2+B2	"{""B2"": 0.493}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+nial_grace_1l	AL-NI	1760.0	1770.0	melting	L12+liquid	"{""liquid"": 0.782, ""L12"": 0.781}"	0					0		null	no literature record with this phase set
+nial_grace_1l_ti	AL-NI	1040.0	1050.0	liquid_reaches	NiAl3+liquid	"{""liquid"": 0.195, ""NiAl3"": 0.25}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_grace_1l_ti	AL-NI	1090.0	1100.0	reaction	B2+NiAl3+liquid	"{""NiAl3"": 0.25, ""B2"": 0.471, ""liquid"": 0.262}"	0					0		null	no literature record with this phase set
+nial_grace_1l_ti	AL-NI	1640.0	1650.0	reaction	B2+L12+liquid	"{""B2"": 0.611, ""L12"": 0.781, ""liquid"": 0.703}"	8	1642.0	1633.15	1653.15	3.0	8	1642.075	"{""L"": 0.752, ""\u03b3\u2032"": 0.76, ""bcc"": 0.7, ""B2"": 0.71, ""L12"": 0.76, ""\u03b3'"": 0.76}"	matched
+nial_grace_1l_ti	AL-NI	1660.0	1670.0	reaction	L12+fccNi+liquid	"{""L12"": 0.781, ""fccNi"": 0.915, ""liquid"": 0.887}"	8	1645.0	1635.15	1656.15	20.0	8	1643.15	"{""\u03b3\u2032"": 0.766, ""L"": 0.755, ""fcc"": 0.785, ""(Ni)"": 0.785, ""L12"": 0.762, ""\u03b3'"": 0.761, ""\u03b3"": 0.785}"	matched
+nial_grace_1l_ti	AL-NI	1700.0	1710.0	melting	fccNi+liquid	"{""liquid"": 0.964, ""fccNi"": 0.975}"	0					0		null	no literature record with this phase set
+nial_grace_1l_ti	AL-NI	1760.0	1770.0	melting	L12+liquid	"{""liquid"": 0.782, ""L12"": 0.781}"	0					0		null	no literature record with this phase set
+nial_grace_1l_ti	AL-NI	1940.0	1950.0	artefact	B2+B2	"{""B2"": 0.487}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+nial_grace_fs	AL-NI	1040.0	1050.0	other	B2+NiAl3	"{""NiAl3"": 0.25, ""B2"": 0.49}"	0					0		null	not compared
+nial_grace_fs	AL-NI	1090.0	1100.0	liquid_reaches	B2+liquid	"{""liquid"": 0.29, ""B2"": 0.493}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_grace_fs	AL-NI	1180.0	1190.0	liquid_reaches	B2+liquid	"{""liquid"": 0.3, ""B2"": 0.494}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_grace_fs	AL-NI	1290.0	1300.0	liquid_reaches	B2+liquid	"{""liquid"": 0.308, ""B2"": 0.496}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_grace_fs	AL-NI	1530.0	1540.0	reaction	B2+L12+liquid	"{""B2"": 0.611, ""L12"": 0.779, ""liquid"": 0.683}"	8	1642.0	1633.15	1653.15	-107.0	8	1642.075	"{""L"": 0.752, ""\u03b3\u2032"": 0.76, ""bcc"": 0.7, ""B2"": 0.71, ""L12"": 0.76, ""\u03b3'"": 0.76}"	matched
+nial_grace_fs	AL-NI	1670.0	1680.0	reaction	L12+fccNi+liquid	"{""L12"": 0.781, ""fccNi"": 0.886, ""liquid"": 0.86}"	8	1645.0	1635.15	1656.15	30.0	8	1643.15	"{""\u03b3\u2032"": 0.766, ""L"": 0.755, ""fcc"": 0.785, ""(Ni)"": 0.785, ""L12"": 0.762, ""\u03b3'"": 0.761, ""\u03b3"": 0.785}"	matched
+nial_grace_fs	AL-NI	1730.0	1740.0	melting	fccNi+liquid	"{""liquid"": 0.925, ""fccNi"": 0.933}"	0					0		null	no literature record with this phase set
+nial_grace_fs	AL-NI	1800.0	1810.0	melting	L12+liquid	"{""liquid"": 0.781, ""L12"": 0.781}"	0					0		null	no literature record with this phase set
+nial_grace_fs_ti	AL-NI	1040.0	1050.0	other	B2+NiAl3	"{""NiAl3"": 0.25, ""B2"": 0.49}"	0					0		null	not compared
+nial_grace_fs_ti	AL-NI	1090.0	1100.0	liquid_reaches	B2+liquid	"{""liquid"": 0.29, ""B2"": 0.493}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_grace_fs_ti	AL-NI	1180.0	1190.0	liquid_reaches	B2+liquid	"{""liquid"": 0.3, ""B2"": 0.494}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_grace_fs_ti	AL-NI	1280.0	1290.0	artefact	B2+B2	"{""B2"": 0.49}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+nial_grace_fs_ti	AL-NI	1290.0	1300.0	liquid_reaches	B2+liquid	"{""liquid"": 0.313, ""B2"": 0.471}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_grace_fs_ti	AL-NI	1580.0	1590.0	reaction	B2+L12+liquid	"{""B2"": 0.611, ""L12"": 0.781, ""liquid"": 0.693}"	8	1642.0	1633.15	1653.15	-57.0	8	1642.075	"{""L"": 0.752, ""\u03b3\u2032"": 0.76, ""bcc"": 0.7, ""B2"": 0.71, ""L12"": 0.76, ""\u03b3'"": 0.76}"	matched
+nial_grace_fs_ti	AL-NI	1650.0	1660.0	liquid_reaches	fccNi+liquid	"{""fccNi"": 0.985, ""liquid"": 0.995}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_grace_fs_ti	AL-NI	1680.0	1690.0	other	L12+fccNi	"{""L12"": 0.781, ""fccNi"": 0.884}"	0					0		null	not compared
+nial_grace_fs_ti	AL-NI	1720.0	1730.0	melting	fccNi+liquid	"{""liquid"": 0.923, ""fccNi"": 0.924}"	0					0		null	no literature record with this phase set
+nial_grace_fs_ti	AL-NI	1790.0	1800.0	liquid_reaches	fccNi+liquid	"{""liquid"": 0.898, ""fccNi"": 0.897}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_grace_fs_ti	AL-NI	1800.0	1810.0	melting	L12+liquid	"{""liquid"": 0.781, ""L12"": 0.781}"	0					0		null	no literature record with this phase set
+nial_grace_fs_ti	AL-NI	1810.0	1820.0	melting	fccNi+liquid	"{""liquid"": 0.897, ""fccNi"": 0.897}"	0					0		null	no literature record with this phase set
+nial_grace_fs_ti	AL-NI	1850.0	1860.0	artefact	B2+B2	"{""B2"": 0.487}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+nial_sevenn_0	AL-NI	1240.0	1250.0	artefact	B2+B2	"{""B2"": 0.497}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+nial_sevenn_0	AL-NI	1250.0	1260.0	reaction	B2+Ni2Al3+NiAl3	"{""NiAl3"": 0.25, ""Ni2Al3"": 0.4, ""B2"": 0.471}"	0					0		null	no literature record with this phase set
+nial_sevenn_0	AL-NI	1350.0	1360.0	reaction	NiAl3+fccAl+liquid	"{""fccAl"": 0.008, ""NiAl3"": 0.25, ""liquid"": 0.197}"	4	913.0	913.0	913.15	442.0	7	915.15	"{""L"": 0.027, ""\u03b31"": 0.25, ""Al3Ni"": 0.25, ""fcc"": 0.001}"	matched
+nial_sevenn_0	AL-NI	1440.0	1450.0	reaction	B2+NiAl3+liquid	"{""liquid"": 0.244, ""NiAl3"": 0.25, ""B2"": 0.471}"	0					0		null	no literature record with this phase set
+nial_sevenn_0	AL-NI	1450.0	1460.0	other	L12+fccNi	"{""L12"": 0.781, ""fccNi"": 0.915}"	0					0		null	not compared
+nial_sevenn_0	AL-NI	1490.0	1500.0	liquid_reaches	L12+liquid	"{""L12"": 0.781, ""liquid"": 0.953}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared
+nial_sevenn_0	AL-NI	1680.0	1690.0	artefact	B2+B2	"{""B2"": 0.502}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+nial_sevenn_0_ti	AL-NI	1130.0	1140.0	reaction	NiAl3+fccAl+liquid	"{""fccAl"": 0.031, ""NiAl3"": 0.25, ""liquid"": 0.154}"	4	913.0	913.0	913.15	222.0	7	915.15	"{""L"": 0.027, ""\u03b31"": 0.25, ""Al3Ni"": 0.25, ""fcc"": 0.001}"	matched
+nial_sevenn_0_ti	AL-NI	1240.0	1250.0	artefact	B2+B2	"{""B2"": 0.497}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+nial_sevenn_0_ti	AL-NI	1250.0	1260.0	reaction	B2+Ni2Al3+NiAl3	"{""NiAl3"": 0.25, ""Ni2Al3"": 0.4, ""B2"": 0.471}"	0					0		null	no literature record with this phase set
+nial_sevenn_0_ti	AL-NI	1270.0	1280.0	artefact	B2+B2	"{""B2"": 0.493}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
+nial_sevenn_0_ti	AL-NI	1440.0	1450.0	reaction	B2+NiAl3+liquid	"{""liquid"": 0.236, ""NiAl3"": 0.25, ""B2"": 0.471}"	0					0		null	no literature record with this phase set
+nial_sevenn_0_ti	AL-NI	1470.0	1480.0	other	L12+fccNi	"{""L12"": 0.781, ""fccNi"": 0.994}"	0					0		null	not compared
+nial_sevenn_0_ti	AL-NI	1490.0	1500.0	liquid_reaches	L12+liquid	"{""L12"": 0.781, ""liquid"": 0.953}"	0					0		null	liquid first touches this solid here (no reaction identified), not compared

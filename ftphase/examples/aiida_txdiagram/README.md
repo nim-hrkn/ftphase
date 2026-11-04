@@ -129,3 +129,20 @@ QHA 13 本は 2 本ずつ（4 コア × 2）走り、runner 時間 3–24 秒/�
 - Al 融点が +20 K、B32 側が +10 K 上がったのは HANDOFF の見込みどおり、密度メッシュ 60 Å で純 Al の F_vib が正しくなった分（例 6 と同じ向き）。共晶温度・組成・固溶限は例 5 と 0.01 以内で一致し、AiiDA 化で物理は変わっていない。
 - **新たに出た差**：700–790 K に幅 ≤ 0.09 の fcc+fcc 区間（x = 0.03–0.12、REPORT.md の「Same-phase segments」、tsv では `miscibility gap`）。Monte Carlo の一様オフセットには動じない（700 K で 23/30）が、液相とも B32 とも無関係な Al 側の狭い帯で、物理ではなく 32 原子 2 配置の fcc 系列（x = 0.0625 の 2 配置はどちらも Cmcm、x ≥ 0.125 は P1）の配置ノイズを 3 次多項式の過剰項が拾ったもの。例 5 では [4,4,4] メッシュのノイズ配分が違って出なかった。対処は例 6 と同じ（64 原子 SQS、`fits={'fcc':'rk'}` か `poly_order` を下げる、`sigma['fcc']` を配置ばらつきに合わせる）。本 WorkChain の目的（AiiDA 化の検証）には影響しない。
 - 図 `out/alli_ace/07_phase_diagram.png`、表 `07_two_phase_regions.tsv`、`07_sensitivity.tsv`、`summary.json`、各 CalcJob の pk と作業 dir は `calcjobs.tsv`。provenance は `verdi -p ftphase node graph generate 191`。
+
+## ORCHID との比較（`orchid_compare.py`、2026-11-03）
+
+Arróyave, Saal, Shin, arXiv:2610.41164（`papers/2610.41164v1.pdf`）の ORCHID v2026.10 を `data/orchid-v2026.10/`（README に DOI と md5、gitignore）に取得し、
+各 run の 07 出力と突き合わせる。実行は `env/ftphase/bin/python -I ftphase/examples/aiida_txdiagram/orchid_compare.py [run_dir ...]`、
+出力は `out/orchid_compare/REPORT.md`、`assemblage_points.tsv`、`invariants.tsv`。
+
+- 相領域の内部点（ORCHID-Assemblages、Okamoto ハンドブックの評価状態図の各相領域 1 点）: run の T 格子と組成範囲に入る点だけを、
+  最寄りの格子温度の二相対から読んだ安定相と比べ、論文 §4.2 の prevalence-weighted phase recall S と exact 一致数を出す。
+  Al-Li は 14 点中 4 点（T 700 K 以上かつ x ≤ 0.5）、Ni-Al は 17 点中 12 点（うち 3 点は Al3Ni5/Ni2Al3 などモデルに無い相）、Ag-Cu は 6 点中 3 点しか評価できない。
+- 不変反応（ORCHID-Values の INVARIANT_TEMPERATURE と 2 相の TRANSITION_TEMPERATURE）: `07_invariants.tsv` の括弧前後で変わる二相対の相の多重集合
+  （p+p は 2 回）で同定し、3 相以上の reaction と、固相が括弧の上で消える melting（合致溶融）だけを同じ多重集合の文献値と照合、dT = T_run − median(experimental)。
+  同相区間の出入り（fit noise）と「液相が固相に初めて触れる」変化は照合しない。
+- 結果（REPORT.md の一覧）: Al-Li 共晶は実験 872 K に対し ACE −107、GRACE-1L −147、GRACE-2L −117、GRACE-FS −127、MACE-MPA-0 −97、NequIP-OAM-M −67、
+  SevenNet-MF-ompa −17、SevenNet-0 +63 K; B32 合致溶融（実験 970 K）は −55〜−165 K。Ni-Al は B2+L12+液相（1642 K）と L12+fccNi+液相（1645 K）の 2 つが
+  GRACE-1L で −7/+20 K、GRACE-FS で −107/+30 K; SevenNet-0 は Al 側共晶が +442 K（Al が融けない）。Ag-Cu の共晶 1053 K は全 run の格子下限 1100 K より下で照合不能。
+  純 Al 融点: ORCHID unary AL は 933.47 K（1 件）、ACE 880–890 K（−48 K）、GRACE-FS 950–960 K（+22 K）、MatterSim-1M 770–780 K（−158 K）。Ag、Cu、Li の融点記録は ORCHID に無い。

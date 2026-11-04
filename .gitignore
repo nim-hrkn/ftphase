@@ -72,3 +72,12 @@ env/lammps-torch/test/*
 # not published: copyrighted source documents and third-party potential files
 資料/
 potentials/
+# ORCHID Zenodo deposits (data/orchid-v2026.10/README.md records DOIs and checksums; re-download, do not commit)
+data/orchid-v2026.10/*
+!data/orchid-v2026.10/README.md
+
+# papers (PDFs stay out of the repository, user decision 2026-11-04)
+papers/
+/*.pdf
+# raw MLIP benchmark job outputs (2 GB; the numbers are in docs/mlip.html and mlip_bench/)
+ftphase/examples/mlip_bench/runs/

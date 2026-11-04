@@ -1,0 +1,189 @@
+{
+ "lqd_x0_00": {
+  "tag": "lqd_x0.00",
+  "x_target": 0.0,
+  "x_actual": 0.0,
+  "seed": 0,
+  "repeat": 0,
+  "counts": {
+   "Al": 256,
+   "Ni": 0
+  },
+  "temperature": [
+   2000.0,
+   850.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_10": {
+  "tag": "lqd_x0.10",
+  "x_target": 0.1,
+  "x_actual": 0.1015625,
+  "seed": 100,
+  "repeat": 0,
+  "counts": {
+   "Al": 230,
+   "Ni": 26
+  },
+  "temperature": [
+   2000.0,
+   850.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_20": {
+  "tag": "lqd_x0.20",
+  "x_target": 0.2,
+  "x_actual": 0.19921875,
+  "seed": 101,
+  "repeat": 0,
+  "counts": {
+   "Al": 205,
+   "Ni": 51
+  },
+  "temperature": [
+   2000.0,
+   950.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_30": {
+  "tag": "lqd_x0.30",
+  "x_target": 0.3,
+  "x_actual": 0.30078125,
+  "seed": 102,
+  "repeat": 0,
+  "counts": {
+   "Al": 179,
+   "Ni": 77
+  },
+  "temperature": [
+   2000.0,
+   1100.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_40": {
+  "tag": "lqd_x0.40",
+  "x_target": 0.4,
+  "x_actual": 0.3984375,
+  "seed": 103,
+  "repeat": 0,
+  "counts": {
+   "Al": 154,
+   "Ni": 102
+  },
+  "temperature": [
+   2000.0,
+   1300.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_50": {
+  "tag": "lqd_x0.50",
+  "x_target": 0.5,
+  "x_actual": 0.5,
+  "seed": 104,
+  "repeat": 0,
+  "counts": {
+   "Al": 128,
+   "Ni": 128
+  },
+  "temperature": [
+   2000.0,
+   1500.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_60": {
+  "tag": "lqd_x0.60",
+  "x_target": 0.6,
+  "x_actual": 0.6015625,
+  "seed": 100,
+  "repeat": 0,
+  "counts": {
+   "Al": 102,
+   "Ni": 154
+  },
+  "temperature": [
+   2000.0,
+   1450.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_70": {
+  "tag": "lqd_x0.70",
+  "x_target": 0.7,
+  "x_actual": 0.69921875,
+  "seed": 101,
+  "repeat": 0,
+  "counts": {
+   "Al": 77,
+   "Ni": 179
+  },
+  "temperature": [
+   2000.0,
+   1350.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_80": {
+  "tag": "lqd_x0.80",
+  "x_target": 0.8,
+  "x_actual": 0.80078125,
+  "seed": 102,
+  "repeat": 0,
+  "counts": {
+   "Al": 51,
+   "Ni": 205
+  },
+  "temperature": [
+   2000.0,
+   1400.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x0_90": {
+  "tag": "lqd_x0.90",
+  "x_target": 0.9,
+  "x_actual": 0.8984375,
+  "seed": 103,
+  "repeat": 0,
+  "counts": {
+   "Al": 26,
+   "Ni": 230
+  },
+  "temperature": [
+   2000.0,
+   1450.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ },
+ "lqd_x1_00": {
+  "tag": "lqd_x1.00",
+  "x_target": 1.0,
+  "x_actual": 1.0,
+  "seed": 0,
+  "repeat": 0,
+  "counts": {
+   "Al": 0,
+   "Ni": 256
+  },
+  "temperature": [
+   2000.0,
+   1500.0
+  ],
+  "mode": "ts",
+  "n_atoms": 256
+ }
+}
