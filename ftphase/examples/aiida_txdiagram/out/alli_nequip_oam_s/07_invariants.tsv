@@ -1,0 +1,4 @@
+T_low	T_high	pairs_below	pairs_above
+840.0	850.0	['B32+B32', 'B32+fcc']	['B32+fcc', 'B32+liquid']
+900.0	910.0	['B32+fcc', 'B32+liquid']	['B32+fcc', 'B32+liquid', 'fcc+fcc', 'fcc+liquid']
+920.0	930.0	['B32+fcc', 'B32+liquid', 'fcc+fcc', 'fcc+liquid']	['fcc+fcc', 'fcc+liquid']

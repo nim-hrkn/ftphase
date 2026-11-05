@@ -1,0 +1,4 @@
+T	phase	rmse_eV	flag
+900.0	B32	0.0	False
+900.0	fcc	0.00039087843108518474	False
+900.0	liquid	0.0003125980449951683	False
