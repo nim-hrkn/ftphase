@@ -119,6 +119,16 @@ def stage2_range(name, m):
     return [float(round(min(lo, 0.8 * hi))), float(round(hi))]
 
 
+def qha_excluded(name, m):
+    """Cells whose QHA rows are left out of the assembly (2026-11-06): QHA - TI reaches -33..-45 meV/atom at x_Cu = 0.25/0.75 (Ag-Cu, all
+    three MLIPs; -2..-13 at the pure ends), so the TI-less cells inside the Ag-Cu gap (0.25 < x < 0.75) are far too stable and bend the one
+    fcc curve into alternating fcc+fcc / fcc+liquid bands; the dilute fcc-Al cells of Ni-Al had their TI dropped (below the 900 K floor) and
+    SevenNet-0 QHA puts fcc Al 37 meV/atom low, which kept a fccAl+liquid band up to 2000 K."""
+    if name.startswith("agcu"):
+        return 0.25 < m["x"] < 0.75
+    return m["phase"] == "fccAl" and m["x"] > 0.0
+
+
 def submit2(names, only=None, t_hi=None, t_lo=None, dry=False):
     """Stage 2: every alloy cell (stage2_range), on HOST2[name]."""
     from aiida import orm
@@ -304,9 +314,11 @@ def assemble(names):
         rec = json.load(open(_rec_path(name)))
         wc, kids, prep = _workchain(rec["pk_workchain"])
         nodes = {}
+        sol_p = prep.outputs.solid_params.get_dict()
         for n in kids.get("QhaCalculation", []):
-            if n.is_finished_ok:
-                nodes[f"qha_{n.label.split()[1]}"] = n.outputs.arrays
+            key = n.label.split()[1]
+            if n.is_finished_ok and not qha_excluded(name, sol_p[key]):
+                nodes[f"qha_{key}"] = n.outputs.arrays
         for n in kids.get("CalphyCalculation", []):
             if n.is_finished_ok and "sweep" in n.outputs and n.label.startswith("calphy lqd"):
                 nodes[f"liq_{''.join(c if c.isalnum() else '_' for c in n.label.split()[1])}"] = n.outputs.sweep
@@ -314,7 +326,7 @@ def assemble(names):
             n = orm.load_node(j["pk"])
             if n.is_finished_ok and "sweep" in n.outputs:
                 nodes[f"sti_{key}"] = n.outputs.sweep
-        sol_p = prep.outputs.solid_params.get_dict()   # identical pure-element twins (e.g. Ag-Cu s23/s24 at x=1) share the TI sweep
+        # identical pure-element twins (e.g. Ag-Cu s23/s24 at x=1) share the TI sweep
         for key, m in sol_p.items():
             if f"sti_{key}" not in nodes and m["x"] in (0.0, 1.0):
                 twin = next((k for k, j in rec["jobs"].items() if f"sti_{k}" in nodes and j["phase"] == m["phase"] and j["x"] == m["x"]), None)
@@ -334,7 +346,11 @@ def assemble(names):
                 if n.is_finished_ok and "sweep" in n.outputs and k in nodes:
                     nodes[k] = merge(nodes[k], n.outputs.sweep)
                     print(name, tag, "low sweep spliced, overlap offset %.2f meV/atom" % nodes[k].base.attributes.get("overlap_offset_meV"))
-        res = assemble_diagram(wc.inputs.spec, prep.outputs.solid_params, prep.outputs.liquid_params, **nodes)
+        spec = wc.inputs.spec
+        if name.startswith("agcu") and os.path.exists(os.path.join(OUT, name, "liquids_low.json")):   # liquids now reach LIQ_LOW: assemble from there
+            sp = spec.get_dict(); sp["assemble"] = {**sp["assemble"], "T_min": LIQ_LOW, "liquid_partial": True}   # pure-Cu liquids stop at 1100 K (crystallize below)
+            spec = orm.Dict(dict=sp); spec.label = f"{name} spec, assemble.T_min {LIQ_LOW:.0f} K, liquid_partial"
+        res = assemble_diagram(spec, prep.outputs.solid_params, prep.outputs.liquid_params, **nodes)
         out = os.path.join(OUT, name + "_ti"); os.makedirs(out, exist_ok=True)
         for label, fn in (("report", "REPORT.md"), ("figure", "07_phase_diagram.png"), ("free_energies", "05_free_energies.tsv"), ("regions", "07_two_phase_regions.tsv"), ("invariants", "07_invariants.tsv")):
             with res[label].open(mode="rb") as f, open(os.path.join(out, fn), "wb") as g:
