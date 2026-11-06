@@ -1,0 +1,12 @@
+{
+ "pk": 8858,
+ "uuid": "7f1a44f6-ef34-4257-b8d7-cd34d379cd61",
+ "name": "ptrh_grace_2l_smoke",
+ "profile": "ftphase",
+ "submitted": "2026-11-04 21:18:00",
+ "gpu": true,
+ "smoke": true,
+ "computer": "mygarden6",
+ "qha_computer": "mygarden6",
+ "mlip": "grace-2l"
+}
