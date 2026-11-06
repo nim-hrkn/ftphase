@@ -36,7 +36,7 @@
 | ptrh_mace_mpa_0_smoke | MACE-MPA-0 cueq | mygarden6 / QHA mygardenx2 | 8764 → 9006 | 同上（11-04 23:31） |
 | ptrh_grace_2l | GRACE-2L-OMAT fp32 | mygarden6 | 9105 | 本番、11-05 01:21 自動投入 → 11-05 17:32 Finished [0]（52 本すべて成功）、`aiida_txdiagram/out/ptrh_grace_2l/` |
 | ptrh_nequip_oam_m | NequIP-OAM-M | mygarden6 | 9348 | 本番、11-05 02:07 自動投入 → Finished [0]、`out/ptrh_nequip_oam_m/` |
-| ptrh_mace_mpa_0 | MACE-MPA-0 cueq | mygarden6 / QHA mygardenx2 | 9585 | 本番、11-05 02:50 自動投入、11-06 09:44 時点で液相 1 本を残すのみ |
+| ptrh_mace_mpa_0 | MACE-MPA-0 cueq | mygarden6 / QHA mygardenx2 | 9585 | 本番、11-05 02:50 自動投入 → 11-06 Finished [0]、`out/ptrh_mace_mpa_0/` |
 
 `autosubmit.sh`（切り離して常駐）が smoke の終了を 2 分ごとに見て、組立失敗なら修正 spec で smoke を再投入、exit 0 なら本番を投入する。ログ `out/autosubmit.log`。
 
@@ -69,3 +69,22 @@ E(規則相) − E(乱雑 fcc、同じ組成、32 原子乱数 2 配置の平均
 2. 論文の PFP は乱雑も規則相も DFT より負に寄るが差は保っており、PFP 版 TDB の規則化温度が DFT 版より 50 K 高いのはその差（−15 vs −11 meV）に対応する。
 3. 本プロジェクトの規則相の扱い（欠陥セル + 副格子エントロピー、論文の CEF と同等）は、規則化エネルギーが配置ノイズ（~5 meV）を下回る MLIP では使えない。その場合は CE+MC（`ftphase.ce`）で ECI を直接評価する方が筋がよい。
 4. 融点側（図 11）は固相 TI が要る。液相 TI 自体は 7 組成とも完走（GRACE-2L・NequIP）。
+
+## 結果 3: MACE-MPA-0 の低温組立と論文の表 7（2026-11-06）
+
+AiiDA の fcc 乱雑セル基準の規則化エネルギー（0 K）: PtRh 40 −7.0、PtRh₃ D0₂₂ −1.0、Pt₃Rh D0₂₂ −4.2 meV/atom（CPU スクリーンの別 seed では −11.7 / −5.7 / −5.5；乱雑セル 2 配置の差がそのまま効く）。
+`assemble_lowT.py`（固相のみ、古典 QHA、CEF 型副格子エントロピー）の結果（`out/ptrh_mace_mpa_0/lowT/`）:
+
+| 反応 | 論文 PFP（表 7） | 論文 DFT | MACE-MPA-0（本研究） | GRACE-2L / NequIP-OAM-M |
+|---|---|---|---|---|
+| fcc ↔ PtRh（規則化） | −15 °C = 258 K | −63 °C = 210 K | PtRh が二相域から消える 230–240 K | 240 K / 200 K（規則化エネルギー 0 なのでノイズ） |
+| fcc ↔ PtRh₃ | −38 °C = 235 K | −117 °C = 156 K | 910 K まで残るが組成 0.81 の欠陥セル側（ノイズ） | 920 / 1180 K（ノイズ） |
+| fcc ↔ Pt₃Rh | −127 °C = 146 K | 不安定 | 390 K | 630 / 1900 K（ノイズ） |
+| 共析 fcc ↔ PtRh + PtRh₃ | −62 °C (x 0.65) | −124 °C (0.69) | 150 K で PtRh(0.56)+PtRh₃(0.81) の二相域、200 K 以上で消える | — |
+
+- PtRh「40」の規則化温度 230–240 K は論文の PFP 258 K・DFT 210 K の間に入る。規則化エネルギー −7 meV と ΔS_conf = 0.69 k_B の Bragg–Williams の目安（≈ 120 K）より高いのは、乱雑 fcc の RK fit が x = 0.5 付近で乱雑セルの実エネルギーより上にあるため。配置ノイズ（±3 meV）が温度に ±50 K で効く精度。
+- PtRh₃ と Pt₃Rh は規則化エネルギーが 1–4 meV でノイズと同程度。PtRh₃ が 910 K まで残るのは化学量論セルより欠陥セル（x 0.66–0.72）の方が 6–8 meV 低いためで、32 原子セルでの D0₂₂ の基底状態が怪しい（MACE では D0₂₂ と乱雑の差が無い）。論文側でも PtRh₃ の DFT 値は PFP より 80 K 低く、この相は一番不確かな所。
+- 540 K 以上の fcc+fcc（x 0–0.35）は fcc の RK fit の人工物（x 0.125 と 0.25 の乱雑セルが −11.5 / −12.7 meV で平坦）。SGTE 評価も論文もギャップ無し。
+- 融点側（図 11 相当）: MACE の工程 07 は Pt 2400–2410 K、fcc+液相幅 0.21 で、GRACE-2L・NequIP と同じく QHA 固相の過安定化。固相 TI 待ち。
+
+結論: 汎用 MLIP のうち MACE-MPA-0（と 0 K スクリーンの SevenNet-MF-ompa）は PtRh の規則化温度を論文と同じ 200–260 K に置くが、A₃B 型の 2 相は規則化エネルギーが配置ノイズ以下で決まらない。GRACE-2L・NequIP-OAM-M は規則化を再現しない。論文の「MLIP と DFT で同程度」という結論は PFP には当てはまるが、汎用 MLIP 一般には成り立たず、どのモデルを使うかで規則相の有無そのものが変わる。
