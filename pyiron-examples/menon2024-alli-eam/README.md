@@ -15,3 +15,5 @@ Outputs: `phase_diagram_eam.png`, `two_phase_regions_eam.tsv` (T, phase pair, x1
 Note: for this EAM the liquid is below fcc already at 700 K for x_Li > ~0.16 (checked on the raw free energies), so the
 diagram shows an fcc+liquid region down to 700 K and no fcc+b32 region. That is a property of the potential/dataset,
 not of the post-processing; the paper's HDNNP/ACE datasets (separate downloads) give the physical diagram.
+
+Potential files: the EAM / ACE / HDNNP files under `resources/lammps/potentials/` are third-party and not tracked in this repository (removed 2026-11-06); fetch them from the source linked above and keep `potentials_lammps.csv` as the index.

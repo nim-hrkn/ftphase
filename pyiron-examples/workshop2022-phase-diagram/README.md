@@ -31,3 +31,5 @@ Results (this EAM, small cells, 5 ps switching; qualitative only, as the tutoria
 - T-x diagram: fcc + B32 two-phase region x = 0.19-0.25 below ~863 K; eutectic at ~863 K, x ~ 0.22; fcc + liquid and
   B32 + liquid regions above. Experimental Al-Li eutectic: ~870 K, x_Li ~ 0.26. Pure Al: fcc/liquid crossing between
   900 and 1000 K (experiment 933 K).
+
+Potential files: the EAM / ACE / HDNNP files under `resources/lammps/potentials/` are third-party and not tracked in this repository (removed 2026-11-06); fetch them from the source linked above and keep `potentials_lammps.csv` as the index.

@@ -81,3 +81,7 @@ papers/
 /*.pdf
 # raw MLIP benchmark job outputs (2 GB; the numbers are in docs/mlip.html and mlip_bench/)
 ftphase/examples/mlip_bench/runs/
+# third-party potential files of the pyiron examples (fetch from the sources in each README; untracked 2026-11-06)
+pyiron-examples/**/resources/lammps/potentials/ace/
+pyiron-examples/**/resources/lammps/potentials/atomicrex/
+pyiron-examples/**/resources/lammps/potentials/hdnnp/
