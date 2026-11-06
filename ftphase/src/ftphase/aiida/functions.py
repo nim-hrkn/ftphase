@@ -338,9 +338,10 @@ def assemble_diagram(spec: orm.Dict, solid_params: orm.Dict, liquid_params: orm.
         summary["liquids_used"].append(key)
         for t, g, e in zip(node.get_array("temperature"), node.get_array("free_energy"), node.get_array("error")):
             lrows.append({"x": float(meta["x_actual"]), "T": float(np.round(t, 3)), "G": float(g), "err": float(e), "key": key})
-    if not lrows:
+    allow_solid_only = bool(asm.get("allow_solid_only", False))   # solids-only window (2026-11-06): keep grid temperatures without liquid data
+    if not lrows and not allow_solid_only:
         raise ValueError("no finished liquid calculations: " + json.dumps(summary))
-    ld = pd.DataFrame(lrows)
+    ld = pd.DataFrame(lrows, columns=["x", "T", "G", "err", "key"])
     floor = float(asm.get("liquid_sigma_floor", 0.0014))
     lagg = []
     for (x, T), g in ld.groupby(["x", "T"]):
@@ -349,7 +350,7 @@ def assemble_diagram(spec: orm.Dict, solid_params: orm.Dict, liquid_params: orm.
                      "G_err": max(spread, float(g["err"].mean())), "V": np.nan, "model": model, "reference_state": "absolute potential energy",
                      "method": f"calphy reversible scaling, UFM reference; mean of {len(g)} runs", "config_entropy": "liquid-ti", "quantum": "classical",
                      "n_atoms": int(liq_p[g['key'].iloc[0]]["n_atoms"]), "source": "aiida calphy " + ",".join(sorted(set(g["key"])))})
-    liq = pd.DataFrame(lagg)
+    liq = pd.DataFrame(lagg, columns=["phase", "kind", "x", "T", "P_GPa", "G", "G_err", "V", "model", "reference_state", "method", "config_entropy", "quantum", "n_atoms", "source"])
     summary["liquid_x_available"] = sorted(float(v) for v in liq["x"].unique())
     summary["liquid_runs_per_x"] = {f"{x:.4f}": int(len(set(g["key"]))) for x, g in ld.groupby("x")}
     summary["liquid_T_min_K"] = {f"{x:.4f}": float(g["T"].min()) for x, g in ld.groupby("x")}
@@ -374,7 +375,14 @@ def assemble_diagram(spec: orm.Dict, solid_params: orm.Dict, liquid_params: orm.
     ti = interpolate_T(tab, T_diag)
     # keep only temperatures where every liquid composition has data
     cover = ti.df[ti.df.phase == "liquid"].groupby("T")["x"].agg(["min", "max", "size"])
-    if asm.get("liquid_partial", False):
+    if allow_solid_only:
+        # every grid temperature is kept; the liquid takes part only where >= 3 compositions have data (solid-only hull elsewhere)
+        bad_T = cover[cover["size"] < 3].index
+        ti = FreeEnergyTable.from_dataframe(ti.df[~((ti.df.phase == "liquid") & ti.df["T"].isin(bad_T))], ti.meta)
+        with_liq = sorted(float(t) for t in cover.index.difference(bad_T))
+        summary["liquid_T_range_K"] = [with_liq[0], with_liq[-1]] if with_liq else None
+        ok_T = sorted(ti.df["T"].unique())
+    elif asm.get("liquid_partial", False):
         # liquids end at composition-dependent T_stop (Ni-Al): keep every T with >= 3 liquid compositions; segments
         # whose liquid end sits at the sampled liquid range edge (not 0 or 1) are removed after the scan
         ok_T = cover[cover["size"] >= 3].index
@@ -393,7 +401,7 @@ def assemble_diagram(spec: orm.Dict, solid_params: orm.Dict, liquid_params: orm.
     T_res = float(Ts[np.argmin(np.abs(Ts - float(asm.get("T_residuals", 900.0))))])
     resid = fit_residuals(builder, T_res)
     reg = scan(builder, Ts, **hull_kw)
-    x_liq_max = float(liq["x"].max())
+    x_liq_max = float(liq["x"].max()) if len(liq) else 1.0
     if asm.get("drop_edge_beyond_liquid", True) and x_liq_max < 1.0 - 1e-6:
         edge = reg["x_a"] >= x_liq_max - 1e-6
         summary["edge_segments_dropped"] = int(edge.sum())

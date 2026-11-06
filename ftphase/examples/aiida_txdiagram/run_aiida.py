@@ -336,6 +336,9 @@ def main():
     ap.add_argument("--qha-cores", type=int, default=4)
     ap.add_argument("--dry-run", action="store_true", help="build the inputs, print them, do not submit")
     ap.add_argument("--mlip", choices=sorted(MLIPS), default="ace", help="alli only: which potential (ace = AlLi-6gen ACE; grace-fs / grace-1l = GRACE foundation models, lmp_gpugrace)")
+    ap.add_argument("--solid-only", action="store_true", help="skip the liquids and assemble the solid phases alone over --T-window (spec assemble.allow_solid_only); name gets _solid")
+    ap.add_argument("--T-window", dest="t_window", nargs=2, type=float, default=None, help="assembly T_min T_max for --solid-only (default ptrh: 100 2400)")
+    ap.add_argument("--ends-ti", action="store_true", help="ptrh: calphy solid TI (>= 2000 atoms) of the pure fcc end cells, config 0 (spec solids_ti with the x filter); name gets _ti")
     ap.add_argument("--b32-ti", action="store_true", help="alli: add spec['solids_ti'] for B32 (calphy ts 700 -> 880 K, >= 2000-atom cells, GPU); unchanged QHA/liquid CalcJobs are reused from the cache when caching is enabled for ftphase.qha / ftphase.calphy")
     a = ap.parse_args()
 
@@ -365,7 +368,7 @@ def main():
                 spec["assemble"]["title"] = spec["assemble"]["title"].replace("ACE Al-Li", f"{ml['model'].split(' (')[0]} Al-Li")
             else:
                 spec["assemble"]["title"] = f"{ml['model'].split(' (')[0]} {SYSTEM_TAG[a.system]}, 0 GPa: QHA solids + calphy liquid [AiiDA]"
-        if a.system != "alli":
+        if a.system in ("agcu", "nial"):
             spec.pop("solids_ti", None)   # MLIP comparison: solids by QHA only (user decision 2026-10-30)
         if ml.get("qha_gpu"):
             spec["qha_cmdargs"] = KK_ARGS
@@ -378,6 +381,21 @@ def main():
                 spec["qha_device"] = "cpu"
         pot_fn = (lambda f=ml["potential"]: f); lmp_gpu = ml["lmp_gpu"]; pot_qha = ml.get("potential_qha")
         name = (a.name or a.system + ml["tag"]) + ("_smoke" if a.smoke else "")
+    if a.solid_only:
+        spec["assemble"]["allow_solid_only"] = True
+        if a.t_window:
+            spec["assemble"]["T_min"], spec["assemble"]["T_max"] = float(a.t_window[0]), float(a.t_window[1])
+        elif a.system == "ptrh" and not a.smoke:
+            spec["assemble"]["T_min"], spec["assemble"]["T_max"] = 100.0, 2400.0
+        spec["assemble"]["title"] = spec["assemble"].get("title", "") + " (solids only)"
+        name += "_solid"
+    if a.ends_ti:
+        assert a.system == "ptrh"
+        spec["solids_ti"] = {"phases": ["fcc"], "x": [0.0, 1.0], "configs": [0], "T_sweep": [1700.0, 2350.0], "T_hi_by_x": [[0.0, 2150.0], [1.0, 2350.0]], "min_atoms": 2000,
+                             "n_equilibration_steps": 10000, "n_switching_steps": [10000, 10000], "n_iterations": 1, "mode": "ts"}   # Pt 2041 K, Rh 2237 K (expt); caps ~1.05 T_m
+        if a.smoke:
+            spec["solids_ti"].update({"T_sweep": [1900.0, 2100.0], "T_hi_by_x": [[0.0, 2100.0], [1.0, 2100.0]], "min_atoms": 100, "n_equilibration_steps": 1000, "n_switching_steps": [1000, 1000]})
+        name += "_ti"
     if a.b32_ti:
         assert a.system == "alli"
         # same B32 cells as the QHA series (16 atoms, 2x2x2 of the B32 cube -> 5x5x5 repeat = 2000 atoms); 700 -> 880 K covers the congruent melting
@@ -402,6 +420,8 @@ def main():
                                   else ({"gpu": True, "lammps_executable": lmp_gpu} if (gpu or torch_mlip) else {"gpu": False, "cores": a.cpu_cores})),   # calphy_gpu (ML-IAP): Kokkos cmdargs + hybrid/scaled/kk like ACE/GRACE
         "metadata": {"label": f"ftphase txdiagram {name}", "description": descr},
     }
+    if a.solid_only:
+        inputs["skip_liquids"] = orm.Bool(True)
     if pot_qha:
         inputs["potential_qha"] = orm.SinglefileData(file=pot_qha)
     if a.dry_run:

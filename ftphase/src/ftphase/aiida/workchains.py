@@ -90,6 +90,12 @@ class TxDiagramWorkChain(WorkChain):
                 m = sol_p[key]
                 if sti.get("phases") and m["phase"] not in sti["phases"]:
                     continue
+                if sti.get("x") is not None and not any(abs(float(xv) - float(m["x"])) < 1e-6 for xv in sti["x"]):   # composition filter (2026-11-06)
+                    continue
+                if sti.get("keys") and key not in sti["keys"]:
+                    continue
+                if sti.get("configs") is not None and int(m.get("config", 0)) not in [int(c) for c in sti["configs"]]:
+                    continue
                 T_sw = list(sti.get("T_sweep_by_phase", {}).get(m["phase"], sti.get("T_sweep", [900.0, 1400.0])))
                 if sti.get("T_hi_by_x"):   # cap the sweep end per composition, e.g. [[0, 1360], [1, 1480]] (about 1.1 T_m of the pure ends)
                     pts = sorted(sti["T_hi_by_x"])
@@ -157,7 +163,7 @@ class TxDiagramWorkChain(WorkChain):
             self.report("failed calculations (skipped): " + ", ".join(failed))
         if not self.ctx.ok_qha and not self.ctx.ok_sti:
             return self.exit_codes.ERROR_NO_SOLID
-        if not self.ctx.ok_liq:
+        if not self.ctx.ok_liq and not self.inputs.skip_liquids.value and not self.inputs.spec.get_dict().get("assemble", {}).get("allow_solid_only", False):
             return self.exit_codes.ERROR_NO_LIQUID
 
     def assemble(self):
