@@ -8,11 +8,13 @@ a smaller `isize` per call. The problem is that `pair mliap/kk` cannot know that
   `PairMLIAPKokkos::forward_comm()`, which does `comm_forward = vec_len = vl;` and then `comm->forward_comm(this)`
   (`src/KOKKOS/pair_mliap_kokkos.cpp`). The pair style never sets `comm_forward` in `init()`, so `Comm::init()` records 0 for it,
   and the first exchange with any width runs against buffers that were sized for other needs.
-- A message-passing model may exchange several widths within one force call (node features of one layer, then another layer,
-  then edge quantities in the reverse pass), and the widths depend on the model architecture: 64 to 256 doubles per atom in the
-  models we ran (MatterSim, MACE-MPA-0, NequIP-OAM), and nothing in the `MLIAPUnified` interface tells the pair style the largest
-  one in advance. A hard-coded value such as 256 would be an arbitrary bound: a model with wider features would overflow silently
-  again, and every run would allocate 256 doubles per atom for the atom exchange even when the model needs 4.
+- The width is simply the last dimension of the tensor the model hands over at that point: the exporters pass
+  `out_flat.size(-1)` (NequIP, SevenNet), `atom_attr.shape[1]` (MatterSim) or the feature width of the current layer (MACE), and
+  each message-passing layer calls the exchange again for its own node features, with the reverse pass using the gradient's
+  width. So the width is a property of the model architecture (the node-feature dimension, of order 10^2 doubles per atom; in our
+  exchange test 32 ran and 128 overflowed), and nothing in the `MLIAPUnified` interface tells the pair style the largest value in
+  advance. A hard-coded value such as 256 would be an arbitrary bound: a model with wider features would overflow silently again,
+  and every run would size the atom-exchange buffers for 256 doubles per atom even when the model needs 4.
 - The Kokkos device path already handles this on demand: `CommKokkos::forward_comm_device(Pair*)` takes the maximum of
   `nsize*sendnum[iswap]` and `nsize*recvnum[iswap]` over the swaps on every call and calls `grow_buf_pair()` when it is larger
   than `max_buf_pair` (`src/KOKKOS/comm_kokkos.cpp`). That is why the GPU runs were correct. The host path in `CommBrick`/`CommTiled`
