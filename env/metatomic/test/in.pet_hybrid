@@ -1,0 +1,16 @@
+# calphy-like mix: hybrid/scaled with ufm (what the ts/fe steps use); MODEL and DATA replaced by sed
+units metal
+boundary p p p
+atom_style atomic
+read_data DATA
+mass 1 26.9815
+mass 2 6.94
+variable lambda equal 1.0
+variable mlambda equal 1.0-v_lambda
+pair_style hybrid/scaled v_lambda metatomic MODEL v_mlambda ufm 7.5
+pair_coeff * * metatomic 13 3
+pair_coeff * * ufm 0.1 1.5
+thermo_style custom step temp pe press
+run 0
+variable lambda equal 0.5
+run 0

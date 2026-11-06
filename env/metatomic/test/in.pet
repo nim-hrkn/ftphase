@@ -1,0 +1,16 @@
+# single point + short NVT with pair_style metatomic (kk) on the 256-atom Al-Li liquid cell; MODEL and DATA replaced by sed
+units metal
+boundary p p p
+atom_style atomic
+read_data DATA
+mass 1 26.9815
+mass 2 6.94
+pair_style metatomic MODEL
+pair_coeff * * 13 3
+thermo_style custom step temp pe press
+thermo 10
+run 0
+velocity all create 1100.0 12345
+fix 1 all nvt temp 1100.0 1100.0 0.1
+timestep 0.001
+run 50
