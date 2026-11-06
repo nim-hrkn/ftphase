@@ -22,6 +22,40 @@ CONFIG = {"fcc": "ideal", "PtRh": ("b32_antisite", None), "PtRh3": ("b32_antisit
 ENTROPY = {"PtRh": ("b32_antisite", 0.5), "PtRh3": ("b32_antisite@0.75", 0.75), "Pt3Rh": ("b32_antisite@0.25", 0.25)}
 
 
+def quantum_table(run):
+    """FreeEnergyTable at the quantum harmonic level from the QHA nodes of the run's WorkChain (per-atom G from phonopy QHA)."""
+    import pandas as pd
+    from aiida import load_profile, orm
+
+    from ftphase.records import FreeEnergyTable
+
+    load_profile("ftphase")
+    rec = json.load(open(os.path.abspath(run) + ".pk.json"))
+    wc = orm.load_node(rec["pk"])
+    sp = wc.inputs.spec.get_dict()
+    prep = [l.node for l in wc.base.links.get_outgoing(node_class=orm.ProcessNode).all() if l.node.process_label == "prepare_cells" and l.node.is_finished_ok][0]
+    sol_p = prep.outputs.solid_params.get_dict()
+    rows = []
+    for l in wc.base.links.get_outgoing(node_class=orm.ProcessNode).all():
+        n = l.node
+        if n.process_label != "QhaCalculation" or not n.is_finished_ok:
+            continue
+        key = n.label.split()[1]
+        meta = sol_p[key]
+        arr = n.outputs.arrays
+        T, G, V = arr.get_array("T"), arr.get_array("G"), arr.get_array("V")
+        for t, g, v in zip(T, G, V):
+            rows.append({"phase": meta["phase"], "kind": meta["kind"], "x": meta["x"], "T": float(t), "P_GPa": 0.0, "G": float(g), "G_err": 0.0, "V": float(v),
+                         "model": sp.get("model", ""), "reference_state": "absolute potential energy", "method": f"QHA phonopy (quantum harmonic); config {meta['config']}",
+                         "config_entropy": "none", "quantum": "quantum-harmonic", "n_atoms": meta["n_atoms"], "source": f"aiida qha {key}"})
+    sol = pd.DataFrame(rows)
+    agg = []
+    for (ph, x, T), g in sol.groupby(["phase", "x", "T"]):
+        r = g.iloc[0].to_dict(); r["G"] = float(g["G"].mean()); r["G_err"] = float((g["G"].max() - g["G"].min()) / 2) if len(g) > 1 else 0.0; r["V"] = float(g["V"].mean())
+        r["source"] = f"aiida qha {ph} x={x:.4f} ({len(g)} configs)"; agg.append(r)
+    return FreeEnergyTable.from_rows(agg, {"potential": sp.get("model", ""), "pressure_GPa": 0.0, "level": "quantum-harmonic"})
+
+
 def main():
     import matplotlib
 
@@ -36,10 +70,15 @@ def main():
     ap.add_argument("--T", nargs=2, type=float, default=[100.0, 1900.0])
     ap.add_argument("--step", type=float, default=10.0)
     ap.add_argument("--no-ordered", action="store_true", help="fcc only (reference: what the hull gives without the ordered phases)")
+    ap.add_argument("--quantum", action="store_true", help="quantum (harmonic) level: take the QHA free energies straight from the AiiDA QHA nodes "
+                    "instead of the classical-lowered 05 table (needs the profile; the WorkChain pk is read from <run>.pk.json)")
     a = ap.parse_args()
-    out = os.path.join(a.run, "lowT")
+    out = os.path.join(a.run, "lowT_quantum" if a.quantum else "lowT")
     os.makedirs(out, exist_ok=True)
-    tab = FreeEnergyTable.from_tsv(os.path.join(a.run, "05_free_energies.tsv"))
+    if a.quantum:
+        tab = quantum_table(a.run)
+    else:
+        tab = FreeEnergyTable.from_tsv(os.path.join(a.run, "05_free_energies.tsv"))
     df = tab.df[tab.df.phase != "liquid"].copy()
     if a.no_ordered:
         df = df[df.phase == "fcc"]
@@ -63,7 +102,7 @@ def main():
     write_records(os.path.join(out, "07_two_phase_regions.tsv"), reg, {"example": os.path.basename(os.path.abspath(a.run)) + " low-T solids-only re-assembly", "fits": str(FITS), "T_step": a.step})
     inv.to_csv(os.path.join(out, "07_invariants.tsv"), sep="\t", index=False)
     ax = plot_tx(reg, xlabel="x_Rh", dT=a.step)
-    ax.set_title(f"{tab.meta.get('potential', '')} Pt-Rh, solids only, {a.T[0]:.0f}-{a.T[1]:.0f} K (classical QHA, re-assembled)", fontsize=8)
+    ax.set_title(f"{tab.meta.get('potential', '')} Pt-Rh, solids only, {a.T[0]:.0f}-{a.T[1]:.0f} K ({'quantum harmonic' if a.quantum else 'classical'} QHA, re-assembled)", fontsize=8)
     ax.figure.savefig(os.path.join(out, "07_phase_diagram.png"), dpi=150, bbox_inches="tight")
     # ordered-phase stability: highest T at which each ordered phase appears in a two-phase region
     top = {}
@@ -71,7 +110,7 @@ def main():
         r = reg[(reg.phase_a == ph) | (reg.phase_b == ph)]
         top[ph] = float(r["T"].max()) if len(r) else None
     L = [f"# {os.path.basename(os.path.abspath(a.run))}: low-T solids-only re-assembly ({a.T[0]:.0f}-{a.T[1]:.0f} K, {a.step:.0f} K)", "",
-         "Classical level, liquid rows dropped, same fits/entropy models as the WorkChain spec.", "",
+         ("Quantum (harmonic) level: QHA free energies as computed (zero-point + Bose-Einstein), no classical lowering." if a.quantum else "Classical level") + " Liquid rows dropped, same fits/entropy models as the WorkChain spec.", "",
          "## Highest temperature with the ordered phase in a two-phase region", ""]
     L += [f"* {ph}: {t if t is not None else 'never stable on the grid'}" for ph, t in top.items()]
     L += ["", "## Invariant reactions (pair-set changes)", ""] + [f"* {r['T_low']:.0f}-{r['T_high']:.0f} K: {r['pairs_below']} -> {r['pairs_above']}" for r in inv.to_dict("records")]

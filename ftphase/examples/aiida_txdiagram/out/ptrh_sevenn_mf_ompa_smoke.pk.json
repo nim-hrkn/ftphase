@@ -1,0 +1,12 @@
+{
+ "pk": 10674,
+ "uuid": "98668904-d641-4eab-886b-07bb12a4a353",
+ "name": "ptrh_sevenn_mf_ompa_smoke",
+ "profile": "ftphase",
+ "submitted": "2026-11-06 21:08:01",
+ "gpu": true,
+ "smoke": true,
+ "computer": "mygarden6",
+ "qha_computer": "mygardenx2",
+ "mlip": "sevenn-mf-ompa"
+}

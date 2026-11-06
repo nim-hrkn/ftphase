@@ -9,9 +9,9 @@ VERDI=$ROOT/env/ftphase/bin/verdi
 PY=$ROOT/env/ftphase/bin/python
 RUN=$ROOT/ftphase/examples/aiida_txdiagram/run_aiida.py
 OUT=$ROOT/ftphase/examples/aiida_txdiagram/out
-declare -A SMOKE=([grace-2l]=8858 [nequip-oam-m]=8750 [mace-mpa-0]=8764)
-declare -A RESUB=([grace-2l]=1 [nequip-oam-m]=0 [mace-mpa-0]=0)     # 1 = already the resubmitted smoke
-declare -A EXTRA=([grace-2l]="" [nequip-oam-m]="" [mace-mpa-0]="--qha-computer mygardenx2")
+declare -A SMOKE=([sevenn-mf-ompa]=10674)
+declare -A RESUB=([sevenn-mf-ompa]=1)
+declare -A EXTRA=([sevenn-mf-ompa]="--qha-computer mygardenx2")
 declare -A DONE
 while true; do
   left=0

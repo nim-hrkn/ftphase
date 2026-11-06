@@ -1,0 +1,19 @@
+{
+ "pair_style": "e3gnn",
+ "pair_coeff": "* * {potential} Pt Rh",
+ "atom_types": {
+  "Pt": 1,
+  "Rh": 2
+ },
+ "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/env/torch/lib/python3.12/site-packages/sevenn/pretrained_potentials/SevenNet_MF_ompa/checkpoint_sevennet_mf_ompa.pth",
+ "structures": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/ptrh/out_ce_sevenn-mf-ompa/training_in.extxyz",
+ "relax": {
+  "fmax": 0.002,
+  "cell": true
+ },
+ "output": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/ptrh/out_ce_sevenn-mf-ompa/relax_output.json",
+ "output_structures": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/ptrh/out_ce_sevenn-mf-ompa/training_relaxed.extxyz",
+ "calculator": "sevenn",
+ "modal": "mpa",
+ "device": "cpu"
+}

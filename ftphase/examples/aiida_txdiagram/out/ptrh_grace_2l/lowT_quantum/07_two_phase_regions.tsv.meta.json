@@ -1,0 +1,5 @@
+{
+ "example": "ptrh_grace_2l low-T solids-only re-assembly",
+ "fits": "{'fcc': 'rk', 'PtRh': 'poly', 'PtRh3': 'poly', 'Pt3Rh': 'poly'}",
+ "T_step": 10.0
+}

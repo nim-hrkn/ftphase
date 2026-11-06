@@ -21,13 +21,15 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "out")
 MIN_ATOMS = 2000
-RUNS = {"nial_grace_fs": 4784, "nial_grace_1l": 4798, "nial_sevenn_0": 4813, "agcu_grace_fs": 4869, "agcu_grace_1l": 4900, "agcu_sevenn_0": 4928}
+RUNS = {"nial_grace_fs": 4784, "nial_grace_1l": 4798, "nial_sevenn_0": 4813, "agcu_grace_fs": 4869, "agcu_grace_1l": 4900, "agcu_sevenn_0": 4928,
+        "ptrh_grace_2l": 9105, "ptrh_nequip_oam_m": 9348, "ptrh_mace_mpa_0": 9585}   # Pt-Rh (2026-11-06): pure-end fcc cells only, 4x4x4 of 32 = 2048 atoms
 #: (phase, x) -> sweep [T_lo, T_hi]; T_hi about 1.05 T_m(expt).  The first try with 1.2 T_m (pk 6503-6595) failed: GRACE-FS
 #: fcc Al melted at ~1000 K on the way to 1150 K (MeltedError, pk 6503), so the MLIP melting points are near the experimental
 #: ones and a superheated cell does not survive 1.2 T_m.  A crossing above T_hi is reported as "> T_hi" plus a linear extrapolation.
 CELLS = {"nial": {("fccAl", 0.0): [600.0, 920.0], ("fccNi", 1.0): [1200.0, 1800.0], ("B2", 0.5): [1300.0, 2000.0], ("L12", 0.75): [1200.0, 1750.0]},
-         "agcu": {("fcc", 0.0): [800.0, 1250.0], ("fcc", 1.0): [900.0, 1420.0]}}
-EXPT = {("nial", "fccAl", 0.0): 933, ("nial", "fccNi", 1.0): 1728, ("nial", "B2", 0.5): 1911, ("nial", "L12", 0.75): 1645, ("agcu", "fcc", 0.0): 1235, ("agcu", "fcc", 1.0): 1358}
+         "agcu": {("fcc", 0.0): [800.0, 1250.0], ("fcc", 1.0): [900.0, 1420.0]},
+         "ptrh": {("fcc", 0.0): [1700.0, 2150.0], ("fcc", 1.0): [1900.0, 2350.0]}}   # Pt 2041 K, Rh 2237 K (expt); caps ~1.05 T_m
+EXPT = {("nial", "fccAl", 0.0): 933, ("nial", "fccNi", 1.0): 1728, ("nial", "B2", 0.5): 1911, ("nial", "L12", 0.75): 1645, ("agcu", "fcc", 0.0): 1235, ("agcu", "fcc", 1.0): 1358, ("ptrh", "fcc", 0.0): 2041, ("ptrh", "fcc", 1.0): 2237}
 
 
 def _workchain(pk):

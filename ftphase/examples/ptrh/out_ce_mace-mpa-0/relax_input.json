@@ -1,0 +1,19 @@
+{
+ "pair_style": "mliap unified {potential} 0",
+ "pair_coeff": "* * Pt Rh",
+ "atom_types": {
+  "Pt": 1,
+  "Rh": 2
+ },
+ "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/mace/macempa0mediummodel.model",
+ "structures": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/ptrh/out_ce_mace-mpa-0/training_in.extxyz",
+ "relax": {
+  "fmax": 0.002,
+  "cell": true
+ },
+ "output": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/ptrh/out_ce_mace-mpa-0/relax_output.json",
+ "output_structures": "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/ptrh/out_ce_mace-mpa-0/training_relaxed.extxyz",
+ "calculator": "mace",
+ "dtype": "float32",
+ "device": "cpu"
+}

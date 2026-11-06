@@ -1,0 +1,9 @@
+T_low	T_high	pairs_below	pairs_above
+130.0	140.0	['Pt3Rh+PtRh', 'Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+PtRh3', 'PtRh3+PtRh3', 'PtRh3+fcc']	['Pt3Rh+fcc', 'PtRh+PtRh3', 'PtRh+fcc', 'PtRh3+PtRh3', 'PtRh3+fcc']
+200.0	210.0	['Pt3Rh+fcc', 'PtRh+PtRh3', 'PtRh+fcc', 'PtRh3+PtRh3', 'PtRh3+fcc']	['Pt3Rh+fcc', 'PtRh+PtRh3', 'PtRh+fcc', 'PtRh3+fcc']
+210.0	220.0	['Pt3Rh+fcc', 'PtRh+PtRh3', 'PtRh+fcc', 'PtRh3+fcc']	['Pt3Rh+fcc', 'PtRh+fcc', 'PtRh3+fcc']
+220.0	230.0	['Pt3Rh+fcc', 'PtRh+fcc', 'PtRh3+fcc']	['Pt3Rh+fcc', 'PtRh+fcc', 'PtRh3+fcc', 'fcc+fcc']
+240.0	250.0	['Pt3Rh+fcc', 'PtRh+fcc', 'PtRh3+fcc', 'fcc+fcc']	['Pt3Rh+fcc', 'PtRh3+fcc', 'fcc+fcc']
+630.0	640.0	['Pt3Rh+fcc', 'PtRh3+fcc', 'fcc+fcc']	['PtRh3+fcc', 'fcc+fcc']
+920.0	930.0	['PtRh3+fcc', 'fcc+fcc']	['fcc+fcc']
+1690.0	1700.0	['fcc+fcc']	['PtRh3+fcc', 'fcc+fcc']

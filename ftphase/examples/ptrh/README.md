@@ -88,3 +88,15 @@ AiiDA の fcc 乱雑セル基準の規則化エネルギー（0 K）: PtRh 40 �
 - 融点側（図 11 相当）: MACE の工程 07 は Pt 2400–2410 K、fcc+液相幅 0.21 で、GRACE-2L・NequIP と同じく QHA 固相の過安定化。固相 TI 待ち。
 
 結論: 汎用 MLIP のうち MACE-MPA-0（と 0 K スクリーンの SevenNet-MF-ompa）は PtRh の規則化温度を論文と同じ 200–260 K に置くが、A₃B 型の 2 相は規則化エネルギーが配置ノイズ以下で決まらない。GRACE-2L・NequIP-OAM-M は規則化を再現しない。論文の「MLIP と DFT で同程度」という結論は PFP には当てはまるが、汎用 MLIP 一般には成り立たず、どのモデルを使うかで規則相の有無そのものが変わる。
+
+## 結果 4: 量子（調和）水準での低温再組立（2026-11-06）
+
+`assemble_lowT.py --quantum` は AiiDA の QHA ノードから古典化前の自由エネルギー（零点振動 + Bose–Einstein）を取って同じ組立を行う（`out/<run>/lowT_quantum/`）。
+規則相が二相域から消える温度は古典水準と同じ（MACE: PtRh 230 K、Pt₃Rh 390 K、PtRh₃ 910 K；GRACE-2L: 240 / 630 / 1900 K；NequIP: 200 / 1900 / 1180 K）。
+規則相と乱雑 fcc のフォノンがほぼ同じなので 04B の補正は相間で打ち消し、規則化温度には効かない。論文の Fig. 4–5（PtRh の F_vib の MLIP–DFT 差 5.5 meV/atom at 1000 K）も生成自由エネルギーには数 meV しか残らないことと整合する。
+
+## 進行中（2026-11-06 21:10 投入）
+
+- 融点側: `mlip_solids_ti.py submit --names ptrh_grace_2l,ptrh_nequip_oam_m,ptrh_mace_mpa_0 --only s00_fcc,s23_fcc` で 2,048 原子の fcc Pt（1700→2150 K）・fcc Rh（1900→2350 K）の calphy 固相 TI を mygarden6 に 6 本（pk 10727/10732/10737/10742/10747/10752、`out/<run>/solids_ti.json`）。終了後 `mlip_solids_ti.py melt --names ptrh_...` で固液交点。
+- 規則化温度（短距離秩序込み）: `ce_mc.py --mlip mace-mpa-0|sevenn-mf-ompa`（icet で fcc 配置 631 個を列挙 → MLIP 環境のサブプロセスで緩和 → CE（ARDR）→ 8³ セルの正準 MC を 500→40 K 冷却、C_v ピークで T_c）。`out_ce_<mlip>/`。
+- SevenNet-MF-ompa の工程 01–07: smoke pk 10674（QHA は mygardenx2）、通れば `autosubmit.sh` が本番を投入。
