@@ -39,7 +39,7 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 
 結論：calphy の TI（NVT/NPT、サーモスタット付き）では float32 で問題ない。**運用（2026-10-25、ユーザー決定）：MLIP 比較は全工程を単精度で行う**（GRACE nL は QHA も calphy も `grace/<n>l/kk/fp32`、MACE は QHA も `default_dtype float32`、SevenNet は元から float32）。fp64 しか無いのは ACE（`pace`）と GRACE-FS（`grace/fs/kk`）。float64 が要るのは長い NVE（エネルギー保存）と、エネルギー差 1e-5 eV 級を直接使う構造最適化・フォノン有限差分（QHA の 03A で変位 0.01 Å を使うときは、SevenNet の有限差分力誤差 2.5 meV/Å が効くので float64 か変位 0.03 Å 以上にする）。
 
-## MLIP 比較の結果（ACE Al–Li、同じ WorkChain、2026-10-28 完了）
+## MLIP 比較の結果（ACE Al–Li、同じ WorkChain、2026-10-28 完了、11-05 までに 11 種）
 
 | MLIP | E_form Al₃Li / B32 (meV/atom) | V fcc Al / bcc Li (Å³/atom) | S fcc Al 300 K（k_B、古典） | Al 融点（固液 G 交点、K） | 最低の不変反応（K） | fcc 固溶限 700 K |
 |---|---|---|---|---|---|---|
@@ -49,15 +49,21 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 | GRACE-2L | −90 / −176 | 16.42 / 20.28 | 3.31 | 922 | 750–760 | 0.168 |
 | SevenNet-0 | −111 / −182 | 16.46 / 20.14 | 4.42 | > 1100 | 930–940（B32+fcc → fcc+液相） | 0.250 |
 | SevenNet-MF-ompa | −93 / −186 | 16.55 / 20.43 | 3.60 | 992 | 850–860 | 0.132 |
-| MACE-MPA-0 | −87 / −178 | 16.47 / 20.17 | 3.64 | 1038 | 770–780 | 0.209 |
+| MACE-MPA-0（ML-IAP cueq、pk 8481） | −87 / −178 | 16.47 / 20.17 | 3.64 | 1032（`pair_style mace` 版 1038） | 780–790 | 0.209 |
+| MatterSim-v1-1M | −103 / −182 | 16.45 / 20.82 | 3.29 | 762 | 700 K 未満 | 0.224（fcc+液相） |
+| MatterSim-v1-5M | −81 / −178 | 16.37 / 20.11 | 3.58 | 996 | 720–730 | 0.250（fcc 標本の端） |
+| NequIP-OAM-M | −95 / −179 | 16.38 / 20.04 | 3.59 | 931 | 800–810 | 0.151 |
+| NequIP-OAM-S | −102 / −194 | 16.63 / 20.64 | 4.86 | 融けない（fcc QHA 900 K 打ち切り） | 840–850（B32 の横に液相） | 0.250（fcc 標本の端） |
 | 実験 / DFT | ≈−100 / ≈−190（DFT） | 16.6 / 21.3 | — | 933.5 | 875（共晶、x ≈ 0.24） | ≈0.12 |
 
 - 0 K の生成エネルギーと体積は GRACE-FS 以外ほぼ一致（差 ≤ 20 meV/atom）。相図の差は振動（03A）と液相（03B）から来る。
 - 固相の振動エントロピーが ACE より大きい MLIP（GRACE-FS、SevenNet-0：+1.1〜1.2 k_B；MF-ompa、MACE：+0.3 k_B）は固相を過安定化し、Al 融点を上げる。SevenNet-0 は 1100 K まで Al が融けない。
 - 共晶・固溶限が実験に最も近いのは SevenNet-MF-ompa（850–860 K、0.132）。ただし Al 融点は 60 K 高い。ACE と GRACE-1L/2L は共晶が 100–150 K 低い。
 - 単精度で実行（2026-10-25 のユーザー決定）。GRACE-3L は液相 1 本 6〜11 h のため比較から外した（2026-10-28）。
-- 同じ spec・同じセル（seed 固定）・同じ温度格子・同じ fit；工程ごとの差の表と重ね描き図は `ftphase/examples/aiida_txdiagram/out/mlip_compare/`（REPORT.md、overlay.png、7 図を並べた panels.png）。
-- **Matbench Discovery との関係**：κ_SRME（フォノン）が相図の結果と対応した（SevenNet-0 は 0.767 で最悪 → Al が融けない；SevenNet-MF-ompa は 0.317 → 共晶が実験に最も近い）。F1（0 K の安定性）は対応しない（0 K の生成エネルギーは 7 種でほぼ同じ）。κ_SRME だけでも足りない：MACE-MPA-0（0.412）も Al 融点が 105 K 高い。Matbench に液相の指標は無いので、基盤モデルを相図に使う前に純元素の融点を確かめる。今回使った GRACE-FS-OAM と OMAT-medium-base 版は表に未掲載（同じ層数の OAM 版を参考値にした）。
+- 同じ spec・同じセル（seed 固定）・同じ温度格子・同じ fit；工程ごとの差の表と重ね描き図は `ftphase/examples/aiida_txdiagram/out/mlip_compare/`（REPORT.md、overlay.png、11 図を並べた panels.png = `mlip_panels.py`）。表の S(300 K) は 05 表の fcc x=0 の −dG/dT（275/325 K の中心差分）、「Al 融点」は x=0 の G_liquid − G_fcc の線形補間の零点で、`summary.json` の `pure_A_melting_bracket`（凸包の fcc+液相の消える温度）とは別物。
+- **QHA 打ち切りの外挿が偽の融点を作る**（NequIP-OAM-S、2026-11-05）：純 Al の fcc QHA が 900 K で止まる（フォノンが最も軟らかく S(300 K) 4.86 k_B）と、900 K より上の fcc は x 方向の poly fit の外挿になり、凸包は x < 0.06 に液相+fcc を描いて「Al 融点 1100 K」に見える。実際は 700〜900 K で液相が fcc より 31〜38 meV/atom 高く差が開く（S_solid > S_liquid、SevenNet-0 と同型）。判定は必ず 05 表の x=0 の G 交点と fcc の T_max で行い、GRACE-FS（925 K 打ち切り）と同じく「融けない／打ち切り」と記す。
+- MatterSim は大きさで変わる：1M は Al 762 K で 700 K でも液相が残るが、5M は 996 K・共晶 720–730 K。NequIP は OAM-M（Al 931 K、共晶 800–810 K、固溶限 0.151：実験に最も近い融点）に対し OAM-S は固相を過安定化する。小さいモデルほどフォノンが軟らかい、という単純な傾向ではない（1M の S は 3.29 で普通）。
+- **Matbench Discovery との関係**：κ_SRME（フォノン）が相図の結果と対応した（SevenNet-0 は 0.767 で最悪 → Al が融けない；SevenNet-MF-ompa は 0.317 → 共晶が実験に最も近い）。F1（0 K の安定性）は対応しない（0 K の生成エネルギーは GRACE-FS 以外の 10 種でほぼ同じ）。κ_SRME だけでも足りない：MACE-MPA-0（0.412）も Al 融点が 105 K 高い。Matbench に液相の指標は無いので、基盤モデルを相図に使う前に純元素の融点を確かめる。今回使った GRACE-FS-OAM と OMAT-medium-base 版は表に未掲載（同じ層数の OAM 版を参考値にした）。
 
 ### 計算時間（2026-10-29、`ftphase/examples/mlip_bench/`、同じ入力を GPU 1 枚・CPU 4 コアで単独実行）
 
@@ -69,7 +75,10 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 | SevenNet-0 | 2.0 分 | 35 分 | 3.7 |
 | GRACE-2L-OMAT（fp32） | 0.9 分 | 98 分 | 10 |
 | SevenNet-MF-ompa | 19 分 | 204 分 | 21 |
-| MACE-MPA-0（float32） | 3.0 分 | 573 分 | 60 |
+| MACE-MPA-0（float32、`pair_style mace`） | 3.0 分 | 573 分 | 60 |
+| MACE-MPA-0（float32、ML-IAP + cuEquivariance、本番 pk 8481） | — | 76 分 | 8 |
+| MatterSim-v1-5M（ML-IAP） | — | 133 分 | 14 |
+| NequIP-OAM-S（ML-IAP + OEQ） | — | 20.5 分 | 2.2 |
 
 - 比較計算の液相も Slurm の `--gres=gpu:1` で GPU を専有していたので、比較計算の実行時間は単独実行と 10 % 以内で一致する（測り直す必要は無い）。QHA は計算した装置が MLIP ごとに違ったので、比べるなら装置を揃える。
 - conda 版 LAMMPS の Kokkos は古い GPU 向け（CC 5.0）にビルドされているので、ACE と GRACE-FS の QHA は CPU の方が速い。
@@ -155,5 +164,12 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 - CPU での MPI 実行（2026-10-30〜31、`env/lammps-cpu-mliap/`、README に詳細）：MatterSim / NequIP / MACE のラッパーは `forward_exchange` を呼ぶので、CPU でも Kokkos 結合が要る（非 Kokkos 結合には無い：Slurm 23008 で確認）。Kokkos Serial + ML-IAP Python の CPU ビルド `lmp_cpumliap` を作ったところ 3 モデルとも落ち、原因は **LAMMPS 本体のバグ**：`CommBrick::forward_comm(Pair*)`/`reverse_comm(Pair*)` が送受信バッファの大きさを確かめずに詰めるのに対し、バッファは初期化時の `pair->comm_forward`（`pair mliap/kk` は `forward_exchange` の呼び出し時にしか設定しない）で確保される。特徴量幅 128 以上でヒープを壊す（4・32 は正常）。GPU 経路は Kokkos バッファを毎回リサイズするので無事だった。`env/patches/lammps-30Sep2026-comm_brick-pair-comm-buffers.patch`（swap ごとに必要幅へ伸ばす）で修正。修正後、108 原子セルの単点で 1 rank / 4 rank とも GPU 値と float32 の丸め（0.1〜1 µeV/atom）で一致：MatterSim 5M −403.17566 / −403.1757（GPU −403.17578）、MACE fp32 −403.92015 / −403.92016（−403.92018）、NequIP-OAM-L −404.08091 / −404.08096（−404.08095）。4 rank = 領域分割 + ghost 交換なので、多 rank の `forward_exchange` の検証にもなった。CPU 用の書き出し：MatterSim は `_mliap_nocompile.pt`、NequIP は `-plain-nocompile`（OEQ は CUDA 専用、CPU の torch.compile は g++ 13 で失敗）、MACE は pickle 内の `config.allow_cpu=True` にした `-f32-cpu.pt`（環境変数は書き出し時にしか読まれない）。nequip 0.19.1 のラッパーは Kokkos 結合＝GPU と決めつけるので `torch.cuda.is_available()` を足すパッチ（`env/patches/`）。Kokkos OpenMP ビルドは torch 同梱の libgomp と二重になり forward で止まる（Serial + MPI rank で使う）。速度（Slurm 23010、4 コア、s/step、108 原子 1 rank / 4 rank、256 原子 4 rank）：MatterSim 5M 0.458 / 0.218 / 0.726（GPU 0.040）、NequIP-OAM-L plain 2.40 / 1.07 / 2.98（GPU OEQ 0.029）。4 rank で 2.1 倍、GPU は 4 コアの 18〜100 倍。CPU 経路は GPU の無いホストと検証用で、calphy 本番には向かない（MatterSim 液相 1 本 ≈ 40 時間/4 コア）。
 - cuEquivariance（2026-11-03、Slurm 23174、GPU 専有）：env/mace に 0.13.0 を導入し、公式 `mace_create_lammps_model --format mliap --dtype float32` で cueq 版 ML-IAP モデル `potentials/mace/macempa0mediummodel-cueq.model-mliap_lammps.pt` を書き出し。108 原子の pe −403.92018 eV は e3nn 版と同一、`hybrid/scaled/kk` も同一。速度 s/step（108 / 256 原子）：cueq 0.0173 / 0.0198、e3nn 版 0.0371 / 0.0900、`pair_style mace` 0.098 / 0.177 → e3nn 版の 4.5 倍、元の pair style の 9 倍。WorkChain の `mace-mpa-0` は cueq 版を使う（CPU では使えないので CPU 用は `-f32-cpu.pt`）。MACE ML-IAP 本番を 2026-11-03 に投入。
 - CPU ホストへの配備（2026-11-03）：`lmp_cpumliap` と CPU 用モデルを mygardenx1（env/torch 15 GB をコピー）と mygardenx2（既存 env/torch に mattersim・nequip・cupy・lammps パッケージを追加）に配置。x2 の 12 rank チェック（Slurm 240379）：3 モデルとも GPU 値と fp32 精度で一致、256 原子で MatterSim 0.18、NequIP 0.55、MACE 0.26 s/step。x1（Slurm 14402、16 rank、2026-11-04）も合格：MatterSim −403.17566 / −403.17571、NequIP −404.08085 / −404.08087 eV（1 / 16 rank；env/mace が無いので MACE は対象外）、256 原子で 0.19 / 0.71 s/step（x2 の 12 rank と同程度：256 原子では 12 rank 超は伸びない）。
-- CommBrick パッチの行き先（2026-11-03）：ユーザーのフォーク github.com/nim-hrkn/lammps の `fix-pair-comm-buffer-growth`（stable 起点）と `fix-pair-comm-buffer-growth-develop`（develop 起点）。後者から **lammps/lammps PR #5301** を提出（下書き `env/patches/lammps-pr-comm_brick.md`）。
+- CommBrick パッチの行き先（2026-11-03）：ユーザーのフォーク github.com/nim-hrkn/lammps の `fix-pair-comm-buffer-growth`（stable 起点）と `fix-pair-comm-buffer-growth-develop`（develop 起点）。後者から **lammps/lammps PR #5301** を提出（下書き `env/patches/lammps-pr-comm_brick.md`）。経過：Copilot レビューで CommTiled も要求 → 同じ判定を `comm_tiled.cpp` に追加（3 コミット、head f22671b）。2026-11-05 に S. Plimpton が「style は init 時に `comm_forward` を最大幅にして各呼び出しで `isize` を渡す設計なのに、なぜ pair mliap はそれができないのか」と質問 → 返信（`lammps-pr-comm_brick-reply2.md`、11-06 投稿）：幅は Python モデルが呼び出しごとに渡すテンソルの最終次元（NequIP/SevenNet `out_flat.size(-1)`、MatterSim `atom_attr.shape[1]`、MACE は層の特徴幅）で、`PairMLIAPKokkos::forward_comm` が `comm_forward = vec_len` を代入するだけで init では 0；Kokkos の device 経路 `forward_comm_device(Pair*)` は毎回 `grow_buf_pair` で伸ばしているので host 経路を揃える修正である；代替案はモデルが最大幅を宣言する ML-IAP の仕様変更（別 PR）。CI は maintainer 承認待ち。LAMMPS の規則：PR は develop 向け、ASCII のみ、`make check-whitespace`、コミットに AI の trailer を付けない（PR テンプレートの AI Tools Usage にだけ書く）。
 - TODO：複数 GPU の多 rank は未検証（GPU は各ホスト 1 枚）。（MACE のテンソル積の CUDA カーネル。QHA と calphy の両方が速くなる見込み。mace-torch 0.3.16 / torch 2.11 / sm_86 との版の整合は未確認）。
+
+## ORCHID の文献データとの照合（2026-11-03〜06、`ftphase/examples/aiida_txdiagram/orchid_compare.py`）
+
+- ORCHID v2026.10（arXiv:2610.41164）は文献 1,321 報の不変反応温度・相領域内部点などの証拠データベースで、自由エネルギーの手法ではない。Zenodo の zip は `data/orchid-v2026.10/`（gitignore、README に DOI と checksum）。
+- `orchid_compare.py`（引数無しで `out/*/07_two_phase_regions.tsv` を全部）が各 run の不変反応を同じ相の組の文献値の中央値と突き合わせ、論文と同じ再現率 S と dT を `out/orchid_compare/REPORT.md` に書く。相名は TDB ごとに違うので `PHASE_MAP` で正規化。
+- Al–Li 共晶（実験 872 K）との差 dT (K)：ACE −107、GRACE-1L −147、GRACE-2L −117、GRACE-FS −127、MACE-MPA-0 −87（ML-IAP 版；旧 −97）、NequIP-OAM-M −67、SevenNet-MF-ompa −17、SevenNet-0 +63、MatterSim-5M −147、NequIP-OAM-S +53（920–930 K の B32+fcc+液相で、fcc 側は QHA 打ち切りの外挿なので信用しない）、MatterSim-1M は格子下限より下。
+- CALPHAD の参照は ORCHID-Diagrams の SGTE 評価（`ftphase/examples/orchid_calphad/sgte_diagrams.py`）。ESPEI で ORCHID のデータだけから fit する経路は Li 側が拘束されない（詳細は CLAUDE.md と `orchid_calphad/README.md`）。

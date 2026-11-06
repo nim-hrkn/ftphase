@@ -23,3 +23,9 @@ CLAUDE.md、docs/、資料/、skills/phase-diagram/を相対構成を保って�
 5. 自由エネルギーの単位・参照・量子/古典・配置項を統一して全相の平衡を求める。
 
 本移行依頼は手順の文書化。接続・転送・ジョブ投入を実行済みと記載しない。
+
+## 公開リポジトリ（github.com/nim-hrkn/ftphase、public、2026-11-06 整理）
+
+- `ftphase/`・`docs/`・`skills/` は MIT（`LICENSE`）。`calphy-examples/` は calphy の Academic Software Licence v1.0（非商用；上流の複製と変更点を README に明記すれば配布可、同梱しても MIT 部分には及ばない）、`pycalphad-examples/` は MIT。
+- 含めないもの：`資料/`（原典 PDF）、`potentials/`、`papers/`、`data/orchid-*`、pyiron 例のポテンシャルファイル（`resources/lammps/potentials/{ace,atomicrex,hdnnp}/`、出所の pyiron/potentials-workshop-2022 にライセンス表示が無い）。計算機の IP とメールアドレスも書かない（ssh alias と `~/.ssh/config` を参照させる）。
+- 履歴から消す手順：`env/ftphase/bin/pip install git-filter-repo` → 他セッションの変更済みファイルを tar で退避 → `echo N | git-filter-repo --force --invert-paths --path … --replace-text repl.txt`（前回の実行があると継続か聞かれる）→ `git remote add origin …`（filter-repo が消す）→ 退避したファイルを戻す → `SSH_AUTH_SOCK=~/.ssh/agent.sock git push --force origin main`。GitHub 側の旧コミットは SHA 直打ちで暫く残る（完全に消すには Support に依頼）。他ホストは rsync 同期なので履歴書き換えの影響は無い。
