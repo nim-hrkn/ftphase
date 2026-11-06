@@ -14,17 +14,26 @@ WARNING:root:Default dtype float32 does not match model dtype float64, convertin
 /home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/ase/atoms.py:432: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
 As an alternative, you can create a new view using np.reshape (with copy=False if needed).
   a.shape = (-1,) + shape
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/ase/atoms.py:432: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+  a.shape = (-1,) + shape
 /home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/spglib/spg.py:471: DeprecationWarning: Set OLD_ERROR_HANDLING to false and catch the errors directly.
   _set_no_error()
 /home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/ase/atoms.py:432: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
 As an alternative, you can create a new view using np.reshape (with copy=False if needed).
   a.shape = (-1,) + shape
-fcc-Pt                     x=0.00 E_form=    0.0 meV/atom V=15.720 Fm-3m (225) 
-fcc-Rh                     x=1.00 E_form=    0.0 meV/atom V=14.149 Fm-3m (225) 
-PtRh-40 (I4_1/amd)         x=0.50 E_form=  -26.8 meV/atom V=14.847 I4_1/amd (141) 
-PtRh-L1_0 (P4/mmm)         x=0.50 E_form=  -18.6 meV/atom V=14.851 P4/mmm (123) 
-PtRh3-D0_22 (I4/mmm)       x=0.75 E_form=  -19.7 meV/atom V=14.454 I4/mmm (139) 
-PtRh3-L1_2 (Pm-3m)         x=0.75 E_form=  -17.8 meV/atom V=14.450 Pm-3m (221) 
-Pt3Rh-D0_22 (I4/mmm)       x=0.25 E_form=  -16.6 meV/atom V=15.289 I4/mmm (139) 
-Pt3Rh-L1_2 (Pm-3m)         x=0.25 E_form=  -12.1 meV/atom V=15.307 Pm-3m (221) 
+fcc-Pt                     x=0.00 E_form=    0.0 meV/atom  E-E_random=    nan  V=15.720 Fm-3m (225) 
+fcc-Rh                     x=1.00 E_form=    0.0 meV/atom  E-E_random=    nan  V=14.149 Fm-3m (225) 
+PtRh-40 (I4_1/amd)         x=0.50 E_form=  -26.8 meV/atom  E-E_random=  -11.7  V=14.847 I4_1/amd (141) 
+PtRh-L1_0 (P4/mmm)         x=0.50 E_form=  -18.6 meV/atom  E-E_random=   -3.5  V=14.851 P4/mmm (123) 
+PtRh3-D0_22 (I4/mmm)       x=0.75 E_form=  -19.7 meV/atom  E-E_random=   -5.7  V=14.454 I4/mmm (139) 
+PtRh3-L1_2 (Pm-3m)         x=0.75 E_form=  -17.8 meV/atom  E-E_random=   -3.8  V=14.450 Pm-3m (221) 
+Pt3Rh-D0_22 (I4/mmm)       x=0.25 E_form=  -16.6 meV/atom  E-E_random=   -5.5  V=15.289 I4/mmm (139) 
+Pt3Rh-L1_2 (Pm-3m)         x=0.25 E_form=  -12.1 meV/atom  E-E_random=   -0.9  V=15.307 Pm-3m (221) 
+fcc-random-0.25-seed0      x=0.25 E_form=  -10.4 meV/atom  E-E_random=    nan  V=15.293 P1 (1) 
+fcc-random-0.25-seed1      x=0.25 E_form=  -12.0 meV/atom  E-E_random=    nan  V=15.288 C2 (5) 
+fcc-random-0.50-seed2      x=0.50 E_form=  -15.5 meV/atom  E-E_random=    nan  V=14.860 P1 (1) 
+fcc-random-0.50-seed3      x=0.50 E_form=  -14.8 meV/atom  E-E_random=    nan  V=14.869 P1 (1) 
+fcc-random-0.75-seed4      x=0.75 E_form=  -14.3 meV/atom  E-E_random=    nan  V=14.465 P1 (1) 
+fcc-random-0.75-seed5      x=0.75 E_form=  -13.6 meV/atom  E-E_random=    nan  V=14.465 P1 (1) 
 wrote /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/ptrh/out/screen_mace-mpa-0.tsv

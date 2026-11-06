@@ -1,0 +1,125 @@
+{
+ "relaxed": [
+  {
+   "name": "fcc-Pt",
+   "x": 0.0,
+   "e": -6.0460162980178,
+   "V": 15.639343060342,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "fcc-Rh",
+   "x": 1.0,
+   "e": -7.3427460888379,
+   "V": 14.135173893131,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "PtRh-40",
+   "x": 0.5,
+   "e": -6.7231017142521,
+   "V": 14.891232219209,
+   "sg_before": "I4_1/amd (141)",
+   "sg_after": "I4_1/amd (141)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "PtRh3-D022",
+   "x": 0.75,
+   "e": -7.0365368238633,
+   "V": 14.524020379242,
+   "sg_before": "I4/mmm (139)",
+   "sg_after": "I4/mmm (139)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "Pt3Rh-D022",
+   "x": 0.25,
+   "e": -6.3911385057913,
+   "V": 15.25973772691,
+   "sg_before": "I4/mmm (139)",
+   "sg_after": "I4/mmm (139)",
+   "converged": true,
+   "transformed": false
+  }
+ ],
+ "hull": [
+  {
+   "name": "fcc-Pt",
+   "x": 0.0,
+   "e": -6.0460162980178,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "Pt3Rh-D022",
+   "x": 0.25,
+   "e": -6.3911385057913,
+   "e_form": -0.020939760068452,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "PtRh-40",
+   "x": 0.5,
+   "e": -6.7231017142521,
+   "e_form": -0.028720520824232,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "PtRh3-D022",
+   "x": 0.75,
+   "e": -7.0365368238633,
+   "e_form": -0.0179731827304,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Rh",
+   "x": 1.0,
+   "e": -7.3427460888379,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  }
+ ],
+ "ground_state_check": [
+  {
+   "name": "fcc-Pt",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Rh",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "PtRh-40",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "PtRh3-D022",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "Pt3Rh-D022",
+   "status": "MLIP ground state not in known list",
+   "e_above_hull": 0.0
+  }
+ ],
+ "potential": "NequIP-OAM-M-0.1.nequip.zip",
+ "finished": "2026-11-05 02:08:52"
+}

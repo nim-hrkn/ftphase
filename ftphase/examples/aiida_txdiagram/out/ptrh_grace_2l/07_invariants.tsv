@@ -1,0 +1,4 @@
+T_low	T_high	pairs_below	pairs_above
+1990.0	2000.0	['PtRh3+fcc', 'fcc+liquid']	['PtRh3+fcc', 'PtRh3+liquid', 'fcc+liquid']
+2030.0	2040.0	['PtRh3+fcc', 'PtRh3+liquid', 'fcc+liquid']	['fcc+liquid']
+2090.0	2100.0	['fcc+liquid']	['fcc+liquid', 'liquid+liquid']

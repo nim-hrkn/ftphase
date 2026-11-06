@@ -63,21 +63,32 @@ def main():
         inp["device"] = a.device
     calc = make_calculator(inp, ml.get("potential_qha") or ml["potential"])
     rows = []
-    for name, x, at in structures():
+    # random 32-atom fcc cells at x = 0.25, 0.5, 0.75 (same generator and seed as the WorkChain's fcc series): the ordering
+    # energy E(ordered) - E(random) at equal composition is what decides whether the ordered phases exist at T > 0
+    from ase.build import bulk
+    from ftphase.structures import composition_series
+    base = bulk("Pt", "fcc", a=3.924, cubic=True).repeat((2, 2, 2))
+    rnd = [(f"fcc-random-{m.x_actual:.2f}-seed{m.seed}", m.x_actual, m.atoms) for m in composition_series(base, "Rh", [0.25, 0.5, 0.75], seed=0, n_configs=2)]
+    for name, x, at in structures() + rnd:
         at = at.copy()
         at.calc = calc
         r = relax(at, calc, fmax=1e-3, cell=True, hydrostatic=False)
         rows.append([name, x, r.energy_per_atom, r.volume_per_atom, r.spacegroup_after, bool(r.converged)])
     e_pt = [r[2] for r in rows if r[0] == "fcc-Pt"][0]
     e_rh = [r[2] for r in rows if r[0] == "fcc-Rh"][0]
+    rand = {}
+    for name, x, e, V, sg, conv in rows:
+        if name.startswith("fcc-random"):
+            rand.setdefault(round(x, 2), []).append(e)
     os.makedirs(a.out, exist_ok=True)
     fn = os.path.join(a.out, f"screen_{a.mlip}.tsv")
     with open(fn, "w") as fh:
-        fh.write("structure\tx_Rh\tE_per_atom_eV\tE_form_eV_per_atom\tV_per_atom_A3\tspacegroup_after\tconverged\n")
+        fh.write("structure\tx_Rh\tE_per_atom_eV\tE_form_eV_per_atom\tV_per_atom_A3\tspacegroup_after\tconverged\tE_minus_E_random_eV_per_atom\n")
         for name, x, e, V, sg, conv in rows:
             ef = e - (1 - x) * e_pt - x * e_rh
-            fh.write(f"{name}\t{x:.4f}\t{e:.6f}\t{ef:.5f}\t{V:.4f}\t{sg}\t{conv}\n")
-            print(f"{name:26s} x={x:.2f} E_form={ef*1000:7.1f} meV/atom V={V:.3f} {sg} {'' if conv else 'NOT CONVERGED'}")
+            dord = (e - sum(rand[round(x, 2)]) / len(rand[round(x, 2)])) if (round(x, 2) in rand and not name.startswith("fcc-random")) else float("nan")
+            fh.write(f"{name}\t{x:.4f}\t{e:.6f}\t{ef:.5f}\t{V:.4f}\t{sg}\t{conv}\t{dord:.5f}\n")
+            print(f"{name:26s} x={x:.2f} E_form={ef*1000:7.1f} meV/atom  E-E_random={dord*1000:7.1f}  V={V:.3f} {sg} {'' if conv else 'NOT CONVERGED'}")
     print("wrote", fn)
 
 

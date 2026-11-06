@@ -1,9 +1,15 @@
-structure	x_Rh	E_per_atom_eV	E_form_eV_per_atom	V_per_atom_A3	spacegroup_after	converged
-fcc-Pt	0.0000	-6.059954	0.00000	15.7500	Fm-3m (225)	True
-fcc-Rh	1.0000	-7.341257	0.00000	14.2563	Fm-3m (225)	True
-PtRh-40 (I4_1/amd)	0.5000	-6.730872	-0.03027	15.0525	I4_1/amd (141)	True
-PtRh-L1_0 (P4/mmm)	0.5000	-6.727324	-0.02672	14.9783	P4/mmm (123)	True
-PtRh3-D0_22 (I4/mmm)	0.7500	-7.040508	-0.01958	14.6259	I4/mmm (139)	True
-PtRh3-L1_2 (Pm-3m)	0.7500	-7.039744	-0.01881	14.6035	Pm-3m (221)	True
-Pt3Rh-D0_22 (I4/mmm)	0.2500	-6.406273	-0.02599	15.4012	I4/mmm (139)	True
-Pt3Rh-L1_2 (Pm-3m)	0.2500	-6.402620	-0.02234	15.3601	Pm-3m (221)	True
+structure	x_Rh	E_per_atom_eV	E_form_eV_per_atom	V_per_atom_A3	spacegroup_after	converged	E_minus_E_random_eV_per_atom
+fcc-Pt	0.0000	-6.059954	0.00000	15.7500	Fm-3m (225)	True	nan
+fcc-Rh	1.0000	-7.341257	0.00000	14.2563	Fm-3m (225)	True	nan
+PtRh-40 (I4_1/amd)	0.5000	-6.730873	-0.03027	15.0525	I4_1/amd (141)	True	-0.01646
+PtRh-L1_0 (P4/mmm)	0.5000	-6.727324	-0.02672	14.9783	P4/mmm (123)	True	-0.01291
+PtRh3-D0_22 (I4/mmm)	0.7500	-7.040508	-0.01958	14.6259	I4/mmm (139)	True	-0.00378
+PtRh3-L1_2 (Pm-3m)	0.7500	-7.039744	-0.01881	14.6035	Pm-3m (221)	True	-0.00302
+Pt3Rh-D0_22 (I4/mmm)	0.2500	-6.406273	-0.02599	15.4012	I4/mmm (139)	True	-0.01883
+Pt3Rh-L1_2 (Pm-3m)	0.2500	-6.402620	-0.02234	15.3601	Pm-3m (221)	True	-0.01518
+fcc-random-0.25-seed0	0.2500	-6.385426	-0.00515	15.3283	P1 (1)	True	nan
+fcc-random-0.25-seed1	0.2500	-6.389462	-0.00918	15.3576	C2 (5)	True	nan
+fcc-random-0.50-seed2	0.5000	-6.717164	-0.01656	14.9640	P1 (1)	True	nan
+fcc-random-0.50-seed3	0.5000	-6.711665	-0.01106	14.9075	P1 (1)	True	nan
+fcc-random-0.75-seed4	0.7500	-7.036444	-0.01551	14.6094	P1 (1)	True	nan
+fcc-random-0.75-seed5	0.7500	-7.037012	-0.01608	14.5984	P1 (1)	True	nan
