@@ -1,6 +1,6 @@
 # Pt-Rh CE + canonical MC with mace-mpa-0 (2026-11-07)
 
-Training: 631 fcc orderings (1-8 atoms), relaxed (positions + cell, fmax 2e-3). CE cutoffs [9.0, 6.0, 5.0] A, ARDR, rmse train 0.66 / CV 0.71 meV/atom, 41 nonzero of 41 ECIs.
+Training: 631 fcc orderings (1-8 atoms), relaxed (positions + cell, fmax 2e-3). CE cutoffs [9.0, 6.0, 5.0] A, least-squares, rmse train 0.66 / CV 0.71 meV/atom, 41 nonzero of 41 ECIs.
 
 ## 0 K: ordered structures vs the random state (CE)
 

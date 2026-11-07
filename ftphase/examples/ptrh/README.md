@@ -95,8 +95,22 @@ AiiDA の fcc 乱雑セル基準の規則化エネルギー（0 K）: PtRh 40 �
 規則相が二相域から消える温度は古典水準と同じ（MACE: PtRh 230 K、Pt₃Rh 390 K、PtRh₃ 910 K；GRACE-2L: 240 / 630 / 1900 K；NequIP: 200 / 1900 / 1180 K）。
 規則相と乱雑 fcc のフォノンがほぼ同じなので 04B の補正は相間で打ち消し、規則化温度には効かない。論文の Fig. 4–5（PtRh の F_vib の MLIP–DFT 差 5.5 meV/atom at 1000 K）も生成自由エネルギーには数 meV しか残らないことと整合する。
 
-## 進行中（2026-11-06 21:10 投入）
+## 結果 5: CE + 正準 MC の規則化温度（2026-11-07、`ce_mc.py`、`out_ce_<mlip>/`）
 
-- 融点側: `mlip_solids_ti.py submit --names ptrh_grace_2l,ptrh_nequip_oam_m,ptrh_mace_mpa_0 --only s00_fcc,s23_fcc` で 2,048 原子の fcc Pt（1700→2150 K）・fcc Rh（1900→2350 K）の calphy 固相 TI を mygarden6 に 6 本（pk 10727/10732/10737/10742/10747/10752、`out/<run>/solids_ti.json`）。終了後 `mlip_solids_ti.py melt --names ptrh_...` で固液交点。
+icet で fcc 配置 631 個（1–8 原子）を列挙し、MLIP 環境のサブプロセスで緩和（位置 + セル）、CE は最小二乗・カットオフ 9/6/5 Å・41 ECI（CV 0.7 / 0.5 meV/atom；ARDR は 3 ECI・CV 4 meV で規則化を表せず転移が出なかった）。
+正準 MC は 8³ の慣用 fcc セル（2,048 サイト）を 500 → 20 K に冷却、各温度 40 + 80 スイープ、C_v = Var(E)/(k_B T²) のピークを T_c とする。短距離秩序込みで、WorkChain の CEF 型（理想副格子混合）近似より低い値になるのが普通。
+
+| 反応 | 論文 PFP | 論文 DFT | Pohl & Albe MC | MACE-MPA-0 CE+MC | SevenNet-MF-ompa CE+MC | MACE CEF 型（結果 3） |
+|---|---|---|---|---|---|---|
+| fcc ↔ PtRh (x 0.5) | 258 K | 210 K | 238 K | 160 K（C_v 1.7 k_B） | 180 K（C_v 9 k_B、一次転移的） | 230 K |
+| fcc ↔ PtRh₃ (0.75) | 235 K | 156 K | — | 140 K | 120 K | 決まらず |
+| fcc ↔ Pt₃Rh (0.25) | 146 K | 不安定 | — | 100 K（弱い） | 120 K（弱い） | 390 K（ノイズ） |
+
+CE の 0 K 規則化エネルギー（規則相 − CE 乱雑）: MACE −4.2 / −7.4 / −6.5、SevenNet-MF −5.2 / −7.1 / −6.2 meV/atom（Pt₃Rh / PtRh / PtRh₃）。
+読み: (1) 両 MLIP とも PtRh の規則化は 160–180 K で、論文の DFT-CEF 値 210 K・PFP 258 K より 30–100 K 低い。規則化エネルギーが DFT の −11 より 3–4 meV 浅いことと、CEF（Bragg–Williams）が MC より T_c を高く見積もること（MACE 同士で CEF 230 K vs MC 160 K、+70 K）の両方が効く。文献 MC（Pohl & Albe、別の bond-order ポテンシャル）238 K との差も主に規則化エネルギーの差。(2) A₃B 型は欠陥セル法では決まらなかったが CE+MC では 120–140 K に明瞭なピークが出る。配置ノイズの無い ECI ベースの方法が、規則化エネルギー 5 meV 級の系では唯一の実用的な経路。(3) これは AiiDA 外の計算（ローカル CPU、約 1 時間 + MC 35 分/MLIP）。
+
+## 進行中（2026-11-06 21:10 投入、11-08 更新）
+
+- 融点側 + 固相だけの組立を WorkChain 内で: `run_aiida.py --system ptrh --mlip <m> --computer mygarden6 --solid-only --ends-ti`（11-07/08 に実装: `assemble.allow_solid_only` で液相の無い温度も固相だけの凸包として格子に残す、`solids_ti` に `x` / `keys` / `one_per_x` の絞り込み、`skip_liquids`）。単独投入していた端成分 TI 6 本は kill して WorkChain に戻した。smoke pk 11014 で組立経路を確認（TI の smoke は 256 原子・1900 K で融けて exit 310、本番は 2,048 原子・1700 K 開始）。本番: MACE pk 11345、GRACE-2L 11358、NequIP 11372（`ptrh_<mlip>_solid_ti`、組立 100–2400 K）。工程 01 の緩和が前回と僅かに違う構造を返したため QHA はキャッシュに当たらず再計算（MACE は mygardenx2 の CPU、他は mygarden6 の GPU）。
 - 規則化温度（短距離秩序込み）: `ce_mc.py --mlip mace-mpa-0|sevenn-mf-ompa`（icet で fcc 配置 631 個を列挙 → MLIP 環境のサブプロセスで緩和 → CE（ARDR）→ 8³ セルの正準 MC を 500→40 K 冷却、C_v ピークで T_c）。`out_ce_<mlip>/`。
 - SevenNet-MF-ompa の工程 01–07: smoke pk 10674（QHA は mygardenx2）、通れば `autosubmit.sh` が本番を投入。

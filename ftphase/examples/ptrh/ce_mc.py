@@ -187,7 +187,7 @@ def main():
     axes[1].set(xlabel="T (K)", ylabel="E_form (meV/atom)")
     axes[0].legend(); fig.tight_layout(); fig.savefig(os.path.join(out, "cv.png"), dpi=120)
     L = [f"# Pt-Rh CE + canonical MC with {a.mlip} ({time.strftime('%F')})", "",
-         f"Training: {info['n_structures']} fcc orderings (1-{a.sizes} atoms), relaxed (positions + cell, fmax 2e-3). CE cutoffs {a.cutoffs} A, ARDR, "
+         f"Training: {info['n_structures']} fcc orderings (1-{a.sizes} atoms), relaxed (positions + cell, fmax 2e-3). CE cutoffs {a.cutoffs} A, {a.fit_method}, "
          f"rmse train {info['rmse_train'] * 1000:.2f} / CV {info['rmse_validation'] * 1000:.2f} meV/atom, {info['n_nonzero_parameters']} nonzero of {info['n_parameters']} ECIs.", "",
          "## 0 K: ordered structures vs the random state (CE)", "", "| structure | x_Rh | E_form (MLIP, relaxed) meV/atom | E_form random (CE) | ordering energy |", "|---|---|---|---|---|"]
     for name, x in (("Pt3Rh-D0_22", 0.25), ("PtRh-40", 0.5), ("PtRh3-D0_22", 0.75)):
