@@ -16,6 +16,11 @@ MLIPS = {  # name: (pair_style, pair_coeff, cmdargs, lammps_executable, potentia
     # the Matbench DPA-3.1-3M-FT .pth was frozen with a private deepmd-kit dev version without the LAMMPS border_op (cannot be
     # re-frozen: unknown options such as use_torch_embed); used instead: the public pretrained DPA-3.1-3M, MPtrj branch, frozen
     # with deepmd-kit 3.1.3 (`dp --pt freeze --model-branch MP_traj_v024_alldata_mixu`), see env/deepmd/README.md
+    # DPA4 (SeZM) OMat24 checkpoints from huggingface.co/deepmodelingcommunity/DPA4-OMat24 (v20260805, cc-by-nc-4.0, trained with deepmd-kit 3.2.0),
+    # frozen on this GPU to AOTInductor .pt2 (`DP_TRITON_INFER=2 dp --pt freeze`, env/deepmd32); LAMMPS 22Jul2025u2 (PyPI wheel) + 3.2.0 plugin,
+    # the wrapper prepends `plugin load` and `atom_modify map yes`.
+    "dpa4-plus-omat24": ("deepmd __WORKDIR__/DPA4-Plus-OMat24-v20260805.pt2", "* * Al Li", "", f"{ROOT}/env/deepmd32/bin/lmp_deepmd.sh", "potentials/deepmd/dpa4/DPA4-Plus-OMat24-v20260805.pt2"),
+    "dpa4-air-omat24": ("deepmd __WORKDIR__/DPA4-Air-OMat24-v20260805.pt2", "* * Al Li", "", f"{ROOT}/env/deepmd32/bin/lmp_deepmd.sh", "potentials/deepmd/dpa4/DPA4-Air-OMat24-v20260805.pt2"),
     "dpa-3.1-3m-mptrj": ("deepmd __WORKDIR__/dpa-3.1-3m-mptrj.pth", "* * Al Li", "", f"{ROOT}/env/deepmd/bin/lmp_deepmd.sh", "potentials/deepmd/dpa-3.1-3m-mptrj.pth"),
 }
 

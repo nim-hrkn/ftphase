@@ -39,6 +39,9 @@ def make_calculator(inp: dict, pot: str):
     if kind == "mattersim":   # MatterSim checkpoint (.pth) or version name; float32 M3GNet, env/torch (mattersim 1.2.5)
         from mattersim.forcefield import MatterSimCalculator  # type: ignore
         return MatterSimCalculator(load_path=pot, device="cuda" if dev == "auto" else dev)
+    if kind == "deepmd":      # deepmd-kit >= 3.2 frozen model (.pth TorchScript or DPA4 .pt2 AOTInductor, GPU-specific), env/deepmd32
+        from deepmd.calculator import DP  # type: ignore
+        return DP(model=pot)
     if kind == "metatomic":   # exported metatomic model (.pt, e.g. PET from lab-cosmo/upet via `mtt export`), env/metatomic (torch 2.13, metatomic-torch 0.1.19)
         try:
             from metatomic_ase import MetatomicCalculator  # type: ignore

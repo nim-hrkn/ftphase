@@ -51,6 +51,8 @@ LMP_MLIAP_MACE = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_mace.sh"
 LMP_MLIAP_MATTERSIM = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_mattersim.sh")   # PYTHONHOME env/torch (mattersim 1.2.5)
 _MS = os.path.join(ROOT, "potentials", "mattersim")
 LMP_MLIAP_NEQUIP = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_nequip.sh")
+LMP_DEEPMD32 = os.path.join(ROOT, "env/deepmd32/bin/lmp_deepmd.sh")   # PyPI LAMMPS 22Jul2025u2 + deepmd-kit 3.2.0 plugin; wrapper prepends plugin load + atom_modify map yes
+_DPA4 = os.path.join(ROOT, "potentials", "deepmd", "dpa4")
 LMP_METATOMIC = os.path.join(ROOT, "env/metatomic/bin/lmp_metatomic.sh")   # conda lammps-metatomic 4Jul2026 KOKKOS (metatomic/kk, hybrid/scaled/kk); wrapper moves pair_style after read_data
 _PET = os.path.join(ROOT, "potentials", "pet")   # PYTHONHOME env/torch (nequip 0.19.1 + openequivariance)
 _NQ = os.path.join(ROOT, "potentials", "nequip")
@@ -95,6 +97,14 @@ MLIPS.update({
                   "model": "PET-OAM-L 0.1.0 (metatomic, float32)", "lmp_gpu": LMP_METATOMIC, "tag": "_pet_oam_l", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-metatomic", "qha_calculator": "metatomic", "pair_coeff_Z": True},
     "pet-omat-s": {"potential": os.path.join(_PET, "pet-omat-s-v1.0.0.pt"), "potential_qha": os.path.join(_PET, "pet-omat-s-v1.0.0.pt"), "pair_style": "metatomic {potential}", "pair_coeff": "* * Al Li",
                    "model": "PET-OMat-S 1.0.0 (metatomic, float32)", "lmp_gpu": LMP_METATOMIC, "tag": "_pet_omat_s", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-metatomic", "qha_calculator": "metatomic", "pair_coeff_Z": True},
+    # DPA4 (SeZM) OMat24 v20260805 from huggingface.co/deepmodelingcommunity/DPA4-OMat24 (cc-by-nc-4.0, deepmd-kit 3.2.0; 2026-11-07): the frozen .pt2
+    # (AOTInductor, compiled on this GPU with DP_TRITON_INFER=2) runs on the GPU through pair_style deepmd with LAMMPS on the CPU (no Kokkos; like the
+    # pair_style mace route), so calphy_gpu is off; the calphy code must skip the style preflight (plugin style): calphy_code "calphy-plugin".
+    # QHA: deepmd's ASE calculator with the same .pt2 (env/deepmd32, GPU). The Matbench DPA-4.1-OAM checkpoints are figshare-only (403 from here).
+    "dpa4-plus-omat24": {"potential": os.path.join(_DPA4, "DPA4-Plus-OMat24-v20260805.pt2"), "potential_qha": os.path.join(_DPA4, "DPA4-Plus-OMat24-v20260805.pt2"), "pair_style": "deepmd {potential}", "pair_coeff": "* * Al Li",
+                         "model": "DPA4-Plus-OMat24 v20260805 (deepmd 3.2.0, .pt2)", "lmp_gpu": LMP_DEEPMD32, "tag": "_dpa4_plus_omat24", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-deepmd", "qha_calculator": "deepmd", "calphy_code": "calphy-plugin"},
+    "dpa4-air-omat24": {"potential": os.path.join(_DPA4, "DPA4-Air-OMat24-v20260805.pt2"), "potential_qha": os.path.join(_DPA4, "DPA4-Air-OMat24-v20260805.pt2"), "pair_style": "deepmd {potential}", "pair_coeff": "* * Al Li",
+                        "model": "DPA4-Air-OMat24 v20260805 (deepmd 3.2.0, .pt2)", "lmp_gpu": LMP_DEEPMD32, "tag": "_dpa4_air_omat24", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-deepmd", "qha_calculator": "deepmd", "calphy_code": "calphy-plugin"},
     # the pair_style mace route of pk 4293 (env/lammps-torch, lmp_mace.sh prepends atom_modify map yes), kept for comparison runs
     "mace-mpa-0-pairstyle": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
                    "model": "MACE-MPA-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0_pairstyle", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
@@ -387,7 +397,7 @@ def main():
             if k in ml:
                 spec[k] = ml[k]
         if ml.get("torch"):   # stage 01 relaxations run in a subprocess of the calculator's env (the daemon has no torch)
-            spec["qha_python"] = os.path.join(ROOT, "env", {"mace": "mace", "metatomic": "metatomic"}.get(ml["qha_calculator"], "torch"), "bin", "python")
+            spec["qha_python"] = os.path.join(ROOT, "env", {"mace": "mace", "metatomic": "metatomic", "deepmd": "deepmd32"}.get(ml["qha_calculator"], "torch"), "bin", "python")
             if qha_cpu_host:
                 spec["qha_device"] = "cpu"
         pot_fn = (lambda f=ml["potential"]: f); lmp_gpu = ml["lmp_gpu"]; pot_qha = ml.get("potential_qha")
@@ -420,7 +430,7 @@ def main():
         "potential": orm.SinglefileData(file=pot_fn()),
         "candidates": cands,
         "qha_code": _load_code(f"{MLIPS[a.mlip].get('qha_code', 'ftphase-qha') if use_mlip else 'ftphase-qha'}@{a.qha_computer or a.computer}"),
-        "calphy_code": orm.load_code(f"calphy@{a.computer}"),
+        "calphy_code": orm.load_code(f"{MLIPS[a.mlip].get('calphy_code', 'calphy') if use_mlip else 'calphy'}@{a.computer}"),
         "qha_options": orm.Dict(dict={"resources": {"num_machines": 1, "num_mpiprocs_per_machine": 1, "num_cores_per_mpiproc": a.qha_cores}, "max_wallclock_seconds": 24 * 3600,
                                       "queue_name": "debug", "withmpi": False,
                                       "custom_scheduler_commands": "#SBATCH --hint=nomultithread" + ("\n#SBATCH --gres=gpu:1" if (use_mlip and MLIPS[a.mlip].get("qha_gpu") and not qha_cpu_host) else "")}),
