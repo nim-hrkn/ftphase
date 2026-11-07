@@ -91,7 +91,20 @@ def volume_scan_data(atoms, calc, supercell_matrix, T, scales, mesh, imaginary, 
     return {"volumes": np.array(vols), "e0": np.array(e0s), "f_vib": np.array(Fs).T, "frequencies": freqs}
 
 
+def _sanitize_library_path():
+    """Re-exec this process without Intel oneAPI entries on LD_LIBRARY_PATH (the daemon inherits them from the login shell):
+    deepmd-kit's PyTorch backend dlopens an MPI library whose libfabric clashes with oneAPI's ("version FABRIC_1.9 not found").
+    The loader reads LD_LIBRARY_PATH only at start-up, so the variable is fixed and the interpreter restarted once."""
+    import sys
+    ld = os.environ.get("LD_LIBRARY_PATH", "")
+    if "/opt/intel" in ld and os.environ.get("FTPHASE_LDPATH_SANITIZED") != "1":
+        os.environ["LD_LIBRARY_PATH"] = ":".join(p for p in ld.split(":") if p and "/opt/intel" not in p)
+        os.environ["FTPHASE_LDPATH_SANITIZED"] = "1"
+        os.execv(sys.executable, [sys.executable] + sys.argv)
+
+
 def qha_main(argv=None):
+    _sanitize_library_path()
     from ase.io import read
     from ftphase.qha import qha_gibbs
     from ftphase.validate import relax
@@ -146,6 +159,7 @@ def qha_main(argv=None):
 
 
 def relax_main(argv=None):
+    _sanitize_library_path()
     """``python -m ftphase.aiida.runners relax input.json``: relax structures with the calculator described in the json
     (same keys as the QHA input: calculator, pair_style, pair_coeff, atom_types, cmdargs, device, dtype, modal, potential)
     and write ``output.json`` + ``relaxed.extxyz``.  Used by the ``prepare_cells`` calcfunction for torch-based calculators,
