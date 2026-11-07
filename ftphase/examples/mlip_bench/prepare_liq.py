@@ -42,6 +42,7 @@ def stage(host, name):
 unset PYTHONPATH PYTHONHOME
 source /home/kino/miniforge3/etc/profile.d/conda.sh
 cd {liq} && conda activate {ROOT}/env/ftphase && sed -i "s|__WORKDIR__|$PWD|g" input.yaml
+export CALPHY_SKIP_PREFLIGHT=1   # plugin styles (deepmd) are not visible to calphy's `lmp -h` style check
 t0=$(date +%s.%N); {ROOT}/env/ftphase/bin/calphy_kernel -i input.yaml -k 0 > calphy.out 2> calphy.err; rc=$?; t1=$(date +%s.%N)
 echo -e "$(hostname)\\t{name}\\tliq\\t$(echo "$t1-$t0" | bc)\\t$rc" >> {base}/times.tsv
 nvidia-smi --query-gpu=name,driver_version --format=csv,noheader >> {base}/times.tsv

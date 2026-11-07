@@ -39,6 +39,12 @@ def make_calculator(inp: dict, pot: str):
     if kind == "mattersim":   # MatterSim checkpoint (.pth) or version name; float32 M3GNet, env/torch (mattersim 1.2.5)
         from mattersim.forcefield import MatterSimCalculator  # type: ignore
         return MatterSimCalculator(load_path=pot, device="cuda" if dev == "auto" else dev)
+    if kind == "metatomic":   # exported metatomic model (.pt, e.g. PET from lab-cosmo/upet via `mtt export`), env/metatomic (torch 2.13, metatomic-torch 0.1.19)
+        try:
+            from metatomic_ase import MetatomicCalculator  # type: ignore
+        except ImportError:
+            from metatomic.torch.ase_calculator import MetatomicCalculator  # type: ignore
+        return MetatomicCalculator(pot, device="cuda" if dev == "auto" else dev)
     if kind == "nequip":      # nequip >= 0.7: the ASE calculator needs an AOTInductor-compiled model (.nequip.pt2, device specific);
         # a package file (.nequip.zip) or a nequip.net:ID is compiled here for this job's device (nequip-compile, ~2 min, needs cuda.h on CPATH)
         import subprocess

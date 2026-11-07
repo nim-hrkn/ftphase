@@ -50,7 +50,9 @@ LMP_SEVENN = os.path.join(ROOT, "env/lammps-torch/bin/lmp_sevenn.sh"); LMP_MACE 
 LMP_MLIAP_MACE = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_mace.sh")
 LMP_MLIAP_MATTERSIM = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_mattersim.sh")   # PYTHONHOME env/torch (mattersim 1.2.5)
 _MS = os.path.join(ROOT, "potentials", "mattersim")
-LMP_MLIAP_NEQUIP = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_nequip.sh")   # PYTHONHOME env/torch (nequip 0.19.1 + openequivariance)
+LMP_MLIAP_NEQUIP = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_nequip.sh")
+LMP_METATOMIC = os.path.join(ROOT, "env/metatomic/bin/lmp_metatomic.sh")   # conda lammps-metatomic 4Jul2026 KOKKOS (metatomic/kk, hybrid/scaled/kk); wrapper moves pair_style after read_data
+_PET = os.path.join(ROOT, "potentials", "pet")   # PYTHONHOME env/torch (nequip 0.19.1 + openequivariance)
 _NQ = os.path.join(ROOT, "potentials", "nequip")
 
 
@@ -86,6 +88,13 @@ MLIPS.update({
     # NequIP-OAM-S 0.1 (smallest OAM package, 5.6 MB; same export/route as OAM-L/M; 2026-11-02)
     "nequip-oam-s": {"potential": os.path.join(_NQ, "NequIP-OAM-S-0.1.nequip.lmp.pt"), "potential_qha": os.path.join(_NQ, "NequIP-OAM-S-0.1.nequip.zip"), "pair_style": "mliap unified {potential} 0", "pair_coeff": "* * Al Li",
                      "model": "NequIP-OAM-S 0.1 (ML-IAP, OpenEquivariance)", "lmp_gpu": LMP_MLIAP_NEQUIP, "tag": "_nequip_oam_s", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-torch", "qha_calculator": "nequip"},
+    # PET-OAM-L 0.1.0 (lab-cosmo/upet, 255M, OMat24 -> sAlex+MPtrj, PBE/MP level; exported with `mtt export` in env/metatomic; 2026-11-07, user decision after the
+    # liquid timing: 585 min per liquid = 62x ACE). calphy on the GPU through pair_style metatomic/kk; QHA with metatomic's ASE calculator (env/metatomic, GPU).
+    # pair_coeff maps LAMMPS types to atomic numbers; the elements list of the spec is converted below (Al Li -> 13 3).
+    "pet-oam-l": {"potential": os.path.join(_PET, "pet-oam-l-v0.1.0.pt"), "potential_qha": os.path.join(_PET, "pet-oam-l-v0.1.0.pt"), "pair_style": "metatomic {potential}", "pair_coeff": "* * Al Li",
+                  "model": "PET-OAM-L 0.1.0 (metatomic, float32)", "lmp_gpu": LMP_METATOMIC, "tag": "_pet_oam_l", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-metatomic", "qha_calculator": "metatomic", "pair_coeff_Z": True},
+    "pet-omat-s": {"potential": os.path.join(_PET, "pet-omat-s-v1.0.0.pt"), "potential_qha": os.path.join(_PET, "pet-omat-s-v1.0.0.pt"), "pair_style": "metatomic {potential}", "pair_coeff": "* * Al Li",
+                   "model": "PET-OMat-S 1.0.0 (metatomic, float32)", "lmp_gpu": LMP_METATOMIC, "tag": "_pet_omat_s", "torch": True, "calphy_gpu": True, "qha_gpu": True, "qha_code": "ftphase-qha-metatomic", "qha_calculator": "metatomic", "pair_coeff_Z": True},
     # the pair_style mace route of pk 4293 (env/lammps-torch, lmp_mace.sh prepends atom_modify map yes), kept for comparison runs
     "mace-mpa-0-pairstyle": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
                    "model": "MACE-MPA-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0_pairstyle", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
@@ -362,7 +371,9 @@ def main():
         raise SystemExit(f"{a.mlip}: the QHA stage needs the GPU (Kokkos-only pair style); do not use --qha-computer {a.qha_computer}")
     if use_mlip:
         ml = MLIPS[a.mlip]
-        spec.update({"pair_style": ml["pair_style"], "pair_coeff": ml["pair_coeff"].replace("Al Li", " ".join(spec["elements"])), "model": ml["model"]})
+        from ase.data import atomic_numbers
+        pc_elems = " ".join(str(atomic_numbers[e]) for e in spec["elements"]) if ml.get("pair_coeff_Z") else " ".join(spec["elements"])   # metatomic wants atomic numbers
+        spec.update({"pair_style": ml["pair_style"], "pair_coeff": ml["pair_coeff"].replace("Al Li", pc_elems), "model": ml["model"]})
         if "assemble" in spec and "title" in spec["assemble"]:
             if a.system == "alli":
                 spec["assemble"]["title"] = spec["assemble"]["title"].replace("ACE Al-Li", f"{ml['model'].split(' (')[0]} Al-Li")
@@ -376,7 +387,7 @@ def main():
             if k in ml:
                 spec[k] = ml[k]
         if ml.get("torch"):   # stage 01 relaxations run in a subprocess of the calculator's env (the daemon has no torch)
-            spec["qha_python"] = os.path.join(ROOT, "env", "mace" if ml["qha_calculator"] == "mace" else "torch", "bin", "python")
+            spec["qha_python"] = os.path.join(ROOT, "env", {"mace": "mace", "metatomic": "metatomic"}.get(ml["qha_calculator"], "torch"), "bin", "python")
             if qha_cpu_host:
                 spec["qha_device"] = "cpu"
         pot_fn = (lambda f=ml["potential"]: f); lmp_gpu = ml["lmp_gpu"]; pot_qha = ml.get("potential_qha")

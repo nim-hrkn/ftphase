@@ -22,3 +22,18 @@ these two the CPU is the better QHA device. The liquid jobs of the comparison Wo
 measured here they agree with the remeasurement within 10 % (ACE 8 vs 9.5 min, GRACE-FS 26 vs 25.6, SevenNet-0 32 vs
 34.7, SevenNet-MF-ompa 195 vs 204), so for GRACE-1L, GRACE-2L and MACE-MPA-0 the comparison-run liquid times are used.
 Their QHA ran on the GPU here except GRACE-2L (comparison run, also on the GPU).
+
+## Added 2026-11-07: PET (metatomic/kk) and DPA-3 (deepmd plugin), liquid only (`prepare_liq.py`, mygarden5, same lqd_x0.30 job)
+
+| MLIP | route | liquid wall | LAMMPS loop s/step (256 atoms, 20k MD steps of segments 0-1) | liquid / ACE |
+|---|---|---|---|---|
+| PET-OMat-S (25.9M, OMat24 only) | `env/metatomic/bin/lmp_metatomic.sh`, `metatomic/kk` | 152 min (Slurm 23203) | 0.040 | 16 |
+| PET-OAM-L (255M, OMat24 -> sAlex+MPtrj) | same | 585 min (Slurm 23204) | 0.161 | 62 |
+| DPA-3.1-3M, MPtrj branch (3.27M) | `env/deepmd/bin/lmp_deepmd.sh`, `pair_style deepmd` (torch on the GPU, LAMMPS on the CPU) | see below (Slurm 23206) | | |
+
+Notes: the PET-OAM-L time equals the `pair_style mace` MACE-MPA-0 run (573 min) and is 7.7x the ML-IAP+cuEquivariance MACE
+production (76 min); PET-OMat-S sits between SevenNet-0 (35 min) and SevenNet-MF-ompa (204 min). The wall time includes
+calphy's melting check, NPT equilibration and the 3 x (forward + backward) 10k-step switches; the s/step is from LAMMPS'
+"Loop time" lines of the first two segments. The Matbench DPA-3.1-3M-FT checkpoint cannot run in LAMMPS (frozen without
+`border_op` by a private deepmd-kit version; see `env/deepmd/README.md`), so the public pretrained DPA-3.1-3M's MPtrj branch
+was frozen with deepmd-kit 3.1.3 instead. calphy's binary preflight does not see plugin styles: `CALPHY_SKIP_PREFLIGHT=1`.
