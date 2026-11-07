@@ -1,0 +1,12 @@
+{
+ "pk": 11275,
+ "uuid": "cfaf2781-398d-45fa-99d3-47cbe7db1412",
+ "name": "alli_dpa4_air_omat24_smoke",
+ "profile": "ftphase",
+ "submitted": "2026-11-07 20:36:54",
+ "gpu": true,
+ "smoke": true,
+ "computer": "mygarden5",
+ "qha_computer": "mygarden5",
+ "mlip": "dpa4-air-omat24"
+}
