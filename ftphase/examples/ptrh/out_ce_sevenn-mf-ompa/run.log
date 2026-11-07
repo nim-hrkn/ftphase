@@ -1,3 +1,102 @@
 21:13:07 631 enumerated fcc orderings (1-8 atoms)
 /home/kino/kino/Claude/Projects/PhaseDiagram/env/torch/lib/python3.12/site-packages/sevenn/calculator.py:93: UserWarning: No tensor product accelerator is enabled for SevenNetCalculator. SevenNet may run much slower without a TP accelerator. Please refer to the accelerator section of the documentation.
   util.warn_no_tp_accelerator('SevenNetCalculator')
+21:39:41 relaxed in 1594 s (0 not converged, 0 changed symmetry)
+21:39:42 CE: rmse train 4.23, CV 4.24 meV/atom, 3 / 15 ECIs
+21:39:43 x=0.25 T=  500 K  E=-6.38846 eV/atom  Cv=0.006 k_B
+21:39:44 x=0.25 T=  480 K  E=-6.38847 eV/atom  Cv=0.004 k_B
+21:39:45 x=0.25 T=  460 K  E=-6.38849 eV/atom  Cv=0.004 k_B
+21:39:46 x=0.25 T=  440 K  E=-6.38848 eV/atom  Cv=0.004 k_B
+21:39:47 x=0.25 T=  420 K  E=-6.38849 eV/atom  Cv=0.005 k_B
+21:39:48 x=0.25 T=  400 K  E=-6.38850 eV/atom  Cv=0.007 k_B
+21:39:49 x=0.25 T=  380 K  E=-6.38857 eV/atom  Cv=0.006 k_B
+21:39:50 x=0.25 T=  360 K  E=-6.38854 eV/atom  Cv=0.008 k_B
+21:39:51 x=0.25 T=  340 K  E=-6.38854 eV/atom  Cv=0.006 k_B
+21:39:52 x=0.25 T=  320 K  E=-6.38857 eV/atom  Cv=0.008 k_B
+21:39:53 x=0.25 T=  300 K  E=-6.38857 eV/atom  Cv=0.013 k_B
+21:39:54 x=0.25 T=  280 K  E=-6.38860 eV/atom  Cv=0.007 k_B
+21:39:55 x=0.25 T=  260 K  E=-6.38863 eV/atom  Cv=0.012 k_B
+21:39:56 x=0.25 T=  240 K  E=-6.38867 eV/atom  Cv=0.015 k_B
+21:39:57 x=0.25 T=  220 K  E=-6.38869 eV/atom  Cv=0.016 k_B
+21:39:58 x=0.25 T=  200 K  E=-6.38872 eV/atom  Cv=0.017 k_B
+21:39:59 x=0.25 T=  180 K  E=-6.38874 eV/atom  Cv=0.025 k_B
+21:40:00 x=0.25 T=  160 K  E=-6.38880 eV/atom  Cv=0.028 k_B
+21:40:01 x=0.25 T=  140 K  E=-6.38888 eV/atom  Cv=0.038 k_B
+21:40:02 x=0.25 T=  120 K  E=-6.38892 eV/atom  Cv=0.038 k_B
+21:40:03 x=0.25 T=  100 K  E=-6.38903 eV/atom  Cv=0.059 k_B
+21:40:04 x=0.25 T=   80 K  E=-6.38917 eV/atom  Cv=0.076 k_B
+21:40:05 x=0.25 T=   60 K  E=-6.38939 eV/atom  Cv=0.176 k_B
+21:40:05 x=0.25 T=   40 K  E=-6.39031 eV/atom  Cv=0.660 k_B
+21:40:07 x=0.50 T=  500 K  E=-6.71388 eV/atom  Cv=0.006 k_B
+21:40:08 x=0.50 T=  480 K  E=-6.71396 eV/atom  Cv=0.011 k_B
+21:40:09 x=0.50 T=  460 K  E=-6.71391 eV/atom  Cv=0.009 k_B
+21:40:10 x=0.50 T=  440 K  E=-6.71394 eV/atom  Cv=0.008 k_B
+21:40:11 x=0.50 T=  420 K  E=-6.71396 eV/atom  Cv=0.012 k_B
+21:40:13 x=0.50 T=  400 K  E=-6.71399 eV/atom  Cv=0.011 k_B
+21:40:14 x=0.50 T=  380 K  E=-6.71395 eV/atom  Cv=0.011 k_B
+21:40:15 x=0.50 T=  360 K  E=-6.71404 eV/atom  Cv=0.012 k_B
+21:40:16 x=0.50 T=  340 K  E=-6.71404 eV/atom  Cv=0.011 k_B
+21:40:17 x=0.50 T=  320 K  E=-6.71407 eV/atom  Cv=0.013 k_B
+21:40:18 x=0.50 T=  300 K  E=-6.71411 eV/atom  Cv=0.018 k_B
+21:40:20 x=0.50 T=  280 K  E=-6.71411 eV/atom  Cv=0.017 k_B
+21:40:21 x=0.50 T=  260 K  E=-6.71415 eV/atom  Cv=0.028 k_B
+21:40:22 x=0.50 T=  240 K  E=-6.71417 eV/atom  Cv=0.028 k_B
+21:40:23 x=0.50 T=  220 K  E=-6.71422 eV/atom  Cv=0.034 k_B
+21:40:24 x=0.50 T=  200 K  E=-6.71428 eV/atom  Cv=0.030 k_B
+21:40:25 x=0.50 T=  180 K  E=-6.71435 eV/atom  Cv=0.047 k_B
+21:40:26 x=0.50 T=  160 K  E=-6.71445 eV/atom  Cv=0.044 k_B
+21:40:27 x=0.50 T=  140 K  E=-6.71453 eV/atom  Cv=0.058 k_B
+21:40:28 x=0.50 T=  120 K  E=-6.71467 eV/atom  Cv=0.061 k_B
+21:40:29 x=0.50 T=  100 K  E=-6.71479 eV/atom  Cv=0.103 k_B
+21:40:30 x=0.50 T=   80 K  E=-6.71501 eV/atom  Cv=0.157 k_B
+21:40:31 x=0.50 T=   60 K  E=-6.71532 eV/atom  Cv=0.165 k_B
+21:40:32 x=0.50 T=   40 K  E=-6.71637 eV/atom  Cv=0.632 k_B
+21:40:33 x=0.75 T=  500 K  E=-7.03371 eV/atom  Cv=0.005 k_B
+21:40:34 x=0.75 T=  480 K  E=-7.03376 eV/atom  Cv=0.004 k_B
+21:40:35 x=0.75 T=  460 K  E=-7.03376 eV/atom  Cv=0.006 k_B
+21:40:36 x=0.75 T=  440 K  E=-7.03376 eV/atom  Cv=0.005 k_B
+21:40:37 x=0.75 T=  420 K  E=-7.03379 eV/atom  Cv=0.006 k_B
+21:40:38 x=0.75 T=  400 K  E=-7.03377 eV/atom  Cv=0.005 k_B
+21:40:40 x=0.75 T=  380 K  E=-7.03380 eV/atom  Cv=0.008 k_B
+21:40:41 x=0.75 T=  360 K  E=-7.03385 eV/atom  Cv=0.006 k_B
+21:40:42 x=0.75 T=  340 K  E=-7.03382 eV/atom  Cv=0.008 k_B
+21:40:43 x=0.75 T=  320 K  E=-7.03384 eV/atom  Cv=0.008 k_B
+21:40:44 x=0.75 T=  300 K  E=-7.03385 eV/atom  Cv=0.011 k_B
+21:40:45 x=0.75 T=  280 K  E=-7.03390 eV/atom  Cv=0.013 k_B
+21:40:46 x=0.75 T=  260 K  E=-7.03390 eV/atom  Cv=0.012 k_B
+21:40:47 x=0.75 T=  240 K  E=-7.03393 eV/atom  Cv=0.015 k_B
+21:40:48 x=0.75 T=  220 K  E=-7.03394 eV/atom  Cv=0.016 k_B
+21:40:49 x=0.75 T=  200 K  E=-7.03399 eV/atom  Cv=0.018 k_B
+21:40:50 x=0.75 T=  180 K  E=-7.03405 eV/atom  Cv=0.027 k_B
+21:40:51 x=0.75 T=  160 K  E=-7.03405 eV/atom  Cv=0.033 k_B
+21:40:52 x=0.75 T=  140 K  E=-7.03417 eV/atom  Cv=0.037 k_B
+21:40:53 x=0.75 T=  120 K  E=-7.03422 eV/atom  Cv=0.062 k_B
+21:40:54 x=0.75 T=  100 K  E=-7.03431 eV/atom  Cv=0.073 k_B
+21:40:54 x=0.75 T=   80 K  E=-7.03445 eV/atom  Cv=0.103 k_B
+21:40:55 x=0.75 T=   60 K  E=-7.03469 eV/atom  Cv=0.164 k_B
+21:40:56 x=0.75 T=   40 K  E=-7.03554 eV/atom  Cv=0.364 k_B
+# Pt-Rh CE + canonical MC with sevenn-mf-ompa (2026-11-06)
+
+Training: 631 fcc orderings (1-8 atoms), relaxed (positions + cell, fmax 2e-3). CE cutoffs [7.0, 5.0] A, ARDR, rmse train 4.23 / CV 4.24 meV/atom, 3 nonzero of 15 ECIs.
+
+## 0 K: ordered structures vs the random state (CE)
+
+| structure | x_Rh | E_form (MLIP, relaxed) meV/atom | E_form random (CE) | ordering energy |
+|---|---|---|---|---|
+| Pt3Rh-D0_22 | 0.25 | -17.9 | -14.4 | -3.5 |
+| PtRh-40 | 0.5 | -26.4 | -18.6 | -7.8 |
+| PtRh3-D0_22 | 0.75 | -22.6 | -17.6 | -5.0 |
+
+Ground-state line of the training set (x, E_form meV/atom): (0.000, 0.0), (0.250, -18.5), (0.500, -31.2), (0.625, -27.9), (0.714, -24.9), (0.750, -23.6), (0.833, -16.6), (0.875, -12.6), (1.000, 0.0)
+
+## Order-disorder temperatures (C_v peak of the cooling scan)
+
+| x_Rh | T_c (K) | C_v max (k_B) |
+|---|---|---|
+| 0.25 | 40 | 0.66 |
+| 0.50 | 40 | 0.63 |
+| 0.75 | 40 | 0.36 |
+
+MC: 8^3 conventional cell (512 sites), 40 + 80 sweeps per T, cooling 500 -> 40 K in 20 K steps; the structure is carried between temperatures (hysteresis possible for first-order transitions). Lattice CE: no vibrations, no relaxation energy beyond the training cells.
+
+Reference (Saengdeejing et al. 2026, Table 7): fcc <-> PtRh 258 K (PFP) / 210 K (DFT); fcc <-> PtRh3 235 / 156 K; fcc <-> Pt3Rh 146 K (PFP only); Pohl & Albe MC: PtRh 238 K.

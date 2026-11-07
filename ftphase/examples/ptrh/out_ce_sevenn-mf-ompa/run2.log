@@ -1,0 +1,103 @@
+00:02:53 631 enumerated fcc orderings (1-8 atoms)
+00:02:53 reused MLIP energies from relax_output.json
+00:02:54 CE: rmse train 0.46, CV 0.50 meV/atom, 41 / 41 ECIs
+00:03:22 x=0.25 T=  500 K  E=-6.38720 eV/atom  Cv=0.017 k_B
+00:03:49 x=0.25 T=  480 K  E=-6.38721 eV/atom  Cv=0.018 k_B
+00:04:16 x=0.25 T=  460 K  E=-6.38724 eV/atom  Cv=0.016 k_B
+00:04:44 x=0.25 T=  440 K  E=-6.38731 eV/atom  Cv=0.021 k_B
+00:05:11 x=0.25 T=  420 K  E=-6.38732 eV/atom  Cv=0.013 k_B
+00:05:38 x=0.25 T=  400 K  E=-6.38736 eV/atom  Cv=0.025 k_B
+00:06:05 x=0.25 T=  380 K  E=-6.38739 eV/atom  Cv=0.020 k_B
+00:06:32 x=0.25 T=  360 K  E=-6.38744 eV/atom  Cv=0.016 k_B
+00:06:59 x=0.25 T=  340 K  E=-6.38751 eV/atom  Cv=0.022 k_B
+00:07:26 x=0.25 T=  320 K  E=-6.38757 eV/atom  Cv=0.029 k_B
+00:07:52 x=0.25 T=  300 K  E=-6.38762 eV/atom  Cv=0.037 k_B
+00:08:19 x=0.25 T=  280 K  E=-6.38768 eV/atom  Cv=0.032 k_B
+00:08:45 x=0.25 T=  260 K  E=-6.38777 eV/atom  Cv=0.048 k_B
+00:09:12 x=0.25 T=  240 K  E=-6.38787 eV/atom  Cv=0.077 k_B
+00:09:38 x=0.25 T=  220 K  E=-6.38798 eV/atom  Cv=0.070 k_B
+00:10:04 x=0.25 T=  200 K  E=-6.38813 eV/atom  Cv=0.093 k_B
+00:10:29 x=0.25 T=  180 K  E=-6.38831 eV/atom  Cv=0.139 k_B
+00:10:54 x=0.25 T=  160 K  E=-6.38857 eV/atom  Cv=0.130 k_B
+00:11:19 x=0.25 T=  140 K  E=-6.38890 eV/atom  Cv=0.256 k_B
+00:11:43 x=0.25 T=  120 K  E=-6.38951 eV/atom  Cv=0.488 k_B
+00:12:07 x=0.25 T=  100 K  E=-6.39013 eV/atom  Cv=0.217 k_B
+00:12:29 x=0.25 T=   80 K  E=-6.39079 eV/atom  Cv=0.327 k_B
+00:12:50 x=0.25 T=   60 K  E=-6.39171 eV/atom  Cv=0.370 k_B
+00:13:09 x=0.25 T=   40 K  E=-6.39204 eV/atom  Cv=0.165 k_B
+00:13:27 x=0.25 T=   20 K  E=-6.39211 eV/atom  Cv=0.003 k_B
+00:13:57 x=0.50 T=  500 K  E=-6.71558 eV/atom  Cv=0.037 k_B
+00:14:27 x=0.50 T=  480 K  E=-6.71566 eV/atom  Cv=0.025 k_B
+00:14:57 x=0.50 T=  460 K  E=-6.71571 eV/atom  Cv=0.032 k_B
+00:15:27 x=0.50 T=  440 K  E=-6.71580 eV/atom  Cv=0.050 k_B
+00:15:57 x=0.50 T=  420 K  E=-6.71584 eV/atom  Cv=0.043 k_B
+00:16:27 x=0.50 T=  400 K  E=-6.71593 eV/atom  Cv=0.045 k_B
+00:16:57 x=0.50 T=  380 K  E=-6.71601 eV/atom  Cv=0.047 k_B
+00:17:26 x=0.50 T=  360 K  E=-6.71606 eV/atom  Cv=0.073 k_B
+00:17:56 x=0.50 T=  340 K  E=-6.71620 eV/atom  Cv=0.068 k_B
+00:18:25 x=0.50 T=  320 K  E=-6.71637 eV/atom  Cv=0.072 k_B
+00:18:55 x=0.50 T=  300 K  E=-6.71648 eV/atom  Cv=0.086 k_B
+00:19:24 x=0.50 T=  280 K  E=-6.71663 eV/atom  Cv=0.084 k_B
+00:19:53 x=0.50 T=  260 K  E=-6.71680 eV/atom  Cv=0.148 k_B
+00:20:21 x=0.50 T=  240 K  E=-6.71703 eV/atom  Cv=0.161 k_B
+00:20:49 x=0.50 T=  220 K  E=-6.71730 eV/atom  Cv=0.158 k_B
+00:21:17 x=0.50 T=  200 K  E=-6.71767 eV/atom  Cv=0.260 k_B
+00:21:44 x=0.50 T=  180 K  E=-6.72113 eV/atom  Cv=9.138 k_B
+00:22:09 x=0.50 T=  160 K  E=-6.72352 eV/atom  Cv=0.675 k_B
+00:22:33 x=0.50 T=  140 K  E=-6.72451 eV/atom  Cv=0.506 k_B
+00:22:55 x=0.50 T=  120 K  E=-6.72518 eV/atom  Cv=0.133 k_B
+00:23:16 x=0.50 T=  100 K  E=-6.72563 eV/atom  Cv=0.242 k_B
+00:23:35 x=0.50 T=   80 K  E=-6.72582 eV/atom  Cv=0.013 k_B
+00:23:54 x=0.50 T=   60 K  E=-6.72583 eV/atom  Cv=0.000 k_B
+00:24:13 x=0.50 T=   40 K  E=-6.72583 eV/atom  Cv=0.001 k_B
+00:24:31 x=0.50 T=   20 K  E=-6.72584 eV/atom  Cv=0.001 k_B
+00:24:58 x=0.75 T=  500 K  E=-7.03344 eV/atom  Cv=0.022 k_B
+00:25:25 x=0.75 T=  480 K  E=-7.03349 eV/atom  Cv=0.024 k_B
+00:25:52 x=0.75 T=  460 K  E=-7.03352 eV/atom  Cv=0.032 k_B
+00:26:19 x=0.75 T=  440 K  E=-7.03360 eV/atom  Cv=0.025 k_B
+00:26:46 x=0.75 T=  420 K  E=-7.03359 eV/atom  Cv=0.023 k_B
+00:27:13 x=0.75 T=  400 K  E=-7.03368 eV/atom  Cv=0.037 k_B
+00:27:40 x=0.75 T=  380 K  E=-7.03371 eV/atom  Cv=0.038 k_B
+00:28:06 x=0.75 T=  360 K  E=-7.03378 eV/atom  Cv=0.045 k_B
+00:28:33 x=0.75 T=  340 K  E=-7.03390 eV/atom  Cv=0.052 k_B
+00:28:59 x=0.75 T=  320 K  E=-7.03400 eV/atom  Cv=0.057 k_B
+00:29:25 x=0.75 T=  300 K  E=-7.03408 eV/atom  Cv=0.060 k_B
+00:29:52 x=0.75 T=  280 K  E=-7.03418 eV/atom  Cv=0.097 k_B
+00:30:18 x=0.75 T=  260 K  E=-7.03433 eV/atom  Cv=0.085 k_B
+00:30:43 x=0.75 T=  240 K  E=-7.03445 eV/atom  Cv=0.093 k_B
+00:31:09 x=0.75 T=  220 K  E=-7.03460 eV/atom  Cv=0.120 k_B
+00:31:34 x=0.75 T=  200 K  E=-7.03488 eV/atom  Cv=0.131 k_B
+00:31:59 x=0.75 T=  180 K  E=-7.03516 eV/atom  Cv=0.195 k_B
+00:32:24 x=0.75 T=  160 K  E=-7.03544 eV/atom  Cv=0.179 k_B
+00:32:48 x=0.75 T=  140 K  E=-7.03594 eV/atom  Cv=0.478 k_B
+00:33:11 x=0.75 T=  120 K  E=-7.03679 eV/atom  Cv=0.607 k_B
+00:33:32 x=0.75 T=  100 K  E=-7.03871 eV/atom  Cv=0.476 k_B
+00:33:52 x=0.75 T=   80 K  E=-7.03941 eV/atom  Cv=0.152 k_B
+00:34:10 x=0.75 T=   60 K  E=-7.03965 eV/atom  Cv=0.102 k_B
+00:34:28 x=0.75 T=   40 K  E=-7.03972 eV/atom  Cv=0.036 k_B
+00:34:45 x=0.75 T=   20 K  E=-7.03973 eV/atom  Cv=0.000 k_B
+# Pt-Rh CE + canonical MC with sevenn-mf-ompa (2026-11-07)
+
+Training: 631 fcc orderings (1-8 atoms), relaxed (positions + cell, fmax 2e-3). CE cutoffs [9.0, 6.0, 5.0] A, ARDR, rmse train 0.46 / CV 0.50 meV/atom, 41 nonzero of 41 ECIs.
+
+## 0 K: ordered structures vs the random state (CE)
+
+| structure | x_Rh | E_form (MLIP, relaxed) meV/atom | E_form random (CE) | ordering energy |
+|---|---|---|---|---|
+| Pt3Rh-D0_22 | 0.25 | -17.9 | -12.7 | -5.2 |
+| PtRh-40 | 0.5 | -26.4 | -19.3 | -7.1 |
+| PtRh3-D0_22 | 0.75 | -22.6 | -16.4 | -6.2 |
+
+Ground-state line of the training set (x, E_form meV/atom): (0.000, 0.0), (0.250, -18.5), (0.500, -31.2), (0.625, -27.9), (0.714, -24.9), (0.750, -23.6), (0.833, -16.6), (0.875, -12.6), (1.000, 0.0)
+
+## Order-disorder temperatures (C_v peak of the cooling scan)
+
+| x_Rh | T_c (K) | C_v max (k_B) |
+|---|---|---|
+| 0.25 | 120 | 0.49 |
+| 0.50 | 180 | 9.14 |
+| 0.75 | 120 | 0.61 |
+
+MC: 8^3 conventional fcc cells (2048 sites), 40 + 80 sweeps per T, cooling 500 -> 20 K in 20 K steps; the structure is carried between temperatures (hysteresis possible for first-order transitions). Lattice CE: no vibrations, no relaxation energy beyond the training cells.
+
+Reference (Saengdeejing et al. 2026, Table 7): fcc <-> PtRh 258 K (PFP) / 210 K (DFT); fcc <-> PtRh3 235 / 156 K; fcc <-> Pt3Rh 146 K (PFP only); Pohl & Albe MC: PtRh 238 K.

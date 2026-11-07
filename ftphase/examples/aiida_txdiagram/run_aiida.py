@@ -357,7 +357,7 @@ def main():
     ap.add_argument("--mlip", choices=sorted(MLIPS), default="ace", help="alli only: which potential (ace = AlLi-6gen ACE; grace-fs / grace-1l = GRACE foundation models, lmp_gpugrace)")
     ap.add_argument("--solid-only", action="store_true", help="skip the liquids and assemble the solid phases alone over --T-window (spec assemble.allow_solid_only); name gets _solid")
     ap.add_argument("--T-window", dest="t_window", nargs=2, type=float, default=None, help="assembly T_min T_max for --solid-only (default ptrh: 100 2400)")
-    ap.add_argument("--ends-ti", action="store_true", help="ptrh: calphy solid TI (>= 2000 atoms) of the pure fcc end cells, config 0 (spec solids_ti with the x filter); name gets _ti")
+    ap.add_argument("--ends-ti", action="store_true", help="ptrh: calphy solid TI (>= 2000 atoms) of the pure fcc end cells, first configuration per x (spec solids_ti with the x filter); name gets _ti")
     ap.add_argument("--b32-ti", action="store_true", help="alli: add spec['solids_ti'] for B32 (calphy ts 700 -> 880 K, >= 2000-atom cells, GPU); unchanged QHA/liquid CalcJobs are reused from the cache when caching is enabled for ftphase.qha / ftphase.calphy")
     a = ap.parse_args()
 
@@ -412,7 +412,7 @@ def main():
         name += "_solid"
     if a.ends_ti:
         assert a.system == "ptrh"
-        spec["solids_ti"] = {"phases": ["fcc"], "x": [0.0, 1.0], "configs": [0], "T_sweep": [1700.0, 2350.0], "T_hi_by_x": [[0.0, 2150.0], [1.0, 2350.0]], "min_atoms": 2000,
+        spec["solids_ti"] = {"phases": ["fcc"], "x": [0.0, 1.0], "one_per_x": True, "T_sweep": [1700.0, 2350.0], "T_hi_by_x": [[0.0, 2150.0], [1.0, 2350.0]], "min_atoms": 2000,
                              "n_equilibration_steps": 10000, "n_switching_steps": [10000, 10000], "n_iterations": 1, "mode": "ts"}   # Pt 2041 K, Rh 2237 K (expt); caps ~1.05 T_m
         if a.smoke:
             spec["solids_ti"].update({"T_sweep": [1900.0, 2100.0], "T_hi_by_x": [[0.0, 2100.0], [1.0, 2100.0]], "min_atoms": 100, "n_equilibration_steps": 1000, "n_switching_steps": [1000, 1000]})

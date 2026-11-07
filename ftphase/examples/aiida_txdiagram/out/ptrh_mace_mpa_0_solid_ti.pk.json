@@ -1,0 +1,12 @@
+{
+ "pk": 11345,
+ "uuid": "11b72f2c-55f3-44f0-968f-d839948e058d",
+ "name": "ptrh_mace_mpa_0_solid_ti",
+ "profile": "ftphase",
+ "submitted": "2026-11-08 01:30:11",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden6",
+ "qha_computer": "mygardenx2",
+ "mlip": "mace-mpa-0"
+}

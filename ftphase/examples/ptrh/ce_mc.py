@@ -96,7 +96,10 @@ def main():
     ap.add_argument("--mlip", required=True)
     ap.add_argument("--device", default="cpu")
     ap.add_argument("--sizes", type=int, default=8)
-    ap.add_argument("--cutoffs", type=float, nargs="+", default=[7.0, 5.0])
+    ap.add_argument("--cutoffs", type=float, nargs="+", default=[9.0, 6.0, 5.0])
+    ap.add_argument("--fit-method", default="least-squares", help="trainstation fit method (ardr gave only 3 nonzero ECIs and CV 4 meV/atom, i.e. no ordering)")
+    ap.add_argument("--reuse", action="store_true", help="reuse relax_output.json (MLIP energies) from a previous run")
+    ap.add_argument("--T-start-ordered", action="store_true", help="also heat the CE ground state of each composition (bracket of a first-order transition)")
     ap.add_argument("--T-max", type=float, default=500.0)
     ap.add_argument("--T-min", type=float, default=40.0)
     ap.add_argument("--dT", type=float, default=20.0)
@@ -117,14 +120,19 @@ def main():
     t0 = time.time()
     structures = enumerate_training_structures(prim, syms, range(1, a.sizes + 1))
     log(f"{len(structures)} enumerated fcc orderings (1-{a.sizes} atoms)")
-    energies, relax_rows = mlip_energies(a.mlip, a.device, structures, out)
-    log(f"relaxed in {time.time() - t0:.0f} s ({sum(1 for r in relax_rows if not r['converged'])} not converged, {sum(1 for r in relax_rows if r['transformed'])} changed symmetry)")
+    if a.reuse and os.path.exists(os.path.join(out, "relax_output.json")):
+        relax_rows = json.load(open(os.path.join(out, "relax_output.json")))
+        energies = np.array([r["e"] for r in relax_rows])
+        log("reused MLIP energies from relax_output.json")
+    else:
+        energies, relax_rows = mlip_energies(a.mlip, a.device, structures, out)
+        log(f"relaxed in {time.time() - t0:.0f} s ({sum(1 for r in relax_rows if not r['converged'])} not converged, {sum(1 for r in relax_rows if r['transformed'])} changed symmetry)")
     xs = np.array([np.mean(np.array(s.get_chemical_symbols()) == "Rh") for s in structures])
     e_pt = energies[[i for i, s in enumerate(structures) if set(s.get_chemical_symbols()) == {"Pt"}][0]]
     e_rh = energies[[i for i, s in enumerate(structures) if set(s.get_chemical_symbols()) == {"Rh"}][0]]
     eform = energies - (1 - xs) * e_pt - xs * e_rh
     pd.DataFrame({"index": range(len(structures)), "n_atoms": [len(s) for s in structures], "x_Rh": xs, "E_per_atom": energies, "E_form": eform}).to_csv(os.path.join(out, "training.tsv"), sep="\t", index=False)
-    ce, info = fit_cluster_expansion(prim, syms, a.cutoffs, structures, energies)
+    ce, info = fit_cluster_expansion(prim, syms, a.cutoffs, structures, energies, fit_method=a.fit_method)
     info["mlip"] = a.mlip
     log(f"CE: rmse train {info['rmse_train'] * 1000:.2f}, CV {info['rmse_validation'] * 1000:.2f} meV/atom, {info['n_nonzero_parameters']} / {info['n_parameters']} ECIs")
     json.dump(info, open(os.path.join(out, "ce_info.json"), "w"), indent=1)
@@ -136,7 +144,9 @@ def main():
     gs = pd.DataFrame({"x_Rh": hull.concentrations, "E_form_hull": hull.energies})
     gs.to_csv(os.path.join(out, "ground_states.tsv"), sep="\t", index=False)
     # random-state energy from the CE: average over random configurations of the big cell
-    sc = prim.repeat((a.cell, a.cell, a.cell))
+    from ase.build import make_supercell
+
+    sc = make_supercell(prim, a.cell * np.array([[-1, 1, 1], [1, -1, 1], [1, 1, -1]]))   # cubic conventional cell x cell^3 (4 cell^3 sites), commensurate with L1_2 / D0_22 / '40'
     from mchammer.calculators import ClusterExpansionCalculator  # type: ignore
 
     rand = {}
@@ -173,7 +183,7 @@ def main():
         g = mc[np.isclose(mc.x, x)]
         axes[0].plot(g["T"], g["Cv_per_atom_kB"], "o-", ms=3, label=f"x_Rh = {x:.2f}")
         axes[1].plot(g["T"], (g["E_per_atom"] - (1 - x) * e_pt - x * e_rh) * 1000, "o-", ms=3, label=f"x_Rh = {x:.2f}")
-    axes[0].set(xlabel="T (K)", ylabel="C_v (k_B / atom)", title=f"{a.mlip}: CE + canonical MC, {a.cell}^3 fcc cell")
+    axes[0].set(xlabel="T (K)", ylabel="C_v (k_B / atom)", title=f"{a.mlip}: CE + canonical MC, {len(sc)} sites")
     axes[1].set(xlabel="T (K)", ylabel="E_form (meV/atom)")
     axes[0].legend(); fig.tight_layout(); fig.savefig(os.path.join(out, "cv.png"), dpi=120)
     L = [f"# Pt-Rh CE + canonical MC with {a.mlip} ({time.strftime('%F')})", "",
@@ -187,7 +197,7 @@ def main():
     for x in a.xs:
         g = mc[np.isclose(mc.x, x)]
         L.append(f"| {x:.2f} | {tc[x]:.0f} | {g.Cv_per_atom_kB.max():.2f} |")
-    L += ["", f"MC: {a.cell}^3 conventional cell ({len(sc)} sites), {a.n_eq} + {a.n_av} sweeps per T, cooling {a.T_max:.0f} -> {a.T_min:.0f} K in {a.dT:.0f} K steps; "
+    L += ["", f"MC: {a.cell}^3 conventional fcc cells ({len(sc)} sites), {a.n_eq} + {a.n_av} sweeps per T, cooling {a.T_max:.0f} -> {a.T_min:.0f} K in {a.dT:.0f} K steps; "
           "the structure is carried between temperatures (hysteresis possible for first-order transitions). Lattice CE: no vibrations, no relaxation energy beyond the training cells.",
           "", "Reference (Saengdeejing et al. 2026, Table 7): fcc <-> PtRh 258 K (PFP) / 210 K (DFT); fcc <-> PtRh3 235 / 156 K; fcc <-> Pt3Rh 146 K (PFP only); Pohl & Albe MC: PtRh 238 K."]
     open(os.path.join(out, "REPORT.md"), "w").write("\n".join(L) + "\n")

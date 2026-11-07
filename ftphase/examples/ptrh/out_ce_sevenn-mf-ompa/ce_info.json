@@ -1,0 +1,14 @@
+{
+ "rmse_train": 0.00046067536249761647,
+ "rmse_validation": 0.0004962915493895514,
+ "n_parameters": 41,
+ "n_nonzero_parameters": 41,
+ "n_structures": 631,
+ "fit_method": "least-squares",
+ "cutoffs": [
+  9.0,
+  6.0,
+  5.0
+ ],
+ "mlip": "sevenn-mf-ompa"
+}

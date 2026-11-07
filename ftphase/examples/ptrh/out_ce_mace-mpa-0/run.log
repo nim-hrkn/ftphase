@@ -20,3 +20,105 @@ As an alternative, you can create a new view using np.reshape (with copy=False i
 /home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/ase/atoms.py:432: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
 As an alternative, you can create a new view using np.reshape (with copy=False if needed).
   a.shape = (-1,) + shape
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/src/ftphase/aiida/runners.py:165: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/ptrh/out_ce_mace-mpa-0/relax_output.json' mode='w' encoding='UTF-8'>
+  json.dump(rows, open(inp.get("output", "output.json"), "w"), indent=1)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+21:21:03 relaxed in 476 s (0 not converged, 0 changed symmetry)
+21:21:04 CE: rmse train 3.94, CV 4.01 meV/atom, 3 / 15 ECIs
+21:21:05 x=0.25 T=  500 K  E=-6.38548 eV/atom  Cv=0.003 k_B
+21:21:06 x=0.25 T=  480 K  E=-6.38551 eV/atom  Cv=0.002 k_B
+21:21:08 x=0.25 T=  460 K  E=-6.38549 eV/atom  Cv=0.003 k_B
+21:21:09 x=0.25 T=  440 K  E=-6.38549 eV/atom  Cv=0.004 k_B
+21:21:10 x=0.25 T=  420 K  E=-6.38552 eV/atom  Cv=0.003 k_B
+21:21:12 x=0.25 T=  400 K  E=-6.38552 eV/atom  Cv=0.004 k_B
+21:21:13 x=0.25 T=  380 K  E=-6.38553 eV/atom  Cv=0.003 k_B
+21:21:14 x=0.25 T=  360 K  E=-6.38552 eV/atom  Cv=0.006 k_B
+21:21:16 x=0.25 T=  340 K  E=-6.38555 eV/atom  Cv=0.006 k_B
+21:21:17 x=0.25 T=  320 K  E=-6.38556 eV/atom  Cv=0.009 k_B
+21:21:19 x=0.25 T=  300 K  E=-6.38556 eV/atom  Cv=0.005 k_B
+21:21:20 x=0.25 T=  280 K  E=-6.38557 eV/atom  Cv=0.006 k_B
+21:21:22 x=0.25 T=  260 K  E=-6.38560 eV/atom  Cv=0.007 k_B
+21:21:23 x=0.25 T=  240 K  E=-6.38561 eV/atom  Cv=0.012 k_B
+21:21:24 x=0.25 T=  220 K  E=-6.38562 eV/atom  Cv=0.014 k_B
+21:21:25 x=0.25 T=  200 K  E=-6.38564 eV/atom  Cv=0.016 k_B
+21:21:27 x=0.25 T=  180 K  E=-6.38569 eV/atom  Cv=0.012 k_B
+21:21:28 x=0.25 T=  160 K  E=-6.38571 eV/atom  Cv=0.022 k_B
+21:21:29 x=0.25 T=  140 K  E=-6.38575 eV/atom  Cv=0.023 k_B
+21:21:30 x=0.25 T=  120 K  E=-6.38580 eV/atom  Cv=0.041 k_B
+21:21:31 x=0.25 T=  100 K  E=-6.38587 eV/atom  Cv=0.034 k_B
+21:21:33 x=0.25 T=   80 K  E=-6.38594 eV/atom  Cv=0.073 k_B
+21:21:34 x=0.25 T=   60 K  E=-6.38609 eV/atom  Cv=0.113 k_B
+21:21:35 x=0.25 T=   40 K  E=-6.38642 eV/atom  Cv=0.279 k_B
+21:21:36 x=0.50 T=  500 K  E=-6.70973 eV/atom  Cv=0.005 k_B
+21:21:38 x=0.50 T=  480 K  E=-6.70973 eV/atom  Cv=0.005 k_B
+21:21:39 x=0.50 T=  460 K  E=-6.70972 eV/atom  Cv=0.006 k_B
+21:21:41 x=0.50 T=  440 K  E=-6.70976 eV/atom  Cv=0.007 k_B
+21:21:42 x=0.50 T=  420 K  E=-6.70976 eV/atom  Cv=0.006 k_B
+21:21:43 x=0.50 T=  400 K  E=-6.70978 eV/atom  Cv=0.007 k_B
+21:21:45 x=0.50 T=  380 K  E=-6.70980 eV/atom  Cv=0.008 k_B
+21:21:46 x=0.50 T=  360 K  E=-6.70982 eV/atom  Cv=0.008 k_B
+21:21:48 x=0.50 T=  340 K  E=-6.70984 eV/atom  Cv=0.008 k_B
+21:21:49 x=0.50 T=  320 K  E=-6.70985 eV/atom  Cv=0.009 k_B
+21:21:51 x=0.50 T=  300 K  E=-6.70986 eV/atom  Cv=0.007 k_B
+21:21:52 x=0.50 T=  280 K  E=-6.70986 eV/atom  Cv=0.012 k_B
+21:21:54 x=0.50 T=  260 K  E=-6.70992 eV/atom  Cv=0.012 k_B
+21:21:55 x=0.50 T=  240 K  E=-6.70995 eV/atom  Cv=0.017 k_B
+21:21:57 x=0.50 T=  220 K  E=-6.70998 eV/atom  Cv=0.020 k_B
+21:21:58 x=0.50 T=  200 K  E=-6.71000 eV/atom  Cv=0.023 k_B
+21:21:59 x=0.50 T=  180 K  E=-6.71004 eV/atom  Cv=0.023 k_B
+21:22:01 x=0.50 T=  160 K  E=-6.71011 eV/atom  Cv=0.035 k_B
+21:22:02 x=0.50 T=  140 K  E=-6.71015 eV/atom  Cv=0.051 k_B
+21:22:03 x=0.50 T=  120 K  E=-6.71024 eV/atom  Cv=0.059 k_B
+21:22:05 x=0.50 T=  100 K  E=-6.71034 eV/atom  Cv=0.076 k_B
+21:22:06 x=0.50 T=   80 K  E=-6.71049 eV/atom  Cv=0.107 k_B
+21:22:07 x=0.50 T=   60 K  E=-6.71071 eV/atom  Cv=0.163 k_B
+21:22:08 x=0.50 T=   40 K  E=-6.71110 eV/atom  Cv=0.442 k_B
+21:22:10 x=0.75 T=  500 K  E=-7.02960 eV/atom  Cv=0.003 k_B
+21:22:11 x=0.75 T=  480 K  E=-7.02962 eV/atom  Cv=0.003 k_B
+21:22:12 x=0.75 T=  460 K  E=-7.02959 eV/atom  Cv=0.003 k_B
+21:22:14 x=0.75 T=  440 K  E=-7.02964 eV/atom  Cv=0.003 k_B
+21:22:15 x=0.75 T=  420 K  E=-7.02963 eV/atom  Cv=0.004 k_B
+21:22:16 x=0.75 T=  400 K  E=-7.02964 eV/atom  Cv=0.003 k_B
+21:22:18 x=0.75 T=  380 K  E=-7.02966 eV/atom  Cv=0.004 k_B
+21:22:19 x=0.75 T=  360 K  E=-7.02968 eV/atom  Cv=0.006 k_B
+21:22:20 x=0.75 T=  340 K  E=-7.02967 eV/atom  Cv=0.005 k_B
+21:22:21 x=0.75 T=  320 K  E=-7.02968 eV/atom  Cv=0.008 k_B
+21:22:23 x=0.75 T=  300 K  E=-7.02969 eV/atom  Cv=0.007 k_B
+21:22:24 x=0.75 T=  280 K  E=-7.02971 eV/atom  Cv=0.008 k_B
+21:22:25 x=0.75 T=  260 K  E=-7.02972 eV/atom  Cv=0.010 k_B
+21:22:27 x=0.75 T=  240 K  E=-7.02972 eV/atom  Cv=0.012 k_B
+21:22:28 x=0.75 T=  220 K  E=-7.02975 eV/atom  Cv=0.010 k_B
+21:22:29 x=0.75 T=  200 K  E=-7.02975 eV/atom  Cv=0.011 k_B
+21:22:30 x=0.75 T=  180 K  E=-7.02980 eV/atom  Cv=0.019 k_B
+21:22:32 x=0.75 T=  160 K  E=-7.02984 eV/atom  Cv=0.024 k_B
+21:22:33 x=0.75 T=  140 K  E=-7.02986 eV/atom  Cv=0.021 k_B
+21:22:34 x=0.75 T=  120 K  E=-7.02991 eV/atom  Cv=0.029 k_B
+21:22:35 x=0.75 T=  100 K  E=-7.02998 eV/atom  Cv=0.039 k_B
+21:22:36 x=0.75 T=   80 K  E=-7.03007 eV/atom  Cv=0.070 k_B
+21:22:37 x=0.75 T=   60 K  E=-7.03020 eV/atom  Cv=0.086 k_B
+21:22:38 x=0.75 T=   40 K  E=-7.03055 eV/atom  Cv=0.311 k_B
+# Pt-Rh CE + canonical MC with mace-mpa-0 (2026-11-06)
+
+Training: 631 fcc orderings (1-8 atoms), relaxed (positions + cell, fmax 2e-3). CE cutoffs [7.0, 5.0] A, ARDR, rmse train 3.94 / CV 4.01 meV/atom, 3 nonzero of 15 ECIs.
+
+## 0 K: ordered structures vs the random state (CE)
+
+| structure | x_Rh | E_form (MLIP, relaxed) meV/atom | E_form random (CE) | ordering energy |
+|---|---|---|---|---|
+| Pt3Rh-D0_22 | 0.25 | -15.7 | -12.5 | -3.3 |
+| PtRh-40 | 0.5 | -22.9 | -14.9 | -8.0 |
+| PtRh3-D0_22 | 0.75 | -19.0 | -13.1 | -5.9 |
+
+Ground-state line of the training set (x, E_form meV/atom): (0.000, 0.0), (0.125, -8.8), (0.200, -13.9), (0.250, -16.6), (0.375, -22.0), (0.500, -26.8), (0.750, -19.7), (0.833, -13.9), (0.875, -11.0), (1.000, 0.0)
+
+## Order-disorder temperatures (C_v peak of the cooling scan)
+
+| x_Rh | T_c (K) | C_v max (k_B) |
+|---|---|---|
+| 0.25 | 40 | 0.28 |
+| 0.50 | 40 | 0.44 |
+| 0.75 | 40 | 0.31 |
+
+MC: 8^3 conventional cell (512 sites), 40 + 80 sweeps per T, cooling 500 -> 40 K in 20 K steps; the structure is carried between temperatures (hysteresis possible for first-order transitions). Lattice CE: no vibrations, no relaxation energy beyond the training cells.
+
+Reference (Saengdeejing et al. 2026, Table 7): fcc <-> PtRh 258 K (PFP) / 210 K (DFT); fcc <-> PtRh3 235 / 156 K; fcc <-> Pt3Rh 146 K (PFP only); Pohl & Albe MC: PtRh 238 K.

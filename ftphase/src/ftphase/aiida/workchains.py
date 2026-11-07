@@ -85,6 +85,7 @@ class TxDiagramWorkChain(WorkChain):
         # ---- optional calphy TI of the solid cells (anharmonic level near T_m; spec["solids_ti"])
         sti = sp.get("solids_ti")
         self.ctx.sti_keys = []
+        seen_px = set()
         if sti:
             for key, structure in self.ctx.solids.items():
                 m = sol_p[key]
@@ -96,6 +97,9 @@ class TxDiagramWorkChain(WorkChain):
                     continue
                 if sti.get("configs") is not None and int(m.get("config", 0)) not in [int(c) for c in sti["configs"]]:
                     continue
+                if sti.get("one_per_x") and (m["phase"], round(float(m["x"]), 6)) in seen_px:   # first configuration of each (phase, x) only
+                    continue
+                seen_px.add((m["phase"], round(float(m["x"]), 6)))
                 T_sw = list(sti.get("T_sweep_by_phase", {}).get(m["phase"], sti.get("T_sweep", [900.0, 1400.0])))
                 if sti.get("T_hi_by_x"):   # cap the sweep end per composition, e.g. [[0, 1360], [1, 1480]] (about 1.1 T_m of the pure ends)
                     pts = sorted(sti["T_hi_by_x"])

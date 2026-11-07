@@ -1,0 +1,14 @@
+{
+ "rmse_train": 0.0006624875970462051,
+ "rmse_validation": 0.0007137076758379202,
+ "n_parameters": 41,
+ "n_nonzero_parameters": 41,
+ "n_structures": 631,
+ "fit_method": "least-squares",
+ "cutoffs": [
+  9.0,
+  6.0,
+  5.0
+ ],
+ "mlip": "mace-mpa-0"
+}

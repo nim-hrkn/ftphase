@@ -1,0 +1,103 @@
+00:02:53 631 enumerated fcc orderings (1-8 atoms)
+00:02:53 reused MLIP energies from relax_output.json
+00:02:54 CE: rmse train 0.66, CV 0.71 meV/atom, 41 / 41 ECIs
+00:03:22 x=0.25 T=  500 K  E=-6.38493 eV/atom  Cv=0.009 k_B
+00:03:49 x=0.25 T=  480 K  E=-6.38497 eV/atom  Cv=0.012 k_B
+00:04:17 x=0.25 T=  460 K  E=-6.38498 eV/atom  Cv=0.013 k_B
+00:04:45 x=0.25 T=  440 K  E=-6.38502 eV/atom  Cv=0.015 k_B
+00:05:12 x=0.25 T=  420 K  E=-6.38504 eV/atom  Cv=0.018 k_B
+00:05:40 x=0.25 T=  400 K  E=-6.38506 eV/atom  Cv=0.017 k_B
+00:06:07 x=0.25 T=  380 K  E=-6.38508 eV/atom  Cv=0.015 k_B
+00:06:34 x=0.25 T=  360 K  E=-6.38510 eV/atom  Cv=0.020 k_B
+00:07:01 x=0.25 T=  340 K  E=-6.38515 eV/atom  Cv=0.018 k_B
+00:07:28 x=0.25 T=  320 K  E=-6.38520 eV/atom  Cv=0.022 k_B
+00:07:56 x=0.25 T=  300 K  E=-6.38525 eV/atom  Cv=0.027 k_B
+00:08:22 x=0.25 T=  280 K  E=-6.38529 eV/atom  Cv=0.041 k_B
+00:08:49 x=0.25 T=  260 K  E=-6.38533 eV/atom  Cv=0.034 k_B
+00:09:16 x=0.25 T=  240 K  E=-6.38541 eV/atom  Cv=0.034 k_B
+00:09:42 x=0.25 T=  220 K  E=-6.38549 eV/atom  Cv=0.074 k_B
+00:10:09 x=0.25 T=  200 K  E=-6.38560 eV/atom  Cv=0.062 k_B
+00:10:34 x=0.25 T=  180 K  E=-6.38570 eV/atom  Cv=0.083 k_B
+00:11:00 x=0.25 T=  160 K  E=-6.38586 eV/atom  Cv=0.095 k_B
+00:11:25 x=0.25 T=  140 K  E=-6.38604 eV/atom  Cv=0.157 k_B
+00:11:50 x=0.25 T=  120 K  E=-6.38636 eV/atom  Cv=0.171 k_B
+00:12:14 x=0.25 T=  100 K  E=-6.38681 eV/atom  Cv=0.445 k_B
+00:12:38 x=0.25 T=   80 K  E=-6.38767 eV/atom  Cv=0.245 k_B
+00:12:59 x=0.25 T=   60 K  E=-6.38853 eV/atom  Cv=0.197 k_B
+00:13:19 x=0.25 T=   40 K  E=-6.38910 eV/atom  Cv=0.070 k_B
+00:13:37 x=0.25 T=   20 K  E=-6.38915 eV/atom  Cv=0.103 k_B
+00:14:07 x=0.50 T=  500 K  E=-6.71114 eV/atom  Cv=0.027 k_B
+00:14:37 x=0.50 T=  480 K  E=-6.71120 eV/atom  Cv=0.037 k_B
+00:15:08 x=0.50 T=  460 K  E=-6.71128 eV/atom  Cv=0.029 k_B
+00:15:38 x=0.50 T=  440 K  E=-6.71132 eV/atom  Cv=0.029 k_B
+00:16:08 x=0.50 T=  420 K  E=-6.71136 eV/atom  Cv=0.033 k_B
+00:16:38 x=0.50 T=  400 K  E=-6.71145 eV/atom  Cv=0.038 k_B
+00:17:09 x=0.50 T=  380 K  E=-6.71149 eV/atom  Cv=0.038 k_B
+00:17:38 x=0.50 T=  360 K  E=-6.71158 eV/atom  Cv=0.047 k_B
+00:18:08 x=0.50 T=  340 K  E=-6.71164 eV/atom  Cv=0.046 k_B
+00:18:38 x=0.50 T=  320 K  E=-6.71177 eV/atom  Cv=0.051 k_B
+00:19:08 x=0.50 T=  300 K  E=-6.71187 eV/atom  Cv=0.070 k_B
+00:19:37 x=0.50 T=  280 K  E=-6.71200 eV/atom  Cv=0.084 k_B
+00:20:06 x=0.50 T=  260 K  E=-6.71213 eV/atom  Cv=0.101 k_B
+00:20:35 x=0.50 T=  240 K  E=-6.71235 eV/atom  Cv=0.113 k_B
+00:21:04 x=0.50 T=  220 K  E=-6.71255 eV/atom  Cv=0.171 k_B
+00:21:32 x=0.50 T=  200 K  E=-6.71289 eV/atom  Cv=0.201 k_B
+00:22:00 x=0.50 T=  180 K  E=-6.71346 eV/atom  Cv=0.614 k_B
+00:22:26 x=0.50 T=  160 K  E=-6.71813 eV/atom  Cv=1.712 k_B
+00:22:51 x=0.50 T=  140 K  E=-6.71958 eV/atom  Cv=0.560 k_B
+00:23:14 x=0.50 T=  120 K  E=-6.72043 eV/atom  Cv=0.216 k_B
+00:23:35 x=0.50 T=  100 K  E=-6.72077 eV/atom  Cv=0.017 k_B
+00:23:55 x=0.50 T=   80 K  E=-6.72090 eV/atom  Cv=0.045 k_B
+00:24:14 x=0.50 T=   60 K  E=-6.72105 eV/atom  Cv=0.000 k_B
+00:24:33 x=0.50 T=   40 K  E=-6.72105 eV/atom  Cv=0.001 k_B
+00:24:52 x=0.50 T=   20 K  E=-6.72105 eV/atom  Cv=0.001 k_B
+00:25:19 x=0.75 T=  500 K  E=-7.02987 eV/atom  Cv=0.025 k_B
+00:25:46 x=0.75 T=  480 K  E=-7.02992 eV/atom  Cv=0.017 k_B
+00:26:13 x=0.75 T=  460 K  E=-7.02994 eV/atom  Cv=0.022 k_B
+00:26:40 x=0.75 T=  440 K  E=-7.03001 eV/atom  Cv=0.037 k_B
+00:27:07 x=0.75 T=  420 K  E=-7.03004 eV/atom  Cv=0.031 k_B
+00:27:33 x=0.75 T=  400 K  E=-7.03011 eV/atom  Cv=0.034 k_B
+00:28:00 x=0.75 T=  380 K  E=-7.03015 eV/atom  Cv=0.047 k_B
+00:28:27 x=0.75 T=  360 K  E=-7.03025 eV/atom  Cv=0.046 k_B
+00:28:53 x=0.75 T=  340 K  E=-7.03033 eV/atom  Cv=0.056 k_B
+00:29:20 x=0.75 T=  320 K  E=-7.03045 eV/atom  Cv=0.064 k_B
+00:29:46 x=0.75 T=  300 K  E=-7.03052 eV/atom  Cv=0.072 k_B
+00:30:12 x=0.75 T=  280 K  E=-7.03065 eV/atom  Cv=0.083 k_B
+00:30:38 x=0.75 T=  260 K  E=-7.03076 eV/atom  Cv=0.087 k_B
+00:31:04 x=0.75 T=  240 K  E=-7.03091 eV/atom  Cv=0.099 k_B
+00:31:29 x=0.75 T=  220 K  E=-7.03108 eV/atom  Cv=0.070 k_B
+00:31:55 x=0.75 T=  200 K  E=-7.03132 eV/atom  Cv=0.126 k_B
+00:32:20 x=0.75 T=  180 K  E=-7.03160 eV/atom  Cv=0.154 k_B
+00:32:44 x=0.75 T=  160 K  E=-7.03191 eV/atom  Cv=0.252 k_B
+00:33:07 x=0.75 T=  140 K  E=-7.03431 eV/atom  Cv=1.400 k_B
+00:33:28 x=0.75 T=  120 K  E=-7.03599 eV/atom  Cv=0.091 k_B
+00:33:48 x=0.75 T=  100 K  E=-7.03644 eV/atom  Cv=0.123 k_B
+00:34:07 x=0.75 T=   80 K  E=-7.03682 eV/atom  Cv=0.039 k_B
+00:34:24 x=0.75 T=   60 K  E=-7.03691 eV/atom  Cv=0.073 k_B
+00:34:42 x=0.75 T=   40 K  E=-7.03693 eV/atom  Cv=0.000 k_B
+00:34:59 x=0.75 T=   20 K  E=-7.03693 eV/atom  Cv=0.000 k_B
+# Pt-Rh CE + canonical MC with mace-mpa-0 (2026-11-07)
+
+Training: 631 fcc orderings (1-8 atoms), relaxed (positions + cell, fmax 2e-3). CE cutoffs [9.0, 6.0, 5.0] A, ARDR, rmse train 0.66 / CV 0.71 meV/atom, 41 nonzero of 41 ECIs.
+
+## 0 K: ordered structures vs the random state (CE)
+
+| structure | x_Rh | E_form (MLIP, relaxed) meV/atom | E_form random (CE) | ordering energy |
+|---|---|---|---|---|
+| Pt3Rh-D0_22 | 0.25 | -15.7 | -11.5 | -4.2 |
+| PtRh-40 | 0.5 | -22.9 | -15.4 | -7.4 |
+| PtRh3-D0_22 | 0.75 | -19.0 | -12.5 | -6.5 |
+
+Ground-state line of the training set (x, E_form meV/atom): (0.000, 0.0), (0.125, -8.8), (0.200, -13.9), (0.250, -16.6), (0.375, -22.0), (0.500, -26.8), (0.750, -19.7), (0.833, -13.9), (0.875, -11.0), (1.000, 0.0)
+
+## Order-disorder temperatures (C_v peak of the cooling scan)
+
+| x_Rh | T_c (K) | C_v max (k_B) |
+|---|---|---|
+| 0.25 | 100 | 0.45 |
+| 0.50 | 160 | 1.71 |
+| 0.75 | 140 | 1.40 |
+
+MC: 8^3 conventional fcc cells (2048 sites), 40 + 80 sweeps per T, cooling 500 -> 20 K in 20 K steps; the structure is carried between temperatures (hysteresis possible for first-order transitions). Lattice CE: no vibrations, no relaxation energy beyond the training cells.
+
+Reference (Saengdeejing et al. 2026, Table 7): fcc <-> PtRh 258 K (PFP) / 210 K (DFT); fcc <-> PtRh3 235 / 156 K; fcc <-> Pt3Rh 146 K (PFP only); Pohl & Albe MC: PtRh 238 K.
