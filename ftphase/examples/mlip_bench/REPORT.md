@@ -29,7 +29,7 @@ Their QHA ran on the GPU here except GRACE-2L (comparison run, also on the GPU).
 |---|---|---|---|---|
 | PET-OMat-S (25.9M, OMat24 only) | `env/metatomic/bin/lmp_metatomic.sh`, `metatomic/kk` | 152 min (Slurm 23203) | 0.040 | 16 |
 | PET-OAM-L (255M, OMat24 -> sAlex+MPtrj) | same | 585 min (Slurm 23204) | 0.161 | 62 |
-| DPA-3.1-3M, MPtrj branch (3.27M) | `env/deepmd/bin/lmp_deepmd.sh`, `pair_style deepmd` (torch on the GPU, LAMMPS on the CPU) | see below (Slurm 23206) | | |
+| DPA-3.1-3M, MPtrj branch (3.27M) | `env/deepmd/bin/lmp_deepmd.sh`, `pair_style deepmd` (torch on the GPU, LAMMPS on the CPU) | 548 min (Slurm 23206) | 0.149 | 58 |
 
 Notes: the PET-OAM-L time equals the `pair_style mace` MACE-MPA-0 run (573 min) and is 7.7x the ML-IAP+cuEquivariance MACE
 production (76 min); PET-OMat-S sits between SevenNet-0 (35 min) and SevenNet-MF-ompa (204 min). The wall time includes
