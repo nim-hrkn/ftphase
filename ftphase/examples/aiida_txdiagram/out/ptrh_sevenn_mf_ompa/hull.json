@@ -1,0 +1,125 @@
+{
+ "relaxed": [
+  {
+   "name": "fcc-Pt",
+   "x": 0.0,
+   "e": -6.0528631210327,
+   "V": 15.70571941712,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "fcc-Rh",
+   "x": 1.0,
+   "e": -7.3370714187622,
+   "V": 14.18320400257,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "PtRh-40",
+   "x": 0.5,
+   "e": -6.7262105941772,
+   "V": 14.921092397706,
+   "sg_before": "I4_1/amd (141)",
+   "sg_after": "I4_1/amd (141)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "PtRh3-D022",
+   "x": 0.75,
+   "e": -7.0395979881287,
+   "V": 14.528877382348,
+   "sg_before": "I4/mmm (139)",
+   "sg_after": "I4/mmm (139)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "Pt3Rh-D022",
+   "x": 0.25,
+   "e": -6.3923978805542,
+   "V": 15.320491965021,
+   "sg_before": "I4/mmm (139)",
+   "sg_after": "I4/mmm (139)",
+   "converged": true,
+   "transformed": false
+  }
+ ],
+ "hull": [
+  {
+   "name": "fcc-Pt",
+   "x": 0.0,
+   "e": -6.0528631210327,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "Pt3Rh-D022",
+   "x": 0.25,
+   "e": -6.3923978805542,
+   "e_form": -0.018482685089111,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "PtRh-40",
+   "x": 0.5,
+   "e": -6.7262105941772,
+   "e_form": -0.031243324279785,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "PtRh3-D022",
+   "x": 0.75,
+   "e": -7.0395979881287,
+   "e_form": -0.023578643798828,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Rh",
+   "x": 1.0,
+   "e": -7.3370714187622,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  }
+ ],
+ "ground_state_check": [
+  {
+   "name": "fcc-Pt",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Rh",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "PtRh-40",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "PtRh3-D022",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "Pt3Rh-D022",
+   "status": "MLIP ground state not in known list",
+   "e_above_hull": 0.0
+  }
+ ],
+ "potential": "checkpoint_sevennet_mf_ompa.pth",
+ "finished": "2026-11-06 22:28:14"
+}

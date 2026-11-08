@@ -37,6 +37,8 @@
 | ptrh_grace_2l | GRACE-2L-OMAT fp32 | mygarden6 | 9105 | 本番、11-05 01:21 自動投入 → 11-05 17:32 Finished [0]（52 本すべて成功）、`aiida_txdiagram/out/ptrh_grace_2l/` |
 | ptrh_nequip_oam_m | NequIP-OAM-M | mygarden6 | 9348 | 本番、11-05 02:07 自動投入 → Finished [0]、`out/ptrh_nequip_oam_m/` |
 | ptrh_mace_mpa_0 | MACE-MPA-0 cueq | mygarden6 / QHA mygardenx2 | 9585 | 本番、11-05 02:50 自動投入 → 11-06 Finished [0]、`out/ptrh_mace_mpa_0/` |
+| ptrh_sevenn_mf_ompa | SevenNet-MF-ompa | mygarden6 / QHA mygardenx2 | 10674 (smoke) → 10792 | 本番 11-06 22:28 自動投入 → 11-08 Finished [0]、`out/ptrh_sevenn_mf_ompa/`（Pt 2400+ K、規則相なし 1910–2400 K；lowT: PtRh 270 K、Pt₃Rh 490 K、PtRh₃ 860 K；AiiDA の乱雑セルでは PtRh の規則化エネルギー −2 meV と浅く、CPU スクリーン −10.6・CE −7.1 とばらつく＝32 原子乱雑セルの SRO ノイズ ±5 meV） |
+| ptrh_*_solid_ti | 3 MLIP | mygarden6 / MACE QHA x2 | 11345 / 11358 / 11372 | 固相だけ + 端成分 TI の WorkChain（11-08 投入、計算中）。Pt 端の TI（1700→2150 K）は 3 つとも後退掃引で融けて exit 320：Pt の MLIP 融点は 2150 K より下。上限 1980 K で単独再投入（`mlip_solids_ti.py submit --only s00_fcc --T-hi s00_fcc=1980`、pk 12349/12354/12359、11-08）。Rh 端（1900→2350 K）は実行中 |
 
 `autosubmit.sh`（切り離して常駐）が smoke の終了を 2 分ごとに見て、組立失敗なら修正 spec で smoke を再投入、exit 0 なら本番を投入する。ログ `out/autosubmit.log`。
 
