@@ -1,0 +1,7 @@
+run	cell	phase	x	T_expt	state	exit	T_m_ti	T_m_extrap	qha_minus_ti_meV@mid	T_mid
+ptrh_grace_2l	s00_fcc	fcc	0.0	2041	waiting					
+ptrh_grace_2l	s23_fcc	fcc	1.0	2237	finished	0.0	< 2100	2031.0	-37.1	2025.0
+ptrh_nequip_oam_m	s00_fcc	fcc	0.0	2041	waiting					
+ptrh_nequip_oam_m	s23_fcc	fcc	1.0	2237	finished	0.0	< 2100	2051.0	-78.4	2025.0
+ptrh_mace_mpa_0	s00_fcc	fcc	0.0	2041	waiting					
+ptrh_mace_mpa_0	s23_fcc	fcc	1.0	2237	waiting					

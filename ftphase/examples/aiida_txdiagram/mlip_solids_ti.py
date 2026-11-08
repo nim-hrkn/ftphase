@@ -302,8 +302,9 @@ def melt(names):
                 r["T_mid"] = round(float(tm))
             rows.append(r)
     df = pd.DataFrame(rows)
-    os.makedirs(os.path.join(OUT, "mlip_compare_nial_agcu"), exist_ok=True)
-    df.to_csv(os.path.join(OUT, "mlip_compare_nial_agcu", "melting_ti.tsv"), sep="\t", index=False)
+    cmp_dir = "mlip_compare_ptrh" if all(n.startswith("ptrh") for n in names) else "mlip_compare_nial_agcu"   # keep the Ni-Al / Ag-Cu table intact
+    os.makedirs(os.path.join(OUT, cmp_dir), exist_ok=True)
+    df.to_csv(os.path.join(OUT, cmp_dir, "melting_ti.tsv"), sep="\t", index=False)
     print(df.to_string(index=False))
 
 

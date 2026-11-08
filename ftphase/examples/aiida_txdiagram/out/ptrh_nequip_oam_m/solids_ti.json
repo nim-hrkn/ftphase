@@ -10,6 +10,18 @@
     1700.0,
     1980.0
    ]
+  },
+  "s23_fcc": {
+   "pk": 11811,
+   "phase": "fcc",
+   "x": 1.0,
+   "n_atoms": 2048,
+   "T_sweep": [
+    1700.0,
+    2350.0
+   ],
+   "from_workchain": 11372
   }
- }
+ },
+ "solid_only_workchain": 11372
 }
