@@ -51,7 +51,8 @@ LMP_MLIAP_MACE = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_mace.sh"
 LMP_MLIAP_MATTERSIM = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_mattersim.sh")   # PYTHONHOME env/torch (mattersim 1.2.5)
 _MS = os.path.join(ROOT, "potentials", "mattersim")
 LMP_MLIAP_NEQUIP = os.path.join(ROOT, "env/lammps-gpu-mliap/bin/lmp_mliap_nequip.sh")
-LMP_DEEPMD32 = os.path.join(ROOT, "env/deepmd32/bin/lmp_deepmd.sh")   # PyPI LAMMPS 22Jul2025u2 + deepmd-kit 3.2.0 plugin; wrapper prepends plugin load + atom_modify map yes
+LMP_DEEPMD32 = os.path.join(ROOT, "env/deepmd32/bin/lmp_deepmd.sh")
+LMP_DEEPMD41 = os.path.join(ROOT, "env/deepmd41/bin/lmp_deepmd.sh")   # deepmd-kit git 1ded5d2 (DPA-4.1 models), torch 2.13 cu132; built by env/deepmd41/build.sh   # PyPI LAMMPS 22Jul2025u2 + deepmd-kit 3.2.0 plugin; wrapper prepends plugin load + atom_modify map yes
 _DPA4 = os.path.join(ROOT, "potentials", "deepmd", "dpa4")
 LMP_METATOMIC = os.path.join(ROOT, "env/metatomic/bin/lmp_metatomic.sh")   # conda lammps-metatomic 4Jul2026 KOKKOS (metatomic/kk, hybrid/scaled/kk); wrapper moves pair_style after read_data
 _PET = os.path.join(ROOT, "potentials", "pet")   # PYTHONHOME env/torch (nequip 0.19.1 + openequivariance)
@@ -105,6 +106,11 @@ MLIPS.update({
                          "model": "DPA4-Plus-OMat24 v20260805 (deepmd 3.2.0, .pt2)", "lmp_gpu": LMP_DEEPMD32, "tag": "_dpa4_plus_omat24", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-deepmd", "qha_calculator": "deepmd", "calphy_code": "calphy-plugin"},
     "dpa4-air-omat24": {"potential": os.path.join(_DPA4, "DPA4-Air-OMat24-v20260805.pt2"), "potential_qha": os.path.join(_DPA4, "DPA4-Air-OMat24-v20260805.pt2"), "pair_style": "deepmd {potential}", "pair_coeff": "* * Al Li",
                         "model": "DPA4-Air-OMat24 v20260805 (deepmd 3.2.0, .pt2)", "lmp_gpu": LMP_DEEPMD32, "tag": "_dpa4_air_omat24", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-deepmd", "qha_calculator": "deepmd", "calphy_code": "calphy-plugin"},
+    # DPA-4.1-Max-OAM (Matbench: 99M params, MPtrj+OMat24+sAlex, F1 0.913, kappa_SRME 0.090; figshare 70537500 downloaded by the user 2026-11-08,
+    # sha256 fb19a96e...; deepmd-kit commit 1ded5d2, torch 2.13 cu132 in env/deepmd41). Same route as DPA4-OMat24: .pt2 frozen on this GPU
+    # (env/deepmd41/dpa41_freeze_check.sh), pair_style deepmd through the plugin LAMMPS, calphy-plugin code, QHA code ftphase-qha-deepmd41.
+    "dpa4.1-max-oam": {"potential": os.path.join(_DPA4, "dpa-4.1-max-oam.pt2"), "potential_qha": os.path.join(_DPA4, "dpa-4.1-max-oam.pt2"), "pair_style": "deepmd {potential}", "pair_coeff": "* * Al Li",
+                       "model": "DPA-4.1-Max-OAM (deepmd 1ded5d2, .pt2)", "lmp_gpu": LMP_DEEPMD41, "tag": "_dpa41_max_oam", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-deepmd41", "qha_calculator": "deepmd", "calphy_code": "calphy-plugin", "qha_env": "deepmd41"},
     # the pair_style mace route of pk 4293 (env/lammps-torch, lmp_mace.sh prepends atom_modify map yes), kept for comparison runs
     "mace-mpa-0-pairstyle": {"potential": os.path.join(_MAC, "macempa0mediummodel.model-lammps-f32.pt"), "potential_qha": os.path.join(_MAC, "macempa0mediummodel.model"), "pair_style": "mace no_domain_decomposition", "pair_coeff": "* * {potential} Al Li",
                    "model": "MACE-MPA-0 medium (float32)", "lmp_gpu": LMP_MACE, "tag": "_mace_mpa_0_pairstyle", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-mace", "qha_calculator": "mace", "qha_dtype": "float32"},
@@ -397,7 +403,7 @@ def main():
             if k in ml:
                 spec[k] = ml[k]
         if ml.get("torch"):   # stage 01 relaxations run in a subprocess of the calculator's env (the daemon has no torch)
-            spec["qha_python"] = os.path.join(ROOT, "env", {"mace": "mace", "metatomic": "metatomic", "deepmd": "deepmd32"}.get(ml["qha_calculator"], "torch"), "bin", "python")
+            spec["qha_python"] = os.path.join(ROOT, "env", ml.get("qha_env") or {"mace": "mace", "metatomic": "metatomic", "deepmd": "deepmd32"}.get(ml["qha_calculator"], "torch"), "bin", "python")
             if qha_cpu_host:
                 spec["qha_device"] = "cpu"
         pot_fn = (lambda f=ml["potential"]: f); lmp_gpu = ml["lmp_gpu"]; pot_qha = ml.get("potential_qha")

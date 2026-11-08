@@ -21,6 +21,7 @@ MLIPS = {  # name: (pair_style, pair_coeff, cmdargs, lammps_executable, potentia
     # the wrapper prepends `plugin load` and `atom_modify map yes`.
     "dpa4-plus-omat24": ("deepmd __WORKDIR__/DPA4-Plus-OMat24-v20260805.pt2", "* * Al Li", "", f"{ROOT}/env/deepmd32/bin/lmp_deepmd.sh", "potentials/deepmd/dpa4/DPA4-Plus-OMat24-v20260805.pt2"),
     "dpa4-air-omat24": ("deepmd __WORKDIR__/DPA4-Air-OMat24-v20260805.pt2", "* * Al Li", "", f"{ROOT}/env/deepmd32/bin/lmp_deepmd.sh", "potentials/deepmd/dpa4/DPA4-Air-OMat24-v20260805.pt2"),
+    "dpa4.1-max-oam": ("deepmd __WORKDIR__/dpa-4.1-max-oam.pt2", "* * Al Li", "", f"{ROOT}/env/deepmd41/bin/lmp_deepmd.sh", "potentials/deepmd/dpa4/dpa-4.1-max-oam.pt2"),
     "dpa-3.1-3m-mptrj": ("deepmd __WORKDIR__/dpa-3.1-3m-mptrj.pth", "* * Al Li", "", f"{ROOT}/env/deepmd/bin/lmp_deepmd.sh", "potentials/deepmd/dpa-3.1-3m-mptrj.pth"),
 }
 
