@@ -22,7 +22,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "out")
 MIN_ATOMS = 2000
 RUNS = {"nial_grace_fs": 4784, "nial_grace_1l": 4798, "nial_sevenn_0": 4813, "agcu_grace_fs": 4869, "agcu_grace_1l": 4900, "agcu_sevenn_0": 4928,
-        "ptrh_grace_2l": 9105, "ptrh_nequip_oam_m": 9348, "ptrh_mace_mpa_0": 9585}   # Pt-Rh (2026-11-06): pure-end fcc cells only, 4x4x4 of 32 = 2048 atoms
+        "ptrh_grace_2l": 9105, "ptrh_nequip_oam_m": 9348, "ptrh_mace_mpa_0": 9585, "ptrh_sevenn_mf_ompa": 10792}   # Pt-Rh (2026-11-06): pure-end fcc cells only, 4x4x4 of 32 = 2048 atoms
 #: (phase, x) -> sweep [T_lo, T_hi]; T_hi about 1.05 T_m(expt).  The first try with 1.2 T_m (pk 6503-6595) failed: GRACE-FS
 #: fcc Al melted at ~1000 K on the way to 1150 K (MeltedError, pk 6503), so the MLIP melting points are near the experimental
 #: ones and a superheated cell does not survive 1.2 T_m.  A crossing above T_hi is reported as "> T_hi" plus a linear extrapolation.
@@ -227,6 +227,37 @@ def submit_liq_low(names, dry=False):
                 json.dump(rec, f, indent=1)
 
 
+def submit_liq_ext(names, spec, dry=False):
+    """Extend a liquid sweep of the original WorkChain to lower temperatures (same cell, settings and code): spec = {x: [T_hi, T_lo]},
+    e.g. {1.0: [2200, 1900]} for the Rh liquid of the Pt-Rh runs (the production sweep stops at 2100 K, the TI-liquid crossing lies
+    below).  Records go to out/<name>/liquids_low.json like submit_liq_low, so assemble() splices them with merge_sweeps."""
+    from aiida import orm
+    from aiida.engine import submit as aiida_submit
+
+    for name in names:
+        wc, kids, prep = _workchain(RUNS[name])
+        path = os.path.join(OUT, name, "liquids_low.json")
+        rec = json.load(open(path)) if os.path.exists(path) else {"pk_workchain": RUNS[name], "jobs": {}}
+        for old in sorted((n for n in kids.get("CalphyCalculation", []) if n.label.startswith("calphy lqd") and n.is_finished_ok), key=lambda n: n.label):
+            tag = old.label.split()[1]; x = float(old.label.split("x=")[1])
+            hit = next((v for k, v in spec.items() if abs(float(k) - x) < 2e-3), None)
+            if hit is None or tag in rec["jobs"]:
+                continue
+            p = old.inputs.parameters.get_dict()
+            p.update({"temperature": [float(hit[0]), float(hit[1])], "name": tag + "_low", "folder_prefix": tag + "_low"})
+            b = old.get_builder_restart()
+            b.parameters = orm.Dict(dict=p)
+            b.metadata.label = f"calphy {tag} low {hit[0]:.0f}->{hit[1]:.0f} K"
+            if dry:
+                print(name, tag, old.pk, p["temperature"], b.code.full_label); continue
+            n = aiida_submit(b)
+            rec["jobs"][tag] = {"pk": n.pk, "base_pk": old.pk, "temperature": p["temperature"]}
+            print(name, tag, old.pk, "->", n.pk, p["temperature"], b.code.full_label)
+        if not dry:
+            with open(path, "w") as f:
+                json.dump(rec, f, indent=1)
+
+
 def _merge_sweeps():
     from aiida.engine import calcfunction
 
@@ -364,7 +395,8 @@ def assemble(names):
 
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=["submit", "submit2", "liqlow", "status", "melt", "assemble"])
+    ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=["submit", "submit2", "liqlow", "liqext", "status", "melt", "assemble"])
+    ap.add_argument("--liq", default="1.0:2200:1900", help="liqext: comma-separated x:T_hi:T_lo")
     ap.add_argument("--names", default=",".join(RUNS)); ap.add_argument("--profile", default="ftphase")
     ap.add_argument("--only", default=None, help="comma-separated solid keys to (re)submit")
     ap.add_argument("--T-hi", dest="t_hi", default=None, help="sweep-end overrides key=T,key=T")
@@ -378,4 +410,4 @@ if __name__ == "__main__":
     only = set(a.only.split(",")) if a.only else None
     t_hi = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in a.t_hi.split(",")} if a.t_hi else None
     t_lo = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in a.t_lo.split(",")} if a.t_lo else None
-    {"submit": lambda: submit(names, only, t_hi, t_lo), "submit2": lambda: submit2(names, only, t_hi, t_lo, a.dry), "liqlow": lambda: submit_liq_low(names, a.dry), "status": lambda: status(names), "melt": lambda: melt(names), "assemble": lambda: assemble(names)}[a.cmd]()
+    {"submit": lambda: submit(names, only, t_hi, t_lo), "submit2": lambda: submit2(names, only, t_hi, t_lo, a.dry), "liqlow": lambda: submit_liq_low(names, a.dry), "liqext": lambda: submit_liq_ext(names, {float(t.split(":")[0]): [float(t.split(":")[1]), float(t.split(":")[2])] for t in a.liq.split(",")}, a.dry), "status": lambda: status(names), "melt": lambda: melt(names), "assemble": lambda: assemble(names)}[a.cmd]()
