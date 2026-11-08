@@ -1,16 +1,6 @@
 {
  "pk_workchain": 9348,
  "jobs": {
-  "s00_fcc": {
-   "pk": 12354,
-   "phase": "fcc",
-   "x": 0.0,
-   "n_atoms": 2048,
-   "T_sweep": [
-    1700.0,
-    1980.0
-   ]
-  },
   "s23_fcc": {
    "pk": 11811,
    "phase": "fcc",
@@ -21,7 +11,22 @@
     2350.0
    ],
    "from_workchain": 11372
+  },
+  "s00_fcc": {
+   "pk": 12559,
+   "phase": "fcc",
+   "x": 0.0,
+   "n_atoms": 2048,
+   "T_sweep": [
+    1700.0,
+    1850.0
+   ]
   }
  },
- "solid_only_workchain": 11372
+ "solid_only_workchain": 11372,
+ "failed": [
+  {
+   "s00_fcc": "caps 2150 and 1980 K melted (exit 320)"
+  }
+ ]
 }
