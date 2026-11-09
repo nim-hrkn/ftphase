@@ -123,8 +123,10 @@ CE の 0 K 規則化エネルギー（規則相 − CE 乱雑）: MACE −4.2 / 
 
 端成分の 2,048 原子 TI: Pt（1700→2150 K）は 3 MLIP とも後退掃引で融けて失敗（exit 320）、MACE は Rh（1900→2350 K）も融けた。GRACE-2L と NequIP の Rh TI は成功し、QHA（古典化）− TI は 1700 / 2025 / 2350 K で GRACE-2L −22 / −37 / −53、NequIP −53 / −78 / −103 meV/atom。QHA が高温の固相をこれだけ過安定化していたのが「Pt・Rh が 2400 K でも融けない」原因（Ni–Al の EAM と同じ）。
 
-| Rh 融点 | 実験 | GRACE-2L | NequIP-OAM-M | MACE-MPA-0 |
+| 融点（TI 固相 × 液相の交点、2026-11-09） | 実験 | GRACE-2L | NequIP-OAM-M | MACE-MPA-0 |
 |---|---|---|---|---|
-| TI 固相 × 液相の交点 | 2237 K | ≈ 2031 K（外挿） | ≈ 2051 K（外挿） | Rh TI 2200 K 上限で再投入（pk 12532） |
+| Rh (x = 1) | 2237 K | 2032 K | 2050 K | 1904 K |
+| Pt (x = 0) | 2041 K | < 1980（TI 上限 2150・1980 K で融解） | < 1980 | < 1980 |
+| QHA − TI, fcc Rh, 2025–2050 K | — | −37 meV/atom | −78 | −100 |
 
-液相の掃引が x_Rh = 1 で 2100 K 止まりなので交点は外挿（`mlip_solids_ti.py melt`、`out/mlip_compare_ptrh/melting_ti.tsv`）。Pt 端は上限 1980 K で再投入中（pk 12349/12354/12359）。融点を直接取るには Rh 液相を 1900 K まで延ばす必要がある。
+Rh は液相を `liqext`（`mlip_solids_ti.py liqext --liq 1.0:2200:1900`、pk 12535/12537/12539）で 1900 K まで延ばし、`assemble`（`merge_sweeps` で接ぎ足し、重なり部のずれ 0.1–0.6 meV/atom）→ `melt` で直接の交点（`out/mlip_compare_ptrh/melting_ti.tsv`、`out/ptrh_<mlip>_ti/`）。3 つの MLIP とも Rh を 190–330 K 低く、Pt も 60 K 以上低く見積もる。論文の図 11（PFP の TDB、液相は理想溶体）と比べる土台はこれで揃うが、PFP 自身の融点は論文に数値が無い。Pt 端は上限 1850 K（pk 12554/12559/12601）と Pt 液相の 1700 K までの延長（12561/12563/12565）が実行中。
