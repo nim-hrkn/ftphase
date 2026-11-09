@@ -1,13 +1,13 @@
 # NequIP-OAM-M 0.1 Pt-Rh, 0 GPa: QHA solids + calphy liquid [AiiDA] (AiiDA workflow ftphase.txdiagram)
 
-Assembled 2026-11-09 16:30:29.  Classical level, 0.0 GPa, model NequIP-OAM-M 0.1 (ML-IAP, OpenEquivariance).
+Assembled 2026-11-10 03:50:21.  Classical level, 0.0 GPa, model NequIP-OAM-M 0.1 (ML-IAP, OpenEquivariance).
 
 ## Inputs
 
 * solids (QHA, lowered to the classical level): 42 cells used, missing []
 * liquids (calphy reversible scaling): 7 runs used, missing []; runs per x {'0.0000': 1, '0.1992': 1, '0.3984': 1, '0.5000': 1, '0.6016': 1, '0.8008': 1, '1.0000': 1}
 * configurational terms: {'fcc': 'ideal', 'PtRh': 'sublattice:b32_antisite', 'PtRh3': 'sublattice:b32_antisite@0.75', 'Pt3Rh': 'sublattice:b32_antisite@0.25'}; fits: {'fcc': 'rk', 'liquid': 'rk', 'PtRh': 'poly', 'PtRh3': 'poly', 'Pt3Rh': 'poly'} (poly = excess over analytic ideal mixing)
-* temperature grid: [1910.0, 2400.0, 50] (K, min, max, points); sigma (eV/atom): {'PtRh3': 0.002, 'liquid': 0.0014, 'Pt3Rh': 0.002, 'PtRh': 0.002, 'fcc': 0.002}
+* temperature grid: [1910.0, 2400.0, 50] (K, min, max, points); sigma (eV/atom): {'Pt3Rh': 0.002, 'PtRh': 0.002, 'fcc': 0.002, 'PtRh3': 0.002, 'liquid': 0.0014}
 
 ## Key numbers
 
@@ -25,7 +25,7 @@ Assembled 2026-11-09 16:30:29.  Classical level, 0.0 GPa, model NequIP-OAM-M 0.1
 ## Error bands (Monte Carlo over per-phase offsets)
 
 * 1910 K fcc+fcc: x_a = 0.473 +/- 0.000, x_b = 0.480 +/- 0.000 (28/30 samples)
-* 1910 K fcc+liquid: x_a = 0.000 +/- 0.000, x_b = 0.165 +/- 0.011 (30/30 samples)
+* 1910 K fcc+liquid: x_a = 0.000 +/- 0.000, x_b = 0.164 +/- 0.011 (30/30 samples)
 * 1910 K liquid+fcc: x_a = 0.324 +/- 0.022, x_b = 0.448 +/- 0.018 (30/30 samples)
 
 ## QHA (classical level) minus calphy solid TI per cell, meV/atom (anharmonic error of the quasi-harmonic route)

@@ -1,2 +1,3 @@
 T_low	T_high	pairs_below	pairs_above
-1910.0	1920.0	['fcc+liquid']	['fcc+liquid', 'liquid+liquid']
+1970.0	1980.0	['fcc+liquid']	['fcc+liquid', 'liquid+liquid']
+2160.0	2170.0	['fcc+liquid', 'liquid+liquid']	['liquid+liquid']

@@ -13,13 +13,13 @@
    "from_workchain": 11372
   },
   "s00_fcc": {
-   "pk": 12559,
+   "pk": 12708,
    "phase": "fcc",
    "x": 0.0,
    "n_atoms": 2048,
    "T_sweep": [
     1700.0,
-    1850.0
+    1750.0
    ]
   }
  },
@@ -27,6 +27,9 @@
  "failed": [
   {
    "s00_fcc": "caps 2150 and 1980 K melted (exit 320)"
+  },
+  {
+   "s00_fcc": "cap 1850 K melted too (pk 12559)"
   }
  ]
 }
