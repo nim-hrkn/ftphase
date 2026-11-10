@@ -275,7 +275,7 @@ def _merge_sweeps():
         out = orm.ArrayData()
         for k, a, b in (("temperature", Th, Tl), ("free_energy", Gh, Gl), ("error", Eh, El)):
             out.set_array(k, np.concatenate([a, b[keep]]))
-        out.base.attributes.set("overlap_offset_meV", off * 1000)
+        out.base.attributes.set("overlap_offset_meV", off * 1000 if np.isfinite(off) else None)
         return out
 
     return merge_sweeps
@@ -375,11 +375,14 @@ def assemble(names):
         ll = os.path.join(OUT, name, "liquids_low.json")   # Ag-Cu liquids extended to LIQ_LOW: spliced below the old sweep
         if os.path.exists(ll):
             merge = _merge_sweeps()
-            for tag, j in json.load(open(ll))["jobs"].items():
-                n, k = orm.load_node(j["pk"]), f"liq_{''.join(c if c.isalnum() else '_' for c in tag)}"
+            import re
+            # several extensions of one liquid (e.g. 2000->1700 then 1800->1500 K): splice in order of decreasing T_hi; the record key may carry a suffix
+            for tag, j in sorted(json.load(open(ll))["jobs"].items(), key=lambda kv: -max(kv[1]["temperature"])):
+                base_tag = (re.match(r"(lqd_x\d+\.\d+)", tag) or re.match(r"(.*)", tag)).group(1)
+                n, k = orm.load_node(j["pk"]), f"liq_{''.join(c if c.isalnum() else '_' for c in base_tag)}"
                 if n.is_finished_ok and "sweep" in n.outputs and k in nodes:
                     nodes[k] = merge(nodes[k], n.outputs.sweep)
-                    print(name, tag, "low sweep spliced, overlap offset %.2f meV/atom" % nodes[k].base.attributes.get("overlap_offset_meV"))
+                    print(name, tag, "low sweep spliced, overlap offset", nodes[k].base.attributes.get("overlap_offset_meV"), "meV/atom")
         spec = wc.inputs.spec
         if name.startswith("agcu") and os.path.exists(os.path.join(OUT, name, "liquids_low.json")):   # liquids now reach LIQ_LOW: assemble from there
             sp = spec.get_dict(); sp["assemble"] = {**sp["assemble"], "T_min": LIQ_LOW, "liquid_partial": True}   # pure-Cu liquids stop at 1100 K (crystallize below)
