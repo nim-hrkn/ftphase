@@ -52,6 +52,14 @@ SYSTEMS = OrderedDict(
               ("GRACE-1L-OMAT (QHA solids)", os.path.join(AT, "nial_grace_1l")), ("GRACE-1L-OMAT (+TI ends)", os.path.join(AT, "nial_grace_1l_ti")),
               ("SevenNet-0 (QHA solids)", os.path.join(AT, "nial_sevenn_0")), ("SevenNet-0 (+TI ends)", os.path.join(AT, "nial_sevenn_0_ti"))],
     ),
+    ptrh=dict(   # 2026-11-10: ORCHID-Diagrams has 3 SGTE fcc+liquid assessments and no literature values for Pt-Rh (npj_ptrh/COMPARISON.md)
+        prefix="PtRh", xlabel="x_Rh", ref="PtRh-98Jac", title="Pt-Rh (x = x_Rh)",
+        panel_T=(1700, 2400), overlay_T=(1700, 2410), overlay_x=(0, 1.0),
+        runs=[("GRACE-2L-OMAT (QHA solids, liquid 1910-2400 K)", os.path.join(AT, "ptrh_grace_2l")), ("NequIP-OAM-M", os.path.join(AT, "ptrh_nequip_oam_m")),
+              ("MACE-MPA-0", os.path.join(AT, "ptrh_mace_mpa_0")), ("SevenNet-MF-ompa", os.path.join(AT, "ptrh_sevenn_mf_ompa")),
+              ("GRACE-2L-OMAT (+2048-atom TI ends)", os.path.join(AT, "ptrh_grace_2l_ti")), ("NequIP-OAM-M (+TI ends)", os.path.join(AT, "ptrh_nequip_oam_m_ti")),
+              ("MACE-MPA-0 (+TI ends)", os.path.join(AT, "ptrh_mace_mpa_0_ti"))],
+    ),
     agcu=dict(
         prefix="AgCu", xlabel="x_Cu", ref="AgCu-04Wit-LB", title="Ag-Cu",
         panel_T=(600, 1500), overlay_T=(1000, 1410), overlay_x=(0, 1.0),
