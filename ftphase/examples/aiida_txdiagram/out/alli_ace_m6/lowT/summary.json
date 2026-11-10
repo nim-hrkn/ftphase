@@ -1,0 +1,31 @@
+{
+ "T_grid": [
+  300.0,
+  700.0,
+  41
+ ],
+ "invariants": [
+  {
+   "T_low": 350.0,
+   "T_high": 360.0,
+   "pairs_below": [
+    "Al3Li+B32",
+    "Al3Li+fcc"
+   ],
+   "pairs_above": [
+    "B32+fcc"
+   ]
+  },
+  {
+   "T_low": 670.0,
+   "T_high": 680.0,
+   "pairs_below": [
+    "B32+fcc"
+   ],
+   "pairs_above": [
+    "B32+fcc",
+    "fcc+fcc"
+   ]
+  }
+ ]
+}

@@ -37,12 +37,14 @@ DATA = os.path.join(PROJECT, "data", "orchid-v2026.10", "phase-diagrams", "orchi
 SYSTEMS = OrderedDict(
     alli=dict(
         prefix="AlLi", xlabel="x_Li", ref="AlLi-20Lon", title="Al-Li",
-        panel_T=(300, 1100), overlay_T=(650, 1110), overlay_x=(0, 1.0),
+        panel_T=(300, 1100), overlay_T=(300, 1110), overlay_x=(0, 1.0),
         runs=[("ACE (aiida, x<=0.5)", os.path.join(AT, "alli_ace_m6")), ("ACE full range (example 6)", os.path.join(EX, "alli_ace_txdiagram", "out_full")),
               ("GRACE-FS-OAM", os.path.join(AT, "alli_grace_fs")), ("GRACE-1L-OMAT", os.path.join(AT, "alli_grace_1l")),
               ("GRACE-2L-OMAT", os.path.join(AT, "alli_grace_2l")), ("SevenNet-0", os.path.join(AT, "alli_sevenn_0")),
               ("SevenNet-MF-ompa", os.path.join(AT, "alli_sevenn_mf_ompa")), ("MACE-MPA-0", os.path.join(AT, "alli_mace_mpa_0")),
-              ("MatterSim-v1-1M", os.path.join(AT, "alli_mattersim_1m")), ("NequIP-OAM-M", os.path.join(AT, "alli_nequip_oam_m"))],
+              ("MatterSim-v1-1M", os.path.join(AT, "alli_mattersim_1m")), ("MatterSim-v1-5M", os.path.join(AT, "alli_mattersim_5m")),
+              ("NequIP-OAM-M", os.path.join(AT, "alli_nequip_oam_m")), ("NequIP-OAM-S", os.path.join(AT, "alli_nequip_oam_s")),
+              ("DPA4-Plus-OMat24", os.path.join(AT, "alli_dpa4_plus_omat24"))],
     ),
     nial=dict(
         prefix="AlNi", xlabel="x_Ni", ref="AlNi-01Dup-4sl", title="Ni-Al (x = x_Ni)",
@@ -111,6 +113,10 @@ def draw_run(ax, run_dir, colors, seen, T_window):
         ax.text(0.5, 0.5, "no 07 output", ha="center", transform=ax.transAxes)
         return None
     r = pd.read_csv(f, sep="\t")
+    low = os.path.join(run_dir, "lowT", "07_two_phase_regions.tsv")   # solids-only re-assembly below the liquid window (assemble_solids_lowT.py, 2026-11-10)
+    if os.path.exists(low):
+        lr = pd.read_csv(low, sep="\t")
+        r = pd.concat([lr[lr["T"] < r["T"].min() - 1e-6], r], ignore_index=True)
     r = r[r.phase_a != r.phase_b]
     steps = r["T"].diff().abs()
     dT = float(steps[steps > 0].min()) if (steps > 0).any() else 10.0

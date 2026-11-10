@@ -1,1 +1,72 @@
-
+system	assessment	T_K	phases	x	source
+alli	AlLi-07Hal-condensed	876.1	FCC_A1+LIQUID+BCC_4SL	0.131, 0.238, 0.456	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	876.1	FCC_A1+LIQUID+BCC_4SL	0.131, 0.238, 0.456	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	876.1	FCC_4SL+LIQUID+BCC_4SL	0.131, 0.238, 0.456	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	876.1	FCC_A1+LIQUID+BCC_4SL	0.131, 0.238, 0.456	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	793.0	BCC_4SL+AL2LI3+LIQUID	0.567, 0.600, 0.745	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	793.0	BCC_4SL+AL2LI3+LIQUID	0.567, 0.600, 0.745	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	793.0	BCC_4SL+AL2LI3+LIQUID	0.567, 0.600, 0.745	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	609.6	AL2LI3+AL4LI9+LIQUID	0.600, 0.692, 0.916	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	609.6	AL2LI3+AL4LI9+LIQUID	0.600, 0.692, 0.915	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	609.6	AL2LI3+AL4LI9+LIQUID	0.600, 0.692, 0.916	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	452.3	AL4LI9+LIQUID+BCC_4SL	0.692, 0.993, 0.996	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-07Hal-condensed	452.3	AL4LI9+LIQUID+BCC_4SL	0.692, 0.993, 0.996	B. Hallstedt, O. Kim, Int. J. Mater. Res., 98, 961-69(2007)
+alli	AlLi-11Guo	876.5	FCC_A1+LIQUID+B32_BCC	0.131, 0.237, 0.465	C. Guo, Y. Liang, C. Li, Z. Du, Calphad, 35, 54-65(2011).
+alli	AlLi-11Guo	793.2	B32_BCC+AL2LI3+LIQUID	0.560, 0.600, 0.744	C. Guo, Y. Liang, C. Li, Z. Du, Calphad, 35, 54-65(2011).
+alli	AlLi-11Guo	609.6	AL2LI3+AL4LI9+LIQUID	0.600, 0.692, 0.916	C. Guo, Y. Liang, C. Li, Z. Du, Calphad, 35, 54-65(2011).
+alli	AlLi-11Guo	609.6	AL2LI3+AL4LI9+LIQUID	0.600, 0.692, 0.915	C. Guo, Y. Liang, C. Li, Z. Du, Calphad, 35, 54-65(2011).
+alli	AlLi-11Guo	609.6	AL2LI3+AL4LI9+LIQUID	0.600, 0.692, 0.916	C. Guo, Y. Liang, C. Li, Z. Du, Calphad, 35, 54-65(2011).
+alli	AlLi-11Guo	452.3	AL4LI9+LIQUID+B32_BCC	0.692, 0.993, 0.996	C. Guo, Y. Liang, C. Li, Z. Du, Calphad, 35, 54-65(2011).
+alli	AlLi-11Guo	452.3	AL4LI9+LIQUID+B32_BCC	0.692, 0.993, 0.996	C. Guo, Y. Liang, C. Li, Z. Du, Calphad, 35, 54-65(2011).
+alli	AlLi-11Guo	452.3	AL4LI9+LIQUID+BCC_A2	0.692, 0.993, 0.996	C. Guo, Y. Liang, C. Li, Z. Du, Calphad, 35, 54-65(2011).
+alli	AlLi-20Lon	876.1	FCC_A1+LIQUID+BCC_4SL	0.131, 0.238, 0.456	Z. Long, D. Cui, H. Hu, Z. Li, F. Yin, T. Fan, J. Phase Equilib. Diffus., 41, 623-41(2020).
+alli	AlLi-20Lon	876.1	FCC_4SL+LIQUID+BCC_4SL	0.131, 0.238, 0.456	Z. Long, D. Cui, H. Hu, Z. Li, F. Yin, T. Fan, J. Phase Equilib. Diffus., 41, 623-41(2020).
+alli	AlLi-20Lon	793.0	BCC_4SL+AL2LI3+LIQUID	0.567, 0.600, 0.745	Z. Long, D. Cui, H. Hu, Z. Li, F. Yin, T. Fan, J. Phase Equilib. Diffus., 41, 623-41(2020).
+alli	AlLi-20Lon	609.0	AL2LI3+ALLI2+LIQUID	0.600, 0.652, 0.916	Z. Long, D. Cui, H. Hu, Z. Li, F. Yin, T. Fan, J. Phase Equilib. Diffus., 41, 623-41(2020).
+alli	AlLi-20Lon	609.0	AL2LI3+ALLI2+LIQUID	0.600, 0.652, 0.916	Z. Long, D. Cui, H. Hu, Z. Li, F. Yin, T. Fan, J. Phase Equilib. Diffus., 41, 623-41(2020).
+alli	AlLi-20Lon	545.9	ALLI2+AL4LI9+LIQUID	0.658, 0.692, 0.966	Z. Long, D. Cui, H. Hu, Z. Li, F. Yin, T. Fan, J. Phase Equilib. Diffus., 41, 623-41(2020).
+alli	AlLi-20Lon	545.9	ALLI2+AL4LI9+LIQUID	0.658, 0.692, 0.966	Z. Long, D. Cui, H. Hu, Z. Li, F. Yin, T. Fan, J. Phase Equilib. Diffus., 41, 623-41(2020).
+alli	AlLi-20Lon	452.3	AL4LI9+LIQUID+BCC_4SL	0.692, 0.993, 0.996	Z. Long, D. Cui, H. Hu, Z. Li, F. Yin, T. Fan, J. Phase Equilib. Diffus., 41, 623-41(2020).
+alli	AlLi-20Lon	452.3	AL4LI9+LIQUID+BCC_4SL	0.692, 0.993, 0.996	Z. Long, D. Cui, H. Hu, Z. Li, F. Yin, T. Fan, J. Phase Equilib. Diffus., 41, 623-41(2020).
+alli	AlLi-20Lon	452.3	AL4LI9+LIQUID+BCC_A2	0.692, 0.993, 0.996	Z. Long, D. Cui, H. Hu, Z. Li, F. Yin, T. Fan, J. Phase Equilib. Diffus., 41, 623-41(2020).
+alli	AlLi-23Cui-reg2	873.0	FCC_A1+LIQUID+BCC_4SL	0.138, 0.257, 0.445	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	873.0	FCC_4SL+LIQUID+BCC_4SL	0.138, 0.257, 0.445	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	873.0	FCC_4SL+LIQUID+BCC_4SL	0.138, 0.257, 0.445	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	793.0	BCC_4SL+AL2LI3+LIQUID	0.579, 0.600, 0.758	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	793.0	BCC_4SL+AL2LI3+LIQUID	0.579, 0.600, 0.758	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	610.1	AL2LI3+ALLI2+LIQUID	0.600, 0.651, 0.916	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	610.1	AL2LI3+ALLI2+LIQUID	0.600, 0.651, 0.916	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	541.4	ALLI2+AL4LI9+LIQUID	0.656, 0.692, 0.976	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	541.4	ALLI2+AL4LI9+LIQUID	0.656, 0.692, 0.976	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	454.5	AL4LI9+BCC_4SL+LIQUID	0.692, 0.995, 0.996	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	454.5	AL4LI9+BCC_4SL+LIQUID	0.692, 0.995, 0.996	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg2	454.5	AL4LI9+BCC_A2+LIQUID	0.692, 0.995, 0.996	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	872.8	FCC_A1+LIQUID+BCC_4SL	0.133, 0.254, 0.446	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	872.8	FCC_4SL+LIQUID+BCC_4SL	0.133, 0.254, 0.446	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	872.8	FCC_4SL+LIQUID+BCC_4SL	0.133, 0.254, 0.446	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	793.7	BCC_4SL+AL2LI3+LIQUID	0.579, 0.600, 0.759	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	793.7	BCC_4SL+AL2LI3+LIQUID	0.579, 0.600, 0.759	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	608.6	AL2LI3+ALLI2+LIQUID	0.600, 0.651, 0.916	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	608.6	AL2LI3+ALLI2+LIQUID	0.600, 0.651, 0.916	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	543.2	ALLI2+AL4LI9+LIQUID	0.655, 0.692, 0.973	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	543.2	ALLI2+AL4LI9+LIQUID	0.655, 0.692, 0.973	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	454.9	AL4LI9+BCC_4SL+LIQUID	0.692, 0.994, 0.996	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	454.9	AL4LI9+BCC_4SL+LIQUID	0.692, 0.994, 0.996	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-23Cui-reg3	454.9	AL4LI9+BCC_A2+LIQUID	0.692, 0.994, 0.996	S. Cui, H. Ma, J. Wang, B. Hu, Calphad, 82, 102585(2023).
+alli	AlLi-24Liu	868.8	L12_FCC+LIQUID+ALLI_B32	0.155, 0.256, 0.463	Y. Liu, S. Liu, Y. Du, Calphad, 87, 102752(2024).
+alli	AlLi-24Liu	793.6	ALLI_B32+AL2LI3+LIQUID	0.555, 0.600, 0.775	Y. Liu, S. Liu, Y. Du, Calphad, 87, 102752(2024).
+alli	AlLi-24Liu	607.2	AL2LI3+ALLI2+LIQUID	0.600, 0.640, 0.912	Y. Liu, S. Liu, Y. Du, Calphad, 87, 102752(2024).
+alli	AlLi-24Liu	607.2	AL2LI3+ALLI2+LIQUID	0.600, 0.640, 0.913	Y. Liu, S. Liu, Y. Du, Calphad, 87, 102752(2024).
+alli	AlLi-24Liu	607.2	AL2LI3+ALLI2+LIQUID	0.600, 0.640, 0.912	Y. Liu, S. Liu, Y. Du, Calphad, 87, 102752(2024).
+alli	AlLi-24Liu	542.8	ALLI2+AL4LI9+LIQUID	0.640, 0.692, 0.951	Y. Liu, S. Liu, Y. Du, Calphad, 87, 102752(2024).
+alli	AlLi-24Liu	542.8	ALLI2+AL4LI9+LIQUID	0.640, 0.692, 0.951	Y. Liu, S. Liu, Y. Du, Calphad, 87, 102752(2024).
+alli	AlLi-24Liu	542.8	ALLI2+AL4LI9+LIQUID	0.640, 0.692, 0.951	Y. Liu, S. Liu, Y. Du, Calphad, 87, 102752(2024).
+alli	AlLi-24Liu	447.8	AL4LI9+LIQUID+BCC_A2	0.692, 0.989, 0.999	Y. Liu, S. Liu, Y. Du, Calphad, 87, 102752(2024).
+alli	AlLi-24Liu	447.8	AL4LI9+LIQUID+BCC_A2	0.692, 0.989, 0.999	Y. Liu, S. Liu, Y. Du, Calphad, 87, 102752(2024).
+alli	AlLi-89Sau-LB	868.8	FCC_A1+LIQUID+ALLI_B32	0.155, 0.256, 0.463	N. Saunders, Z. Metallkd., 80, 894-903 (1989)
+alli	AlLi-89Sau-LB	793.6	ALLI_B32+AL2LI3+LIQUID	0.555, 0.600, 0.775	N. Saunders, Z. Metallkd., 80, 894-903 (1989)
+alli	AlLi-89Sau-LB	607.6	AL2LI3+AL4LI9+LIQUID	0.600, 0.692, 0.912	N. Saunders, Z. Metallkd., 80, 894-903 (1989)
+alli	AlLi-89Sau-LB	607.6	AL2LI3+AL4LI9+LIQUID	0.600, 0.692, 0.912	N. Saunders, Z. Metallkd., 80, 894-903 (1989)
+alli	AlLi-89Sau-LB	607.6	AL2LI3+AL4LI9+LIQUID	0.600, 0.692, 0.912	N. Saunders, Z. Metallkd., 80, 894-903 (1989)
+alli	AlLi-89Sau-LB	447.9	AL4LI9+LIQUID+BCC_A2	0.692, 0.989, 0.999	N. Saunders, Z. Metallkd., 80, 894-903 (1989)
+alli	AlLi-89Sau-LB	447.9	AL4LI9+LIQUID+BCC_A2	0.692, 0.989, 0.999	N. Saunders, Z. Metallkd., 80, 894-903 (1989)
