@@ -1,0 +1,3 @@
+T_low	T_high	pairs_below	pairs_above
+570.0	580.0	['B2+B2', 'B2+L12', 'B2+NiAl3', 'L12+fccNi', 'NiAl3+fccAl']	['B2+B2', 'B2+L12', 'B2+NiAl3', 'L12+fccNi']
+870.0	880.0	['B2+B2', 'B2+L12', 'B2+NiAl3', 'L12+fccNi']	['B2+B2', 'B2+L12', 'L12+fccNi']

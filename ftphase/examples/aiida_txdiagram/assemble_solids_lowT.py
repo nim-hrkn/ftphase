@@ -28,13 +28,35 @@ def main():
     ap.add_argument("runs", nargs="+")
     ap.add_argument("--T", nargs=2, type=float, default=[300.0, 700.0])
     ap.add_argument("--step", type=float, default=10.0)
+    ap.add_argument("--system", choices=["alli", "nial", "agcu", "ptrh"], help="take the assembly settings from run_aiida's spec of this system "
+                    "(for re-assembled run folders without a <run>.pk.json, e.g. the *_ti stage-2 folders and agcu_eam_2048)")
+    ap.add_argument("--keep-ti", action="store_true", help="keep calphy solid-TI rows (default: QHA rows only, so that every composition comes from the same method)")
     a = ap.parse_args()
     load_profile("ftphase")
+    from ftphase.assemble import add_configurational_term
     for run in a.runs:
-        rec = json.load(open(os.path.abspath(run) + ".pk.json"))
-        asm = orm.load_node(rec["pk"]).inputs.spec.get_dict().get("assemble", {})
+        pkf = os.path.abspath(run) + ".pk.json"
+        if os.path.exists(pkf):
+            rec = json.load(open(pkf))
+            asm = orm.load_node(rec["pk"]).inputs.spec.get_dict().get("assemble", {})
+        else:
+            import run_aiida
+            asm = run_aiida.SYSTEMS[a.system][2](False, True)["assemble"] if hasattr(run_aiida, "SYSTEMS") else getattr(run_aiida, f"make_spec_{a.system}")(False, True)["assemble"]
         tab = FreeEnergyTable.from_tsv(os.path.join(run, "05_free_energies.tsv"))
         df = tab.df[tab.df.phase != "liquid"].copy()
+        if not a.keep_ti:
+            df = df[~df["method"].astype(str).str.contains("calphy")]
+        # rows without a configurational term (calphy solid cells) get the spec's term, as the WorkChain assembly does
+        for ph, term in (asm.get("config_terms") or {}).items():
+            sub = df[df.phase == ph]
+            if len(sub) and (sub.config_entropy == "none").any() and sub["x"].nunique() > 1:
+                tmp = FreeEnergyTable.from_dataframe(df, tab.meta)
+                if term == "ideal":
+                    tmp = add_configurational_term(tmp, ph, "ideal")
+                else:
+                    n, _, st = term.partition("sublattice:")[2].partition("@")
+                    tmp = add_configurational_term(tmp, ph, "sublattice", site_model=_site_model(n, float(st) if st else None))
+                df = tmp.df
         tab = FreeEnergyTable.from_dataframe(df, dict(tab.meta, stage="solids-only low-T re-assembly"))
         phases = set(tab.df.phase)
         Ts = np.arange(a.T[0], a.T[1] + 1e-6, a.step)

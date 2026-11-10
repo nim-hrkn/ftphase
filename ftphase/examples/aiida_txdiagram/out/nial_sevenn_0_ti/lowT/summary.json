@@ -1,0 +1,44 @@
+{
+ "T_grid": [
+  100.0,
+  890.0,
+  80
+ ],
+ "invariants": [
+  {
+   "T_low": 570.0,
+   "T_high": 580.0,
+   "pairs_below": [
+    "B2+B2",
+    "B2+L12",
+    "B2+Ni2Al3",
+    "L12+fccNi",
+    "Ni2Al3+NiAl3",
+    "NiAl3+fccAl"
+   ],
+   "pairs_above": [
+    "B2+B2",
+    "B2+L12",
+    "B2+Ni2Al3",
+    "L12+fccNi",
+    "Ni2Al3+NiAl3"
+   ]
+  },
+  {
+   "T_low": 870.0,
+   "T_high": 880.0,
+   "pairs_below": [
+    "B2+B2",
+    "B2+L12",
+    "B2+Ni2Al3",
+    "L12+fccNi",
+    "Ni2Al3+NiAl3"
+   ],
+   "pairs_above": [
+    "B2+B2",
+    "B2+L12",
+    "L12+fccNi"
+   ]
+  }
+ ]
+}
