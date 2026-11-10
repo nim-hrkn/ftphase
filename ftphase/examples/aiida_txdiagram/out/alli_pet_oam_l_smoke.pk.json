@@ -1,0 +1,12 @@
+{
+ "pk": 11207,
+ "uuid": "165b45cb-388a-4ef6-b998-2e9cb8fed44d",
+ "name": "alli_pet_oam_l_smoke",
+ "profile": "ftphase",
+ "submitted": "2026-11-07 18:26:11",
+ "gpu": true,
+ "smoke": true,
+ "computer": "mygarden5",
+ "qha_computer": "mygarden5",
+ "mlip": "pet-oam-l"
+}

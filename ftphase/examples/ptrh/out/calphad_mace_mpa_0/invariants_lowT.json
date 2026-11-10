@@ -1,0 +1,25 @@
+{
+ "liquid": "ideal",
+ "T_grid": [
+  100.0,
+  400.0,
+  2.0
+ ],
+ "D022_Tmax_K": 400.0,
+ "D022_x_at_Tmax": [
+  0.155,
+  0.935
+ ],
+ "D022_single_phase_Tmax_K": 400.0,
+ "PTRH_I41AMD_Tmax_K": 214.0,
+ "PTRH_I41AMD_x_at_Tmax": [
+  0.44,
+  0.44
+ ],
+ "PTRH_I41AMD_single_phase_Tmax_K": 214.0,
+ "three_phase_grid": [],
+ "T_m_Pt_grid_K": null,
+ "T_m_Rh_grid_K": null,
+ "fcc+liquid_width_max_x": null,
+ "mapping_invariants": []
+}

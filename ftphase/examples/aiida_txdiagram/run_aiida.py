@@ -109,6 +109,10 @@ MLIPS.update({
     # DPA-4.1-Max-OAM (Matbench: 99M params, MPtrj+OMat24+sAlex, F1 0.913, kappa_SRME 0.090; figshare 70537500 downloaded by the user 2026-11-08,
     # sha256 fb19a96e...; deepmd-kit commit 1ded5d2, torch 2.13 cu132 in env/deepmd41). Same route as DPA4-OMat24: .pt2 frozen on this GPU
     # (env/deepmd41/dpa41_freeze_check.sh), pair_style deepmd through the plugin LAMMPS, calphy-plugin code, QHA code ftphase-qha-deepmd41.
+    # DPA-4.1-Air-OAM (Matbench: 5.1M params, same MPtrj+OMat24+sAlex data as Max, F1 0.902, kappa_SRME 0.129; figshare 70537293 downloaded by the
+    # user 2026-11-11; Max does not fit the 12 GB GPU at 256 atoms). Same route as Max (env/deepmd41, .pt2 frozen on this GPU).
+    "dpa4.1-air-oam": {"potential": os.path.join(_DPA4, "dpa-4.1-air-oam.pt2"), "potential_qha": os.path.join(_DPA4, "dpa-4.1-air-oam.pt2"), "pair_style": "deepmd {potential}", "pair_coeff": "* * Al Li",
+                       "model": "DPA-4.1-Air-OAM (deepmd 1ded5d2, .pt2)", "lmp_gpu": LMP_DEEPMD41, "tag": "_dpa41_air_oam", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-deepmd41", "qha_calculator": "deepmd", "calphy_code": "calphy-plugin", "qha_env": "deepmd41"},
     "dpa4.1-max-oam": {"potential": os.path.join(_DPA4, "dpa-4.1-max-oam.pt2"), "potential_qha": os.path.join(_DPA4, "dpa-4.1-max-oam.pt2"), "pair_style": "deepmd {potential}", "pair_coeff": "* * Al Li",
                        "model": "DPA-4.1-Max-OAM (deepmd 1ded5d2, .pt2)", "lmp_gpu": LMP_DEEPMD41, "tag": "_dpa41_max_oam", "torch": True, "qha_gpu": True, "qha_code": "ftphase-qha-deepmd41", "qha_calculator": "deepmd", "calphy_code": "calphy-plugin", "qha_env": "deepmd41"},
     # the pair_style mace route of pk 4293 (env/lammps-torch, lmp_mace.sh prepends atom_modify map yes), kept for comparison runs
@@ -120,14 +124,40 @@ MLIPS.update({
 POT_AGCU = os.path.join(ROOT, "potentials/agcu/CuAg.eam.alloy")   # Williams, Mishin, Hamilton 2006 (NIST), setfl order Cu Ag
 
 
-def candidates():
+def candidates(li_side: bool = False):
     from ase.build import bulk
     from ase import Atoms
     from ase.spacegroup import crystal
 
     b32 = crystal(["Al", "Li"], [(0, 0, 0), (0.5, 0.5, 0.5)], spacegroup=227, cellpar=[6.37, 6.37, 6.37, 90, 90, 90])
     l12 = Atoms("LiAl3", scaled_positions=[(0, 0, 0), (0.5, 0.5, 0), (0.5, 0, 0.5), (0, 0.5, 0.5)], cell=[4.0, 4.0, 4.0], pbc=True)
-    return {"fcc-Al": (bulk("Al", "fcc", a=4.05, cubic=True), 0.0), "bcc-Li": (bulk("Li", "bcc", a=3.49, cubic=True), 1.0), "B32-AlLi": (b32, 0.5), "L12-Al3Li": (l12, 0.25)}
+    c = {"fcc-Al": (bulk("Al", "fcc", a=4.05, cubic=True), 0.0), "bcc-Li": (bulk("Li", "bcc", a=3.49, cubic=True), 1.0), "B32-AlLi": (b32, 0.5), "L12-Al3Li": (l12, 0.25)}
+    if li_side:   # Li-rich intermetallics of example 6 (user-supplied Materials Project CIFs): Al2Li3 R-3m (15-atom hexagonal cell), Al4Li9 C2/m (26 atoms)
+        from ase.io import read
+        sd = os.path.join(ROOT, "ftphase", "examples", "alli_ace_txdiagram", "structures")
+        c["Al2Li3"] = (read(os.path.join(sd, "mp-16506-Li3Al2.cif")), 0.6)
+        c["Al4Li9"] = (read(os.path.join(sd, "mp-568404-Li9Al4.cif")), 9 / 13)
+    return c
+
+
+def li_side_spec(spec):
+    """Extend the Al-Li spec to 0.5 < x_Li < 1 with solids only (2026-11-11, user request): bcc Li solid solution (32-atom random cells,
+    x_Li 0.75-1.0, 2 configurations, like the fcc series) and the point phases Al2Li3 / Al4Li9; the Li-side liquids are not computed,
+    so the diagram is meaningful only below the Li-side solidus (SGTE: bcc melts at 453 K)."""
+    spec["candidates"].update({"Al2Li3": 0.6, "Al4Li9": 9 / 13})
+    spec["solids"] += [
+        {"phase": "bcc", "kind": "solution", "base": "bcc-Li", "repeat": [2, 2, 4], "x": [0.75, 0.8125, 0.875, 0.9375, 1.0], "n_configs": 2, "series": "random", "seed": 0,
+         "supercell": [2, 2, 2], "mesh": 60.0},
+        {"phase": "Al2Li3", "kind": "point", "base": "Al2Li3", "x": [0.6], "supercell": [2, 2, 1], "mesh": 60.0},
+        {"phase": "Al4Li9", "kind": "point", "base": "Al4Li9", "x": [9 / 13], "supercell": [1, 2, 2], "mesh": 60.0},
+    ]
+    asm = spec["assemble"]
+    asm["fits"]["bcc"] = "poly"; asm["poly_orders"] = {**asm.get("poly_orders", {}), "bcc": 2}
+    asm["config_terms"]["bcc"] = "ideal"
+    asm["sigma"].update({"bcc": 0.002, "Al2Li3": 0.002, "Al4Li9": 0.002})
+    asm["drop_edge_beyond_liquid"] = False
+    asm["title"] = asm["title"].replace("x_Li <= 0.5", "0 <= x_Li <= 1, Li side solids only")
+    return spec
 
 
 def candidates_agcu():
@@ -361,6 +391,7 @@ def main():
     ap.add_argument("--qha-cores", type=int, default=4)
     ap.add_argument("--dry-run", action="store_true", help="build the inputs, print them, do not submit")
     ap.add_argument("--mlip", choices=sorted(MLIPS), default="ace", help="alli only: which potential (ace = AlLi-6gen ACE; grace-fs / grace-1l = GRACE foundation models, lmp_gpugrace)")
+    ap.add_argument("--li-side", action="store_true", help="alli: add the Li side (bcc random series x_Li 0.75-1, Al2Li3, Al4Li9 point phases); use with --solid-only --t-window 300 1100")
     ap.add_argument("--solid-only", action="store_true", help="skip the liquids and assemble the solid phases alone over --T-window (spec assemble.allow_solid_only); name gets _solid")
     ap.add_argument("--T-window", dest="t_window", nargs=2, type=float, default=None, help="assembly T_min T_max for --solid-only (default ptrh: 100 2400)")
     ap.add_argument("--ends-ti", action="store_true", help="ptrh: calphy solid TI (>= 2000 atoms) of the pure fcc end cells, first configuration per x (spec solids_ti with the x filter); name gets _ti")
@@ -375,6 +406,10 @@ def main():
     gpu = not a.no_gpu
     pot_fn, cand_fn, spec_fn, descr = SYSTEMS[a.system]
     spec = spec_fn(a.smoke, gpu)
+    if a.li_side:
+        assert a.system == "alli", "--li-side is for alli"
+        spec = li_side_spec(spec)
+        cand_fn = lambda: candidates(li_side=True)
     name = (a.name or {"alli": "alli_ace", "agcu": "agcu_eam", "nial": "nial_eam", "ptrh": "ptrh"}[a.system]) + ("_smoke" if a.smoke else "")
     use_mlip = a.mlip != "ace"
     if a.system == "ptrh" and not use_mlip:
@@ -408,6 +443,8 @@ def main():
                 spec["qha_device"] = "cpu"
         pot_fn = (lambda f=ml["potential"]: f); lmp_gpu = ml["lmp_gpu"]; pot_qha = ml.get("potential_qha")
         name = (a.name or a.system + ml["tag"]) + ("_smoke" if a.smoke else "")
+    if a.li_side:
+        name += "_liside"
     if a.solid_only:
         spec["assemble"]["allow_solid_only"] = True
         if a.t_window:

@@ -139,3 +139,40 @@ Rh は液相を `liqext`（`mlip_solids_ti.py liqext --liq 1.0:2200:1900`、pk 1
 - 論文 Figs. 9–11（CC BY 4.0）を `papers/s41524-026-02212-9.pdf` p. 7–8 から切り出した：`out/paper_fig9.png`（DFT TDB）、`paper_fig10.png`（−200〜100 °C の MLIP vs DFT）、`paper_fig11.png`（MLIP TDB）、結合 `paper_figs_9_10_11.png`。
 - データベースから描ける Pt–Rh 相図：ORCHID-Diagrams の SGTE 評価 3 件（fcc+液相のみ、不変反応なし）。`orchid_calphad/sgte_diagrams.py` に `ptrh` を追加（`out/sgte_ptrh.png`、`overlay_ptrh.png`：PtRh-98Jac の境界を WorkChain の 1910–2400 K 窓の MLIP 図に重ねた）。低温の規則化はどのデータベースにも無い。
 - `overlay_full.py` → `out/overlay_ptrh_full.png`（図 10d の差し替え、2026-11-10）：縦軸を 100–400 K と 1700–2400 K で切り、上段に SGTE PtRh-98Jac の固液境界と WorkChain の液相窓、下段に論文の表 7 の不変反応（PFP 実線・DFT 破線）とノイズ除去後の固相図（`solid_panels_filtered.py` の規則）と CE+MC の転移温度を重ねた。
+
+## 結果 8: Saengdeejing の方法（CALPHAD 経路）で描いた Pt–Rh 相図（2026-11-11、MACE-MPA-0、ユーザー依頼「Saengdeejing の方法で Pt-Rh の相図を書く。MLIP は Claude に任せる」）
+
+MLIP は MACE-MPA-0 を選んだ（0 K の規則化エネルギーが DFT に最も近く、CE+MC・欠陥セル法の両方の結果がある唯一の MLIP）。論文（Table 6、式 11–15）の手順を pycalphad で再現した：
+
+- `calphad_params.py <run>`（env/ftphase、AiiDA の QHA ノードを読む）→ `out/calphad_<mlip>/params.json`。純元素は SGTE91（`espei.refdata`）。fcc 固溶体は理想混合 + Redlich–Kister で、L_k = a_k + b_k T の a_k を 32 原子乱雑セル（13 組成 × 2 配置）の 0 K 静的エネルギー（`E0_eV_per_atom`）の混合エンタルピーに、b_k を同じセルの調和フォノン自由エネルギー（phonopy、0 K 体積、量子）の過剰分の 300–1000 K の傾きに当てはめた（論文の「SQS の有限温度」に相当）。規則相 PtRh（I4₁/amd）と D0₂₂（PtRh₃ / Pt₃Rh）は 2 副格子 CEF (Pt,Rh)₀.₅(Pt,Rh)₀.₅・(Pt,Rh)₀.₇₅(Pt,Rh)₀.₂₅ で、端成分 Pt:Pt・Rh:Rh は GHSER、混合端成分は Neumann–Kopp 和 + ΔG_f = ΔH_f − TΔS_f（ΔH_f = 化学量論セルの 0 K 生成エネルギー、ΔS_f = 調和 F_vib の生成分の傾き）。液相は SGTE 液相の理想溶体（論文と同じく液相データ無し）。
+- `calphad_tdb.py out/calphad_<mlip> [--model plain|partition] [--T 100 400 --dT 2]`（env/pycalphad）→ TDB、`grid*.tsv.gz`（T–x 格子の相集合と副格子占有）、`invariants*.json`、`diagram*.png`。SGTE 関数は下限を 1 K にして 100–300 K の規則化窓を計算した（298.15 K 以下は SGTE 多項式の外挿；固相はすべて同じ GHSER を使うので固相間の平衡では相殺する）。
+- `calphad_figure.py` → `out/calphad_mace_mpa_0/calphad_vs_hull.png`：基準（SGTE PtRh-98Jac + 論文表 7）、同じ MLIP の凸包経路（工程 01–07 + 低温再組立 + CE+MC）、CALPHAD 経路を並べた（縦軸 100–400 K / 1700–2400 K）。
+
+得られたパラメータ（J/mol-atom）と論文 Table 6 の比較：
+
+| 量 | 論文 PFP | 論文 DFT | MACE-MPA-0（本経路） |
+|---|---|---|---|
+| fcc ⁰L | −8725 + 4.53 T | −5000 + 1.3 T | −6084 + 2.60 T |
+| fcc ¹L | +1.25 T | +3000 | +477 + 0.32 T |
+| fcc ²L | — | — | −226 − 1.19 T |
+| ΔH_f PtRh (eV/atom) / ΔS_f (k_B) | −0.0376 | −0.0236 | −0.0268 / −0.154 |
+| ΔH_f PtRh₃ / ΔS_f | −0.0280 | −0.0200 | −0.0197 / −0.087 |
+| ΔH_f Pt₃Rh / ΔS_f | −0.0235 | −0.0200 | −0.0166 / −0.080 |
+
+相図の不変反応（`invariants_plain_lowT.json`、2 K・0.005 格子 + pycalphad mapping）：
+
+| 反応 | 論文 PFP | 論文 DFT | MACE CALPHAD 経路（本節） | MACE 凸包経路（結果 3・4） | MACE CE+MC（結果 5） |
+|---|---|---|---|---|---|
+| fcc ↔ PtRh (x 0.5) | 258 K | 211 K | 176 K（x 0.46–0.52） | 230 K | 160 K |
+| fcc ↔ PtRh₃ (0.75) | 235 K | 156 K | 146 K（0.75–0.79） | 決まらず | 140 K |
+| fcc ↔ Pt₃Rh (0.25) | 146 K | 不安定 | ≤ 106 K | 決まらず | 100 K |
+| fcc ↔ PtRh + PtRh₃ 共析 | 211 K (x 0.653) | 149 K (0.693) | 135 K（fcc 0.683 / PtRh 0.566 / PtRh₃ 0.747） | — | — |
+| fcc ↔ Pt₃Rh + PtRh 共析 | 146 K (0.258) | — | 106 K（fcc 0.225 / Pt₃Rh 0.224 / PtRh 0.338） | — | — |
+| fcc+液相の最大幅 | 「非常に狭い」 | 同 | Δx 0.045（2170 K）；Pt 2041.5 K・Rh 2237 K は SGTE のまま | 図 10d | — |
+
+読み：
+
+1. **同じ MLIP の入力から論文の方法で組むと、規則化温度は論文の DFT 版（211/156 K）より 30 K 低く、PFP 版（258/235 K）より 80–90 K 低い。** 差の源は 0 K の規則化エネルギー（規則相 − 乱雑 fcc：MACE PtRh −11、PtRh₃ −8、Pt₃Rh −5 meV/atom；論文 PFP ≈ −15/−11/−7、DFT ≈ −11/−10/−10）で、PtRh の MACE と DFT は同じ −11 meV だが MACE の fcc 過剰項の温度係数（⁰L の +2.6 T、振動の過剰エントロピーが負）が fcc を高温で相対的に安定にする分だけ下がる。
+2. **同じ MLIP で経路を変えると 176 K（CALPHAD、Bragg–Williams 型 CEF）、230 K（凸包経路の欠陥セル + 副格子エントロピー）、160 K（CE + 正準 MC、短距離秩序込み）。** 経路差 ±35 K は MLIP 間差（GRACE-2L・NequIP では規則相が出ない）より小さいが、論文の PFP–DFT 差 50 K と同程度。論文の「MLIP と DFT で同程度の相図」という結論は、どの経路でも 0 K 規則化エネルギーが DFT に近い MLIP（MACE-MPA-0、SevenNet-MF-ompa）にだけ成り立つ。
+3. **モデルの落とし穴 2 つ。**（a）論文と同じ「分割なしの 2 副格子 CEF」は、規則相の不規則状態（両副格子の占有が等しい状態）が fcc と別の相として競合する。MACE のパラメータでは 2100–2150 K で fcc の RK 過剰項（+2.6 T で消えていく）と D0₂₂ の不規則状態が数 J/mol 以内で縮退し、pycalphad の mapping が fcc+D0₂₂+液相の偽の 3 相点を返す。`calphad_tdb.py` は副格子占有差 |Δy| < 0.05 の頂点を fcc に付け替えて図を作る（`grid_plain.tsv.gz` の eta 列）。（b）標準の order–disorder 分割（`--model partition`、`DIS_PART FCC_A1`）にすると PtRh は 210–214 K に上がるが、非対称な (Pt,Rh)₀.₇₅(Pt,Rh)₀.₂₅ 相は端成分パラメータだけでは不規則状態が停留点にならず（dE/dη ≠ 0）、D0₂₂ の秩序度が転移なしに連続的に減衰する（|Δy| 0.05 を切るのが 640 K）。Ansara–Dupin 型の拘束付き相互作用パラメータが要る。本節の数値は論文と同じ分割なしモデルの値。
+4. 液相は理想溶体 + SGTE なので固液側は MLIP の情報を含まない（論文も同じ）。MLIP の液相 TI を入れた固液側は図 10d（凸包経路、Pt 1480 K・Rh 1904 K、実験 2041/2237 K）。

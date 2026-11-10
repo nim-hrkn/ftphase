@@ -1,0 +1,7 @@
+{
+ "example": "alli_nequip_oam_s solids-only low-T re-assembly",
+ "fits": "{'fcc': 'poly', 'liquid': 'poly', 'B32': 'spline'}",
+ "hull": "{'min_width': 0.005, 'gap_tol': 2.5}",
+ "T_step": 10.0,
+ "level": "classical"
+}
