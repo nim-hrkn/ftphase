@@ -1,0 +1,18 @@
+{
+"1137": "Bahasa Jepang. Instalasi (termasuk build GPU), kerangka cara pakai, verifikasi, hasil 5 contoh, batasan, sumber",
+"1138": "Versi panjang tentang desain, verifikasi, hasil dan jebakan. Ditautkan dari workflow.html",
+"1139": "Ringkasan untuk skill (tabel modul, keputusan, fakta yang telah diverifikasi)",
+"1140": "Lingkungan conda, build LAMMPS KOKKOS/CUDA dari kode sumber (build.sh)",
+"1141": "Host komputasi CPU. env/ftphase pada path yang sama (LAMMPS versi CPU, grace/fs, calphy, tensorpotential). Disinkronkan dengan <code>ftphase/tools/sync_to_host.sh</code>, dijalankan lewat Slurm (localhost, 64 core)",
+"1142": "PhaseDiagram / ftphase · status per 2026-11-08",
+"1143": "Sistem biner yang dihitung",
+"1144": "MLIP yang dibandingkan",
+"1145": "Pengujian",
+"1146": "Perbandingan dengan solusi analitik + profil AiiDA sementara",
+"1147": "Host komputasi",
+"1148": "2 host GPU, 2 host CPU, Slurm",
+"1149": "<strong>Cara membaca “liquid+liquid” dan “B2+B2”.</strong>Interval yang menampilkan nama fasa yang sama berdampingan adalah bagian dari satu kurva G(x) yang secara lokal cembung ke atas, yang dipungut oleh selubung cembung bawah tahap 06 sebagai “koeksistensi fasa yang sama pada komposisi x_a dan x_b” (yaitu kriteria celah miskibilitas itu sendiri). Fasa cair di-fit menjadi satu kurva dari hasil calphy pada 11 komposisi dengan campuran ideal + Redlich–Kister 4 suku, jadi ini bukan perbandingan antara model fasa cair yang berbeda. Jika celahnya nyata, batasnya akan bergeser pada propagasi galat Monte Carlo; di sini batasnya terkunci dengan simpangan baku 0, sehingga dinilai sebagai kelengkungan yang dihasilkan fit karena mengikuti derau 1–2 meV/atom pada sampel. REPORT.md mencantumkannya secara terpisah sebagai “Same-phase segments”. Jika lebarnya melebihi 0.1 dan tetap ada setelah titik komposisi ditambah, perlakukan sebagai fisika. B2+B2 pada tahap ke-3 Ni–Al disebabkan oleh titik puncak (cusp) model subkisi dan hilang pada model cacat termal tahap ke-4 (bagian 5).",
+"1150": "Dengan satu GPU, job berjalan secara serial, sehingga throughput total kira-kira sama dengan 8 core CPU (4 rank × 2 job bersamaan). Keuntungannya adalah waktu tunggu per job yang lebih singkat dan CPU dapat dibebaskan untuk QHA. calphy mengembalikan galat 0 jika <code>n_iterations: 1</code>, sehingga dalam praktik gunakan 3 iterasi atau lebih dan teruskan <code>G_err</code> ke <code>sensitivity</code>.",
+"1151": "MLIP → energi bebas → kesetimbangan fasa / <a href=\"workflow.svg\" data-i18n=\"1131\">Buka gambar SVG</a>",
+"1152": "Sumber: calphy (Menon et al., Phys. Rev. Mater. 5, 103801, 2021), phonopy (Togo 2023), icet (Ångqvist et al. 2019), pycalphad (Otis &amp; Liu 2017), LAMMPS KOKKOS (Thompson et al. 2022); potensial ACE Al–Li berasal dari distribusi pyiron potentials-workshop-2022. Semua angka adalah hasil yang dijalankan pada host komputasi proyek ini (mygarden5, mygarden6, mygardenx1, mygardenx2). Nilai eksperimen Al–Li menurut Okamoto 2012 (J. Phase Equilib. Diffus. 33, 500, Fig. 1): eutektik 875 K, x_Li ≈ 0.24, titik leleh Al 933.5 K. Akurasi MLIP fondasi diambil dari Matbench Discovery dan dokumentasi resmi SevenNet (diakses 2026-10-29). Suhu reaksi invarian dan titik interior daerah fasa dari literatur berasal dari ORCHID v2026.10 (Arróyave, Saal, Shin, arXiv:2610.41164; Zenodo 10.5281/zenodo.23735569, 23735996, 23735970, 23735859, 23735788, CC BY 4.0). Diagram fasa CALPHAD yang telah diases adalah SGTE binary collection (B. Hallstedt, Calphad 89 (2025) 102833, CC BY 4.0) yang dihitung oleh ORCHID-Diagrams dengan pycalphad. TDB Pt–Rh berbasis MLIP dari A. Saengdeejing et al., npj Comput. Mater. 12, 362 (2026)."
+}

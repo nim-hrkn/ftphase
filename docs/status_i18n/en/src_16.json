@@ -1,0 +1,18 @@
+{
+"1137": "Japanese. Installation (including the GPU build), the skeleton of the usage, verification, results of the 5 worked examples, limitations, sources",
+"1138": "Long version of design, verification, results and pitfalls. Linked from workflow.html",
+"1139": "Summary for the skill (module table, decisions, verified facts)",
+"1140": "conda environments, LAMMPS KOKKOS/CUDA source build (build.sh)",
+"1141": "CPU compute host. env/ftphase at the same path (CPU LAMMPS, grace/fs, calphy, tensorpotential). Synced with <code>ftphase/tools/sync_to_host.sh</code>, run under Slurm (localhost, 64 cores)",
+"1142": "PhaseDiagram / ftphase · as of 2026-11-08",
+"1143": "Binary systems computed",
+"1144": "MLIPs compared",
+"1145": "Tests",
+"1146": "Comparison with analytic solutions + temporary AiiDA profile",
+"1147": "Compute hosts",
+"1148": "2 GPU hosts, 2 CPU hosts, Slurm",
+"1149": "<strong>How to read \"liquid+liquid\" and \"B2+B2\".</strong> A segment in which the same phase name appears twice is a locally convex-upward part of a single G(x) curve that the lower convex hull of stage 06 picked up as \"coexistence of the same phase at compositions x_a and x_b\" (which is exactly the miscibility-gap criterion). The liquid is fitted as one curve, ideal mixing + 4-term Redlich–Kister, through the calphy results at 11 compositions; no alternative liquid models were compared. A real gap would move its boundaries under the Monte Carlo error propagation, but here they stay fixed with standard deviation 0, so they are judged to be curvature that the fit followed from the 1–2 meV/atom noise of the samples. REPORT.md lists them separately as \"Same-phase segments\". Treat them as physics only if the width exceeds 0.1 and they survive adding composition points. The B2+B2 of Ni–Al stage 3 was caused by the cusp of the sublattice model and disappeared with the thermal-defect model of stage 4 (section 5).",
+"1150": "With a single GPU the jobs run serially, so the total throughput is about the same as 8 CPU cores (4 ranks × 2 jobs concurrently). The benefits are a shorter wait per job and freeing the CPUs for QHA. calphy returns an error of 0 with <code>n_iterations: 1</code>, so in practice use 3 or more iterations and pass <code>G_err</code> to <code>sensitivity</code>.",
+"1151": "MLIP → free energy → phase equilibrium ／ <a href=\"workflow.svg\" data-i18n=\"1131\">Open the SVG figure</a>",
+"1152": "Sources: calphy (Menon et al., Phys. Rev. Mater. 5, 103801, 2021), phonopy (Togo 2023), icet (Ångqvist et al. 2019), pycalphad (Otis &amp; Liu 2017), LAMMPS KOKKOS (Thompson et al. 2022); the ACE Al–Li potential is the one distributed with the pyiron potentials-workshop-2022. All numbers are results computed on this project's compute hosts (mygarden5/6, mygardenx1/x2). Experimental Al–Li values are from Okamoto 2012 (J. Phase Equilib. Diffus. 33, 500, Fig. 1): eutectic 875 K, x_Li ≈ 0.24, Al melting point 933.5 K. The accuracy of the foundation MLIPs is from Matbench Discovery and the official SevenNet documentation (accessed 2026-10-29). Literature invariant-reaction temperatures and interior points of phase regions are from ORCHID v2026.10 (Arróyave, Saal, Shin, arXiv:2610.41164; Zenodo 10.5281/zenodo.23735569, 23735996, 23735970, 23735859, 23735788, CC BY 4.0). The assessed CALPHAD phase diagrams are the SGTE binary collection (B. Hallstedt, Calphad 89 (2025) 102833, CC BY 4.0) as computed with pycalphad by ORCHID-Diagrams. The MLIP-based Pt–Rh TDB is from A. Saengdeejing et al., npj Comput. Mater. 12, 362 (2026)."
+}
