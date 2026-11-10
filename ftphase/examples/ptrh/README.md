@@ -111,7 +111,7 @@ icet で fcc 配置 631 個（1–8 原子）を列挙し、MLIP 環境のサブ
 CE の 0 K 規則化エネルギー（規則相 − CE 乱雑）: MACE −4.2 / −7.4 / −6.5、SevenNet-MF −5.2 / −7.1 / −6.2 meV/atom（Pt₃Rh / PtRh / PtRh₃）。
 読み: (1) 両 MLIP とも PtRh の規則化は 160–180 K で、論文の DFT-CEF 値 210 K・PFP 258 K より 30–100 K 低い。規則化エネルギーが DFT の −11 より 3–4 meV 浅いことと、CEF（Bragg–Williams）が MC より T_c を高く見積もること（MACE 同士で CEF 230 K vs MC 160 K、+70 K）の両方が効く。文献 MC（Pohl & Albe、別の bond-order ポテンシャル）238 K との差も主に規則化エネルギーの差。(2) A₃B 型は欠陥セル法では決まらなかったが CE+MC では 120–140 K に明瞭なピークが出る。配置ノイズの無い ECI ベースの方法が、規則化エネルギー 5 meV 級の系では唯一の実用的な経路。(3) これは AiiDA 外の計算（ローカル CPU、約 1 時間 + MC 35 分/MLIP）。
 
-## 進行中（2026-11-06 21:10 投入、11-08 更新）
+## 進行中（2026-11-10 時点: なし。Pt–Rh の計算はすべて終了）
 
 - 融点側 + 固相だけの組立を WorkChain 内で: `run_aiida.py --system ptrh --mlip <m> --computer mygarden6 --solid-only --ends-ti`（11-07/08 に実装: `assemble.allow_solid_only` で液相の無い温度も固相だけの凸包として格子に残す、`solids_ti` に `x` / `keys` / `one_per_x` の絞り込み、`skip_liquids`）。単独投入していた端成分 TI 6 本は kill して WorkChain に戻した。smoke pk 11014 で組立経路を確認（TI の smoke は 256 原子・1900 K で融けて exit 310、本番は 2,048 原子・1700 K 開始）。本番: MACE pk 11345、GRACE-2L 11358、NequIP 11372（`ptrh_<mlip>_solid_ti`、組立 100–2400 K）。工程 01 の緩和が前回と僅かに違う構造を返したため QHA はキャッシュに当たらず再計算（MACE は mygardenx2 の CPU、他は mygarden6 の GPU）。
 - 規則化温度（短距離秩序込み）: `ce_mc.py --mlip mace-mpa-0|sevenn-mf-ompa`（icet で fcc 配置 631 個を列挙 → MLIP 環境のサブプロセスで緩和 → CE（ARDR）→ 8³ セルの正準 MC を 500→40 K 冷却、C_v ピークで T_c）。`out_ce_<mlip>/`。
@@ -126,7 +126,9 @@ CE の 0 K 規則化エネルギー（規則相 − CE 乱雑）: MACE −4.2 / 
 | 融点（TI 固相 × 液相の交点、2026-11-09） | 実験 | GRACE-2L | NequIP-OAM-M | MACE-MPA-0 |
 |---|---|---|---|---|
 | Rh (x = 1) | 2237 K | 2032 K | 2050 K | 1904 K |
-| Pt (x = 0) | 2041 K | ≈ 1490 K（TI 1400–1700 K × 液相 1500 K まで：交点は 1500 K の直下、外挿 1486） | < 1700（TI 1700–1750 K、外挿 ≈ 1390；1400–1700 K の TI 実行中） | < 1700（TI 1700–1850 K、外挿 ≈ 1480；1400–1700 K の TI 実行中） |
+| Pt (x = 0) | 2041 K | ≈ 1490 K | ≈ 1420 K | ≈ 1480 K |
+
+Pt は 3 MLIP とも TI（1400–1700 K）と液相（1500 K まで）の交点が 1500 K のすぐ下で、値は 1500–1700 K の重なりからの短い外挿（±30 K 程度）。実験より 550–620 K 低く、Rh（190–330 K 低い）よりずれが大きい。液相を 1500 K より下へ延ばしても結論は変わらないので打ち切り。
 | QHA − TI, fcc Rh, 2025–2050 K | — | −37 meV/atom | −78 | −100 |
 
 Rh は液相を `liqext`（`mlip_solids_ti.py liqext --liq 1.0:2200:1900`、pk 12535/12537/12539）で 1900 K まで延ばし、`assemble`（`merge_sweeps` で接ぎ足し、重なり部のずれ 0.1–0.6 meV/atom）→ `melt` で直接の交点（`out/mlip_compare_ptrh/melting_ti.tsv`、`out/ptrh_<mlip>_ti/`）。3 つの MLIP とも Rh を 190–330 K 低く、Pt も 60 K 以上低く見積もる。論文の図 11（PFP の TDB、液相は理想溶体）と比べる土台はこれで揃うが、PFP 自身の融点は論文に数値が無い。Pt は上限 2150・1980 K（3 MLIP とも融解）、NequIP は 1850 K でも融解。1700–1850 K（GRACE-2L 12554、MACE 12601）、1700–1750 K（NequIP 12708）、1400–1700 K（GRACE-2L 12714、MACE 12732、NequIP 12737）の掃引と、Pt 液相の 1700 K（12561/12563/12565）・1500 K（12716/12718/12720）までの延長で交点を追った。`assemble` は複数段の延長を T_hi の高い順に接ぎ足すように直した（2026-11-10）。QHA − TI は fcc Pt で 1550–1775 K に −70〜−87 meV/atom。

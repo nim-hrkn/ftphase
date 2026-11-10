@@ -1,13 +1,13 @@
 # NequIP-OAM-M 0.1 Pt-Rh, 0 GPa: QHA solids + calphy liquid [AiiDA] (AiiDA workflow ftphase.txdiagram)
 
-Assembled 2026-11-10 17:45:16.  Classical level, 0.0 GPa, model NequIP-OAM-M 0.1 (ML-IAP, OpenEquivariance).
+Assembled 2026-11-10 22:12:46.  Classical level, 0.0 GPa, model NequIP-OAM-M 0.1 (ML-IAP, OpenEquivariance).
 
 ## Inputs
 
 * solids (QHA, lowered to the classical level): 42 cells used, missing []
 * liquids (calphy reversible scaling): 7 runs used, missing []; runs per x {'0.0000': 1, '0.1992': 1, '0.3984': 1, '0.5000': 1, '0.6016': 1, '0.8008': 1, '1.0000': 1}
 * configurational terms: {'fcc': 'ideal', 'PtRh': 'sublattice:b32_antisite', 'PtRh3': 'sublattice:b32_antisite@0.75', 'Pt3Rh': 'sublattice:b32_antisite@0.25'}; fits: {'fcc': 'rk', 'liquid': 'rk', 'PtRh': 'poly', 'PtRh3': 'poly', 'Pt3Rh': 'poly'} (poly = excess over analytic ideal mixing)
-* temperature grid: [1910.0, 2400.0, 50] (K, min, max, points); sigma (eV/atom): {'PtRh3': 0.002, 'fcc': 0.002, 'Pt3Rh': 0.002, 'liquid': 0.0014, 'PtRh': 0.002}
+* temperature grid: [1910.0, 2400.0, 50] (K, min, max, points); sigma (eV/atom): {'fcc': 0.002, 'liquid': 0.0014, 'Pt3Rh': 0.002, 'PtRh3': 0.002, 'PtRh': 0.002}
 
 ## Key numbers
 
@@ -22,13 +22,13 @@ Assembled 2026-11-10 17:45:16.  Classical level, 0.0 GPa, model NequIP-OAM-M 0.1
 
 ## Error bands (Monte Carlo over per-phase offsets)
 
-* 1910 K fcc+liquid: x_a = 0.031 +/- 0.000, x_b = 0.077 +/- 0.017 (23/30 samples)
-* 1910 K liquid+fcc: x_a = 0.103 +/- 0.142, x_b = 0.193 +/- 0.247 (30/30 samples)
-* 1910 K liquid+fcc#1: x_a = 0.307 +/- 0.009, x_b = 0.559 +/- 0.008 (23/30 samples)
+* 1910 K fcc+liquid: x_a = 0.031 +/- 0.000, x_b = 0.072 +/- 0.016 (26/30 samples)
+* 1910 K liquid+fcc: x_a = 0.062 +/- 0.116, x_b = 0.121 +/- 0.201 (30/30 samples)
+* 1910 K liquid+fcc#1: x_a = 0.309 +/- 0.008, x_b = 0.561 +/- 0.007 (26/30 samples)
 
 ## QHA (classical level) minus calphy solid TI per cell, meV/atom (anharmonic error of the quasi-harmonic route)
 
-* s00_fcc: 1700 K -75.6, 1725 K -77.4, 1750 K -78.1
+* s00_fcc: 1400 K -61.2, 1550 K -67.9, 1700 K -72.6
 * s23_fcc: 1700 K -53.2, 2025 K -78.4, 2350 K -103.3
 * s24_fcc: 1700 K -53.2, 2025 K -78.4, 2350 K -103.3
 
