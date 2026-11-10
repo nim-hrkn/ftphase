@@ -24,6 +24,15 @@ unset PYTHONPATH PYTHONHOME LD_LIBRARY_PATH
 # the pip nvidia-cuda-nvcc 13.2.86 failed CMake's compiler identification (its ptxas rejected the PTX: "Unsupported .version 9.5; current version is '9.2'")
 #   mamba install -p ./env/deepmd41 -c conda-forge "cuda-nvcc=13.2" "cuda-cudart-dev=13.2" "cuda-cccl=13.2" "cuda-nvrtc-dev=13.2" "cuda-version=13.2"
 test -x $E/bin/nvcc
+# torch's TorchConfig uses the legacy FindCUDA module, which wants headers under <root>/include; conda puts them in targets/x86_64-linux/include
+mkdir -p $E/include; for f in $E/targets/x86_64-linux/include/*; do b=$(basename $f); [ -e $E/include/$b ] || ln -s ../targets/x86_64-linux/include/$b $E/include/$b; done
+export CUDA_PATH=$E
+# CUDA libraries the ops link: libcublas-dev (CUDA::cublasLt) and libcufft-dev (CUDA::cufft) from conda-forge, same cuda-version=13.2
+#   mamba install -p ./env/deepmd41 -c conda-forge libcublas-dev libcufft-dev "cuda-version=13.2"
+test -f $E/targets/x86_64-linux/include/cublas_v2.h && test -f $E/targets/x86_64-linux/include/cufft.h
+# MPI: use the pip mpich (5.0.2, installed with lammps[mpi]) instead of the Intel oneAPI MPI that FindMPI picked up via I_MPI_ROOT
+$PIP install mpich "lammps[mpi]~=2025.7.22.2.0"
+unset I_MPI_ROOT MPI_HOME; export MPI_HOME=$E MPI_C_COMPILER=$E/bin/mpicc MPI_CXX_COMPILER=$E/bin/mpicxx
 export CUDAToolkit_ROOT=$E CUDA_HOME=$E
 export PATH=$E/bin:/usr/bin:/bin
 export CC=/usr/bin/gcc CXX=/usr/bin/g++ CUDACXX=$E/bin/nvcc
