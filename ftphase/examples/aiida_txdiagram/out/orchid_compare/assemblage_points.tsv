@@ -89,6 +89,20 @@ alli_ace_m6	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_x		med
 alli_ace_m6	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	liquid	differ	T>880 (no tie-lines left)		medium
 alli_ace_m6	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T>880 (no tie-lines left)		medium
 alli_ace_m6	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_dpa4_plus_omat24	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
+alli_dpa4_plus_omat24	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
+alli_dpa4_plus_omat24	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
+alli_dpa4_plus_omat24	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32			outside_T	Al2Li3	medium
+alli_dpa4_plus_omat24	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid			outside_T	Al4Li9	high
+alli_dpa4_plus_omat24	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
+alli_dpa4_plus_omat24	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc			outside_T		medium
+alli_dpa4_plus_omat24	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid			outside_T	Al2Li3	medium
+alli_dpa4_plus_omat24	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_dpa4_plus_omat24	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32+fcc	differ	T_grid=730		high
+alli_dpa4_plus_omat24	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_x		medium
+alli_dpa4_plus_omat24	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc+liquid	exact	T_grid=890		medium
+alli_dpa4_plus_omat24	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T_grid=910		medium
+alli_dpa4_plus_omat24	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
 alli_grace_1l	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_grace_1l	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_grace_1l	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high

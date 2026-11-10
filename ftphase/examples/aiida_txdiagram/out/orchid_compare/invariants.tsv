@@ -23,6 +23,8 @@ alli_ace_b32ti	AL-LI	840.0	850.0	melting	B32+liquid	"{""liquid"": 0.476, ""B32""
 alli_ace_m6	AL-LI	760.0	770.0	reaction	B32+fcc+liquid	"{""fcc"": 0.164, ""B32"": 0.483, ""liquid"": 0.313}"	4	872.0	863.0	875.0	-107.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
 alli_ace_m6	AL-LI	790.0	800.0	artefact	fcc+fcc	"{""fcc"": 0.068}"	0					0		null	same-phase segment appears/vanishes (fit noise), not compared
 alli_ace_m6	AL-LI	850.0	860.0	melting	B32+liquid	"{""liquid"": 0.494, ""B32"": 0.511}"	1	970.0	970.0	970.0	-115.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
+alli_dpa4_plus_omat24	AL-LI	750.0	760.0	reaction	B32+fcc+liquid	"{""fcc"": 0.177, ""B32"": 0.522, ""liquid"": 0.383}"	4	872.0	863.0	875.0	-117.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
+alli_dpa4_plus_omat24	AL-LI	810.0	820.0	melting	B32+liquid	"{""liquid"": 0.497, ""B32"": 0.562}"	1	970.0	970.0	970.0	-155.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
 alli_grace_1l	AL-LI	720.0	730.0	reaction	B32+fcc+liquid	"{""fcc"": 0.201, ""B32"": 0.476, ""liquid"": 0.334}"	4	872.0	863.0	875.0	-147.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched
 alli_grace_1l	AL-LI	810.0	820.0	melting	B32+liquid	"{""liquid"": 0.489, ""B32"": 0.506}"	1	970.0	970.0	970.0	-155.0	3	975.0	"{""L"": 0.49, ""AlLi"": 0.49}"	matched
 alli_grace_2l	AL-LI	750.0	760.0	reaction	B32+fcc+liquid	"{""fcc"": 0.182, ""B32"": 0.497, ""liquid"": 0.363}"	4	872.0	863.0	875.0	-117.0	4	874.5	"{""L"": 0.256, ""fcc(Al)"": 0.138, ""AlLi"": 0.5}"	matched

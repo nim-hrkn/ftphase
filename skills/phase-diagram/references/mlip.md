@@ -54,6 +54,7 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 | MatterSim-v1-5M | −81 / −178 | 16.37 / 20.11 | 3.58 | 996 | 720–730 | 0.250（fcc 標本の端） |
 | NequIP-OAM-M | −95 / −179 | 16.38 / 20.04 | 3.59 | 931 | 800–810 | 0.151 |
 | NequIP-OAM-S | −102 / −194 | 16.63 / 20.64 | 4.86 | 融けない（fcc QHA 900 K 打ち切り） | 840–850（B32 の横に液相） | 0.250（fcc 標本の端） |
+| DPA4-Plus-OMat24 v20260805（deepmd-kit 3.2.0、.pt2、OMat24 のみ） | −90 / −171 | 16.43 / 20.06 | 3.39 | 989 | 750–760 | 0.162 |
 | 実験 / DFT | ≈−100 / ≈−190（DFT） | 16.6 / 21.3 | — | 933.5 | 875（共晶、x ≈ 0.24） | ≈0.12 |
 
 - 0 K の生成エネルギーと体積は GRACE-FS 以外ほぼ一致（差 ≤ 20 meV/atom）。相図の差は振動（03A）と液相（03B）から来る。
@@ -79,6 +80,9 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 | MACE-MPA-0（float32、ML-IAP + cuEquivariance、本番 pk 8481） | — | 76 分 | 8 |
 | MatterSim-v1-5M（ML-IAP） | — | 133 分 | 14 |
 | NequIP-OAM-S（ML-IAP + OEQ） | — | 20.5 分 | 2.2 |
+| PET-OMat-S / PET-OAM-L（metatomic/kk） | — | 152 / 585 分 | 16 / 62 |
+| DPA-3.1-3M MPtrj（deepmd plugin、LAMMPS は CPU） | — | 548 分 | 58 |
+| DPA4-Air / DPA4-Plus-OMat24（deepmd plugin、.pt2） | — | 219 / 477 分 | 23 / 50 |
 
 - 比較計算の液相も Slurm の `--gres=gpu:1` で GPU を専有していたので、比較計算の実行時間は単独実行と 10 % 以内で一致する（測り直す必要は無い）。QHA は計算した装置が MLIP ごとに違ったので、比べるなら装置を揃える。
 - conda 版 LAMMPS の Kokkos は古い GPU 向け（CC 5.0）にビルドされているので、ACE と GRACE-FS の QHA は CPU の方が速い。
@@ -173,3 +177,10 @@ SevenNet の有限差分（h = 0.01 Å）の力誤差 2.5 meV/Å は 1 評価あ
 - `orchid_compare.py`（引数無しで `out/*/07_two_phase_regions.tsv` を全部）が各 run の不変反応を同じ相の組の文献値の中央値と突き合わせ、論文と同じ再現率 S と dT を `out/orchid_compare/REPORT.md` に書く。相名は TDB ごとに違うので `PHASE_MAP` で正規化。
 - Al–Li 共晶（実験 872 K）との差 dT (K)：ACE −107、GRACE-1L −147、GRACE-2L −117、GRACE-FS −127、MACE-MPA-0 −87（ML-IAP 版；旧 −97）、NequIP-OAM-M −67、SevenNet-MF-ompa −17、SevenNet-0 +63、MatterSim-5M −147、NequIP-OAM-S +53（920–930 K の B32+fcc+液相で、fcc 側は QHA 打ち切りの外挿なので信用しない）、MatterSim-1M は格子下限より下。
 - CALPHAD の参照は ORCHID-Diagrams の SGTE 評価（`ftphase/examples/orchid_calphad/sgte_diagrams.py`）。ESPEI で ORCHID のデータだけから fit する経路は Li 側が拘束されない（詳細は CLAUDE.md と `orchid_calphad/README.md`）。
+
+## PET・DPA-3・DPA-4 の経路（2026-11-06〜10、`env/metatomic`、`env/deepmd`、`env/deepmd32`、`env/deepmd41` の README）
+
+- PET（lab-cosmo/upet）：conda `lammps-metatomic`（4Jul2026、KOKKOS、`metatomic/kk`・`hybrid/scaled/kk`・`ufm` あり）＋ `mtt export`。`pair_style metatomic` を `read_data` より前に出すとセグフォルト → calphy は `lmp_metatomic.sh`（pair_style を read_data の後ろへ移す）を使う。PET-OAM は L/XL のみ。LAMMPS = ASE。PET-OAM-L は 585 分/液相で中止（ユーザー判断）。
+- DPA-3.1-3M-FT（Matbench）：HF の .pth は非公開 dev 版で `border_op` 無しに freeze されており LAMMPS で動かない（convert-backend も `use_torch_embed` 未知で不可）。公開の事前学習 DPA-3.1-3M の MPtrj 枝を 3.1.3 で freeze すれば動く（548 分/液相）。中止。
+- DPA4（SeZM）：TorchScript でなく AOTInductor `.pt2`（実行 GPU で freeze、`DP_TRITON_INFER=2`、`CUDA_HOME` に nvcc と CCCL の `nv/target` が要る）。`pair_style deepmd X.pt2` は LAMMPS を CPU に置きモデルだけ GPU（`atom_modify map yes` 必須、ラッパーが付加）。pip 3.2.0 の plugin は `libcudart.so.12` を dlopen する（`nvidia-cuda-runtime-cu12`）。calphy の preflight は plugin スタイルを見られない → code `calphy-plugin`（`CALPHY_SKIP_PREFLIGHT=1`）。デーモンの `LD_LIBRARY_PATH` に oneAPI があると deepmd の MPI 読み込みが落ちる → runner が再実行で外す。HF の DPA4-Plus/Air-OMat24（3.2.0 製）は使えた；Matbench の DPA-4.1-OAM は figshare 専用（この計算機は 403；ユーザーがブラウザで取得）で deepmd-kit git 1ded5d2 のソースビルドが要る（`env/deepmd41/build.sh`：TF ヘッダ必須、conda CUDA 13.2）。
+- 結果（Al–Li、DPA4-Plus-OMat24、pk 12176）：Al 989 K、共晶 750–760 K、固溶限 0.162、S(300 K) 3.39 → GRACE-2L-OMAT（922 K、750–760 K、0.168）と近い。
