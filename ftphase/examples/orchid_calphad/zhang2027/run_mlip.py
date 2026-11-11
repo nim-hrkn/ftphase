@@ -9,6 +9,29 @@ os.environ.setdefault("MPLBACKEND", "Agg")
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE, "benchmark")); sys.path.insert(0, HERE)
 from dft import DFTCompound          # noqa: E402  (deposit modules; mlip.py imports `dft` by its bare name)
 from mlip import calculate_with_mlip  # noqa: E402
+# the deposit's driver draws a band structure through seekpath after the phonon run; spglib's Niggli reduction fails for a few relaxed
+# low-symmetry SQS cells (MACE Mo8Rh24) and would lose the whole structure, so the band-structure step is made non-fatal (mesh/free energy unaffected)
+import phonopy  # noqa: E402
+_auto_band, _plot_band = phonopy.Phonopy.auto_band_structure, phonopy.Phonopy.plot_band_structure
+
+
+def _safe_auto_band(self, *a, **k):
+    try:
+        return _auto_band(self, *a, **k)
+    except Exception as e:  # noqa: BLE001
+        print("band structure skipped:", str(e)[:80], flush=True); self._band_skipped = True
+
+
+class _NoFig:
+    def savefig(self, *a, **k):
+        pass
+
+
+def _safe_plot_band(self, *a, **k):
+    return _NoFig() if getattr(self, "_band_skipped", False) else _plot_band(self, *a, **k)
+
+
+phonopy.Phonopy.auto_band_structure, phonopy.Phonopy.plot_band_structure = _safe_auto_band, _safe_plot_band
 
 
 def make_calculator(kind, model, device):

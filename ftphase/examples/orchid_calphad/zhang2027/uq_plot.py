@@ -38,7 +38,9 @@ def main():
     cmap = plt.get_cmap("Blues"); k = 0
     comps = [p for p in phases if p not in sol]
     for p in sorted(comps, key=lambda q: xcomp.get(q, float(np.argmax(z[q].max(axis=0))) * x[1])):
-        m = z[p]; xc = xcomp.get(p, x[int(np.argmax(m.max(axis=0)))]); prob = m.max(axis=1)   # P(phase present somewhere at T) = P(stable at T) for a point compound
+        m = z[p]; xc = xcomp.get(p, x[int(np.argmax(m.max(axis=0)))]); prob = m.max(axis=1)
+        if m.max() <= 0 and p not in xcomp:
+            continue   # P(phase present somewhere at T) = P(stable at T) for a point compound
         segs = [[(xc, T[i]), (xc, T[i + 1])] for i in range(nT - 1)]
         lc = LineCollection(segs, colors=cmap(0.15 + 0.85 * prob[:-1]), linewidths=4); ax.add_collection(lc)
         ax.text(xc, T[-1] - (0.04 + 0.055 * (k % 5)) * (T[-1] - T[0]), f"{p}\n{P.get(p, 0):.2f}", fontsize=6.5, ha="center", va="top",
