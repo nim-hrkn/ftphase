@@ -1,0 +1,27 @@
+pk	label	state	exit	remote_workdir
+15656	prepare_cells	finished	0	
+15691	qha s00_fcc fcc x=0.0000	finished	0	/home/kino/aiida_run/ftphase/13/c6/f8da-a7cc-4f91-94d3-3fe1ba2b1d7f
+15693	qha s01_fcc fcc x=0.0625	finished	0	/home/kino/aiida_run/ftphase/c2/0d/66d2-9e05-4c59-836c-f3b489f840a3
+15695	qha s02_fcc fcc x=0.0625	finished	0	/home/kino/aiida_run/ftphase/34/2a/853e-7b46-414d-b103-d63f7f2ece1f
+15697	qha s03_fcc fcc x=0.1250	finished	0	/home/kino/aiida_run/ftphase/52/38/9108-32d6-4512-80e7-99f43cd4f320
+15699	qha s04_fcc fcc x=0.1250	finished	0	/home/kino/aiida_run/ftphase/7a/d7/f377-7c55-4f98-a1b2-324ee58dd2c0
+15701	qha s05_fcc fcc x=0.1875	finished	0	/home/kino/aiida_run/ftphase/b5/de/1d49-b122-42cc-a75a-37856249ade3
+15703	qha s06_fcc fcc x=0.1875	finished	0	/home/kino/aiida_run/ftphase/a8/64/2f42-93c2-40cd-8c64-9f28a86560e6
+15705	qha s07_fcc fcc x=0.2500	finished	0	/home/kino/aiida_run/ftphase/57/fc/e7ea-c027-44c6-91c8-159db17642a1
+15707	qha s08_fcc fcc x=0.2500	finished	0	/home/kino/aiida_run/ftphase/5f/5e/4b5e-c30a-4a68-ac0b-a351c8ee8357
+15709	qha s09_Al3Li Al3Li x=0.2500	finished	0	/home/kino/aiida_run/ftphase/91/33/b9d8-38c0-4096-a8ba-cf334008f4f3
+15711	qha s10_B32 B32 x=0.5000	finished	0	/home/kino/aiida_run/ftphase/63/48/ea33-eda5-4e18-96d8-20d37bd4fd49
+15713	qha s11_B32 B32 x=0.4375	finished	0	/home/kino/aiida_run/ftphase/c5/ea/7354-b004-46c8-8d1d-bee5b60cfdb0
+15715	qha s12_B32 B32 x=0.5625	finished	0	/home/kino/aiida_run/ftphase/15/1c/d516-572c-46e5-aedf-c48e1dbb7853
+15717	qha s13_bcc bcc x=1.0000	finished	0	/home/kino/aiida_run/ftphase/9e/5f/a555-394c-4da5-98c2-b000e5551393
+15719	qha s14_bcc bcc x=0.7500	finished	0	/home/kino/aiida_run/ftphase/7c/2f/0723-f158-46f8-98ef-c51b7f7ea675
+15721	qha s15_bcc bcc x=0.7500	finished	0	/home/kino/aiida_run/ftphase/37/e5/5383-4174-466e-adf5-b00499a23587
+15723	qha s16_bcc bcc x=0.8125	finished	0	/home/kino/aiida_run/ftphase/bb/33/032d-883c-416d-a2ef-e5eb55f74d0c
+15725	qha s17_bcc bcc x=0.8125	finished	0	/home/kino/aiida_run/ftphase/6a/f4/87f5-b967-44ae-9eff-e18df588ec69
+15727	qha s18_bcc bcc x=0.8750	finished	0	/home/kino/aiida_run/ftphase/c2/2e/60bb-edd0-4cce-a832-b3800663cdcd
+15729	qha s19_bcc bcc x=0.8750	finished	0	/home/kino/aiida_run/ftphase/33/60/1363-4601-404d-8e21-45ff8e8503a6
+15731	qha s20_bcc bcc x=0.9375	finished	0	/home/kino/aiida_run/ftphase/42/ef/8244-f523-4e09-b65d-015e158b0990
+15733	qha s21_bcc bcc x=0.9375	finished	0	/home/kino/aiida_run/ftphase/0c/98/17fb-a06f-4925-b462-f9810f3541d5
+15735	qha s22_Al2Li3 Al2Li3 x=0.6000	finished	0	/home/kino/aiida_run/ftphase/a5/35/ff34-1c6e-461f-9cfa-8e12a1f3934a
+15737	qha s23_Al4Li9 Al4Li9 x=0.6923	finished	0	/home/kino/aiida_run/ftphase/b5/49/2e86-eb00-4026-a100-dd5e78db8aa3
+15843	assemble_diagram	finished	0	
