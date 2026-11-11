@@ -49,6 +49,34 @@ def _relax_reduced(self, init_atoms, *a, **k):
 
 
 _mlip.Calculation.relax_structure = _relax_reduced
+# if spglib still fails inside the mesh setup, fall back to the full (non-symmetry-reduced) q mesh: same frequencies and weights
+_run_mesh = phonopy.Phonopy.run_mesh
+
+
+def _safe_run_mesh(self, *a, **k):
+    try:
+        return _run_mesh(self, *a, **k)
+    except Exception as e:  # noqa: BLE001
+        print("mesh symmetry disabled:", str(e)[:60], flush=True); k["is_mesh_symmetry"] = False; return _run_mesh(self, *a, **k)
+
+
+phonopy.Phonopy.run_mesh = _safe_run_mesh
+# ... and if even the lattice reduction of the mesh generator fails, sample the mesh on the unreduced basis (uniform grid, still valid)
+import phonopy.structure.cells as _cells  # noqa: E402
+import phonopy.phonon.mesh as _meshmod  # noqa: E402
+_get_reduced = _cells.get_reduced_bases
+
+
+def _safe_reduced(lattice, *a, **k):
+    try:
+        return _get_reduced(lattice, *a, **k)
+    except Exception as e:  # noqa: BLE001
+        print("lattice reduction skipped:", str(e)[:60], flush=True); import numpy as _np; return _np.array(lattice, dtype=float)
+
+
+_cells.get_reduced_bases = _safe_reduced
+if hasattr(_meshmod, "get_reduced_bases"):
+    _meshmod.get_reduced_bases = _safe_reduced
 
 
 def make_calculator(kind, model, device):

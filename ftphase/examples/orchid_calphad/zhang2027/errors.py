@@ -34,11 +34,17 @@ def one_system(deposit, system, tmax, methods, extra):
     for m in methods:
         folder = os.path.join(extra[m] if m in extra else os.path.join(deposit, m), system)
         mc = {k: load(folder, k) for k in f2e}
-        if any(c is None or c.ph_omega is None for c in mc.values()):
-            missing = [k for k, c in mc.items() if c is None or c.ph_omega is None]
-            print(f"{system} {m}: missing {missing}", flush=True); continue
+        missing = [k for k, c in mc.items() if c is None or c.ph_omega is None]
+        if missing:   # a structure the MLIP run lost (e.g. MACE Mo8Rh24, spglib failure): skip it and every decomposition that needs it
+            print(f"{system} {m}: missing {missing} (skipped; structures depending on them are skipped too)", flush=True)
+            mc = {k: c for k, c in mc.items() if c is not None and c.ph_omega is not None}
+            if any(ref_ele[el] not in mc for el in ref_ele):
+                continue
         for fn, c in mc.items():
             if len(c.get_composition_dict()) == 1:
+                continue
+            decomp0, _ = ph.get_decomp_and_phase_separation_energy(f2e[fn])
+            if any(e2f[p_] not in mc for p_ in decomp0):
                 continue
             def diff(parts):
                 eref = sum(x * mc[k].energy_per_atom_eV for k, x in parts); fref = sum(x * mc[k].get_free_energy_per_atom(temp, include_internal_energy=False) for k, x in parts)
