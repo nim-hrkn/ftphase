@@ -394,6 +394,8 @@ def main():
     ap.add_argument("--li-side", action="store_true", help="alli: add the Li side (bcc random series x_Li 0.75-1, Al2Li3, Al4Li9 point phases); use with --solid-only --t-window 300 1100")
     ap.add_argument("--solid-only", action="store_true", help="skip the liquids and assemble the solid phases alone over --T-window (spec assemble.allow_solid_only); name gets _solid")
     ap.add_argument("--T-window", dest="t_window", nargs=2, type=float, default=None, help="assembly T_min T_max for --solid-only (default ptrh: 100 2400)")
+    ap.add_argument("--b2-extra", action="store_true", help="nial only (2026-11-11, triple-defect check step 3): fcc Al, fcc Ni and B2 with wider defect sampling "
+                    "(Ni vacancies n=4..7 -> x_Ni 0.46..0.426, Ni anti-sites n=8,10 -> 0.648/0.685 on the 54-site cell) instead of the full solid list; name gets _b2ext")
     ap.add_argument("--ends-ti", action="store_true", help="ptrh: calphy solid TI (>= 2000 atoms) of the pure fcc end cells, first configuration per x (spec solids_ti with the x filter); name gets _ti")
     ap.add_argument("--b32-ti", action="store_true", help="alli: add spec['solids_ti'] for B32 (calphy ts 700 -> 880 K, >= 2000-atom cells, GPU); unchanged QHA/liquid CalcJobs are reused from the cache when caching is enabled for ftphase.qha / ftphase.calphy")
     a = ap.parse_args()
@@ -410,6 +412,12 @@ def main():
         assert a.system == "alli", "--li-side is for alli"
         spec = li_side_spec(spec)
         cand_fn = lambda: candidates(li_side=True)
+    if a.b2_extra:
+        assert a.system == "nial", "--b2-extra is for nial"
+        sol = spec["solids"]; b2 = next(s_ for s_ in sol if s_["phase"] == "B2")
+        spec["solids"] = [dict(sol[0], x=[0.0]), dict(sol[1], x=[1.0]),
+                          dict(b2, defects=[{"vacancy": "Ni", "n": k} for k in (4, 5, 6, 7)] + [{"replace": ["Al", "Ni"], "n": k} for k in (8, 10)])]
+        spec["assemble"]["title"] = "Ni-Al B2 extended defect sampling (vacancies 4-7, anti-sites 8-10): " + spec["assemble"]["title"]
     name = (a.name or {"alli": "alli_ace", "agcu": "agcu_eam", "nial": "nial_eam", "ptrh": "ptrh"}[a.system]) + ("_smoke" if a.smoke else "")
     use_mlip = a.mlip != "ace"
     if a.system == "ptrh" and not use_mlip:
@@ -445,6 +453,8 @@ def main():
         name = (a.name or a.system + ml["tag"]) + ("_smoke" if a.smoke else "")
     if a.li_side:
         name += "_liside"
+    if a.b2_extra:
+        name += "_b2ext"
     if a.solid_only:
         spec["assemble"]["allow_solid_only"] = True
         if a.t_window:

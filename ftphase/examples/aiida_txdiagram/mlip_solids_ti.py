@@ -22,7 +22,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "out")
 MIN_ATOMS = 2000
 RUNS = {"nial_grace_fs": 4784, "nial_grace_1l": 4798, "nial_sevenn_0": 4813, "agcu_grace_fs": 4869, "agcu_grace_1l": 4900, "agcu_sevenn_0": 4928,
-        "ptrh_grace_2l": 9105, "ptrh_nequip_oam_m": 9348, "ptrh_mace_mpa_0": 9585, "ptrh_sevenn_mf_ompa": 10792}   # Pt-Rh (2026-11-06): pure-end fcc cells only, 4x4x4 of 32 = 2048 atoms
+        "ptrh_grace_2l": 9105, "ptrh_nequip_oam_m": 9348, "ptrh_mace_mpa_0": 9585, "ptrh_sevenn_mf_ompa": 10792,
+        "nial_grace_1l_b2ext_solid": 15488}   # 2026-11-11 B2 extended defect sampling (vacancies 4-7, anti-sites 8-10), solids only   # Pt-Rh (2026-11-06): pure-end fcc cells only, 4x4x4 of 32 = 2048 atoms
 #: (phase, x) -> sweep [T_lo, T_hi]; T_hi about 1.05 T_m(expt).  The first try with 1.2 T_m (pk 6503-6595) failed: GRACE-FS
 #: fcc Al melted at ~1000 K on the way to 1150 K (MeltedError, pk 6503), so the MLIP melting points are near the experimental
 #: ones and a superheated cell does not survive 1.2 T_m.  A crossing above T_hi is reported as "> T_hi" plus a linear extrapolation.
@@ -87,11 +88,11 @@ def submit(names, only=None, t_hi=None, t_lo=None):
 
 #: stage-1 solid(TI)-liquid crossings (K, melting_ti.tsv; "~" values extrapolated) -> sweep caps of the stage-2 alloy cells
 TM1 = {"nial_grace_fs": {"fccAl": 630, "fccNi": 1654, "B2": 1670, "L12": 1512}, "nial_grace_1l": {"fccAl": 874, "fccNi": 1715, "B2": 1797, "L12": 1615},
-       "nial_sevenn_0": {"fccAl": 784, "fccNi": 1461, "B2": 1964, "L12": 1567},
+       "nial_sevenn_0": {"fccAl": 784, "fccNi": 1461, "B2": 1964, "L12": 1567}, "nial_grace_1l_b2ext_solid": {"fccAl": 874, "fccNi": 1715, "B2": 1797, "L12": 1615},
        "agcu_grace_fs": {"Ag": 930, "Cu": 1190}, "agcu_grace_1l": {"Ag": 988, "Cu": 1310}, "agcu_sevenn_0": {"Ag": 949, "Cu": 1182}}
 #: where the stage-2 jobs of each run go (user 2026-11-01: laurel, mygardenx1/x2, mygarden5/6 GPUs allowed; mygardenx1 was full,
 #: laurel has no ftphase env): GRACE-FS on the mygardenx2 CPUs (grace/fs + hybrid/scaled in the conda LAMMPS), the rest on the GPUs
-HOST2 = {"nial_grace_fs": ("calphy@mygardenx2", 12), "agcu_grace_fs": ("calphy@mygardenx2", 12), "nial_grace_1l": ("calphy@mygarden6", None),
+HOST2 = {"nial_grace_fs": ("calphy@mygardenx2", 12), "agcu_grace_fs": ("calphy@mygardenx2", 12), "nial_grace_1l": ("calphy@mygarden6", None), "nial_grace_1l_b2ext_solid": ("calphy@mygarden6", None),
          "agcu_grace_1l": ("calphy@mygarden5", None), "nial_sevenn_0": ("calphy@mygarden5", None), "agcu_sevenn_0": ("calphy@mygarden6", None)}
 
 
@@ -105,6 +106,8 @@ def stage2_range(name, m):
     tm, ph, x = TM1[name], m["phase"], m["x"]
     if name.startswith("nial"):
         lo = {"fccAl": 600.0, "fccNi": 1200.0, "B2": 1300.0, "L12": 1200.0, "Ni2Al3": 900.0, "NiAl3": 900.0}[ph]
+        if "b2ext" in name and ph == "B2":
+            lo = 1000.0   # multi-vacancy B2 cells lose atoms in Frenkel-Ladd when started at 1300 K (stage-2 note): start the extended-defect cells at 1000 K
         if ph in tm:
             if (ph, x) in CELLS["nial"]:
                 return None

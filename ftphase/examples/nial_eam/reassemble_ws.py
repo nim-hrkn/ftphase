@@ -18,7 +18,9 @@ import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 import argparse as _ap
-_args = _ap.ArgumentParser(); _args.add_argument("--in", dest="indir", default=None); _args = _args.parse_args()
+_args = _ap.ArgumentParser(); _args.add_argument("--in", dest="indir", default=None)
+_args.add_argument("--b2-sites", type=int, default=54); _args.add_argument("--l12-sites", type=int, default=108, help="108 for the EAM stage-3 cells (3x3x3), 32 for the MLIP WorkChains (2x2x2)")
+_args.add_argument("--title", default="EAM Ni-Al (Mishin 2009), 0 GPa: solids calphy TI, B2/L1_2 with thermal defects (Wagner-Schottky)"); _args = _args.parse_args()
 IN = os.path.abspath(_args.indir) if _args.indir else (os.path.join(HERE, "out_mygardenx1") if os.path.isdir(os.path.join(HERE, "out_mygardenx1")) else os.path.join(HERE, "out"))
 OUT = os.path.join(IN, "ws")
 T_DIAG = np.arange(950.0, 2000.1, 10.0)
@@ -46,7 +48,7 @@ def main():
         df.loc[m, "method"] = df.loc[m, "method"] + "; raw cell (constitutional term removed for the Wagner-Schottky model)"
     # calphy TI rows carry n_atoms = 0: reconstruct the atom count from x and the known number of lattice
     # sites of the defect supercells (B2 3x3x3 = 54 sites, L1_2 3x3x3 = 108 sites): n = N - k vacancies with x n integer
-    N_SITES = {"B2": 54, "L12": 108}
+    N_SITES = {"B2": _args.b2_sites, "L12": _args.l12_sites}
     for ph, N in N_SITES.items():
         m = (df.phase == ph) & (df.n_atoms <= 0)
         def _n(x, N=N):
@@ -89,7 +91,7 @@ def main():
     write_records(os.path.join(OUT, "07_two_phase_regions.tsv"), reg, {"example": "nial_eam stage 4 (Wagner-Schottky thermal defects)", "fits": str(FITS), "hull": str(HULL), "T_step": 10.0})
     inv.to_csv(os.path.join(OUT, "07_invariants.tsv"), sep="\t", index=False)
     ax = plot_tx(reg, xlabel="x_Ni", dT=10.0)
-    ax.set_title("EAM Ni-Al (Mishin 2009), 0 GPa: solids calphy TI, B2/L1_2 with thermal defects (Wagner-Schottky)", fontsize=8)
+    ax.set_title(_args.title, fontsize=8)
     ax.figure.savefig(os.path.join(OUT, "07_phase_diagram.png"), dpi=150, bbox_inches="tight")
     # ---- key numbers: B2 range vs T, same-phase segments, invariants
     summary = {"seconds": time.time() - t0, "T_grid": [float(Ts.min()), float(Ts.max()), int(Ts.size)], "invariants": inv.to_dict("records")}

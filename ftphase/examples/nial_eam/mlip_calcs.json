@@ -1,0 +1,90 @@
+{
+ "grace-fs": {
+  "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/grace/GRACE-FS-OAM.yaml",
+  "potential_qha": null,
+  "pair_style": "grace/fs",
+  "pair_coeff": "* * {potential} Al Li",
+  "qha_calculator": null,
+  "qha_cmdargs": null,
+  "qha_env": null,
+  "qha_gpu": null,
+  "model": "GRACE-FS-OAM (foundation, FS, 6 A)"
+ },
+ "grace-1l": {
+  "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/grace/GRACE-1L-OMAT-medium-base-fp64-kokkos.npz",
+  "potential_qha": null,
+  "pair_style": "grace/1l/kk/fp32",
+  "pair_coeff": "* * {potential} Al Li",
+  "qha_calculator": null,
+  "qha_cmdargs": null,
+  "qha_env": null,
+  "qha_gpu": true,
+  "model": "GRACE-1L-OMAT-medium-base-fp64 (foundation, 1 layer, kokkos export)"
+ },
+ "sevenn-0": {
+  "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/sevenn/7net-0_oeq.pt",
+  "potential_qha": "/home/kino/kino/Claude/Projects/PhaseDiagram/env/torch/lib/python3.12/site-packages/sevenn/pretrained_potentials/SevenNet_0__11Jul2024/checkpoint_sevennet_0.pth",
+  "pair_style": "e3gnn",
+  "pair_coeff": "* * {potential} Al Li",
+  "qha_calculator": "sevenn",
+  "qha_cmdargs": null,
+  "qha_env": null,
+  "qha_gpu": true,
+  "model": "SevenNet-0 (11Jul2024, MPtrj; oeq deployment)"
+ },
+ "sevenn-mf-ompa": {
+  "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/sevenn/7net-mf-ompa_mpa_oeq.pt",
+  "potential_qha": "/home/kino/kino/Claude/Projects/PhaseDiagram/env/torch/lib/python3.12/site-packages/sevenn/pretrained_potentials/SevenNet_MF_ompa/checkpoint_sevennet_mf_ompa.pth",
+  "pair_style": "e3gnn",
+  "pair_coeff": "* * {potential} Al Li",
+  "qha_calculator": "sevenn",
+  "qha_cmdargs": null,
+  "qha_env": null,
+  "qha_gpu": true,
+  "model": "SevenNet-MF-ompa (modal mpa; oeq deployment)"
+ },
+ "mace-mpa-0": {
+  "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/mace/macempa0mediummodel-cueq.model-mliap_lammps.pt",
+  "potential_qha": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/mace/macempa0mediummodel.model",
+  "pair_style": "mliap unified {potential} 0",
+  "pair_coeff": "* * Al Li",
+  "qha_calculator": "mace",
+  "qha_cmdargs": null,
+  "qha_env": null,
+  "qha_gpu": true,
+  "model": "MACE-MPA-0 medium (float32, ML-IAP, cuEquivariance)"
+ },
+ "mattersim-5m": {
+  "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/mattersim/mattersim-v1.0.0-5M_mliap.pt",
+  "potential_qha": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/mattersim/mattersim-v1.0.0-5M.pth",
+  "pair_style": "mliap unified {potential} 0",
+  "pair_coeff": "* * Al Li",
+  "qha_calculator": "mattersim",
+  "qha_cmdargs": null,
+  "qha_env": null,
+  "qha_gpu": true,
+  "model": "MatterSim-v1.0.0-5M (float32, ML-IAP)"
+ },
+ "nequip-oam-m": {
+  "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nequip/NequIP-OAM-M-0.1.nequip.lmp.pt",
+  "potential_qha": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/nequip/NequIP-OAM-M-0.1.nequip.zip",
+  "pair_style": "mliap unified {potential} 0",
+  "pair_coeff": "* * Al Li",
+  "qha_calculator": "nequip",
+  "qha_cmdargs": null,
+  "qha_env": null,
+  "qha_gpu": true,
+  "model": "NequIP-OAM-M 0.1 (ML-IAP, OpenEquivariance)"
+ },
+ "dpa4-plus-omat24": {
+  "potential": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/deepmd/dpa4/DPA4-Plus-OMat24-v20260805.pt2",
+  "potential_qha": "/home/kino/kino/Claude/Projects/PhaseDiagram/potentials/deepmd/dpa4/DPA4-Plus-OMat24-v20260805.pt2",
+  "pair_style": "deepmd {potential}",
+  "pair_coeff": "* * Al Li",
+  "qha_calculator": "deepmd",
+  "qha_cmdargs": null,
+  "qha_env": null,
+  "qha_gpu": true,
+  "model": "DPA4-Plus-OMat24 v20260805 (deepmd 3.2.0, .pt2)"
+ }
+}
