@@ -1,0 +1,6 @@
+{
+ "example": "nial_eam stage 4 (Wagner-Schottky thermal defects)",
+ "fits": "{'fccAl': 'poly', 'fccNi': 'poly', 'liquid': 'rk', 'B2': 'poly', 'L12': 'poly'}",
+ "hull": "{'min_width': 0.005, 'gap_tol': 2.5}",
+ "T_step": 10.0
+}

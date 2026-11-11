@@ -54,3 +54,37 @@ Scripta Materialia 289 (2027) 117663, doi:10.1016/j.scriptamat.2026.117663（受
 3. **誤差伝播の表（Table 2）は本プロジェクトの数値の裏付け。** T_c = 1000 K・|ΔH| = 2.5 kJ/mol（26 meV/atom）で δT ≈ 900 K、という桁は、Pt–Rh の規則化エネルギー 5–11 meV/atom が経路間で ±35 K・MLIP 間で「出る／出ない」に分かれたことと同じ構造。本プロジェクトの Al₃Li（準安定、0 K で凸包上かその近く）が MLIP によって 300–500 K まで出たり出なかったりするのも、|ΔH| ≈ 1 kJ/mol 級の相の「安定確率 0.54」そのもの。
 4. **取り込めるもの。** (a) 相ラベル分類精度（100 × 100 格子）は ORCHID 照合の補助指標として `orchid_compare.py` / `sgte_diagrams.py` に実装できる（SGTE 評価の境界 JSON から各格子点の相集合を取れば計算可能）。(b) UQ: 工程 07 の Monte Carlo 誤差伝播は自由エネルギーの σ を使うが、Zhang らのように「MLIP → DFT の系統誤差 1 kJ/mol・1 J/mol/K」を事前分布として足し、安定確率の地図を描く形にすると、図 8 の「出たり出なかったりする相」を確率で示せる。(c) ESPEI によるベイズ更新は経路 2（`espei_alli/`）で試した手順と同じ。(d) 比較に加える価値のある MLIP: GRACE (OMAT+SMAX)、SevenNet-omni、eSEN。
 5. **CPDDB** は NIMS の計算状態図データベース（doi:10.48505/NIMS.3060）で、ORCHID の SGTE 評価と同じ役割（評価済み TDB の集まり）。Al–Li・Ni–Al・Ag–Cu の評価があるなら本プロジェクトの第 2 の基準に使える。
+
+## 再現と拡張（2026-11-11、ユーザー依頼「Zhang 2027 の計算を行ってみよ」）
+
+データ: `data/Zhang2027/zenodo-phase-diagrams/`（Zenodo 10.5281/zenodo.20918696、CC BY 4.0、README に記録）。公開コード `dft.py`・`mlip.py`・`tdb.py`・`03-make_tdb.py` は `zhang2027/benchmark/` にシンボリックリンクで置き、そのまま import して使った（環境 env/ftphase = pycalphad 0.11.2 + phonopy 4.8 + pymatgen；論文のコードは seekpath も要るので env/mace・env/torch・env/deepmd32 に追加）。
+
+### 公開データからの再現
+
+| 論文の結果 | スクリプト | 再現 | 一致 |
+|---|---|---|---|
+| Table 1 の RMSE ΔH・ΔS（DFT 基準、分解エネルギー、81 構造） | `errors.py`（ノートブック 05 と同じ定義：ΔS = ΔF_vib(T_max)/T_max、T_max は系ごとに 800–2000 K） | GRACE-SMAX 0.957 / 0.826、GRACE-OAM 1.034 / 1.000、SevenNet-omni 0.861 / 1.031、NequIP-OAM 1.087 / 1.074、eSEN 0.923 / 0.984、GRACE-MP 3.215 / 1.656、ORB-v3 1.347 / 1.505、NequIP-MP 3.740 / 1.488 | 全桁一致 |
+| Table 1 の相ラベル分類精度（6 系の非加重平均、Modified_CPDDB 基準） | `classify.py`（ノートブック 06 の格子；`--dense` で論文の 100×100） | DFT 0.778、GRACE-SMAX 0.780、GRACE-OAM 0.771、SevenNet-omni 0.757、NequIP-OAM 0.766、eSEN 0.675、GRACE-MP 0.616、ORB-v3 0.580、NequIP-MP 0.431（100×100 格子でも ±0.002） | 順位は同じ。値は論文（0.784、0.805、0.794、0.791、0.790、0.711、0.651、0.643、0.494）より 0.006–0.063 低い。論文は系ごとの温度窓や pycalphad の版が違う可能性（補足 S4 の格子感度の記述どおり、この指標は境界の小さな差に敏感） |
+| 03-make_tdb（JSON → TDB） | `make_tdb.py`（公開関数をそのまま呼ぶ） | SevenNet-omni の Cu–Mg・Al–Zn を再生成 | 公開 TDB と係数の 4–5 桁目まで一致（多項式 fit と液相再最適化の丸め） |
+| Fig. 4a の UQ（eSEN Ru–Si、1000 サンプル） | `uq.py`（化合物の G と HCP の L0 に δH ~ N(0, 1.41 kJ/mol)、δS ~ N(0, 1.73 J/mol/K) を原子 1 mol あたりで加え、1000 組の TDB を pycalphad で計算；8 並列 20 分）、`uq_plot.py` | 「どこかで安定になる確率」Ru₂Si 0.20、Ru₅Si₃ 0.35、Ru₄Si₃ 0.63、RuSi 0.99、Ru₂Si₃ 1.00、Ru₅Si 0.015、Ru₃Si 0.009、Ru₄Si 0.002、RuSi₃ 0.002 | 論文の読み（Ru₂Si・Ru₅Si₃ が誤差内で現れ、Ru₅Si・Ru₃Si はわずか、Ru₄Si・RuSi₃ は出ない）と一致。論文の摂動の正確な分布は補足にあり本文には無いので、数値の一致は確認していない |
+| （追加）同じ UQ を DFT と GRACE-SMAX の Ru–Si に | 同上 | DFT: Ru₂Si 0.19、Ru₅Si₃ 0.39、Ru₄Si₃ 0.63；GRACE-SMAX: 0.23、0.34、0.69 | 3 つの TDB で確率がほぼ同じ。δH 1.4 kJ/mol の摂動が TDB 間の差（≈1 kJ/mol）と同じ大きさなので、UQ の結論はどのモデルから出発しても変わらない |
+
+### 拡張：本プロジェクトの MLIP を論文の構造集合に乗せる
+
+論文の `calculate_with_mlip`（GoodOldQuasiNewton + FrechetCellFilter、fmax 2.5 meV/Å、DFT と同じ超格子・変位での調和フォノン）を本プロジェクトの ASE calculator で呼び（`run_mlip.py`、mygarden6 の GPU、`run_mlip.sbatch`）、公開 TDB 生成関数で TDB を組み、同じ 2 指標で評価した。論文の DFT 構造 111 個（6 系、超格子 ≤ 128 原子）。MACE は float64、MatterSim は float32（モデルの精度）。
+
+| MLIP | RMSE ΔH (kJ/mol) | RMSE ΔS (J/mol/K) | 分類精度（6 系平均） | 計算時間（111 構造） |
+|---|---|---|---|---|
+| 論文の最良 GRACE (OMAT+SMAX) | 0.957 | 0.826 | 0.780（論文 0.805） | — |
+| 論文の DFT | — | — | 0.778（論文 0.784） | — |
+| SevenNet-MF-ompa | 0.982 | 0.992 | 0.739 | 25 分 |
+| MACE-MPA-0（float64） | 1.55 | 2.55 | 0.59（Mo–Rh は 1 構造欠落の暫定値） | 60 分 + CPU 再計算 |
+| MatterSim-v1-5M | 1.71 | 2.44 | 0.504 | 6 分 |
+| DPA4-Plus-OMat24 | （mygarden5 の GPU 待ち） | | | |
+
+系別（`out/errors_all.tsv`、`out/classification_all.tsv`、図 `out/panels.png`）:
+- SevenNet-MF-ompa は論文の SOTA 群と同じ水準（ΔH・ΔS とも ≈1、Al–Zn 0.78・Mo–Rh 0.80・Cu–Mg 0.80・Ru–Si 0.82 で DFT 並み、Cu–Pt 0.60・W–Re 0.63）。
+- MACE-MPA-0 の ΔS 誤差は W–Re の χ・σ セル（4–9 J/mol/K、虚数モードは無い）が支配的で、W–Re の分類精度 0.27。Al–Zn 0.81・Cu–Mg 0.84 は良い。5d 難融金属の振動が苦手、という傾向。
+- MatterSim-5M は Cu–Pt の規則相（L1₁・L1₂）が全く出ず、W–Re も単相で潰れ、Al–Zn の fcc ミシビリティギャップが崩れる（NequIP-MP 並みの 0.50）。Al–Li で MatterSim-5M が Al 融点 996 K・共晶 720 K を出したのと整合する「0 K は良いが有限温度が粗い」挙動。
+
+読み: 本プロジェクトの Al–Li 比較で最も実験に近かった SevenNet-MF-ompa が、論文の指標でも SOTA 群に入る。逆に Al–Li で共晶を −87 K に置いた MACE-MPA-0 と −147 K の MatterSim-5M は、論文の指標でも下位に来る。論文の「固相平衡の分類精度」と本プロジェクトの「不変反応の温度差」は測るものが違うが、MLIP の順位はおおむね共通している。

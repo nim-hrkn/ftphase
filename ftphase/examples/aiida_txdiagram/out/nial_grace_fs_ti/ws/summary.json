@@ -1,0 +1,240 @@
+{
+ "seconds": 100.66826248168945,
+ "T_grid": [
+  950.0,
+  2000.0,
+  106
+ ],
+ "invariants": [
+  {
+   "T_low": 1030.0,
+   "T_high": 1040.0,
+   "pairs_below": [
+    "B2+L12",
+    "B2+NiAl3",
+    "L12+fccNi",
+    "NiAl3+liquid"
+   ],
+   "pairs_above": [
+    "B2+L12",
+    "B2+liquid",
+    "L12+fccNi"
+   ]
+  },
+  {
+   "T_low": 1400.0,
+   "T_high": 1410.0,
+   "pairs_below": [
+    "B2+L12",
+    "B2+liquid",
+    "L12+fccNi"
+   ],
+   "pairs_above": [
+    "B2+liquid",
+    "L12+fccNi",
+    "L12+liquid"
+   ]
+  },
+  {
+   "T_low": 1440.0,
+   "T_high": 1450.0,
+   "pairs_below": [
+    "B2+liquid",
+    "L12+fccNi",
+    "L12+liquid"
+   ],
+   "pairs_above": [
+    "B2+liquid",
+    "L12+liquid",
+    "fccNi+liquid"
+   ]
+  },
+  {
+   "T_low": 1450.0,
+   "T_high": 1460.0,
+   "pairs_below": [
+    "B2+liquid",
+    "L12+liquid",
+    "fccNi+liquid"
+   ],
+   "pairs_above": [
+    "B2+liquid",
+    "fccNi+liquid"
+   ]
+  },
+  {
+   "T_low": 1480.0,
+   "T_high": 1490.0,
+   "pairs_below": [
+    "B2+liquid",
+    "fccNi+liquid"
+   ],
+   "pairs_above": [
+    "B2+liquid",
+    "fccNi+fccNi",
+    "fccNi+liquid"
+   ]
+  },
+  {
+   "T_low": 1590.0,
+   "T_high": 1600.0,
+   "pairs_below": [
+    "B2+liquid",
+    "fccNi+fccNi",
+    "fccNi+liquid"
+   ],
+   "pairs_above": [
+    "B2+liquid",
+    "fccNi+liquid"
+   ]
+  },
+  {
+   "T_low": 1650.0,
+   "T_high": 1660.0,
+   "pairs_below": [
+    "B2+liquid",
+    "fccNi+liquid"
+   ],
+   "pairs_above": [
+    "B2+liquid"
+   ]
+  }
+ ],
+ "B2_range_vs_T": {
+  "1000": [
+   0.4899981829742106,
+   0.61111111111111
+  ],
+  "1200": [
+   0.4944771241830083,
+   0.61111111111111
+  ],
+  "1400": [
+   0.48592508962855074,
+   0.61111111111111
+  ],
+  "1600": [
+   0.49285463988502143,
+   0.554177000880695
+  ],
+  "1800": [
+   NaN,
+   NaN
+  ]
+ },
+ "same_phase_segments": [
+  {
+   "phase": "fccNi",
+   "T": 1490.0,
+   "x_a": 0.907971968640717,
+   "x_b": 0.9985997089133005
+  },
+  {
+   "phase": "fccNi",
+   "T": 1500.0,
+   "x_a": 0.9082608062410488,
+   "x_b": 0.9985419294217447
+  },
+  {
+   "phase": "fccNi",
+   "T": 1510.0,
+   "x_a": 0.9084983919625234,
+   "x_b": 0.9984890764462366
+  },
+  {
+   "phase": "fccNi",
+   "T": 1520.0,
+   "x_a": 0.9087314071019552,
+   "x_b": 0.9984400289411335
+  },
+  {
+   "phase": "fccNi",
+   "T": 1530.0,
+   "x_a": 0.908899461081342,
+   "x_b": 0.9983952262894362
+  },
+  {
+   "phase": "fccNi",
+   "T": 1540.0,
+   "x_a": 0.9090674731955042,
+   "x_b": 0.9983462409015019
+  },
+  {
+   "phase": "fccNi",
+   "T": 1550.0,
+   "x_a": 0.9090922557395236,
+   "x_b": 0.9983192381660061
+  },
+  {
+   "phase": "fccNi",
+   "T": 1560.0,
+   "x_a": 0.9092171729125736,
+   "x_b": 0.9982850431592849
+  },
+  {
+   "phase": "fccNi",
+   "T": 1570.0,
+   "x_a": 0.9095032108126776,
+   "x_b": 0.9982266191158633
+  },
+  {
+   "phase": "fccNi",
+   "T": 1580.0,
+   "x_a": 0.9097987235876671,
+   "x_b": 0.9981578663384518
+  },
+  {
+   "phase": "fccNi",
+   "T": 1590.0,
+   "x_a": 0.9101411405114967,
+   "x_b": 0.9980817235980642
+  }
+ ],
+ "regions_at_1200K": [
+  {
+   "phase_a": "liquid",
+   "x_a": 0.3008,
+   "phase_b": "B2",
+   "x_b": 0.4945
+  },
+  {
+   "phase_a": "B2",
+   "x_a": 0.6111,
+   "phase_b": "L12",
+   "x_b": 0.7452
+  },
+  {
+   "phase_a": "L12",
+   "x_a": 0.7812,
+   "phase_b": "fccNi",
+   "x_b": 0.8681
+  }
+ ],
+ "regions_at_1500K": [
+  {
+   "phase_a": "liquid",
+   "x_a": 0.3866,
+   "phase_b": "B2",
+   "x_b": 0.4894
+  },
+  {
+   "phase_a": "B2",
+   "x_a": 0.6111,
+   "phase_b": "liquid",
+   "x_b": 0.665
+  },
+  {
+   "phase_a": "liquid",
+   "x_a": 0.78,
+   "phase_b": "fccNi",
+   "x_b": 0.8501
+  },
+  {
+   "phase_a": "fccNi",
+   "x_a": 0.9083,
+   "phase_b": "fccNi",
+   "x_b": 0.9985
+  }
+ ],
+ "regions_at_1800K": []
+}

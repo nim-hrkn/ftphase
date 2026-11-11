@@ -1,0 +1,153 @@
+{
+ "s00_fccAl": {
+  "phase": "fccAl",
+  "kind": "solution",
+  "x": 0.0,
+  "config": 0,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Al": 32
+  }
+ },
+ "s01_fccNi": {
+  "phase": "fccNi",
+  "kind": "solution",
+  "x": 1.0,
+  "config": 0,
+  "n_atoms": 32,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Ni": 32
+  }
+ },
+ "s02_B2": {
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.5,
+  "config": 0,
+  "n_atoms": 54,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Al": 27,
+   "Ni": 27
+  }
+ },
+ "s03_B2": {
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.46,
+  "config": 0,
+  "n_atoms": 50,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Al": 27,
+   "Ni": 23
+  }
+ },
+ "s04_B2": {
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.44897959183673,
+  "config": 0,
+  "n_atoms": 49,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Al": 27,
+   "Ni": 22
+  }
+ },
+ "s05_B2": {
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.4375,
+  "config": 0,
+  "n_atoms": 48,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Al": 27,
+   "Ni": 21
+  }
+ },
+ "s06_B2": {
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.42553191489362,
+  "config": 0,
+  "n_atoms": 47,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Al": 27,
+   "Ni": 20
+  }
+ },
+ "s07_B2": {
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.64814814814815,
+  "config": 0,
+  "n_atoms": 54,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Al": 19,
+   "Ni": 35
+  }
+ },
+ "s08_B2": {
+  "phase": "B2",
+  "kind": "limited",
+  "x": 0.68518518518519,
+  "config": 0,
+  "n_atoms": 54,
+  "supercell": [
+   2,
+   2,
+   2
+  ],
+  "mesh": 60.0,
+  "counts": {
+   "Al": 17,
+   "Ni": 37
+  }
+ }
+}

@@ -1,0 +1,12 @@
+{
+ "pk": 15488,
+ "uuid": "7e54e780-ef83-41b7-851b-125674902e73",
+ "name": "nial_grace_1l_b2ext_solid",
+ "profile": "ftphase",
+ "submitted": "2026-11-11 19:52:53",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden6",
+ "qha_computer": "mygarden6",
+ "mlip": "grace-1l"
+}

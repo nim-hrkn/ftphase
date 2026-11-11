@@ -1,0 +1,142 @@
+{
+ "started": "2026-11-11 20:48:49",
+ "solids_used": [
+  "s00_fccAl",
+  "s01_fccNi",
+  "s02_B2",
+  "s03_B2",
+  "s04_B2",
+  "s05_B2",
+  "s06_B2",
+  "s07_B2",
+  "s08_B2"
+ ],
+ "solids_missing": [],
+ "liquids_used": [],
+ "liquids_missing": [
+  "lqd_x0_00",
+  "lqd_x0_10",
+  "lqd_x0_20",
+  "lqd_x0_30",
+  "lqd_x0_40",
+  "lqd_x0_50",
+  "lqd_x0_60",
+  "lqd_x0_70",
+  "lqd_x0_80",
+  "lqd_x0_90",
+  "lqd_x1_00"
+ ],
+ "liquid_x_available": [],
+ "liquid_runs_per_x": {},
+ "liquid_T_min_K": {},
+ "degraded_to_point": [
+  "fccAl",
+  "fccNi"
+ ],
+ "table_check": [],
+ "liquid_T_range_K": null,
+ "T_grid": [
+  900.0,
+  2000.0,
+  111
+ ],
+ "liquid_edge_segments_dropped": 0,
+ "pure_A_melting_bracket_K": null,
+ "invariants": [
+  {
+   "T_low": 1620.0,
+   "T_high": 1630.0,
+   "pairs_below": [
+    "B2+fccAl",
+    "B2+fccNi"
+   ],
+   "pairs_above": [
+    "B2+fccNi"
+   ]
+  },
+  {
+   "T_low": 1960.0,
+   "T_high": 1970.0,
+   "pairs_below": [
+    "B2+fccNi"
+   ],
+   "pairs_above": [
+    "B2+B2",
+    "B2+fccNi"
+   ]
+  }
+ ],
+ "regions_at_700K": [],
+ "regions_at_800K": [],
+ "regions_at_900K": [
+  {
+   "phase_a": "fccAl",
+   "x_a": 0.0,
+   "phase_b": "B2",
+   "x_b": 0.42553191489362
+  },
+  {
+   "phase_a": "B2",
+   "x_a": 0.68518518518519,
+   "phase_b": "fccNi",
+   "x_b": 1.0
+  }
+ ],
+ "regions_at_1000K": [
+  {
+   "phase_a": "fccAl",
+   "x_a": 0.0,
+   "phase_b": "B2",
+   "x_b": 0.42553191489362
+  },
+  {
+   "phase_a": "B2",
+   "x_a": 0.68518518518519,
+   "phase_b": "fccNi",
+   "x_b": 1.0
+  }
+ ],
+ "same_phase_segments": [
+  {
+   "phase": "B2",
+   "T": 1970.0,
+   "x_a": 0.49498916469662,
+   "x_b": 0.50018223010245
+  },
+  {
+   "phase": "B2",
+   "T": 1980.0,
+   "x_a": 0.4951066369938,
+   "x_b": 0.50020489995133
+  },
+  {
+   "phase": "B2",
+   "T": 1990.0,
+   "x_a": 0.49491823320223,
+   "x_b": 0.50018410703846
+  },
+  {
+   "phase": "B2",
+   "T": 2000.0,
+   "x_a": 0.49498916469662,
+   "x_b": 0.50018223010245
+  }
+ ],
+ "fit_residuals": {
+  "T": 1500.0,
+  "rows": [
+   {
+    "T": 1500.0,
+    "phase": "B2",
+    "rmse_eV": 0.0041606287644081,
+    "flag": false
+   }
+  ]
+ },
+ "sigma_used_eV": {
+  "fccNi": 0.002,
+  "fccAl": 0.002,
+  "B2": 0.002
+ },
+ "finished": "2026-11-11 20:49:36"
+}

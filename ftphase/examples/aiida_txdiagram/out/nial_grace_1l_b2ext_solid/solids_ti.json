@@ -1,0 +1,77 @@
+{
+ "pk_workchain": 15488,
+ "jobs": {
+  "s03_B2": {
+   "pk": 15580,
+   "phase": "B2",
+   "x": 0.46,
+   "n_atoms": 3200,
+   "T_sweep": [
+    1000.0,
+    1700.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden6"
+  },
+  "s04_B2": {
+   "pk": 15585,
+   "phase": "B2",
+   "x": 0.44897959183673,
+   "n_atoms": 3136,
+   "T_sweep": [
+    1000.0,
+    1700.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden6"
+  },
+  "s05_B2": {
+   "pk": 15590,
+   "phase": "B2",
+   "x": 0.4375,
+   "n_atoms": 3072,
+   "T_sweep": [
+    1000.0,
+    1700.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden6"
+  },
+  "s06_B2": {
+   "pk": 15595,
+   "phase": "B2",
+   "x": 0.42553191489362,
+   "n_atoms": 3008,
+   "T_sweep": [
+    1000.0,
+    1700.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden6"
+  },
+  "s07_B2": {
+   "pk": 15600,
+   "phase": "B2",
+   "x": 0.64814814814815,
+   "n_atoms": 3456,
+   "T_sweep": [
+    1000.0,
+    1797.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden6"
+  },
+  "s08_B2": {
+   "pk": 15605,
+   "phase": "B2",
+   "x": 0.68518518518519,
+   "n_atoms": 3456,
+   "T_sweep": [
+    1000.0,
+    1797.0
+   ],
+   "stage": 2,
+   "code": "calphy@mygarden6"
+  }
+ }
+}
