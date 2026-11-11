@@ -181,3 +181,33 @@ def test_sublattice_entropy_fit_recovers_defect_energies():
     pc = PhaseCurve.from_points("B2", x, g, fit="poly", poly_order=1, entropy_fn=s, entropy_T=T, branch_x=0.5)
     xs = np.linspace(0.461, 0.599, 50)
     assert np.max(np.abs(pc.g(xs) - g_true(xs))) < 0.0015
+
+
+def test_phase_sets_and_label_accuracy():
+    import pandas as pd
+    from ftphase.diagram import phase_sets, phase_label_accuracy, UNKNOWN
+    reg = pd.DataFrame([{"T": 300.0, "phase_a": "fcc", "x_a": 0.1, "phase_b": "AB", "x_b": 0.5}, {"T": 300.0, "phase_a": "AB", "x_a": 0.5, "phase_b": "bcc", "x_b": 0.9}])
+    xs = np.array([0.05, 0.3, 0.5, 0.7, 0.95])
+    ps = phase_sets(reg, [300.0, 400.0], xs)
+    assert ps[0, 0] == frozenset(["fcc"]) and ps[0, 1] == frozenset(["fcc", "AB"]) and ps[0, 3] == frozenset(["AB", "bcc"]) and ps[0, 4] == frozenset(["bcc"])
+    assert ps[1, 2] == frozenset([UNKNOWN])                      # 400 K has no segment and no single-phase table
+    shifted = reg.copy(); shifted.loc[0, "x_a"] = 0.35           # the fcc solvus moves past x = 0.3
+    ps2 = phase_sets(shifted, [300.0], xs)
+    assert phase_label_accuracy(ps[:1], ps2) == 0.8
+    assert phase_label_accuracy(ps[:1], ps[:1]) == 1.0
+    other = reg.replace({"AB": "B32_BCC"})
+    assert phase_label_accuracy(ps[:1], phase_sets(other, [300.0], xs), rename_b={"B32_BCC": "AB"}) == 1.0
+
+
+def test_stability_probability_with_systematic_prior():
+    from ftphase.diagram import stability_probability, ZHANG_SIGMA_H, ZHANG_SIGMA_S
+    omega = 0.1
+
+    def b(T, off, slo):
+        return [regular("fcc", omega, T, offset=off.get("fcc", 0.0)), PointPhase("AB", 0.5, -0.004 + off.get("AB", 0.0))]
+    Ts = [300.0, 400.0]
+    s = sensitivity(b, Ts, {"fcc": 0.0, "AB": 0.0}, n_samples=40, rng=3, sigma_H={"AB": ZHANG_SIGMA_H}, sigma_S={"AB": ZHANG_SIGMA_S})
+    pr = stability_probability(s.samples, Ts, np.linspace(0.01, 0.99, 50))
+    assert 0.05 < pr.anywhere["AB"] < 0.95                       # a marginal compound is stable in some samples only
+    assert pr.maps["fcc"].shape == (2, 50) and pr.maps["fcc"].max() <= 1.0
+    assert pr.per_T["AB"].shape == (2,)

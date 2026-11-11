@@ -394,6 +394,8 @@ def main():
     ap.add_argument("--li-side", action="store_true", help="alli: add the Li side (bcc random series x_Li 0.75-1, Al2Li3, Al4Li9 point phases); use with --solid-only --t-window 300 1100")
     ap.add_argument("--solid-only", action="store_true", help="skip the liquids and assemble the solid phases alone over --T-window (spec assemble.allow_solid_only); name gets _solid")
     ap.add_argument("--T-window", dest="t_window", nargs=2, type=float, default=None, help="assembly T_min T_max for --solid-only (default ptrh: 100 2400)")
+    ap.add_argument("--l12-extra", action="store_true", help="nial only: fcc Al, fcc Ni and L1_2 with wider anti-site sampling (name gets _l12ext)")
+    ap.add_argument("--b2-full", action="store_true", help="nial only: the full solid list plus the extended B2 defect cells of --b2-extra")
     ap.add_argument("--b2-extra", action="store_true", help="nial only (2026-11-11, triple-defect check step 3): fcc Al, fcc Ni and B2 with wider defect sampling "
                     "(Ni vacancies n=4..7 -> x_Ni 0.46..0.426, Ni anti-sites n=8,10 -> 0.648/0.685 on the 54-site cell) instead of the full solid list; name gets _b2ext")
     ap.add_argument("--ends-ti", action="store_true", help="ptrh: calphy solid TI (>= 2000 atoms) of the pure fcc end cells, first configuration per x (spec solids_ti with the x filter); name gets _ti")
@@ -412,6 +414,16 @@ def main():
         assert a.system == "alli", "--li-side is for alli"
         spec = li_side_spec(spec)
         cand_fn = lambda: candidates(li_side=True)
+    if a.l12_extra:   # 2026-11-12: L1_2 defect cells beyond +-1 anti-site (32 sites: Ni->Al n=2,3,4 -> x_Ni 0.6875/0.656/0.625; Al->Ni n=2,3 -> 0.8125/0.844)
+        assert a.system == "nial", "--l12-extra is for nial"
+        sol = spec["solids"]; l12 = next(s_ for s_ in sol if s_["phase"] == "L12")
+        spec["solids"] = [dict(sol[0], x=[0.0]), dict(sol[1], x=[1.0]),
+                          dict(l12, defects=[{"replace": ["Ni", "Al"], "n": k} for k in (2, 3, 4)] + [{"replace": ["Al", "Ni"], "n": k} for k in (2, 3)])]
+        spec["assemble"]["title"] = "Ni-Al L1_2 extended defect sampling: " + spec["assemble"]["title"]
+    if a.b2_full:     # full solid list with the extended B2 defect cells appended (first run of an MLIP that has no Ni-Al WorkChain yet)
+        assert a.system == "nial", "--b2-full is for nial"
+        b2 = next(s_ for s_ in spec["solids"] if s_["phase"] == "B2")
+        b2["defects"] = list(b2["defects"]) + [{"vacancy": "Ni", "n": k} for k in (4, 5, 6, 7)] + [{"replace": ["Al", "Ni"], "n": k} for k in (8, 10)]
     if a.b2_extra:
         assert a.system == "nial", "--b2-extra is for nial"
         sol = spec["solids"]; b2 = next(s_ for s_ in sol if s_["phase"] == "B2")
@@ -455,6 +467,8 @@ def main():
         name += "_liside"
     if a.b2_extra:
         name += "_b2ext"
+    if a.l12_extra:
+        name += "_l12ext"
     if a.solid_only:
         spec["assemble"]["allow_solid_only"] = True
         if a.t_window:
