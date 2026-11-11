@@ -113,3 +113,6 @@ env/deepmd32/*
 !env/deepmd32/bin/
 env/deepmd32/bin/*
 !env/deepmd32/bin/lmp_deepmd.sh
+# Zhang et al. 2027 Zenodo deposit 10.5281/zenodo.20918696 (CC BY 4.0, 3.7 GB; data/Zhang2027/README.md records DOI, licence and checksum; re-download, do not commit)
+data/Zhang2027/*
+!data/Zhang2027/README.md
