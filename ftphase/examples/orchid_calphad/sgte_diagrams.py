@@ -112,11 +112,16 @@ def draw_run(ax, run_dir, colors, seen, T_window):
     if not os.path.exists(f):
         ax.text(0.5, 0.5, "no 07 output", ha="center", transform=ax.transAxes)
         return None
-    r = pd.read_csv(f, sep="\t")
+    r = pd.read_csv(f, sep="\t"); T_liq = float(r["T"].min())
     low = os.path.join(run_dir, "lowT", "07_two_phase_regions.tsv")   # solids-only re-assembly below the liquid window (assemble_solids_lowT.py, 2026-11-10)
     if os.path.exists(low):
         lr = pd.read_csv(low, sep="\t")
         r = pd.concat([lr[lr["T"] < r["T"].min() - 1e-6], r], ignore_index=True)
+    lis = os.path.join(run_dir.rstrip("/") + "_liside_solid", "07_two_phase_regions.tsv")   # Li-side solids (bcc Li series, Al2Li3, Al4Li9) from the --li-side --solid-only WorkChain (2026-11-11)
+    if os.path.exists(lis):
+        ls = pd.read_csv(lis, sep="\t")
+        ls = ls[(ls["T"] < T_liq - 1e-6) & (ls[["x_a", "x_b"]].min(axis=1) >= 0.45)]
+        r = pd.concat([ls, r], ignore_index=True)
     r = r[r.phase_a != r.phase_b]
     steps = r["T"].diff().abs()
     dT = float(steps[steps > 0].min()) if (steps > 0).any() else 10.0
