@@ -1,0 +1,94 @@
+{
+ "tdb": "/home/kino/kino/Claude/Projects/PhaseDiagram/data/Zhang2027/zenodo-phase-diagrams/eSEN-uma-s-1p1/Ru-Si.tdb",
+ "n_samples": 1000,
+ "n_failed": 0,
+ "sigma_H_J": 1414.0,
+ "sigma_S_J_K": 1.73,
+ "grid": [
+  "SI",
+  0.01,
+  500,
+  2500,
+  25
+ ],
+ "perturbed": [
+  [
+   "HCP",
+   1.0
+  ],
+  [
+   "RUSI",
+   8.0
+  ],
+  [
+   "RU4SI3",
+   28.0
+  ],
+  [
+   "RU2SI",
+   12.0
+  ],
+  [
+   "SI",
+   2.0
+  ],
+  [
+   "RU2SI3",
+   40.0
+  ],
+  [
+   "SIRU5",
+   6.0
+  ],
+  [
+   "SIRU4",
+   5.0
+  ],
+  [
+   "SIRU3",
+   4.0
+  ],
+  [
+   "SI3RU5",
+   16.0
+  ],
+  [
+   "SI3RU",
+   8.0
+  ]
+ ],
+ "P_stable_anywhere": {
+  "HCP": 1.0,
+  "LIQUID": 1.0,
+  "RU2SI": 0.197,
+  "RU2SI3": 1.0,
+  "RU4SI3": 0.63,
+  "RUSI": 0.993,
+  "SI": 1.0,
+  "SI3RU": 0.002,
+  "SI3RU5": 0.349,
+  "SIRU3": 0.009,
+  "SIRU4": 0.002,
+  "SIRU5": 0.015
+ },
+ "P_stable_anywhere_unperturbed": {
+  "HCP": true,
+  "LIQUID": true,
+  "RU2SI": false,
+  "RU2SI3": true,
+  "RU4SI3": true,
+  "RUSI": true,
+  "SI": true,
+  "SI3RU": false,
+  "SI3RU5": false,
+  "SIRU3": false,
+  "SIRU4": false,
+  "SIRU5": false
+ },
+ "accuracy_vs_unperturbed_mean": 0.7445845,
+ "accuracy_vs_unperturbed_p05_p95": [
+  0.57970625,
+  0.9505125
+ ],
+ "seconds": 1207.9895210266113
+}
