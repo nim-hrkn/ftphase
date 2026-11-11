@@ -80,11 +80,13 @@ Scripta Materialia 289 (2027) 117663, doi:10.1016/j.scriptamat.2026.117663（受
 | SevenNet-MF-ompa | 0.982 | 0.992 | 0.739 | 25 分 |
 | MACE-MPA-0（float64） | 1.49 | 2.50 | 0.593 | 60 分（Mo–Rh の fcc-Mo₈Rh₂₄ 1 構造は緩和セルが歪み spglib の Niggli 簡約が失敗して欠落、80/81 構造で評価） |
 | MatterSim-v1-5M | 1.71 | 2.44 | 0.504 | 6 分 |
-| DPA4-Plus-OMat24 | （mygarden5 の GPU 待ち） | | | |
+| DPA4-Plus-OMat24（8.8M、OMat24 のみ、AOTInductor .pt2） | **0.742** | **0.886** | 0.763 | 28 分（GPU） |
 
 系別（`out/errors_all.tsv`、`out/classification_all.tsv`、図 `out/panels.png`）:
 - SevenNet-MF-ompa は論文の SOTA 群と同じ水準（ΔH・ΔS とも ≈1、Al–Zn 0.78・Mo–Rh 0.80・Cu–Mg 0.80・Ru–Si 0.82 で DFT 並み、Cu–Pt 0.60・W–Re 0.63）。
 - MACE-MPA-0 の ΔS 誤差は W–Re の χ・σ セル（4–9 J/mol/K、虚数モードは無い）が支配的で、W–Re の分類精度 0.27、Mo–Rh 0.30（fcc 1 構造欠落の影響もある）。Al–Zn 0.81・Cu–Mg 0.84 は良い。5d 難融金属の振動が苦手、という傾向。公開コード側の落とし穴：緩和後のセルが大きく歪むと seekpath の経路生成と phonopy のメッシュ生成（spglib の Niggli 簡約）が例外を投げて構造ごと失われる。`run_mlip.py` はバンド図を非致命化し、ase の niggli_reduce とメッシュ対称性オフの退避を入れたが、この 1 セルは phonopy 内部の格子簡約でも失敗した。
 - MatterSim-5M は Cu–Pt の規則相（L1₁・L1₂）が全く出ず、W–Re も単相で潰れ、Al–Zn の fcc ミシビリティギャップが崩れる（NequIP-MP 並みの 0.50）。Al–Li で MatterSim-5M が Al 融点 996 K・共晶 720 K を出したのと整合する「0 K は良いが有限温度が粗い」挙動。
+
+- DPA4-Plus-OMat24 は ΔH 0.74 kJ/mol・ΔS 0.89 J/mol/K で、論文の最良 GRACE (OMAT+SMAX)（0.957 / 0.826）を ΔH で上回り、分類精度 0.763（Cu–Mg 0.96、Ru–Si 0.88、Mo–Rh 0.71、W–Re 0.70、Al–Zn 0.66、Cu–Pt 0.66）も DFT 0.778 と同等。論文に無い SeZM 系の基盤モデルが SOTA 群に入る。Al–Li では共晶 −117 K（Al 融点 989 K）だったので、「0 K エネルギーと調和エントロピーの分解精度」と「液相込みの不変反応」は別の軸、という本プロジェクトの観察がここでも出る。
 
 読み: 本プロジェクトの Al–Li 比較で最も実験に近かった SevenNet-MF-ompa が、論文の指標でも SOTA 群に入る。逆に Al–Li で共晶を −87 K に置いた MACE-MPA-0 と −147 K の MatterSim-5M は、論文の指標でも下位に来る。論文の「固相平衡の分類精度」と本プロジェクトの「不変反応の温度差」は測るものが違うが、MLIP の順位はおおむね共通している。
