@@ -1,0 +1,143 @@
+{
+ "relaxed": [
+  {
+   "name": "fcc-Al",
+   "x": 0.0,
+   "e": -3.7424554824829,
+   "V": 16.5525161449,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "bcc-Li",
+   "x": 1.0,
+   "e": -1.9053766727448,
+   "V": 20.432952030346,
+   "sg_before": "Im-3m (229)",
+   "sg_after": "Im-3m (229)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "B32-AlLi",
+   "x": 0.5,
+   "e": -3.0103452205658,
+   "V": 16.078439780672,
+   "sg_before": "Fd-3m (227)",
+   "sg_after": "Fd-3m (227)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "L12-Al3Li",
+   "x": 0.25,
+   "e": -3.3760089874268,
+   "V": 16.274851073254,
+   "sg_before": "Pm-3m (221)",
+   "sg_after": "Pm-3m (221)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "Al2Li3",
+   "x": 0.6,
+   "e": -2.8256512959798,
+   "V": 16.222043524458,
+   "sg_before": "R-3m (166)",
+   "sg_after": "R-3m (166)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "Al4Li9",
+   "x": 0.69230769230769,
+   "e": -2.626654111422,
+   "V": 16.528068002235,
+   "sg_before": "C2/m (12)",
+   "sg_after": "C2/m (12)",
+   "converged": true,
+   "transformed": false
+  }
+ ],
+ "hull": [
+  {
+   "name": "fcc-Al",
+   "x": 0.0,
+   "e": -3.7424554824829,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "L12-Al3Li",
+   "x": 0.25,
+   "e": -3.3760089874268,
+   "e_form": -0.092823207378387,
+   "on_hull": false,
+   "e_above_hull": 0.00039136409759521
+  },
+  {
+   "name": "B32-AlLi",
+   "x": 0.5,
+   "e": -3.0103452205658,
+   "e_form": -0.18642914295197,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "Al2Li3",
+   "x": 0.6,
+   "e": -2.8256512959798,
+   "e_form": -0.1854430993398,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "Al4Li9",
+   "x": 0.69230769230769,
+   "e": -2.626654111422,
+   "e_form": -0.1560224202963,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "bcc-Li",
+   "x": 1.0,
+   "e": -1.9053766727448,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  }
+ ],
+ "ground_state_check": [
+  {
+   "name": "fcc-Al",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "bcc-Li",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "B32-AlLi",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "Al2Li3",
+   "status": "MLIP ground state not in known list",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "Al4Li9",
+   "status": "MLIP ground state not in known list",
+   "e_above_hull": 0.0
+  }
+ ],
+ "potential": "checkpoint_sevennet_mf_ompa.pth",
+ "finished": "2026-11-11 04:00:01"
+}

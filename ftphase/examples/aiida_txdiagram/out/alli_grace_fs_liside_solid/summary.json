@@ -1,0 +1,285 @@
+{
+ "started": "2026-11-11 11:56:53",
+ "solids_used": [
+  "s00_fcc",
+  "s01_fcc",
+  "s02_fcc",
+  "s03_fcc",
+  "s04_fcc",
+  "s05_fcc",
+  "s06_fcc",
+  "s07_fcc",
+  "s08_fcc",
+  "s09_Al3Li",
+  "s10_B32",
+  "s11_B32",
+  "s12_B32",
+  "s13_bcc",
+  "s14_bcc",
+  "s15_bcc",
+  "s16_bcc",
+  "s17_bcc",
+  "s18_bcc",
+  "s19_bcc",
+  "s20_bcc",
+  "s21_bcc",
+  "s22_Al2Li3",
+  "s23_Al4Li9"
+ ],
+ "solids_missing": [],
+ "liquids_used": [],
+ "liquids_missing": [
+  "lqd_x0_00",
+  "lqd_x0_10",
+  "lqd_x0_20",
+  "lqd_x0_30",
+  "lqd_x0_40",
+  "lqd_x0_50"
+ ],
+ "liquid_x_available": [],
+ "liquid_runs_per_x": {},
+ "liquid_T_min_K": {},
+ "table_check": [],
+ "liquid_T_range_K": null,
+ "T_grid": [
+  300.0,
+  1100.0,
+  81
+ ],
+ "pure_A_melting_bracket_K": null,
+ "invariants": [
+  {
+   "T_low": 310.0,
+   "T_high": 320.0,
+   "pairs_below": [
+    "Al3Li+B32",
+    "Al3Li+fcc",
+    "Al4Li9+B32",
+    "Al4Li9+bcc"
+   ],
+   "pairs_above": [
+    "Al3Li+B32",
+    "Al3Li+fcc",
+    "B32+bcc"
+   ]
+  },
+  {
+   "T_low": 330.0,
+   "T_high": 340.0,
+   "pairs_below": [
+    "Al3Li+B32",
+    "Al3Li+fcc",
+    "B32+bcc"
+   ],
+   "pairs_above": [
+    "B32+bcc",
+    "B32+fcc"
+   ]
+  },
+  {
+   "T_low": 940.0,
+   "T_high": 950.0,
+   "pairs_below": [
+    "B32+bcc",
+    "B32+fcc"
+   ],
+   "pairs_above": [
+    "B32+B32",
+    "B32+bcc",
+    "B32+fcc"
+   ]
+  }
+ ],
+ "regions_at_700K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.225,
+   "phase_b": "B32",
+   "x_b": 0.4375
+  },
+  {
+   "phase_a": "B32",
+   "x_a": 0.5625,
+   "phase_b": "bcc",
+   "x_b": 0.75
+  }
+ ],
+ "regions_at_800K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.24,
+   "phase_b": "B32",
+   "x_b": 0.4375
+  },
+  {
+   "phase_a": "B32",
+   "x_a": 0.5625,
+   "phase_b": "bcc",
+   "x_b": 0.75
+  }
+ ],
+ "regions_at_900K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.25,
+   "phase_b": "B32",
+   "x_b": 0.4375
+  },
+  {
+   "phase_a": "B32",
+   "x_a": 0.5625,
+   "phase_b": "bcc",
+   "x_b": 0.75
+  }
+ ],
+ "regions_at_1000K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.25,
+   "phase_b": "B32",
+   "x_b": 0.4375
+  },
+  {
+   "phase_a": "B32",
+   "x_a": 0.4375,
+   "phase_b": "B32",
+   "x_b": 0.5625
+  },
+  {
+   "phase_a": "B32",
+   "x_a": 0.5625,
+   "phase_b": "bcc",
+   "x_b": 0.75
+  }
+ ],
+ "same_phase_segments": [
+  {
+   "phase": "B32",
+   "T": 950.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 960.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 970.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 980.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 990.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1000.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1010.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1020.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1030.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1040.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1050.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1060.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1070.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1080.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1090.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1100.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  }
+ ],
+ "fit_residuals": {
+  "T": 900.0,
+  "rows": [
+   {
+    "T": 900.0,
+    "phase": "B32",
+    "rmse_eV": 2.5639502485114e-16,
+    "flag": false
+   },
+   {
+    "T": 900.0,
+    "phase": "bcc",
+    "rmse_eV": 0.0016790472771812,
+    "flag": false
+   },
+   {
+    "T": 900.0,
+    "phase": "fcc",
+    "rmse_eV": 0.0001676037961873,
+    "flag": false
+   }
+  ]
+ },
+ "sigma_used_eV": {
+  "B32": 0.002,
+  "bcc": 0.002,
+  "Al3Li": 0.002,
+  "fcc": 0.002,
+  "Al4Li9": 0.002,
+  "Al2Li3": 0.002
+ },
+ "finished": "2026-11-11 11:57:00"
+}

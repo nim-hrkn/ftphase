@@ -1,0 +1,12 @@
+{
+ "pk": 13108,
+ "uuid": "52109c6d-28fc-4c40-9db1-cb84f4615748",
+ "name": "alli_ace_liside_solid",
+ "profile": "ftphase",
+ "submitted": "2026-11-11 03:50:07",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden6",
+ "qha_computer": "mygardenx2",
+ "mlip": "ace"
+}

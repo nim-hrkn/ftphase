@@ -1,0 +1,348 @@
+{
+ "started": "2026-11-11 11:52:33",
+ "solids_used": [
+  "s00_fcc",
+  "s01_fcc",
+  "s02_fcc",
+  "s03_fcc",
+  "s04_fcc",
+  "s05_fcc",
+  "s06_fcc",
+  "s07_fcc",
+  "s08_fcc",
+  "s09_Al3Li",
+  "s10_B32",
+  "s11_B32",
+  "s12_B32",
+  "s13_bcc",
+  "s14_bcc",
+  "s15_bcc",
+  "s16_bcc",
+  "s17_bcc",
+  "s18_bcc",
+  "s19_bcc",
+  "s20_bcc",
+  "s21_bcc",
+  "s22_Al2Li3",
+  "s23_Al4Li9"
+ ],
+ "solids_missing": [],
+ "liquids_used": [],
+ "liquids_missing": [
+  "lqd_x0_00",
+  "lqd_x0_10",
+  "lqd_x0_20",
+  "lqd_x0_30",
+  "lqd_x0_40",
+  "lqd_x0_50"
+ ],
+ "liquid_x_available": [],
+ "liquid_runs_per_x": {},
+ "liquid_T_min_K": {},
+ "table_check": [],
+ "liquid_T_range_K": null,
+ "T_grid": [
+  300.0,
+  1100.0,
+  81
+ ],
+ "pure_A_melting_bracket_K": null,
+ "invariants": [
+  {
+   "T_low": 350.0,
+   "T_high": 360.0,
+   "pairs_below": [
+    "Al2Li3+Al4Li9",
+    "Al2Li3+B32",
+    "Al3Li+B32",
+    "Al3Li+fcc",
+    "Al4Li9+bcc"
+   ],
+   "pairs_above": [
+    "Al2Li3+Al4Li9",
+    "Al2Li3+B32",
+    "Al4Li9+bcc",
+    "B32+fcc"
+   ]
+  },
+  {
+   "T_low": 670.0,
+   "T_high": 680.0,
+   "pairs_below": [
+    "Al2Li3+Al4Li9",
+    "Al2Li3+B32",
+    "Al4Li9+bcc",
+    "B32+fcc"
+   ],
+   "pairs_above": [
+    "Al2Li3+Al4Li9",
+    "Al2Li3+B32",
+    "Al4Li9+bcc",
+    "B32+fcc",
+    "fcc+fcc"
+   ]
+  },
+  {
+   "T_low": 750.0,
+   "T_high": 760.0,
+   "pairs_below": [
+    "Al2Li3+Al4Li9",
+    "Al2Li3+B32",
+    "Al4Li9+bcc",
+    "B32+fcc",
+    "fcc+fcc"
+   ],
+   "pairs_above": [
+    "Al2Li3+B32",
+    "Al2Li3+bcc",
+    "B32+fcc",
+    "fcc+fcc"
+   ]
+  },
+  {
+   "T_low": 790.0,
+   "T_high": 800.0,
+   "pairs_below": [
+    "Al2Li3+B32",
+    "Al2Li3+bcc",
+    "B32+fcc",
+    "fcc+fcc"
+   ],
+   "pairs_above": [
+    "Al2Li3+B32",
+    "Al2Li3+bcc",
+    "B32+fcc"
+   ]
+  },
+  {
+   "T_low": 810.0,
+   "T_high": 820.0,
+   "pairs_below": [
+    "Al2Li3+B32",
+    "Al2Li3+bcc",
+    "B32+fcc"
+   ],
+   "pairs_above": [
+    "B32+bcc",
+    "B32+fcc"
+   ]
+  },
+  {
+   "T_low": 1070.0,
+   "T_high": 1080.0,
+   "pairs_below": [
+    "B32+bcc",
+    "B32+fcc"
+   ],
+   "pairs_above": [
+    "B32+B32",
+    "B32+bcc",
+    "B32+fcc"
+   ]
+  }
+ ],
+ "regions_at_700K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.025241949594443,
+   "phase_b": "fcc",
+   "x_b": 0.11783408326316
+  },
+  {
+   "phase_a": "fcc",
+   "x_a": 0.13970907986203,
+   "phase_b": "B32",
+   "x_b": 0.48561221382997
+  },
+  {
+   "phase_a": "B32",
+   "x_a": 0.5625,
+   "phase_b": "Al2Li3",
+   "x_b": 0.6
+  },
+  {
+   "phase_a": "Al2Li3",
+   "x_a": 0.6,
+   "phase_b": "Al4Li9",
+   "x_b": 0.69230769230769
+  },
+  {
+   "phase_a": "Al4Li9",
+   "x_a": 0.69230769230769,
+   "phase_b": "bcc",
+   "x_b": 0.75
+  }
+ ],
+ "regions_at_800K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.17650488415676,
+   "phase_b": "B32",
+   "x_b": 0.47973253654887
+  },
+  {
+   "phase_a": "B32",
+   "x_a": 0.5625,
+   "phase_b": "Al2Li3",
+   "x_b": 0.6
+  },
+  {
+   "phase_a": "Al2Li3",
+   "x_a": 0.6,
+   "phase_b": "bcc",
+   "x_b": 0.75
+  }
+ ],
+ "regions_at_900K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.20300288521075,
+   "phase_b": "B32",
+   "x_b": 0.46511003307575
+  },
+  {
+   "phase_a": "B32",
+   "x_a": 0.5625,
+   "phase_b": "bcc",
+   "x_b": 0.75
+  }
+ ],
+ "regions_at_1000K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.22375,
+   "phase_b": "B32",
+   "x_b": 0.4375
+  },
+  {
+   "phase_a": "B32",
+   "x_a": 0.5625,
+   "phase_b": "bcc",
+   "x_b": 0.75
+  }
+ ],
+ "same_phase_segments": [
+  {
+   "phase": "fcc",
+   "T": 680.0,
+   "x_a": 0.021968634636834,
+   "x_b": 0.12279349611598
+  },
+  {
+   "phase": "fcc",
+   "T": 690.0,
+   "x_a": 0.02354172723059,
+   "x_b": 0.12037845662677
+  },
+  {
+   "phase": "fcc",
+   "T": 700.0,
+   "x_a": 0.025241949594443,
+   "x_b": 0.11783408326316
+  },
+  {
+   "phase": "fcc",
+   "T": 710.0,
+   "x_a": 0.027097455209063,
+   "x_b": 0.11512644779257
+  },
+  {
+   "phase": "fcc",
+   "T": 720.0,
+   "x_a": 0.029126265492461,
+   "x_b": 0.11224301679342
+  },
+  {
+   "phase": "fcc",
+   "T": 730.0,
+   "x_a": 0.031368065185533,
+   "x_b": 0.10914093650225
+  },
+  {
+   "phase": "fcc",
+   "T": 740.0,
+   "x_a": 0.033872526619552,
+   "x_b": 0.10577034121087
+  },
+  {
+   "phase": "fcc",
+   "T": 750.0,
+   "x_a": 0.036705417204058,
+   "x_b": 0.10206843568493
+  },
+  {
+   "phase": "fcc",
+   "T": 760.0,
+   "x_a": 0.039998165618093,
+   "x_b": 0.097896932916926
+  },
+  {
+   "phase": "fcc",
+   "T": 770.0,
+   "x_a": 0.043942208220591,
+   "x_b": 0.093070918142596
+  },
+  {
+   "phase": "fcc",
+   "T": 780.0,
+   "x_a": 0.049001222066945,
+   "x_b": 0.087122968213796
+  },
+  {
+   "phase": "fcc",
+   "T": 790.0,
+   "x_a": 0.056767515335548,
+   "x_b": 0.078460548289878
+  },
+  {
+   "phase": "B32",
+   "T": 1080.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1090.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  },
+  {
+   "phase": "B32",
+   "T": 1100.0,
+   "x_a": 0.4375,
+   "x_b": 0.5625
+  }
+ ],
+ "fit_residuals": {
+  "T": 900.0,
+  "rows": [
+   {
+    "T": 900.0,
+    "phase": "B32",
+    "rmse_eV": 0.0,
+    "flag": false
+   },
+   {
+    "T": 900.0,
+    "phase": "bcc",
+    "rmse_eV": 2.3777096446126e-15,
+    "flag": false
+   },
+   {
+    "T": 900.0,
+    "phase": "fcc",
+    "rmse_eV": 0.00019738954475494,
+    "flag": false
+   }
+  ]
+ },
+ "sigma_used_eV": {
+  "B32": 0.002,
+  "Al3Li": 0.002,
+  "Al2Li3": 0.002,
+  "bcc": 0.002,
+  "fcc": 0.002,
+  "Al4Li9": 0.002
+ },
+ "finished": "2026-11-11 11:52:39"
+}

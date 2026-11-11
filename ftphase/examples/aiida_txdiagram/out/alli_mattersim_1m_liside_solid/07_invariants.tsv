@@ -1,0 +1,4 @@
+T_low	T_high	pairs_below	pairs_above
+400.0	410.0	['Al2Li3+Al4Li9', 'Al2Li3+B32', 'Al3Li+B32', 'Al3Li+fcc', 'Al4Li9+bcc']	['Al2Li3+Al4Li9', 'Al2Li3+B32', 'Al4Li9+bcc', 'B32+fcc']
+720.0	730.0	['Al2Li3+Al4Li9', 'Al2Li3+B32', 'Al4Li9+bcc', 'B32+fcc']	['Al2Li3+B32', 'Al2Li3+bcc', 'B32+fcc']
+900.0	910.0	['Al2Li3+B32', 'Al2Li3+bcc', 'B32+fcc']	['B32+bcc', 'B32+fcc']
