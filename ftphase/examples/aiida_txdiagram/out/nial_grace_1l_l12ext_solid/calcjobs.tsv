@@ -1,0 +1,11 @@
+pk	label	state	exit	remote_workdir
+15877	prepare_cells	finished	0	
+15916	qha s00_fccAl fccAl x=0.0000	finished	0	/home/kino/aiida_run/ftphase/e0/3b/7304-b014-4dc9-91a2-f0e0541719ee
+15918	qha s01_fccNi fccNi x=1.0000	finished	0	/home/kino/aiida_run/ftphase/52/60/7925-5d3b-4094-824d-93b304e053ef
+15920	qha s02_L12 L12 x=0.7500	finished	0	/home/kino/aiida_run/ftphase/93/63/e628-509c-4830-aa59-c08de5c54d87
+15922	qha s03_L12 L12 x=0.6875	finished	0	/home/kino/aiida_run/ftphase/7f/17/e7b1-6852-4f2e-9d99-dbc606e81679
+15924	qha s04_L12 L12 x=0.6562	finished	0	/home/kino/aiida_run/ftphase/f2/b1/3336-2fab-41fc-a080-101143b890de
+15926	qha s05_L12 L12 x=0.6250	finished	0	/home/kino/aiida_run/ftphase/58/5d/24e9-beca-4e9c-8695-b715e821c220
+15928	qha s06_L12 L12 x=0.8125	finished	0	/home/kino/aiida_run/ftphase/3b/d0/5fec-3b07-4a0b-9f5d-221cb8d3c046
+15930	qha s07_L12 L12 x=0.8438	finished	0	/home/kino/aiida_run/ftphase/1f/68/225e-eace-4c17-b4a3-a5f278681568
+16121	assemble_diagram	finished	0	

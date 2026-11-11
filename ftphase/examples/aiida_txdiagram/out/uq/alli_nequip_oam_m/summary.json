@@ -1,0 +1,33 @@
+{
+ "run": "alli_nequip_oam_m",
+ "n_samples": 200,
+ "T_grid": [
+  700.0,
+  1100.0,
+  20.0
+ ],
+ "sigma_H_eV": 0.014613620215830998,
+ "sigma_S_eV_K": 1.793018650594867e-05,
+ "sigma_stat_eV": 0.0,
+ "P_anywhere": {
+  "fcc": 0.78,
+  "Al3Li": 0.265,
+  "B32": 0.805,
+  "liquid": 1.0
+ },
+ "accuracy_vs_unperturbed_mean": 0.4289191176470588,
+ "accuracy_p05_p95": [
+  0.16176470588235295,
+  0.6965441176470585
+ ],
+ "lowest_T_with_liquid_unperturbed": 820.0,
+ "lowest_T_with_liquid_mean_std": [
+  832.1,
+  128.66852762039363
+ ],
+ "lowest_T_with_liquid_p05_p95": [
+  700.0,
+  1040.0
+ ],
+ "fraction_at_grid_floor": 0.325
+}

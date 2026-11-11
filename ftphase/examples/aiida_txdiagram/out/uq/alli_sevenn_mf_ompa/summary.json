@@ -1,0 +1,33 @@
+{
+ "run": "alli_sevenn_mf_ompa",
+ "n_samples": 200,
+ "T_grid": [
+  700.0,
+  1100.0,
+  20.0
+ ],
+ "sigma_H_eV": 0.014613620215830998,
+ "sigma_S_eV_K": 1.793018650594867e-05,
+ "sigma_stat_eV": 0.0,
+ "P_anywhere": {
+  "fcc": 0.88,
+  "Al3Li": 0.22,
+  "B32": 0.86,
+  "liquid": 0.925
+ },
+ "accuracy_vs_unperturbed_mean": 0.4880238095238095,
+ "accuracy_p05_p95": [
+  0.24038690476190477,
+  0.7740773809523807
+ ],
+ "lowest_T_with_liquid_unperturbed": 860.0,
+ "lowest_T_with_liquid_mean_std": [
+  843.2432432432432,
+  125.24687090128222
+ ],
+ "lowest_T_with_liquid_p05_p95": [
+  700.0,
+  1060.0
+ ],
+ "fraction_at_grid_floor": 0.235
+}
