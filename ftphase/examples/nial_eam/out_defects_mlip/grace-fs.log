@@ -1,0 +1,30 @@
+grace-fs Va_Ni: raw +6.989 eV (12 steps, 5 s)
+grace-fs Va_Al: raw +5.874 eV (8 steps, 6 s)
+grace-fs Ni_Al: raw -1.257 eV (12 steps, 6 s)
+grace-fs Al_Ni: raw +3.606 eV (14 steps, 7 s)
+{
+"mlip": "grace-fs",
+"model": "GRACE-FS-OAM (foundation, FS, 6 A)",
+"device": "cpu",
+"fmax": 0.005,
+"n_sites": 128,
+"a0_B2_A": 2.886016959025669,
+"E_B2_per_atom": -5.412028205897322,
+"E_fccAl_per_atom": -3.7263866081383883,
+"E_fccNi_per_atom": -5.74961723303799,
+"E_form_B2_eV_per_atom": -0.6740262853091323,
+"formation_vs_pure_elements_eV": {
+"Va_Ni": 1.2389008304574718,
+"Va_Al": 2.147238559767355,
+"Ni_Al": 0.7666960352848857,
+"Al_Ni": 1.583082288794694
+},
+"formation_vs_compound_eV": {
+"Va_Ni": 1.5764898575981405,
+"Va_Al": 0.4615969620084215
+},
+"triple_defect_eV": 1.8964451255815646,
+"schottky_pair_eV": 2.038086819606562,
+"antisite_pair_eV": 2.3497783240795798,
+"seconds": 7.356359243392944
+}

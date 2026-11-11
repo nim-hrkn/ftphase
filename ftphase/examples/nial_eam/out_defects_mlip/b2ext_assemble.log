@@ -1,0 +1,3 @@
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/src/ftphase/aiida/functions.py:358: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  allrows = pd.concat([sol, liq], ignore_index=True)
+nial_grace_1l_b2ext_solid -> /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/aiida_txdiagram/out/nial_grace_1l_b2ext_solid_ti | sti 5

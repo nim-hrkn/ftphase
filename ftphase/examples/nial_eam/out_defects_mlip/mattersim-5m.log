@@ -1,0 +1,31 @@
+[32m2026-11-11 20:02:14.099[0m | [1mINFO    [0m | [36mmattersim.forcefield.potential[0m:[36mfrom_checkpoint[0m:[36m938[0m - [1mLoading the model from /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/mattersim/mattersim-v1.0.0-5M.pth[0m
+mattersim-5m Va_Ni: raw +6.761 eV (10 steps, 7 s)
+mattersim-5m Va_Al: raw +6.046 eV (14 steps, 15 s)
+mattersim-5m Ni_Al: raw -1.181 eV (14 steps, 24 s)
+mattersim-5m Al_Ni: raw +3.676 eV (14 steps, 34 s)
+{
+"mlip": "mattersim-5m",
+"model": "MatterSim-v1.0.0-5M (float32, ML-IAP)",
+"device": "cpu",
+"fmax": 0.005,
+"n_sites": 128,
+"a0_B2_A": 2.886904217375176,
+"E_B2_per_atom": -5.418621063232422,
+"E_fccAl_per_atom": -3.7331976890563965,
+"E_fccNi_per_atom": -5.7727952003479,
+"E_form_B2_eV_per_atom": -0.6656246185302734,
+"formation_vs_pure_elements_eV": {
+"Va_Ni": 0.9877638816833496,
+"Va_Al": 2.3127617835998535,
+"Ni_Al": 0.8582620620727539,
+"Al_Ni": 1.636427879333496
+},
+"formation_vs_compound_eV": {
+"Va_Ni": 1.3419380187988281,
+"Va_Al": 0.6273384094238281
+},
+"triple_defect_eV": 1.5025405883789062,
+"schottky_pair_eV": 1.9692764282226562,
+"antisite_pair_eV": 2.49468994140625,
+"seconds": 33.825742959976196
+}

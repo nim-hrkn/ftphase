@@ -1,0 +1,32 @@
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/torch/lib/python3.12/site-packages/sevenn/calculator.py:93: UserWarning: No tensor product accelerator is enabled for SevenNetCalculator. SevenNet may run much slower without a TP accelerator. Please refer to the accelerator section of the documentation.
+  util.warn_no_tp_accelerator('SevenNetCalculator')
+sevenn-0 Va_Ni: raw +6.536 eV (12 steps, 15 s)
+sevenn-0 Va_Al: raw +5.390 eV (15 steps, 31 s)
+sevenn-0 Ni_Al: raw -1.405 eV (14 steps, 46 s)
+sevenn-0 Al_Ni: raw +3.286 eV (16 steps, 63 s)
+{
+"mlip": "sevenn-0",
+"model": "SevenNet-0 (11Jul2024, MPtrj; oeq deployment)",
+"device": "cpu",
+"fmax": 0.005,
+"n_sites": 128,
+"a0_B2_A": 2.8861544870448763,
+"E_B2_per_atom": -5.4137115478515625,
+"E_fccAl_per_atom": -3.7195396423339844,
+"E_fccNi_per_atom": -5.768441200256348,
+"E_form_B2_eV_per_atom": -0.6697211265563965,
+"formation_vs_pure_elements_eV": {
+"Va_Ni": 0.7676916122436523,
+"Va_Al": 1.6702308654785156,
+"Ni_Al": 0.6434450149536133,
+"Al_Ni": 1.2374753952026367
+},
+"formation_vs_compound_eV": {
+"Va_Ni": 1.1224212646484375,
+"Va_Al": -0.0239410400390625
+},
+"triple_defect_eV": 0.839385986328125,
+"schottky_pair_eV": 1.098480224609375,
+"antisite_pair_eV": 1.88092041015625,
+"seconds": 63.16931438446045
+}

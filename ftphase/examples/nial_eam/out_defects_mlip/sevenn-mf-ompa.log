@@ -1,0 +1,32 @@
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/torch/lib/python3.12/site-packages/sevenn/calculator.py:93: UserWarning: No tensor product accelerator is enabled for SevenNetCalculator. SevenNet may run much slower without a TP accelerator. Please refer to the accelerator section of the documentation.
+  util.warn_no_tp_accelerator('SevenNetCalculator')
+sevenn-mf-ompa Va_Ni: raw +6.811 eV (10 steps, 95 s)
+sevenn-mf-ompa Va_Al: raw +6.353 eV (8 steps, 157 s)
+sevenn-mf-ompa Ni_Al: raw -0.855 eV (11 steps, 246 s)
+sevenn-mf-ompa Al_Ni: raw +3.490 eV (15 steps, 359 s)
+{
+"mlip": "sevenn-mf-ompa",
+"model": "SevenNet-MF-ompa (modal mpa; oeq deployment)",
+"device": "cpu",
+"fmax": 0.005,
+"n_sites": 128,
+"a0_B2_A": 2.8902233955960206,
+"E_B2_per_atom": -5.421548843383789,
+"E_fccAl_per_atom": -3.7424557209014893,
+"E_fccNi_per_atom": -5.778865814208984,
+"E_form_B2_eV_per_atom": -0.6608880758285522,
+"formation_vs_pure_elements_eV": {
+"Va_Ni": 1.0322914123535156,
+"Va_Al": 2.6105716228485107,
+"Ni_Al": 1.1814906597137451,
+"Al_Ni": 1.4538853168487549
+},
+"formation_vs_compound_eV": {
+"Va_Ni": 1.389608383178711,
+"Va_Al": 0.9314785003662109
+},
+"triple_defect_eV": 1.9242973327636719,
+"schottky_pair_eV": 2.321086883544922,
+"antisite_pair_eV": 2.6353759765625,
+"seconds": 359.02153873443604
+}

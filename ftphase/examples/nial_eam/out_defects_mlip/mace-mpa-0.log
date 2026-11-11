@@ -1,0 +1,48 @@
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/e3nn/o3/_wigner.py:10: UserWarning: Environment variable TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD detected, since the`weights_only` argument was not explicitly passed to `torch.load`, forcing weights_only=False.
+  _Jd, _W3j_flat, _W3j_indices = torch.load(os.path.join(os.path.dirname(__file__), 'constants.pt'))
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/mace/calculators/mace.py:226: UserWarning: Environment variable TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD detected, since the`weights_only` argument was not explicitly passed to `torch.load`, forcing weights_only=False.
+  torch.load(f=model_path, map_location=device)
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/torch/jit/_serialization.py:176: DeprecationWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/torch/jit/_serialization.py:176: DeprecationWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/torch/jit/_serialization.py:176: DeprecationWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/mace/lib/python3.12/site-packages/ase/atoms.py:432: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+  a.shape = (-1,) + shape
+mace-mpa-0 Va_Ni: raw +6.864 eV (10 steps, 31 s)
+mace-mpa-0 Va_Al: raw +6.099 eV (10 steps, 57 s)
+mace-mpa-0 Ni_Al: raw -1.174 eV (12 steps, 89 s)
+mace-mpa-0 Al_Ni: raw +3.891 eV (15 steps, 132 s)
+/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/nial_defects_mlip.py:77: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/nial_eam/out_defects_mlip/mace-mpa-0.json' mode='w' encoding='UTF-8'>
+  json.dump(out, open(os.path.join(HERE, "out_defects_mlip", f"{a.mlip}.json"), "w"), indent=1)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+{
+"mlip": "mace-mpa-0",
+"model": "MACE-MPA-0 medium (float32, ML-IAP, cuEquivariance)",
+"device": "cpu",
+"fmax": 0.005,
+"n_sites": 128,
+"a0_B2_A": 2.884595259220616,
+"E_B2_per_atom": -5.4226190530766125,
+"E_fccAl_per_atom": -3.7400030777345585,
+"E_fccNi_per_atom": -5.786662220954598,
+"E_form_B2_eV_per_atom": -0.6592864037320343,
+"formation_vs_pure_elements_eV": {
+"Va_Ni": 1.077356800691133,
+"Va_Al": 2.3587706404103534,
+"Ni_Al": 0.872382231762344,
+"Al_Ni": 1.844467574979376
+},
+"formation_vs_compound_eV": {
+"Va_Ni": 1.4413999685691188,
+"Va_Al": 0.6761546650682995
+},
+"triple_defect_eV": 1.7085230256805417,
+"schottky_pair_eV": 2.1175546336374182,
+"antisite_pair_eV": 2.7168498067417204,
+"seconds": 131.96364641189575
+}
