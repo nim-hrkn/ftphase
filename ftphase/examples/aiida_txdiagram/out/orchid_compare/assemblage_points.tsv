@@ -75,6 +75,20 @@ alli_ace_b32ti	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_x		
 alli_ace_b32ti	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	liquid	differ	T>880 (no tie-lines left)		medium
 alli_ace_b32ti	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T>880 (no tie-lines left)		medium
 alli_ace_b32ti	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_ace_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	Al4Li9+bcc	differ	T_grid=410	bccLi	high
+alli_ace_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=460		high
+alli_ace_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=500	liquid	high
+alli_ace_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	B32	differ	T_grid=570		medium
+alli_ace_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=570	liquid	high
+alli_ace_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=580		high
+alli_ace_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_ace_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	Al4Li9+bcc	differ	T_grid=690	liquid	medium
+alli_ace_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc+fcc	differ	T_grid=730		high
+alli_ace_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32	exact	T_grid=730		high
+alli_ace_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	B32+bcc	differ	T_grid=860	liquid	medium
+alli_ace_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_ace_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_ace_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc	differ	T_grid=950	liquid	high
 alli_ace_m6	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_ace_m6	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_ace_m6	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -89,6 +103,20 @@ alli_ace_m6	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_x		med
 alli_ace_m6	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	liquid	differ	T>880 (no tie-lines left)		medium
 alli_ace_m6	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T>880 (no tie-lines left)		medium
 alli_ace_m6	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_dpa41_air_oam	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
+alli_dpa41_air_oam	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
+alli_dpa41_air_oam	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
+alli_dpa41_air_oam	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32			outside_T	Al2Li3	medium
+alli_dpa41_air_oam	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid			outside_T	Al4Li9	high
+alli_dpa41_air_oam	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
+alli_dpa41_air_oam	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc			outside_T		medium
+alli_dpa41_air_oam	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid			outside_T	Al2Li3	medium
+alli_dpa41_air_oam	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_dpa41_air_oam	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32+fcc	differ	T_grid=730		high
+alli_dpa41_air_oam	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_x		medium
+alli_dpa41_air_oam	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890		medium
+alli_dpa41_air_oam	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T_grid=910		medium
+alli_dpa41_air_oam	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
 alli_dpa4_plus_omat24	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_dpa4_plus_omat24	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_dpa4_plus_omat24	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -103,6 +131,20 @@ alli_dpa4_plus_omat24	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outs
 alli_dpa4_plus_omat24	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc+liquid	exact	T_grid=890		medium
 alli_dpa4_plus_omat24	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T_grid=910		medium
 alli_dpa4_plus_omat24	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	Al4Li9+bcc	differ	T_grid=410	bccLi	high
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=460		high
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=500	liquid	high
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	B32	differ	T_grid=570		medium
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=570	liquid	high
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=580		high
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	Al4Li9+bcc	differ	T_grid=690	liquid	medium
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32+fcc	differ	T_grid=730		high
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	Al2Li3+bcc	differ	T_grid=860	liquid	medium
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_dpa4_plus_omat24_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc	differ	T_grid=950	liquid	high
 alli_grace_1l	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_grace_1l	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_grace_1l	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -117,6 +159,20 @@ alli_grace_1l	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_x		m
 alli_grace_1l	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	liquid	differ	T>860 (no tie-lines left)		medium
 alli_grace_1l	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T>860 (no tie-lines left)		medium
 alli_grace_1l	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_grace_1l_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	Al4Li9+bcc	differ	T_grid=410	bccLi	high
+alli_grace_1l_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=460		high
+alli_grace_1l_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	bcc	differ	T_grid=500	liquid	high
+alli_grace_1l_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	B32	differ	T_grid=570		medium
+alli_grace_1l_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	bcc	differ	T_grid=570	liquid	high
+alli_grace_1l_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+bcc	differ	T_grid=580		high
+alli_grace_1l_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_grace_1l_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	B32+bcc	differ	T_grid=690	liquid	medium
+alli_grace_1l_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_grace_1l_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32	exact	T_grid=730		high
+alli_grace_1l_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	B32+bcc	differ	T_grid=860	liquid	medium
+alli_grace_1l_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_grace_1l_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_grace_1l_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc	differ	T_grid=950	liquid	high
 alli_grace_2l	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_grace_2l	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_grace_2l	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -131,6 +187,20 @@ alli_grace_2l	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_x		m
 alli_grace_2l	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	liquid	differ	T_grid=890		medium
 alli_grace_2l	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T_grid=910		medium
 alli_grace_2l	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_grace_2l_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	Al4Li9+bcc	differ	T_grid=410	bccLi	high
+alli_grace_2l_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=460		high
+alli_grace_2l_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=500	liquid	high
+alli_grace_2l_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	B32	differ	T_grid=570		medium
+alli_grace_2l_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=570	liquid	high
+alli_grace_2l_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=580		high
+alli_grace_2l_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_grace_2l_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	Al4Li9+bcc	differ	T_grid=690	liquid	medium
+alli_grace_2l_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_grace_2l_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32	exact	T_grid=730		high
+alli_grace_2l_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	B32+bcc	differ	T_grid=860	liquid	medium
+alli_grace_2l_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_grace_2l_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_grace_2l_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc	differ	T_grid=950	liquid	high
 alli_grace_fs	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_grace_fs	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_grace_fs	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -145,6 +215,20 @@ alli_grace_fs	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_x		m
 alli_grace_fs	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc+liquid	exact	T_grid=890		medium
 alli_grace_fs	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T_grid=910		medium
 alli_grace_fs	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_grace_fs_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	bcc	differ	T_grid=410	bccLi	high
+alli_grace_fs_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	B32+bcc	differ	T_grid=460	Al2Li3	high
+alli_grace_fs_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	bcc	differ	T_grid=500	liquid	high
+alli_grace_fs_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	B32	differ	T_grid=570	Al2Li3	medium
+alli_grace_fs_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	bcc	differ	T_grid=570	liquid	high
+alli_grace_fs_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	B32+bcc	differ	T_grid=580	Al2Li3	high
+alli_grace_fs_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_grace_fs_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	B32+bcc	differ	T_grid=690	Al2Li3,liquid	medium
+alli_grace_fs_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_grace_fs_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32	exact	T_grid=730		high
+alli_grace_fs_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	B32+bcc	differ	T_grid=860	liquid	medium
+alli_grace_fs_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_grace_fs_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_grace_fs_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc	differ	T_grid=950	liquid	high
 alli_mace_mpa_0	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_mace_mpa_0	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_mace_mpa_0	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -159,6 +243,20 @@ alli_mace_mpa_0	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_x	
 alli_mace_mpa_0	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890		medium
 alli_mace_mpa_0	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T_grid=910		medium
 alli_mace_mpa_0	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	Al4Li9+bcc	differ	T_grid=410	bccLi	high
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=460		high
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=500	liquid	high
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	Al2Li3+B32	exact	T_grid=570		medium
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=570	liquid	high
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=580		high
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	Al2Li3+bcc	differ	T_grid=690	liquid	medium
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32	exact	T_grid=730		high
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	Al2Li3+bcc	differ	T_grid=860	liquid	medium
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_mace_mpa_0_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc	differ	T_grid=950	liquid	high
 alli_mattersim_1m	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_mattersim_1m	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_mattersim_1m	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -173,6 +271,20 @@ alli_mattersim_1m	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_
 alli_mattersim_1m	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	liquid	differ	T>790 (no tie-lines left)		medium
 alli_mattersim_1m	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid			outside_x	B32	medium
 alli_mattersim_1m	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_mattersim_1m_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	bcc	differ	T_grid=410	bccLi	high
+alli_mattersim_1m_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=460		high
+alli_mattersim_1m_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	bcc	differ	T_grid=500	liquid	high
+alli_mattersim_1m_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	B32	differ	T_grid=570		medium
+alli_mattersim_1m_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	bcc	differ	T_grid=570	liquid	high
+alli_mattersim_1m_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=580		high
+alli_mattersim_1m_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_mattersim_1m_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	Al4Li9+bcc	differ	T_grid=690	liquid	medium
+alli_mattersim_1m_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_mattersim_1m_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32	exact	T_grid=730		high
+alli_mattersim_1m_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	Al2Li3+bcc	differ	T_grid=860	liquid	medium
+alli_mattersim_1m_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_mattersim_1m_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_mattersim_1m_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc	differ	T_grid=950	liquid	high
 alli_mattersim_5m	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_mattersim_5m	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_mattersim_5m	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -187,6 +299,20 @@ alli_mattersim_5m	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_
 alli_mattersim_5m	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc+fcc	differ	T_grid=890		medium
 alli_mattersim_5m	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	fcc+liquid	differ	T_grid=910		medium
 alli_mattersim_5m	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_mattersim_5m_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	bcc	differ	T_grid=410	bccLi	high
+alli_mattersim_5m_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=460		high
+alli_mattersim_5m_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	bcc	differ	T_grid=500	liquid	high
+alli_mattersim_5m_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	B32	differ	T_grid=570		medium
+alli_mattersim_5m_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	bcc	differ	T_grid=570	liquid	high
+alli_mattersim_5m_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+bcc	differ	T_grid=580		high
+alli_mattersim_5m_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_mattersim_5m_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	Al2Li3+bcc	differ	T_grid=690	liquid	medium
+alli_mattersim_5m_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc+fcc	differ	T_grid=730		high
+alli_mattersim_5m_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32+fcc	differ	T_grid=730		high
+alli_mattersim_5m_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	B32+bcc	differ	T_grid=860	liquid	medium
+alli_mattersim_5m_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc+fcc	differ	T_grid=890	liquid	medium
+alli_mattersim_5m_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_mattersim_5m_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc	differ	T_grid=950	liquid	high
 alli_nequip_oam_m	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_nequip_oam_m	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_nequip_oam_m	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -201,6 +327,20 @@ alli_nequip_oam_m	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_
 alli_nequip_oam_m	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc+liquid	exact	T_grid=890		medium
 alli_nequip_oam_m	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T_grid=910		medium
 alli_nequip_oam_m	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	Al4Li9+bcc	differ	T_grid=410	bccLi	high
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=460		high
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=500	liquid	high
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	B32	differ	T_grid=570		medium
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	bcc	differ	T_grid=570	liquid	high
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=580		high
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	B32+bcc	differ	T_grid=690	liquid	medium
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32	exact	T_grid=730		high
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	B32+bcc	differ	T_grid=860	liquid	medium
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_nequip_oam_m_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc	differ	T_grid=950	liquid	high
 alli_nequip_oam_s	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_nequip_oam_s	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_nequip_oam_s	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -215,6 +355,20 @@ alli_nequip_oam_s	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_
 alli_nequip_oam_s	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890		medium
 alli_nequip_oam_s	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910		medium
 alli_nequip_oam_s	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	Al4Li9+bcc	differ	T_grid=410	bccLi	high
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=460		high
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	bcc	differ	T_grid=500	liquid	high
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	B32	differ	T_grid=570		medium
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	bcc+bcc	differ	T_grid=570	liquid	high
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+bcc	differ	T_grid=580		high
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	B32+bcc	differ	T_grid=690	liquid	medium
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32+B32	differ	T_grid=730		high
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	B32+bcc	differ	T_grid=860	liquid	medium
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_nequip_oam_s_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc+bcc	differ	T_grid=950	liquid	high
 alli_sevenn_0	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_sevenn_0	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_sevenn_0	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -229,6 +383,20 @@ alli_sevenn_0	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outside_x		m
 alli_sevenn_0	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890		medium
 alli_sevenn_0	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910		medium
 alli_sevenn_0	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_sevenn_0_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	Al4Li9+bcc	differ	T_grid=410	bccLi	high
+alli_sevenn_0_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+bcc	differ	T_grid=460		high
+alli_sevenn_0_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	Al2Li3+bcc	differ	T_grid=500	liquid	high
+alli_sevenn_0_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	Al2Li3+B32	exact	T_grid=570		medium
+alli_sevenn_0_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	Al2Li3+bcc	differ	T_grid=570	liquid	high
+alli_sevenn_0_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+bcc	differ	T_grid=580		high
+alli_sevenn_0_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_sevenn_0_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	Al2Li3+bcc	differ	T_grid=690	liquid	medium
+alli_sevenn_0_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_sevenn_0_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32	exact	T_grid=730		high
+alli_sevenn_0_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	Al2Li3+bcc	differ	T_grid=860	liquid	medium
+alli_sevenn_0_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_sevenn_0_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_sevenn_0_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc+bcc	differ	T_grid=950	liquid	high
 alli_sevenn_mf_ompa	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi			outside_T	Al4Li9,bccLi	high
 alli_sevenn_mf_ompa	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9			outside_T	Al2Li3,Al4Li9	high
 alli_sevenn_mf_ompa	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid			outside_T	Al4Li9	high
@@ -243,6 +411,20 @@ alli_sevenn_mf_ompa	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid			outsid
 alli_sevenn_mf_ompa	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890		medium
 alli_sevenn_mf_ompa	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	liquid	differ	T_grid=910		medium
 alli_sevenn_mf_ompa	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid			outside_x		high
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-2e3989a5cdb25201	411.3	0.8453	Al4Li9+bccLi	Al4Li9+bcc	differ	T_grid=410	bccLi	high
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-da70748a5763ec9a	460.3	0.6447	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=460		high
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-c5b79ed846783abb	498.3	0.8298	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=500	liquid	high
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-10955b389128e01a	567.8	0.5567	Al2Li3+B32	B32	differ	T_grid=570		medium
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-11b943f30d49fdfa	574.3	0.8088	Al4Li9+liquid	Al4Li9+bcc	differ	T_grid=570	liquid	high
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-a005e958d6bc5e76	575.3	0.6457	Al2Li3+Al4Li9	Al2Li3+Al4Li9	exact	T_grid=580		high
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-1a49ae0edba5b668	602.3	0.2707	B32+fcc	B32+fcc	exact	T_grid=600		medium
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-2f41653ed81febc8	689.3	0.7232	Al2Li3+liquid	B32+bcc	differ	T_grid=690	liquid	medium
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-f798a29cacd466bf	730.8	0.0482	fcc	fcc	exact	T_grid=730		high
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-726ca560d401b80f	733.3	0.4972	B32	B32+fcc	differ	T_grid=730		high
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-81d7c689871c4d01	862.3	0.6202	B32+liquid	B32+bcc	differ	T_grid=860	liquid	medium
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-ad2534f55d965eae	891.3	0.1462	fcc+liquid	fcc	differ	T_grid=890	liquid	medium
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-553d14516e7d962d	907.3	0.3932	B32+liquid	B32+fcc	differ	T_grid=910	liquid	medium
+alli_sevenn_mf_ompa_liside_solid	AL-LI	aspa-bec408c3c6a7261b	954.8	0.8308	liquid	bcc	differ	T_grid=950	liquid	high
 nial_grace_1l	AL-NI	aspa-d60e422e6d692d68	693.5	0.6549	Al3Ni5			outside_T	Al3Ni5	high
 nial_grace_1l	AL-NI	aspa-98bb0b96b85aaa1a	793.0	0.1239	NiAl3+fccAl			outside_T	fccAl	high
 nial_grace_1l	AL-NI	aspa-98e84c0a30961190	825.0	0.6209	Al3Ni5+B2			outside_T	Al3Ni5	high
@@ -260,6 +442,23 @@ nial_grace_1l	AL-NI	aspa-8018224a50fc1a2b	1317.0	0.5388	B2	B2	exact	T_grid=1320	
 nial_grace_1l	AL-NI	aspa-57106df392cd6323	1602.0	0.3846	B2+liquid	B2+liquid	exact	T_grid=1600		high
 nial_grace_1l	AL-NI	aspa-bd7f3cdea7d906f9	1753.0	0.6529	B2+liquid	B2+liquid	exact	T_grid=1750		high
 nial_grace_1l	AL-NI	aspa-b4f09202f2c13905	1811.0	0.1869	liquid	liquid	exact	T_grid=1810		high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-d60e422e6d692d68	693.5	0.6549	Al3Ni5			outside_T	Al3Ni5	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-98bb0b96b85aaa1a	793.0	0.1239	NiAl3+fccAl			outside_T	NiAl3	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-98e84c0a30961190	825.0	0.6209	Al3Ni5+B2			outside_T	Al3Ni5	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-604b280708591249	826.5	0.6980	Al3Ni5+L12			outside_T	Al3Ni5,L12	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-6ff48fcac7b8ef62	900.0	0.3091	Ni2Al3+NiAl3	B2+fccAl	differ	T_grid=900	Ni2Al3,NiAl3	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-ac4a051d1b67bd83	977.0	0.3886	Ni2Al3	B2+fccAl	differ	T_grid=980	Ni2Al3	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-846ccd76c1d03c24	1008.5	0.1594	NiAl3+liquid	B2+fccAl	differ	T_grid=1010	NiAl3,liquid	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-5ed797a2c1aab97c	1014.5	0.4252	B2+Ni2Al3	B2	differ	T_grid=1010	Ni2Al3	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-f7278258151b0a40	1025.5	0.8146	L12+fccNi	B2+fccNi	differ	T_grid=1030	L12	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-781627c84cf97d2a	1165.5	0.7455	L12	B2+fccNi	differ	T_grid=1170	L12	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-ff38f8eafe351931	1253.0	0.2860	Ni2Al3+liquid	B2+fccAl	differ	T_grid=1250	Ni2Al3,liquid	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-2da87ce28aa0304f	1255.0	0.9232	fccNi	B2+fccNi	differ	T_grid=1260		high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-adda6cb2d25a1791	1260.5	0.6810	B2+L12	B2	differ	T_grid=1260	L12	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-8018224a50fc1a2b	1317.0	0.5388	B2	B2	exact	T_grid=1320		high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-57106df392cd6323	1602.0	0.3846	B2+liquid	B2+fccAl	differ	T_grid=1600	liquid	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-bd7f3cdea7d906f9	1753.0	0.6529	B2+liquid	B2	differ	T_grid=1750	liquid	high
+nial_grace_1l_b2ext_solid	AL-NI	aspa-b4f09202f2c13905	1811.0	0.1869	liquid	B2	differ	T_grid=1810	liquid	high
 nial_grace_1l_ti	AL-NI	aspa-d60e422e6d692d68	693.5	0.6549	Al3Ni5			outside_T	Al3Ni5	high
 nial_grace_1l_ti	AL-NI	aspa-98bb0b96b85aaa1a	793.0	0.1239	NiAl3+fccAl			outside_T	fccAl	high
 nial_grace_1l_ti	AL-NI	aspa-98e84c0a30961190	825.0	0.6209	Al3Ni5+B2			outside_T	Al3Ni5	high

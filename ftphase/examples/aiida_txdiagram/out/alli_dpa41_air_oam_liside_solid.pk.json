@@ -1,0 +1,12 @@
+{
+ "pk": 15655,
+ "uuid": "9a674ce5-fc24-40fb-bb00-93e2457c8452",
+ "name": "alli_dpa41_air_oam_liside_solid",
+ "profile": "ftphase",
+ "submitted": "2026-11-12 07:01:01",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden5",
+ "qha_computer": "mygarden5",
+ "mlip": "dpa4.1-air-oam"
+}

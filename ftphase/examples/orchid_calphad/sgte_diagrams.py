@@ -44,7 +44,7 @@ SYSTEMS = OrderedDict(
               ("SevenNet-MF-ompa", os.path.join(AT, "alli_sevenn_mf_ompa")), ("MACE-MPA-0", os.path.join(AT, "alli_mace_mpa_0")),
               ("MatterSim-v1-1M", os.path.join(AT, "alli_mattersim_1m")), ("MatterSim-v1-5M", os.path.join(AT, "alli_mattersim_5m")),
               ("NequIP-OAM-M", os.path.join(AT, "alli_nequip_oam_m")), ("NequIP-OAM-S", os.path.join(AT, "alli_nequip_oam_s")),
-              ("DPA4-Plus-OMat24", os.path.join(AT, "alli_dpa4_plus_omat24"))],
+              ("DPA4-Plus-OMat24", os.path.join(AT, "alli_dpa4_plus_omat24")), ("DPA-4.1-Air-OAM", os.path.join(AT, "alli_dpa41_air_oam"))],
     ),
     nial=dict(
         prefix="AlNi", xlabel="x_Ni", ref="AlNi-01Dup-4sl", title="Ni-Al (x = x_Ni)",

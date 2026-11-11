@@ -17,7 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 RUNS = [("ACE (system-specific)", "alli_ace_m6"), ("GRACE-FS-OAM", "alli_grace_fs"), ("GRACE-1L-OMAT", "alli_grace_1l"), ("GRACE-2L-OMAT", "alli_grace_2l"),
         ("SevenNet-0", "alli_sevenn_0"), ("SevenNet-MF-ompa", "alli_sevenn_mf_ompa"), ("MACE-MPA-0", "alli_mace_mpa_0"),
         ("MatterSim-v1-1M", "alli_mattersim_1m"), ("MatterSim-v1-5M", "alli_mattersim_5m"), ("NequIP-OAM-M", "alli_nequip_oam_m"),
-        ("NequIP-OAM-S", "alli_nequip_oam_s"), ("DPA4-Plus-OMat24", "alli_dpa4_plus_omat24")]
+        ("NequIP-OAM-S", "alli_nequip_oam_s"), ("DPA4-Plus-OMat24", "alli_dpa4_plus_omat24"), ("DPA-4.1-Air-OAM", "alli_dpa41_air_oam")]
 COLORS = {"B32+fcc": "#5b9bd5", "fcc+liquid": "#70ad47", "B32+liquid": "#f4a259", "Al3Li+fcc": "#a05195", "Al3Li+liquid": "#d45087", "Al3Li+B32": "#888888"}
 
 

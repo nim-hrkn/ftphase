@@ -16,19 +16,33 @@
 | agcu_sevenn_0_ti | AG-CU | 6/6 | 4 | 0.78 | 0.88 | 0.78 | 1/1 | fcc+fcc+liquid: -158 |
 | alli_ace | AL-LI | 4/14 | 1 | 0.67 | 0.80 | 0.67 | 2/2 | B32+fcc+liquid: -107; B32+liquid: -115 |
 | alli_ace_b32ti | AL-LI | 4/14 | 1 | 0.67 | 0.80 | 0.67 | 2/2 | B32+fcc+liquid: -107; B32+liquid: -125 |
+| alli_ace_liside_solid | AL-LI | 14/14 | 4 | 0.60 | 0.62 | 0.90 | 0/3 | - |
 | alli_ace_m6 | AL-LI | 4/14 | 1 | 0.67 | 0.80 | 0.67 | 2/2 | B32+fcc+liquid: -107; B32+liquid: -115 |
+| alli_dpa41_air_oam | AL-LI | 4/14 | 1 | 0.67 | 0.80 | 0.67 | 2/2 | B32+fcc+liquid: -47; B32+liquid: -85 |
 | alli_dpa4_plus_omat24 | AL-LI | 4/14 | 2 | 0.83 | 0.83 | 0.83 | 2/2 | B32+fcc+liquid: -117; B32+liquid: -155 |
+| alli_dpa4_plus_omat24_liside_solid | AL-LI | 14/14 | 4 | 0.56 | 0.58 | 0.90 | 0/3 | - |
 | alli_grace_1l | AL-LI | 4/14 | 2 | 0.67 | 1.00 | 0.67 | 2/2 | B32+fcc+liquid: -147; B32+liquid: -155 |
+| alli_grace_1l_liside_solid | AL-LI | 14/14 | 4 | 0.48 | 0.57 | 0.80 | 0/3 | - |
 | alli_grace_2l | AL-LI | 4/14 | 2 | 0.67 | 1.00 | 0.67 | 2/2 | B32+fcc+liquid: -117; B32+liquid: -155 |
+| alli_grace_2l_liside_solid | AL-LI | 14/14 | 5 | 0.60 | 0.65 | 0.90 | 0/2 | - |
 | alli_grace_fs | AL-LI | 4/14 | 3 | 0.83 | 1.00 | 0.83 | 2/2 | B32+fcc+liquid: -127; B32+liquid: -165 |
+| alli_grace_fs_liside_solid | AL-LI | 14/14 | 3 | 0.32 | 0.40 | 1.00 | 0/2 | - |
 | alli_mace_mpa_0 | AL-LI | 4/14 | 2 | 0.67 | 1.00 | 0.67 | 2/2 | B32+fcc+liquid: -87; B32+liquid: -145 |
+| alli_mace_mpa_0_liside_solid | AL-LI | 14/14 | 6 | 0.64 | 0.67 | 1.00 | 0/2 | - |
 | alli_mattersim_1m | AL-LI | 2/14 | 1 | 0.67 | 1.00 | 0.67 | 0/0 | - |
+| alli_mattersim_1m_liside_solid | AL-LI | 14/14 | 5 | 0.44 | 0.55 | 0.90 | 0/3 | - |
 | alli_mattersim_5m | AL-LI | 4/14 | 0 | 0.50 | 0.43 | 0.50 | 1/1 | B32+fcc+liquid: -147 |
+| alli_mattersim_5m_liside_solid | AL-LI | 14/14 | 2 | 0.48 | 0.52 | 0.80 | 0/3 | - |
 | alli_nequip_oam_m | AL-LI | 4/14 | 3 | 0.83 | 1.00 | 0.83 | 2/2 | B32+fcc+liquid: -67; B32+liquid: -75 |
+| alli_nequip_oam_m_liside_solid | AL-LI | 14/14 | 5 | 0.56 | 0.64 | 0.90 | 0/2 | - |
 | alli_nequip_oam_s | AL-LI | 4/14 | 1 | 0.67 | 0.67 | 0.67 | 1/3 | B32+fcc+liquid: +53 |
+| alli_nequip_oam_s_liside_solid | AL-LI | 14/14 | 3 | 0.48 | 0.50 | 0.80 | 0/2 | - |
 | alli_sevenn_0 | AL-LI | 4/14 | 2 | 0.67 | 0.80 | 0.67 | 1/1 | B32+fcc+liquid: +63 |
+| alli_sevenn_0_liside_solid | AL-LI | 14/14 | 4 | 0.48 | 0.48 | 0.80 | 0/3 | - |
 | alli_sevenn_mf_ompa | AL-LI | 4/14 | 1 | 0.67 | 0.80 | 0.67 | 2/2 | B32+fcc+liquid: -17; B32+liquid: -55 |
+| alli_sevenn_mf_ompa_liside_solid | AL-LI | 14/14 | 4 | 0.60 | 0.62 | 0.90 | 0/2 | - |
 | nial_grace_1l | AL-NI | 12/17 | 7 | 0.84 | 0.73 | 1.00 | 2/5 | B2+L12+liquid: -7; L12+fccNi+liquid: +20 |
+| nial_grace_1l_b2ext_solid | AL-NI | 13/17 | 1 | 0.33 | 0.33 | 1.00 | 0/0 | - |
 | nial_grace_1l_ti | AL-NI | 12/17 | 8 | 0.95 | 0.86 | 0.95 | 4/5 | Ni2Al3+NiAl3+liquid: -12; B2+Ni2Al3+liquid: -31; B2+L12+liquid: -47; L12+fccNi+liquid: -30 |
 | nial_grace_fs | AL-NI | 12/17 | 5 | 0.74 | 0.70 | 0.86 | 2/4 | B2+L12+liquid: -107; L12+fccNi+liquid: +30 |
 | nial_grace_fs_ti | AL-NI | 12/17 | 5 | 0.63 | 0.71 | 0.79 | 2/3 | B2+L12+liquid: -197; L12+fccNi+liquid: -130 |
@@ -327,6 +341,52 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=False
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
 
+## alli_ace_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al3Li, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 4、S = 0.60、precision = 0.62; 我々の相語彙にある相だけ: 評価可能 6, exact 4, S = 0.90
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | Al4Li9+bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=460 OK |
+| 498 | 0.830 | Al4Li9+liquid | Al4Li9+bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | B32 | T_grid=570 x |
+| 574 | 0.809 | Al4Li9+liquid | Al4Li9+bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=580 OK |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | Al4Li9+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc+fcc | T_grid=730 x |
+| 733 | 0.497 | B32 | B32 | T_grid=730 OK |
+| 862 | 0.620 | B32+liquid | B32+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 350–360 | reaction | Al3Li+B32+fcc | {"fcc": 0.0, "Al3Li": 0.25, "B32": 0.496} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 670–680 | artefact | fcc+fcc | {"fcc": 0.072} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+| 750–760 | reaction | Al2Li3+Al4Li9+bcc | {"Al2Li3": 0.6, "Al4Li9": 0.692, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 790–800 | artefact | fcc+fcc | {"fcc": 0.068} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+| 810–820 | reaction | Al2Li3+B32+bcc | {"B32": 0.562, "Al2Li3": 0.6, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 1070–1080 | artefact | B32+B32 | {"B32": 0.5} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
+
 ## alli_ace_m6  (AL-LI, x = x_Li)
 
 相: B32, fcc, liquid; T 格子 700–1100 K（二相対は 700–880 K）; 組成範囲 0.00–0.52; 純 AL の融点括弧 880–890 K vs ORCHID unary AL: 933.5 (unsp); dT = -48 K
@@ -359,6 +419,46 @@ run に不変反応なし（07_invariants.tsv が空）。
 | 760–770 | reaction | B32+fcc+liquid | {"fcc": 0.164, "B32": 0.483, "liquid": 0.313} | 4 | 872 (863–875) | -107 | 4 | 874 | {"L": 0.256, "fcc(Al)": 0.138, "AlLi": 0.5} | matched |
 | 790–800 | artefact | fcc+fcc | {"fcc": 0.068} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
 | 850–860 | melting | B32+liquid | {"liquid": 0.494, "B32": 0.511} | 1 | 970 (970–970) | -115 | 3 | 975 | {"L": 0.49, "AlLi": 0.49} | matched |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=False
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=False
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=False
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=False
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+
+## alli_dpa41_air_oam  (AL-LI, x = x_Li)
+
+相: B32, fcc, liquid; T 格子 700–1100 K（二相対は 700–1030 K）; 組成範囲 0.00–0.53; 純 AL の融点括弧 1030–1040 K vs ORCHID unary AL: 933.5 (unsp); dT = +102 K
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 4（T 格子と組成範囲の内側）、exact 1、S = 0.67、precision = 0.80
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | - | outside_T  (not in model: Al4Li9,bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | - | outside_T  (not in model: Al2Li3,Al4Li9) |
+| 498 | 0.830 | Al4Li9+liquid | - | outside_T  (not in model: Al4Li9) |
+| 568 | 0.557 | Al2Li3+B32 | - | outside_T  (not in model: Al2Li3) |
+| 574 | 0.809 | Al4Li9+liquid | - | outside_T  (not in model: Al4Li9) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | - | outside_T  (not in model: Al2Li3,Al4Li9) |
+| 602 | 0.271 | B32+fcc | - | outside_T  |
+| 689 | 0.723 | Al2Li3+liquid | - | outside_T  (not in model: Al2Li3) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32+fcc | T_grid=730 x |
+| 862 | 0.620 | B32+liquid | - | outside_x  |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x |
+| 907 | 0.393 | B32+liquid | liquid | T_grid=910 x |
+| 955 | 0.831 | liquid | - | outside_x  |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 820–830 | reaction | B32+fcc+liquid | {"fcc": 0.176, "B32": 0.509, "liquid": 0.337} | 4 | 872 (863–875) | -47 | 4 | 874 | {"L": 0.256, "fcc(Al)": 0.138, "AlLi": 0.5} | matched |
+| 880–890 | melting | B32+liquid | {"liquid": 0.482, "B32": 0.521} | 1 | 970 (970–970) | -85 | 3 | 975 | {"L": 0.49, "AlLi": 0.49} | matched |
 
 文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
 
@@ -408,6 +508,51 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=False
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
 
+## alli_dpa4_plus_omat24_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al3Li, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 4、S = 0.56、precision = 0.58; 我々の相語彙にある相だけ: 評価可能 6, exact 4, S = 0.90
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | Al4Li9+bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=460 OK |
+| 498 | 0.830 | Al4Li9+liquid | Al4Li9+bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | B32 | T_grid=570 x |
+| 574 | 0.809 | Al4Li9+liquid | Al4Li9+bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=580 OK |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | Al4Li9+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32+fcc | T_grid=730 x |
+| 862 | 0.620 | B32+liquid | Al2Li3+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 410–420 | reaction | Al3Li+B32+fcc | {"fcc": 0.072, "Al3Li": 0.25, "B32": 0.507} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 710–720 | reaction | Al2Li3+Al4Li9+bcc | {"Al2Li3": 0.6, "Al4Li9": 0.692, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 910–920 | reaction | Al2Li3+B32+bcc | {"B32": 0.562, "Al2Li3": 0.6, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 960–970 | artefact | bcc+bcc | {"bcc": 0.763} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+| 1070–1080 | artefact | bcc+bcc | {"bcc": 0.808} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
+
 ## alli_grace_1l  (AL-LI, x = x_Li)
 
 相: B32, fcc, liquid; T 格子 700–1100 K（二相対は 700–860 K）; 組成範囲 0.00–0.52
@@ -447,6 +592,50 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=False
 - Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=False
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+
+## alli_grace_1l_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al3Li, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 4、S = 0.48、precision = 0.57; 我々の相語彙にある相だけ: 評価可能 6, exact 4, S = 0.80
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | Al4Li9+bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=460 OK |
+| 498 | 0.830 | Al4Li9+liquid | bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | B32 | T_grid=570 x |
+| 574 | 0.809 | Al4Li9+liquid | bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+bcc | T_grid=580 x |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | B32+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32 | T_grid=730 OK |
+| 862 | 0.620 | B32+liquid | B32+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 490–500 | reaction | Al3Li+B32+fcc | {"fcc": 0.112, "Al3Li": 0.25, "B32": 0.488} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 530–540 | reaction | Al2Li3+Al4Li9+bcc | {"Al2Li3": 0.6, "Al4Li9": 0.692, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 590–600 | reaction | Al2Li3+B32+bcc | {"B32": 0.562, "Al2Li3": 0.6, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 1080–1090 | artefact | B32+B32 | {"B32": 0.5} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
 
 ## alli_grace_2l  (AL-LI, x = x_Li)
 
@@ -488,6 +677,48 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=False
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
 
+## alli_grace_2l_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 5、S = 0.60、precision = 0.65; 我々の相語彙にある相だけ: 評価可能 6, exact 5, S = 0.90
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | Al4Li9+bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=460 OK |
+| 498 | 0.830 | Al4Li9+liquid | Al4Li9+bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | B32 | T_grid=570 x |
+| 574 | 0.809 | Al4Li9+liquid | Al4Li9+bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=580 OK |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | Al4Li9+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32 | T_grid=730 OK |
+| 862 | 0.620 | B32+liquid | B32+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 700–710 | reaction | Al2Li3+Al4Li9+bcc | {"Al2Li3": 0.6, "Al4Li9": 0.692, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 800–810 | reaction | Al2Li3+B32+bcc | {"B32": 0.562, "Al2Li3": 0.6, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
+
 ## alli_grace_fs  (AL-LI, x = x_Li)
 
 相: B32, fcc, liquid; T 格子 700–1100 K（二相対は 700–1050 K）; 組成範囲 0.00–0.51; 純 AL の融点括弧 950–960 K vs ORCHID unary AL: 933.5 (unsp); dT = +22 K
@@ -527,6 +758,49 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=False
 - Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=False
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+
+## alli_grace_fs_liside_solid  (AL-LI, x = x_Li)
+
+相: Al3Li, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 3、S = 0.32、precision = 0.40; 我々の相語彙にある相だけ: 評価可能 3, exact 3, S = 1.00
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | B32+bcc | T_grid=460 x (not in model: Al2Li3) |
+| 498 | 0.830 | Al4Li9+liquid | bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | B32 | T_grid=570 x (not in model: Al2Li3) |
+| 574 | 0.809 | Al4Li9+liquid | bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | B32+bcc | T_grid=580 x (not in model: Al2Li3) |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | B32+bcc | T_grid=690 x (not in model: Al2Li3,liquid) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32 | T_grid=730 OK |
+| 862 | 0.620 | B32+liquid | B32+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 310–320 | reaction | Al4Li9+B32+bcc | {"B32": 0.545, "Al4Li9": 0.692, "bcc": 0.8} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 330–340 | reaction | Al3Li+B32+fcc | {"fcc": 0.186, "Al3Li": 0.25, "B32": 0.457} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 940–950 | artefact | B32+B32 | {"B32": 0.5} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
 
 ## alli_mace_mpa_0  (AL-LI, x = x_Li)
 
@@ -568,6 +842,49 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=False
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
 
+## alli_mace_mpa_0_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 6、S = 0.64、precision = 0.67; 我々の相語彙にある相だけ: 評価可能 6, exact 6, S = 1.00
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | Al4Li9+bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=460 OK |
+| 498 | 0.830 | Al4Li9+liquid | Al4Li9+bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | Al2Li3+B32 | T_grid=570 OK |
+| 574 | 0.809 | Al4Li9+liquid | Al4Li9+bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=580 OK |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | Al2Li3+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32 | T_grid=730 OK |
+| 862 | 0.620 | B32+liquid | Al2Li3+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 660–670 | reaction | Al2Li3+Al4Li9+bcc | {"Al2Li3": 0.6, "Al4Li9": 0.692, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 960–970 | reaction | Al2Li3+B32+bcc | {"B32": 0.562, "Al2Li3": 0.6, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 1000–1010 | artefact | B32+B32 | {"B32": 0.5} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
+
 ## alli_mattersim_1m  (AL-LI, x = x_Li)
 
 相: fcc, liquid; T 格子 700–1100 K（二相対は 700–790 K）; 組成範囲 0.00–0.35; 純 AL の融点括弧 770–780 K vs ORCHID unary AL: 933.5 (unsp); dT = -158 K
@@ -603,6 +920,49 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=False
 - Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=False
 - Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=False
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
+
+## alli_mattersim_1m_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al3Li, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 5、S = 0.44、precision = 0.55; 我々の相語彙にある相だけ: 評価可能 6, exact 5, S = 0.90
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=460 OK |
+| 498 | 0.830 | Al4Li9+liquid | bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | B32 | T_grid=570 x |
+| 574 | 0.809 | Al4Li9+liquid | bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=580 OK |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | Al4Li9+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32 | T_grid=730 OK |
+| 862 | 0.620 | B32+liquid | Al2Li3+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 400–410 | reaction | Al3Li+B32+fcc | {"fcc": 0.214, "Al3Li": 0.25, "B32": 0.487} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 720–730 | reaction | Al2Li3+Al4Li9+bcc | {"Al2Li3": 0.6, "Al4Li9": 0.692, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 900–910 | reaction | Al2Li3+B32+bcc | {"B32": 0.562, "Al2Li3": 0.6, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
 - B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
 - B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
@@ -648,6 +1008,49 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
 - B32+liquid: 970 K (1/3); represented=True; in_T_grid=True
 
+## alli_mattersim_5m_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 2、S = 0.48、precision = 0.52; 我々の相語彙にある相だけ: 評価可能 6, exact 2, S = 0.80
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=460 OK |
+| 498 | 0.830 | Al4Li9+liquid | bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | B32 | T_grid=570 x |
+| 574 | 0.809 | Al4Li9+liquid | bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+bcc | T_grid=580 x |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | Al2Li3+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc+fcc | T_grid=730 x |
+| 733 | 0.497 | B32 | B32+fcc | T_grid=730 x |
+| 862 | 0.620 | B32+liquid | B32+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc+fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 490–500 | reaction | Al2Li3+Al4Li9+bcc | {"Al2Li3": 0.6, "Al4Li9": 0.692, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 750–760 | reaction | Al2Li3+B32+bcc | {"B32": 0.562, "Al2Li3": 0.6, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 1090–1100 | reaction | B32+bcc+fcc | {"fcc": 0.25, "B32": 0.562, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
+
 ## alli_nequip_oam_m  (AL-LI, x = x_Li)
 
 相: B32, fcc, liquid; T 格子 700–1100 K（二相対は 700–920 K）; 組成範囲 0.00–0.52
@@ -687,6 +1090,50 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=False
 - Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=False
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+
+## alli_nequip_oam_m_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al3Li, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 5、S = 0.56、precision = 0.64; 我々の相語彙にある相だけ: 評価可能 6, exact 5, S = 0.90
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | Al4Li9+bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=460 OK |
+| 498 | 0.830 | Al4Li9+liquid | Al4Li9+bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | B32 | T_grid=570 x |
+| 574 | 0.809 | Al4Li9+liquid | bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=580 OK |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | B32+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32 | T_grid=730 OK |
+| 862 | 0.620 | B32+liquid | B32+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 340–350 | reaction | Al3Li+B32+fcc | {"fcc": 0.068, "Al3Li": 0.25, "B32": 0.5} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 660–670 | reaction | Al2Li3+Al4Li9+B32+bcc | {"B32": 0.562, "Al2Li3": 0.6, "Al4Li9": 0.692, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 950–960 | artefact | bcc+bcc | {"bcc": 0.812} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+| 970–980 | artefact | bcc+bcc | {"bcc": 0.812} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
 
 ## alli_nequip_oam_s  (AL-LI, x = x_Li)
 
@@ -730,6 +1177,52 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
 - B32+liquid: 970 K (1/3); represented=True; in_T_grid=True
 
+## alli_nequip_oam_s_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 3、S = 0.48、precision = 0.50; 我々の相語彙にある相だけ: 評価可能 6, exact 3, S = 0.80
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | Al4Li9+bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=460 OK |
+| 498 | 0.830 | Al4Li9+liquid | bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | B32 | T_grid=570 x |
+| 574 | 0.809 | Al4Li9+liquid | bcc+bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+bcc | T_grid=580 x |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | B32+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32+B32 | T_grid=730 x |
+| 862 | 0.620 | B32+liquid | B32+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc+bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 460–470 | artefact | bcc+bcc | {"bcc": 0.874} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+| 540–550 | reaction | Al2Li3+Al4Li9+bcc | {"Al2Li3": 0.6, "Al4Li9": 0.692, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 650–660 | reaction | Al2Li3+B32+bcc | {"B32": 0.562, "Al2Li3": 0.6, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 670–680 | artefact | B32+B32 | {"B32": 0.5} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+| 900–910 | artefact | fcc+fcc | {"fcc": 0.085} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+| 950–960 | artefact | bcc+bcc | {"bcc": 0.791} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
+
 ## alli_sevenn_0  (AL-LI, x = x_Li)
 
 相: B32, fcc, liquid; T 格子 700–1100 K（二相対は 700–1100 K）; 組成範囲 0.00–0.51
@@ -771,6 +1264,51 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
 - B32+liquid: 970 K (1/3); represented=True; in_T_grid=True
 
+## alli_sevenn_0_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al3Li, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 4、S = 0.48、precision = 0.48; 我々の相語彙にある相だけ: 評価可能 6, exact 4, S = 0.80
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | Al4Li9+bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+bcc | T_grid=460 x |
+| 498 | 0.830 | Al4Li9+liquid | Al2Li3+bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | Al2Li3+B32 | T_grid=570 OK |
+| 574 | 0.809 | Al4Li9+liquid | Al2Li3+bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+bcc | T_grid=580 x |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | Al2Li3+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32 | T_grid=730 OK |
+| 862 | 0.620 | B32+liquid | Al2Li3+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc+bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 430–440 | reaction | Al2Li3+Al4Li9+bcc | {"Al2Li3": 0.6, "Al4Li9": 0.692, "bcc": 0.999} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 440–450 | reaction | Al3Li+B32+fcc | {"fcc": 0.218, "Al3Li": 0.25, "B32": 0.48} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 760–770 | artefact | bcc+bcc | {"bcc": 0.869} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+| 930–940 | reaction | Al2Li3+B32+bcc | {"B32": 0.562, "Al2Li3": 0.6, "bcc": 0.808} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 1000–1010 | artefact | fcc+fcc | {"fcc": 0.247} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
+
 ## alli_sevenn_mf_ompa  (AL-LI, x = x_Li)
 
 相: B32, fcc, liquid; T 格子 700–1100 K（二相対は 700–980 K）; 組成範囲 0.00–0.52
@@ -810,6 +1348,48 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=False
 - Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=False
 - Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+
+## alli_sevenn_mf_ompa_liside_solid  (AL-LI, x = x_Li)
+
+相: Al2Li3, Al4Li9, B32, bcc, fcc; T 格子 300–1100 K（二相対は 300–1100 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 14、評価可能 14（T 格子と組成範囲の内側）、exact 4、S = 0.60、precision = 0.62; 我々の相語彙にある相だけ: 評価可能 6, exact 4, S = 0.90
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 411 | 0.845 | Al4Li9+bccLi | Al4Li9+bcc | T_grid=410 x (not in model: bccLi) |
+| 460 | 0.645 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=460 OK |
+| 498 | 0.830 | Al4Li9+liquid | Al4Li9+bcc | T_grid=500 x (not in model: liquid) |
+| 568 | 0.557 | Al2Li3+B32 | B32 | T_grid=570 x |
+| 574 | 0.809 | Al4Li9+liquid | Al4Li9+bcc | T_grid=570 x (not in model: liquid) |
+| 575 | 0.646 | Al2Li3+Al4Li9 | Al2Li3+Al4Li9 | T_grid=580 OK |
+| 602 | 0.271 | B32+fcc | B32+fcc | T_grid=600 OK |
+| 689 | 0.723 | Al2Li3+liquid | B32+bcc | T_grid=690 x (not in model: liquid) |
+| 731 | 0.048 | fcc | fcc | T_grid=730 OK |
+| 733 | 0.497 | B32 | B32+fcc | T_grid=730 x |
+| 862 | 0.620 | B32+liquid | B32+bcc | T_grid=860 x (not in model: liquid) |
+| 891 | 0.146 | fcc+liquid | fcc | T_grid=890 x (not in model: liquid) |
+| 907 | 0.393 | B32+liquid | B32+fcc | T_grid=910 x (not in model: liquid) |
+| 955 | 0.831 | liquid | bcc | T_grid=950 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 630–640 | reaction | Al2Li3+Al4Li9+B32 | {"B32": 0.562, "Al2Li3": 0.6, "Al4Li9": 0.692} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+| 640–650 | reaction | Al4Li9+B32+bcc | {"B32": 0.562, "Al4Li9": 0.692, "bcc": 0.75} | 0 | - | - | 0 | - | - | no literature record with this phase set |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- Al4Li9+bccLi+liquid: 454 K (1/4); represented=False; in_T_grid=True
+- Al4Li9+AlLi2+liquid: 543 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+AlLi2+liquid: 608 K (1/1); represented=False; in_T_grid=True
+- Al2Li3+Al4Li9+liquid: 609 K (0/4); represented=False; in_T_grid=True
+- Al2Li3+B32+liquid: 793 K (3/4); represented=False; in_T_grid=True
+- B32+fcc+liquid: 872 K (4/4); represented=False; in_T_grid=True
+- B32+liquid: 970 K (1/3); represented=False; in_T_grid=True
 
 ## nial_grace_1l  (AL-NI, x = x_Ni)
 
@@ -860,6 +1440,53 @@ run に不変反応なし（07_invariants.tsv が空）。
 - Ni2Al3+NiAl3+liquid: 1127 K (7/8); represented=False; in_T_grid=True
 - B2+Ni2Al3+liquid: 1406 K (7/8); represented=False; in_T_grid=True
 - B2+liquid: 1915 K (6/8); represented=True; in_T_grid=True
+
+## nial_grace_1l_b2ext_solid  (AL-NI, x = x_Ni)
+
+相: B2, fccAl, fccNi; T 格子 900–2000 K（二相対は 900–2000 K）; 組成範囲 0.00–1.00
+
+### 相領域の内部点（ORCHID-Assemblages）
+
+点 17、評価可能 13（T 格子と組成範囲の内側）、exact 1、S = 0.33、precision = 0.33; 我々の相語彙にある相だけ: 評価可能 2, exact 1, S = 1.00
+
+| T_K | x | observed | predicted | note |
+|---|---|---|---|---|
+| 694 | 0.655 | Al3Ni5 | - | outside_T  (not in model: Al3Ni5) |
+| 793 | 0.124 | NiAl3+fccAl | - | outside_T  (not in model: NiAl3) |
+| 825 | 0.621 | Al3Ni5+B2 | - | outside_T  (not in model: Al3Ni5) |
+| 827 | 0.698 | Al3Ni5+L12 | - | outside_T  (not in model: Al3Ni5,L12) |
+| 900 | 0.309 | Ni2Al3+NiAl3 | B2+fccAl | T_grid=900 x (not in model: Ni2Al3,NiAl3) |
+| 977 | 0.389 | Ni2Al3 | B2+fccAl | T_grid=980 x (not in model: Ni2Al3) |
+| 1009 | 0.159 | NiAl3+liquid | B2+fccAl | T_grid=1010 x (not in model: NiAl3,liquid) |
+| 1015 | 0.425 | B2+Ni2Al3 | B2 | T_grid=1010 x (not in model: Ni2Al3) |
+| 1026 | 0.815 | L12+fccNi | B2+fccNi | T_grid=1030 x (not in model: L12) |
+| 1166 | 0.746 | L12 | B2+fccNi | T_grid=1170 x (not in model: L12) |
+| 1253 | 0.286 | Ni2Al3+liquid | B2+fccAl | T_grid=1250 x (not in model: Ni2Al3,liquid) |
+| 1255 | 0.923 | fccNi | B2+fccNi | T_grid=1260 x |
+| 1261 | 0.681 | B2+L12 | B2 | T_grid=1260 x (not in model: L12) |
+| 1317 | 0.539 | B2 | B2 | T_grid=1320 OK |
+| 1602 | 0.385 | B2+liquid | B2+fccAl | T_grid=1600 x (not in model: liquid) |
+| 1753 | 0.653 | B2+liquid | B2 | T_grid=1750 x (not in model: liquid) |
+| 1811 | 0.187 | liquid | B2 | T_grid=1810 x (not in model: liquid) |
+
+### 不変反応（ORCHID-Values, INVARIANT_TEMPERATURE）
+
+| T_run (K) | kind | phases | x_run | n_exp | T_exp median (range) | dT_exp | n_model | T_model median | x_lit (exp, printed) | status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1620–1630 | other | B2+fccAl | {"fccAl": 0.0, "B2": 0.426} | 0 | - | - | 0 | - | - | not compared |
+| 1960–1970 | artefact | B2+B2 | {"B2": 0.498} | 0 | - | - | 0 | - | - | same-phase segment appears/vanishes (fit noise), not compared |
+
+文献にあって run に現れない不変反応（相集合, T_lit 中央値, n_exp/n_model, 相が全部モデルにあるか, T が格子内か）:
+
+- NiAl3+fccAl+liquid: 913 K (4/7); represented=False; in_T_grid=True
+- NiAl3+fccNi+liquid: 913 K (1/1); represented=False; in_T_grid=True
+- Al4Ni3+B2+Ni2Al3: 973 K (1/1); represented=False; in_T_grid=True
+- Al3Ni5+B2+L12: 973 K (4/9); represented=False; in_T_grid=True
+- Ni2Al3+NiAl3+liquid: 1127 K (7/8); represented=False; in_T_grid=True
+- B2+Ni2Al3+liquid: 1406 K (7/8); represented=False; in_T_grid=True
+- B2+L12+liquid: 1642 K (8/8); represented=False; in_T_grid=True
+- L12+fccNi+liquid: 1645 K (8/8); represented=False; in_T_grid=True
+- B2+liquid: 1915 K (6/8); represented=False; in_T_grid=True
 
 ## nial_grace_1l_ti  (AL-NI, x = x_Ni)
 

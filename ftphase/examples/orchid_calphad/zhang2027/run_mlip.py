@@ -32,6 +32,23 @@ def _safe_plot_band(self, *a, **k):
 
 
 phonopy.Phonopy.auto_band_structure, phonopy.Phonopy.plot_band_structure = _safe_auto_band, _safe_plot_band
+# a strongly sheared relaxed SQS cell (MACE Mo8Rh24) makes spglib's Niggli reduction fail inside phonopy's mesh setup: bring the relaxed
+# cell to its Niggli-reduced (equivalent) setting before the phonon run
+import mlip as _mlip  # noqa: E402
+_relax = _mlip.Calculation.relax_structure
+
+
+def _relax_reduced(self, init_atoms, *a, **k):
+    atoms, e, n = _relax(self, init_atoms, *a, **k)
+    try:
+        from ase.build import niggli_reduce
+        atoms = atoms.copy(); niggli_reduce(atoms)
+    except Exception as ex:  # noqa: BLE001
+        print("niggli_reduce skipped:", str(ex)[:80], flush=True)
+    return atoms, e, n
+
+
+_mlip.Calculation.relax_structure = _relax_reduced
 
 
 def make_calculator(kind, model, device):
