@@ -4,6 +4,7 @@ raw = E(defect cell) - E(perfect cell); formation vs pure elements adds/removes 
 
 | MLIP | a0 (A) | E_f B2 (eV/atom) | raw Va_Ni | raw Va_Al | raw Ni_Al | raw Al_Ni | Va_Ni form. | Va_Al form. | Ni_Al form. | Al_Ni form. | triple defect | Schottky pair | antisite pair |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| grace-1l | 2.884 | -0.640 | +6.43 | +6.02 | -0.95 | +3.34 | +0.94 | +2.28 | +0.81 | +1.58 | +1.40 | +1.93 | +2.39 |
 | grace-fs | 2.886 | -0.674 | +6.99 | +5.87 | -1.26 | +3.61 | +1.24 | +2.15 | +0.77 | +1.58 | +1.90 | +2.04 | +2.35 |
 | mace-mpa-0 | 2.885 | -0.659 | +6.86 | +6.10 | -1.17 | +3.89 | +1.08 | +2.36 | +0.87 | +1.84 | +1.71 | +2.12 | +2.72 |
 | mattersim-5m | 2.887 | -0.666 | +6.76 | +6.05 | -1.18 | +3.68 | +0.99 | +2.31 | +0.86 | +1.64 | +1.50 | +1.97 | +2.49 |

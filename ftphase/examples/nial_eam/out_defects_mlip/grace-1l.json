@@ -1,0 +1,38 @@
+{
+ "mlip": "grace-1l",
+ "model": "GRACE-1L-OMAT-medium-base-fp64 (foundation, 1 layer, kokkos export)",
+ "device": "cpu",
+ "fmax": 0.005,
+ "n_sites": 128,
+ "a0_B2_A": 2.8840970916730533,
+ "E_B2_per_atom": -5.259454727172852,
+ "E_fccAl_per_atom": -3.7414870262145996,
+ "E_fccNi_per_atom": -5.497464179992676,
+ "E_form_B2_eV_per_atom": -0.6399791240692139,
+ "raw_eV": {
+  "Va_Ni": 6.43341064453125,
+  "Va_Al": 6.01806640625,
+  "Ni_Al": -0.9476318359375,
+  "Al_Ni": 3.3385009765625
+ },
+ "bfgs_steps": {
+  "Va_Ni": 10,
+  "Va_Al": 9,
+  "Ni_Al": 11,
+  "Al_Ni": 14
+ },
+ "formation_vs_pure_elements_eV": {
+  "Va_Ni": 0.9359464645385742,
+  "Va_Al": 2.2765793800354004,
+  "Ni_Al": 0.8083453178405762,
+  "Al_Ni": 1.5825238227844238
+ },
+ "formation_vs_compound_eV": {
+  "Va_Ni": 1.1739559173583984,
+  "Va_Al": 0.7586116790771484
+ },
+ "triple_defect_eV": 1.4002799987792969,
+ "schottky_pair_eV": 1.9325675964355469,
+ "antisite_pair_eV": 2.390869140625,
+ "seconds": 8.448585271835327
+}
