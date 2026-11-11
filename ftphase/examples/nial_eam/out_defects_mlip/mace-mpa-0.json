@@ -1,0 +1,38 @@
+{
+ "mlip": "mace-mpa-0",
+ "model": "MACE-MPA-0 medium (float32, ML-IAP, cuEquivariance)",
+ "device": "cpu",
+ "fmax": 0.005,
+ "n_sites": 128,
+ "a0_B2_A": 2.884595259220616,
+ "E_B2_per_atom": -5.4226190530766125,
+ "E_fccAl_per_atom": -3.7400030777345585,
+ "E_fccNi_per_atom": -5.786662220954598,
+ "E_form_B2_eV_per_atom": -0.6592864037320343,
+ "raw_eV": {
+  "Va_Ni": 6.864019021645731,
+  "Va_Al": 6.098773718144912,
+  "Ni_Al": -1.1742769114576959,
+  "Al_Ni": 3.8911267181994162
+ },
+ "bfgs_steps": {
+  "Va_Ni": 10,
+  "Va_Al": 10,
+  "Ni_Al": 12,
+  "Al_Ni": 15
+ },
+ "formation_vs_pure_elements_eV": {
+  "Va_Ni": 1.077356800691133,
+  "Va_Al": 2.3587706404103534,
+  "Ni_Al": 0.872382231762344,
+  "Al_Ni": 1.844467574979376
+ },
+ "formation_vs_compound_eV": {
+  "Va_Ni": 1.4413999685691188,
+  "Va_Al": 0.6761546650682995
+ },
+ "triple_defect_eV": 1.7085230256805417,
+ "schottky_pair_eV": 2.1175546336374182,
+ "antisite_pair_eV": 2.7168498067417204,
+ "seconds": 131.96364641189575
+}

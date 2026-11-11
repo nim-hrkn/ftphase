@@ -1,0 +1,38 @@
+{
+ "mlip": "sevenn-mf-ompa",
+ "model": "SevenNet-MF-ompa (modal mpa; oeq deployment)",
+ "device": "cpu",
+ "fmax": 0.005,
+ "n_sites": 128,
+ "a0_B2_A": 2.8902233955960206,
+ "E_B2_per_atom": -5.421548843383789,
+ "E_fccAl_per_atom": -3.7424557209014893,
+ "E_fccNi_per_atom": -5.778865814208984,
+ "E_form_B2_eV_per_atom": -0.6608880758285522,
+ "raw_eV": {
+  "Va_Ni": 6.8111572265625,
+  "Va_Al": 6.35302734375,
+  "Ni_Al": -0.85491943359375,
+  "Al_Ni": 3.49029541015625
+ },
+ "bfgs_steps": {
+  "Va_Ni": 10,
+  "Va_Al": 8,
+  "Ni_Al": 11,
+  "Al_Ni": 15
+ },
+ "formation_vs_pure_elements_eV": {
+  "Va_Ni": 1.0322914123535156,
+  "Va_Al": 2.6105716228485107,
+  "Ni_Al": 1.1814906597137451,
+  "Al_Ni": 1.4538853168487549
+ },
+ "formation_vs_compound_eV": {
+  "Va_Ni": 1.389608383178711,
+  "Va_Al": 0.9314785003662109
+ },
+ "triple_defect_eV": 1.9242973327636719,
+ "schottky_pair_eV": 2.321086883544922,
+ "antisite_pair_eV": 2.6353759765625,
+ "seconds": 359.02153873443604
+}

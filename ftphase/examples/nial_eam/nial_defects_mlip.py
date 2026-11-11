@@ -56,7 +56,7 @@ def main():
     b2, _, _ = relax(b2, calc, cell=True, fmax=1e-3); a0 = float(b2.cell.lengths()[0])
     sc = b2.repeat((a.rep, a.rep, a.rep)); sc, e_perf, _ = relax(sc, calc, fmax=a.fmax); n = len(sc)
     al, _, _ = relax(bulk("Al", "fcc", a=4.05, cubic=True), calc, cell=True, fmax=1e-3); ni, _, _ = relax(bulk("Ni", "fcc", a=3.52, cubic=True), calc, cell=True, fmax=1e-3)
-    e_al = al.get_potential_energy() / len(al); e_ni = ni.get_potential_energy() / len(ni); e_b2 = e_perf / n
+    e_al = float(al.get_potential_energy()) / len(al); e_ni = float(ni.get_potential_energy()) / len(ni); e_b2 = float(e_perf) / n   # torch calculators return numpy float32
     syms = sc.get_chemical_symbols(); i_al = syms.index("Al"); i_ni = syms.index("Ni")
     cells = {}
     v = sc.copy(); del v[i_ni]; cells["Va_Ni"] = v
@@ -65,7 +65,7 @@ def main():
     v = sc.copy(); v[i_ni].symbol = "Al"; cells["Al_Ni"] = v
     raw, steps = {}, {}
     for k, c in cells.items():
-        _, e, ns = relax(c, calc, fmax=a.fmax); raw[k] = e - e_perf; steps[k] = ns
+        _, e, ns = relax(c, calc, fmax=a.fmax); raw[k] = float(e - e_perf); steps[k] = int(ns)
         print(f"{a.mlip} {k}: raw {raw[k]:+.3f} eV ({ns} steps, {time.time() - t0:.0f} s)", flush=True)
     out = {"mlip": a.mlip, "model": spec.get("model"), "device": a.device, "fmax": a.fmax, "n_sites": n, "a0_B2_A": a0, "E_B2_per_atom": e_b2, "E_fccAl_per_atom": e_al, "E_fccNi_per_atom": e_ni,
            "E_form_B2_eV_per_atom": e_b2 - 0.5 * (e_al + e_ni), "raw_eV": raw, "bfgs_steps": steps,
