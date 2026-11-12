@@ -1,7 +1,7 @@
 From 17dbfedd959991f32e98f019e6e8627c280f0702 Mon Sep 17 00:00:00 2001
 From: kino <hkn999@yahoo.co.jp>
 Date: Thu, 12 Nov 2026 11:53:01 +0900
-Subject: [PATCH 1/2] Let unified ML-IAP models declare their exchange width so
+Subject: [PATCH 1/3] Let unified ML-IAP models declare their exchange width so
  pair mliap/kk sets comm_forward/comm_reverse before Comm::init()
 
 ---
@@ -190,7 +190,7 @@ index 36c3eddda7..4251d672e5 100644
 From 86e0b351d73b7bd64c5a006e2cda31eb322d7b2e Mon Sep 17 00:00:00 2001
 From: kino <hkn999@yahoo.co.jp>
 Date: Thu, 12 Nov 2026 13:18:31 +0900
-Subject: [PATCH 2/2] Warn when a unified ML-IAP model does not declare
+Subject: [PATCH 2/3] Warn when a unified ML-IAP model does not declare
  comm_width; check exchange widths against the sizes Comm::init() allocated
  for
 
@@ -267,6 +267,138 @@ index 384d8937d8..49a9ecbfb3 100644
    // non-virtual functions common to all Comm styles
  
    void ring(int, int, void *, int, void (*)(int, char *, void *), void *, void *, int self = 1);
+-- 
+2.43.0
+
+
+From 1cfad3c705dd3a43566ad9fcefe8e028a5c26aae Mon Sep 17 00:00:00 2001
+From: kino <hkn999@yahoo.co.jp>
+Date: Thu, 12 Nov 2026 23:07:08 +0900
+Subject: [PATCH 3/3] Accept comm_width = 0 for unified ML-IAP models without
+ exchange; declare it in the bundled LJ model
+
+---
+ python/lammps/mliap/mliap_unified_abc.py   | 3 ++-
+ python/lammps/mliap/mliap_unified_lj.py    | 2 ++
+ src/KOKKOS/mliap_unified_couple_kokkos.pyx | 5 +++--
+ src/KOKKOS/pair_mliap_kokkos.cpp           | 2 +-
+ src/ML-IAP/mliap_unified.cpp               | 2 +-
+ src/ML-IAP/mliap_unified.h                 | 2 +-
+ src/ML-IAP/mliap_unified_couple.pyx        | 5 +++--
+ 7 files changed, 13 insertions(+), 8 deletions(-)
+
+diff --git a/python/lammps/mliap/mliap_unified_abc.py b/python/lammps/mliap/mliap_unified_abc.py
+index f933451f00..53f886e0ce 100644
+--- a/python/lammps/mliap/mliap_unified_abc.py
++++ b/python/lammps/mliap/mliap_unified_abc.py
+@@ -13,7 +13,8 @@ class MLIAPUnified(ABC):
+         self.nparams = nparams
+         self.rcutfac = rcutfac
+         # largest per-atom width (vec_len) the model passes to
+-        # forward_exchange()/reverse_exchange(); None = not declared
++        # forward_exchange()/reverse_exchange(); 0 = the model never
++        # calls them; None = not declared
+         self.comm_width = comm_width
+ 
+     @abstractmethod
+diff --git a/python/lammps/mliap/mliap_unified_lj.py b/python/lammps/mliap/mliap_unified_lj.py
+index 077b00d7b9..121721cc90 100644
+--- a/python/lammps/mliap/mliap_unified_lj.py
++++ b/python/lammps/mliap/mliap_unified_lj.py
+@@ -8,6 +8,8 @@ class MLIAPUnifiedLJ(MLIAPUnified):
+     def __init__(self, element_types, epsilon=1.0, sigma=1.0, rcutfac=1.25):
+         # ARGS: interface, element_types, ndescriptors, nparams, rcutfac
+         super().__init__(None, element_types, 1, 3, rcutfac)
++        # this model does no forward/reverse exchange
++        self.comm_width = 0
+         # Mimicking the LJ pair-style:
+         # pair_style lj/cut 2.5
+         # pair_coeff * * 1 1
+diff --git a/src/KOKKOS/mliap_unified_couple_kokkos.pyx b/src/KOKKOS/mliap_unified_couple_kokkos.pyx
+index 9abce278bf..472274e2e5 100644
+--- a/src/KOKKOS/mliap_unified_couple_kokkos.pyx
++++ b/src/KOKKOS/mliap_unified_couple_kokkos.pyx
+@@ -106,7 +106,7 @@ cdef extern from "mliap_unified_kokkos.h" namespace "LAMMPS_NS":
+         int ndescriptors    # number of descriptors
+         int nparams         # number of parameters per element
+         int nelements;      # # of unique elements
+-        int comm_width      # max width of forward/reverse exchange (0 = not declared)
++        int comm_width      # max width of forward/reverse exchange (0 = none, -1 = not declared)
+ 
+         void compute_gradients(MLIAPDataKokkosDevice *)
+ 
+@@ -518,7 +518,8 @@ cdef public object mliap_unified_connect_kokkos(char *fname, MLIAPDummyModel * m
+     unified_int.model.ndescriptors = <int>unified.ndescriptors
+     unified_int.model.nparams = <int>unified.nparams
+     # models pickled before comm_width existed have no such attribute
+-    unified_int.model.comm_width = <int>(getattr(unified, 'comm_width', None) or 0)
++    comm_width = getattr(unified, 'comm_width', None)
++    unified_int.model.comm_width = -1 if comm_width is None else <int>comm_width
+ 
+     if unified.element_types is None:
+         raise ValueError("no element type set")
+diff --git a/src/KOKKOS/pair_mliap_kokkos.cpp b/src/KOKKOS/pair_mliap_kokkos.cpp
+index 3e55505e21..eb34f5fd2f 100644
+--- a/src/KOKKOS/pair_mliap_kokkos.cpp
++++ b/src/KOKKOS/pair_mliap_kokkos.cpp
+@@ -229,7 +229,7 @@ void PairMLIAPKokkos<DeviceType>::settings(int narg, char ** arg)
+ 
+       {
+         int width = build.model->comm_width;
+-        if (width <= 0) {
++        if (width < 0) {
+           width = MLIAP_UNIFIED_DEFAULT_COMM_WIDTH;
+           if (comm->me == 0)
+             error->warning(FLERR, "MLIAPUnified model does not declare comm_width: using {}. The declaration "
+diff --git a/src/ML-IAP/mliap_unified.cpp b/src/ML-IAP/mliap_unified.cpp
+index c231b0fa9a..c413b0e86b 100644
+--- a/src/ML-IAP/mliap_unified.cpp
++++ b/src/ML-IAP/mliap_unified.cpp
+@@ -118,7 +118,7 @@ void MLIAPDummyDescriptor::set_elements(char **elems, int nelems)
+ MLIAPDummyModel::MLIAPDummyModel(LAMMPS *lmp, char *coefffilename) : MLIAPModel(lmp, coefffilename)
+ {
+   nonlinearflag = 1;
+-  comm_width = 0;
++  comm_width = -1;
+ }
+ 
+ MLIAPDummyModel::~MLIAPDummyModel()
+diff --git a/src/ML-IAP/mliap_unified.h b/src/ML-IAP/mliap_unified.h
+index 1a125c5cb5..9545169374 100644
+--- a/src/ML-IAP/mliap_unified.h
++++ b/src/ML-IAP/mliap_unified.h
+@@ -48,7 +48,7 @@ class MLIAPDummyModel : public MLIAPModel {
+   void compute_force_gradients(class MLIAPData *) override;
+   double memory_usage() override;
+ 
+-  int comm_width;    // max per-atom width of forward/reverse exchange declared by the model (0 = not declared)
++  int comm_width;    // max per-atom width of forward/reverse exchange declared by the model (0 = none, -1 = not declared)
+ 
+   PyObject *unified_interface;
+ 
+diff --git a/src/ML-IAP/mliap_unified_couple.pyx b/src/ML-IAP/mliap_unified_couple.pyx
+index 4251d672e5..cfb915abd3 100644
+--- a/src/ML-IAP/mliap_unified_couple.pyx
++++ b/src/ML-IAP/mliap_unified_couple.pyx
+@@ -93,7 +93,7 @@ cdef extern from "mliap_unified.h" namespace "LAMMPS_NS":
+         int ndescriptors    # number of descriptors
+         int nparams         # number of parameters per element
+         int nelements;      # # of unique elements
+-        int comm_width      # max width of forward/reverse exchange (0 = not declared)
++        int comm_width      # max width of forward/reverse exchange (0 = none, -1 = not declared)
+ 
+         void compute_gradients(MLIAPData *)
+ 
+@@ -384,7 +384,8 @@ cdef public object mliap_unified_connect(char *fname, MLIAPDummyModel * model,
+     unified_int.model.ndescriptors = <int>unified.ndescriptors
+     unified_int.model.nparams = <int>unified.nparams
+     # models pickled before comm_width existed have no such attribute
+-    unified_int.model.comm_width = <int>(getattr(unified, 'comm_width', None) or 0)
++    comm_width = getattr(unified, 'comm_width', None)
++    unified_int.model.comm_width = -1 if comm_width is None else <int>comm_width
+ 
+     if unified.element_types is None:
+         raise ValueError("no element type set")
 -- 
 2.43.0
 

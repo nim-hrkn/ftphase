@@ -71,3 +71,21 @@ Largest exchange width: NequIP-OAM S / M / L = 320 / 480 / 704 (L plain export a
 MACE-MPA-0 medium e3nn-f32 and cuEquivariance exports both 512.  Every model reproduces the production energies once the
 width is declared.  The width follows the model architecture: it changes with the model size inside a package, not with the
 export variant.  (MACE small/large and SevenNet-MF-ompa have no ML-IAP export here and were not measured.)
+
+## Regression, AddressSanitizer and commit 3 (2026-11-12 night)
+
+* Commit 3 on both branches: `comm_width = 0` is a valid declaration ("no exchange"; undeclared is -1 internally) and the bundled
+  `python/lammps/mliap/mliap_unified_lj.py` sets it, so models without exchange get no warning.  Branches now 3 commits, 8 files.
+* Regression on the develop build (`env/lammps-cpu-mliap-width-develop/regress/`): `examples/melt` brick and tiled, 1 / 4 ranks,
+  plain and Kokkos = reference log to all digits; `examples/mliap/in.mliap.unified.lj.Ar` 1 / 4 ranks, plain and Kokkos = reference
+  log, no warning (run with `PYTHONPATH=<worktree>/python` so the embedded Python sees the updated LJ model);
+  `make check-whitespace|check-permissions|check-homepage|check-errordocs` exit 0 (run with env/ftphase's python on PATH: needs yaml).
+  `test/run_tests.sh` unchanged outcome (16 pass, 8 stop, MatterSim / NequIP energies).
+* AddressSanitizer (`env/lammps-cpu-mliap-asan-b/` = plan B on stable_30Sep2026, `env/lammps-cpu-mliap-asan-stable/` = unmodified
+  stable_30Sep2026 from `env/lammps-gpu/worktree-stable-asan`; `-fsanitize=address`, RelWithDebInfo; driver and output
+  `env/lammps-cpu-mliap-asan-b/test/asan_tests.{sh,out}`): exchange-only model, widths 4 / 32 / 128 / 256, 300 declared 512,
+  704 declared 704, brick and tiled, 1 and 4 ranks.  Plan B: 24 of 24 clean.  Unmodified: 18 of 24 heap-buffer-overflow in
+  `PairMLIAPKokkos` (all widths >= 128, and width 32 with tiled); width 4 and width 32 with brick fit by chance.
+  Pitfall: an ASan binary dies with SIGILL in OpenMPI's memory patcher (`mca_base_patcher_patch_apply_binary` -> libasan
+  `mprotect`); run with `OMPI_MCA_memory=^patcher`.  In a script, call `env/ftphase/bin/mpirun` explicitly (plain `mpirun`
+  resolved to Intel MPI and rejected `-x`).

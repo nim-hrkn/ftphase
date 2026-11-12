@@ -7,8 +7,8 @@
 Thanks, I agree with the diagnosis: the comm size should come from pair mliap (ultimately from the model), not from extra logic in
 CommBrick/CommTiled. I implemented that route to see what it takes, and I would like to propose getting there in steps.
 
-**What I tried (the model declares its width).** Branch `mliap-declare-comm-width-develop` on my fork (2 commits on top of the
-base of this PR, 7 files, +55/−6; the same change on `stable_30Sep2026` for testing):
+**What I tried (the model declares its width).** Branch `mliap-declare-comm-width-develop` on my fork (3 commits on top of the
+base of this PR, 8 files; the same change on `stable_30Sep2026` for testing):
 
 - `MLIAPUnified.__init__()` gets an optional `comm_width`; `MLIAPDummyModel` carries it (0 = not declared); both Cython couplings
   read it with `getattr`, so models pickled before the change still load.
@@ -24,7 +24,15 @@ base of this PR, 7 files, +55/−6; the same change on `stable_30Sep2026` for te
 Without this PR's CommBrick/CommTiled changes this works on the host path (Kokkos Serial, `-k on t 1 -sf kk`, 1 and 4 MPI
 ranks, brick and tiled, develop and `stable_30Sep2026`): an exchange-only test model passes for widths 4/128/256, 300 passes when
 the model declares 512, and an undeclared 300 or a declared-32-used-64 stops with the error instead of a segfault. On the GPU
-device path the energies are identical to the current build.
+device path the energies are identical to the current build. `comm_width = 0` is a valid declaration for models that never
+exchange (the bundled `MLIAPUnifiedLJ` now sets it, so `examples/mliap/in.mliap.unified.lj.Ar` runs without the warning and
+reproduces its reference log, plain and with Kokkos, 1 and 4 ranks). `examples/melt` (brick and tiled) reproduces its reference
+log; `make check-whitespace`, `check-permissions`, `check-homepage` and `check-errordocs` pass.
+
+I also ran the exchange-only model under AddressSanitizer (widths 4/32/128/256, 300 declared 512, 704 declared 704; brick and
+tiled; 1 and 4 ranks): with the `comm_width` branch all 24 runs are clean; with the unmodified `stable_30Sep2026` 18 of the 24
+report a heap-buffer-overflow in `PairMLIAPKokkos` (everything from width 128 up, and width 32 with `comm_style tiled`), while
+width 4 and width 32 with brick happen to fit.
 
 **The problem with a default.** The width is the length of the per-atom node features exchanged in a message-passing layer,
 so it follows from the architecture of the model (number of channels, maximum angular momentum), not from the package. I
@@ -54,7 +62,7 @@ existing models stop working, large enough for all of them and every run pays fo
 1. For the November release, take this PR as an interim fix. I know it is awkward — it puts a size check in a place that is
    designed not to need one — but it is the only variant that makes every existing unified model run on the host path without
    touching the MLIP packages. At present the host path of `pair mliap/kk` corrupts the heap for any width above what
-   `Comm::init()` happened to allocate, and a run does not always crash (in my test width 32 ran and 128 overflowed).
+   `Comm::init()` happened to allocate, and a run does not always crash (see the AddressSanitizer runs above).
 2. Introduce `comm_width` in the `MLIAPUnified` interface as above, as the documented way for a model to state its width.
    A model that does not declare it keeps working, but pair mliap prints a warning once when the model is loaded, saying that
    the declaration will become mandatory, so that users and the MLIP package maintainers have a transition period. Exporters

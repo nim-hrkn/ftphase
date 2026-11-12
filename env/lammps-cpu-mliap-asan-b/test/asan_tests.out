@@ -1,0 +1,51 @@
+== build b
+width 4 declared - brick np=1 rc=0 | asan: none |  | forward_ok=True 
+width 4 declared - brick np=4 rc=0 | asan: none |  | forward_ok=True 
+width 4 declared - tiled np=1 rc=0 | asan: none |  | forward_ok=True 
+width 4 declared - tiled np=4 rc=0 | asan: none |  | forward_ok=True 
+width 32 declared - brick np=1 rc=0 | asan: none |  | forward_ok=True 
+width 32 declared - brick np=4 rc=0 | asan: none |  | forward_ok=True 
+width 32 declared - tiled np=1 rc=0 | asan: none |  | forward_ok=True 
+width 32 declared - tiled np=4 rc=0 | asan: none |  | forward_ok=True 
+width 128 declared - brick np=1 rc=0 | asan: none |  | forward_ok=True 
+width 128 declared - brick np=4 rc=0 | asan: none |  | forward_ok=True 
+width 128 declared - tiled np=1 rc=0 | asan: none |  | forward_ok=True 
+width 128 declared - tiled np=4 rc=0 | asan: none |  | forward_ok=True 
+width 256 declared - brick np=1 rc=0 | asan: none |  | forward_ok=True 
+width 256 declared - brick np=4 rc=0 | asan: none |  | forward_ok=True 
+width 256 declared - tiled np=1 rc=0 | asan: none |  | forward_ok=True 
+width 256 declared - tiled np=4 rc=0 | asan: none |  | forward_ok=True 
+width 300 declared 512 brick np=1 rc=0 | asan: none |  | forward_ok=True 
+width 300 declared 512 brick np=4 rc=0 | asan: none |  | forward_ok=True 
+width 300 declared 512 tiled np=1 rc=0 | asan: none |  | forward_ok=True 
+width 300 declared 512 tiled np=4 rc=0 | asan: none |  | forward_ok=True 
+width 704 declared 704 brick np=1 rc=0 | asan: none |  | forward_ok=True 
+width 704 declared 704 brick np=4 rc=0 | asan: none |  | forward_ok=True 
+width 704 declared 704 tiled np=1 rc=0 | asan: none |  | forward_ok=True 
+width 704 declared 704 tiled np=4 rc=0 | asan: none |  | forward_ok=True 
+== build stable
+width 4 declared - brick np=1 rc=0 | asan: none |  | forward_ok=True 
+width 4 declared - brick np=4 rc=0 | asan: none |  | forward_ok=True 
+width 4 declared - tiled np=1 rc=0 | asan: none |  | forward_ok=True 
+width 4 declared - tiled np=4 rc=0 | asan: none |  | forward_ok=True 
+width 32 declared - brick np=1 rc=0 | asan: none |  | forward_ok=True 
+width 32 declared - brick np=4 rc=0 | asan: none |  | forward_ok=True 
+width 32 declared - tiled np=1 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 32 declared - tiled np=4 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 128 declared - brick np=1 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 128 declared - brick np=4 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 128 declared - tiled np=1 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 128 declared - tiled np=4 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 256 declared - brick np=1 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 256 declared - brick np=4 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 256 declared - tiled np=1 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 256 declared - tiled np=4 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 300 declared 512 brick np=1 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 300 declared 512 brick np=4 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 300 declared 512 tiled np=1 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 300 declared 512 tiled np=4 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 704 declared 704 brick np=1 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 704 declared 704 brick np=4 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 704 declared 704 tiled np=1 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+width 704 declared 704 tiled np=4 rc=1 | asan: AddressSanitizer: heap-buffer-overflow | in LAMMPS_NS::PairMLIAPKokkos |  
+done 2026年 11月 12日 木曜日 23:05:52 JST
