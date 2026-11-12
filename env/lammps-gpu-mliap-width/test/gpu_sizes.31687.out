@@ -1,0 +1,10 @@
+host mygarden6 job 31687 Thu Nov 12 16:54:55 JST 2026
+nequipS: declared widths tried: 1 320 -> max exchange width 320 | v0 production -398.15584 declared -398.15584 | v3 production -278.17521 declared -278.17521 | 
+nequipM: declared widths tried: 1 480 -> max exchange width 480 | v0 production -403.6019 declared -403.6019 | v3 production -281.98744 declared -281.98745 | 
+nequipL: declared widths tried: 1 704 -> max exchange width 704 | v0 production -404.08095 declared -404.08095 | v3 production -282.32278 declared -282.32278 | 
+nequipL_plain: declared widths tried: 1 704 -> max exchange width 704 | v0 production -404.08095 declared -404.08095 | v3 production -282.32278 declared -282.32278 | 
+ms1M: declared widths tried: 1 128 -> max exchange width 128 | v0 production -401.87122 declared -401.87122 | v3 production -280.77597 declared -280.77597 | 
+ms5M: declared widths tried: 1 256 -> max exchange width 256 | v0 production -403.17578 declared -403.17578 | v3 production -281.68916 declared -281.68916 | 
+mace_e3nn_f32: declared widths tried: 1 512 -> max exchange width 512 | v0 production -403.92018 declared -403.92018 | v3 production -282.21024 declared -282.21024 | 
+mace_cueq: declared widths tried: 1 512 -> max exchange width 512 | v0 production -403.92018 declared -403.92018 | v3 production -282.21024 declared -282.21024 | 
+done Thu Nov 12 18:26:16 JST 2026

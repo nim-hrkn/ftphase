@@ -64,3 +64,10 @@ Declare 1, run, raise the declaration to the width named in the error, repeat un
 exchange that exceeds the limit, not the maximum): MatterSim-5M 256; SevenNet-0 OEQ 128 then 480; MACE-MPA-0 cueq 512;
 NequIP-OAM-L OEQ 704.  With the final declaration all four give the production energies, plain and hybrid/scaled/kk
 (-403.17578 / -281.68916; -401.71027 / -280.6633; -403.92017 / -282.21024; -404.08095 / -282.32278).
+
+## Width vs model size and export variant (Slurm 31687, `test/gpu_sizes.sbatch` / `gpu_sizes.31687.out`, 1.5 h)
+
+Largest exchange width: NequIP-OAM S / M / L = 320 / 480 / 704 (L plain export also 704); MatterSim 1M / 5M = 128 / 256;
+MACE-MPA-0 medium e3nn-f32 and cuEquivariance exports both 512.  Every model reproduces the production energies once the
+width is declared.  The width follows the model architecture: it changes with the model size inside a package, not with the
+export variant.  (MACE small/large and SevenNet-MF-ompa have no ML-IAP export here and were not measured.)

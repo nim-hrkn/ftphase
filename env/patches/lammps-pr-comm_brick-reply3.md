@@ -26,22 +26,28 @@ ranks, brick and tiled, develop and `stable_30Sep2026`): an exchange-only test m
 the model declares 512, and an undeclared 300 or a declared-32-used-64 stops with the error instead of a segfault. On the GPU
 device path the energies are identical to the current build.
 
-**The problem with a default.** The exchange width is a property of each model. I measured the largest width of four models
-by declaring a width and raising it to the value named in the error until the run passed (GPU, 108-atom cell; energies compared
-with a build that has this PR, plain and under `hybrid/scaled` with `ufm`):
+**The problem with a default.** The width is the length of the per-atom node features exchanged in a message-passing layer,
+so it follows from the architecture of the model (number of channels, maximum angular momentum), not from the package. I
+measured the largest width of each unified model I have by declaring a width and raising it to the value named in the error
+until the run passed (GPU, 108-atom cell; with the final declaration every model reproduces the energies of a build that has
+this PR, plain and under `hybrid/scaled` with `ufm`):
 
-| model (unified export) | widths seen | largest | undeclared, default 256 | declared |
-|---|---|---|---|---|
-| MatterSim-v1-5M | 256 | 256 | runs (warning), same energy | same energy |
-| SevenNet-0 (OpenEquivariance export) | 128, 480 | 480 | stops with the width error | 480: same energy |
-| MACE-MPA-0 medium (cuEquivariance export) | 512 | 512 | stops with the width error | 512: same energy |
-| NequIP-OAM-L | 704 | **704** | stops with the width error | 704: same energy (also CPU, 1/4 ranks, brick/tiled) |
+| package | model | largest exchange width | undeclared, default 256 |
+|---|---|---|---|
+| MatterSim | v1-1M | 128 | runs (warning) |
+| MatterSim | v1-5M | 256 | runs (warning), exactly at the limit |
+| NequIP | OAM-S | 320 | stops with the width error |
+| NequIP | OAM-M | 480 | stops |
+| NequIP | OAM-L (OpenEquivariance and plain export) | **704** | stops |
+| SevenNet | 7net-0 (OpenEquivariance export) | 480 (128 in an earlier layer) | stops |
+| MACE | MPA-0 medium (e3nn and cuEquivariance export) | 512 | stops |
 
-So with a default of 256 three of the four models stop until their exporters declare the width, and the fourth sits exactly at
-the limit. SevenNet-0 also shows that the width changes between layers, so only the exporter knows the maximum. The exporters
-live in the MLIP packages (mace, nequip, sevenn, mattersim), not in LAMMPS, and every existing `.pt` file would have to be
-re-exported. Any default is a guess about models LAMMPS cannot see: too small and existing models stop working, large enough
-for all of them and every run pays for buffers sized for the worst case.
+The width changes with the size of the model inside one package (NequIP 320/480/704, MatterSim 128/256) and between layers of
+one model (SevenNet-0 128 and 480); it did not change with the export variant of the same model. With a default of 256, six
+of these eight exports stop until their exporter declares the width, and a default that fits today's model of a package gives
+no guarantee for the next one. The exporters live in the MLIP packages (mace, nequip, sevenn, mattersim), not in LAMMPS, and
+every existing `.pt` file would have to be re-exported. Any default is a guess about models LAMMPS cannot see: too small and
+existing models stop working, large enough for all of them and every run pays for buffers sized for the worst case.
 
 **Proposal.**
 
