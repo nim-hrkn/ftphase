@@ -35,10 +35,12 @@ and every run pays for buffers sized for the worst case.
    designed not to need one — but it is the only variant that makes every existing unified model run on the host path without
    touching the MLIP packages, and it costs one integer comparison per pair comm call when the width does not grow. At present
    the host path of `pair mliap/kk` corrupts the heap for any width above what `Comm::init()` happened to allocate.
-2. Introduce `comm_width` in the `MLIAPUnified` interface as above, as the documented way for a model to state its width, and
-   ask the MLIP packages to set it in their exporters.
-3. Once the exporters do, make the declaration mandatory and remove the growth checks of this PR again (a later release; I can
-   prepare that PR and the notes for the package maintainers).
+2. Introduce `comm_width` in the `MLIAPUnified` interface as above, as the documented way for a model to state its width.
+   A model that does not declare it keeps working, but pair mliap prints a warning once when the model is loaded, saying that
+   the declaration will become mandatory, so that users and the MLIP package maintainers (mace, nequip, sevenn, mattersim)
+   have a transition period. I can open the corresponding issues/PRs for the exporters.
+3. After that period, make the declaration mandatory (the warning becomes an error) and remove the growth checks of this PR
+   again. I can prepare that PR as well.
 
 If you would rather not carry the interim checks at all, I can replace this PR with the `comm_width` branch right away; in that
 case I would suggest a default of at least 1024 so that the NequIP models keep working until their exporter is updated, and I
