@@ -57,3 +57,10 @@ Not tested here: the GPU device path (it grows its own buffers per call and neve
 | NequIP-OAM-L OEQ, comm_width = 704 | -404.08096 / -282.32278 | -404.08095 / -282.32279 |
 
 A default of 256 covers only MatterSim among the four models; the default would have to be >= 704.
+
+## Largest exchange width per model (Slurm 31686, `env/lammps-gpu-mliap-width/test/gpu_declared.sbatch` / `.31686.out`)
+
+Declare 1, run, raise the declaration to the width named in the error, repeat until the run passes (the error names the first
+exchange that exceeds the limit, not the maximum): MatterSim-5M 256; SevenNet-0 OEQ 128 then 480; MACE-MPA-0 cueq 512;
+NequIP-OAM-L OEQ 704.  With the final declaration all four give the production energies, plain and hybrid/scaled/kk
+(-403.17578 / -281.68916; -401.71027 / -280.6633; -403.92017 / -282.21024; -404.08095 / -282.32278).
