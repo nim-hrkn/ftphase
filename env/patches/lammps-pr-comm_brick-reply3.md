@@ -10,7 +10,7 @@ CommBrick/CommTiled. I implemented that route to see what it takes, and I would 
 **What I tried (the model declares its width).** Branch `mliap-declare-comm-width-develop` on my fork (3 commits on top of the
 base of this PR, 8 files; the same change on `stable_30Sep2026` for testing):
 
-- `MLIAPUnified.__init__()` gets an optional `comm_width`; `MLIAPDummyModel` carries it (0 = not declared); both Cython couplings
+- `MLIAPUnified.__init__()` gets an optional `comm_width`; `MLIAPDummyModel` carries it (−1 = not declared, 0 = the model never exchanges); both Cython couplings
   read it with `getattr`, so models pickled before the change still load.
 - `PairMLIAPKokkos::settings()` sets `comm_forward = comm_reverse =` the declared width right after the unified model is built,
   or a default (256, the value you suggested) with a one-time warning when the model declares nothing. It has to be
@@ -59,7 +59,7 @@ existing models stop working, large enough for all of them and every run pays fo
 
 **Proposal.**
 
-1. For the November release, take this PR as an interim fix. I know it is awkward — it puts a size check in a place that is
+1. For the November release, take this PR (the buffer growth in CommBrick/CommTiled) as an interim fix. I know it is awkward — it puts a size check in a place that is
    designed not to need one — but it is the only variant that makes every existing unified model run on the host path without
    touching the MLIP packages. At present the host path of `pair mliap/kk` corrupts the heap for any width above what
    `Comm::init()` happened to allocate, and a run does not always crash (see the AddressSanitizer runs above).
