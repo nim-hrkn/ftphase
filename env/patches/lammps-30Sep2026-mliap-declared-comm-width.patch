@@ -1,7 +1,7 @@
 From beefce3aa4320908019d930109ac096bba58986f Mon Sep 17 00:00:00 2001
 From: kino <hkn999@yahoo.co.jp>
 Date: Thu, 12 Nov 2026 11:53:01 +0900
-Subject: [PATCH] Let unified ML-IAP models declare their exchange width so
+Subject: [PATCH 1/2] Let unified ML-IAP models declare their exchange width so
  pair mliap/kk sets comm_forward/comm_reverse before Comm::init()
 
 ---
@@ -183,6 +183,90 @@ index 36c3eddda7..4251d672e5 100644
  
      if unified.element_types is None:
          raise ValueError("no element type set")
+-- 
+2.43.0
+
+
+From faf952a0acbca2d1ce623835b81109e61c3c95b8 Mon Sep 17 00:00:00 2001
+From: kino <hkn999@yahoo.co.jp>
+Date: Thu, 12 Nov 2026 13:18:31 +0900
+Subject: [PATCH 2/2] Warn when a unified ML-IAP model does not declare
+ comm_width; check exchange widths against the sizes Comm::init() allocated
+ for
+
+---
+ src/KOKKOS/pair_mliap_kokkos.cpp | 19 ++++++++++++++-----
+ src/comm.h                       |  4 ++++
+ 2 files changed, 18 insertions(+), 5 deletions(-)
+
+diff --git a/src/KOKKOS/pair_mliap_kokkos.cpp b/src/KOKKOS/pair_mliap_kokkos.cpp
+index e266421568..c1f6d86ee5 100644
+--- a/src/KOKKOS/pair_mliap_kokkos.cpp
++++ b/src/KOKKOS/pair_mliap_kokkos.cpp
+@@ -26,6 +26,7 @@
+ #include "mliap_model_python_kokkos.h"
+ #include "mliap_unified_kokkos.h"
+ #endif
++#include "comm.h"
+ #include "error.h"
+ #include "neigh_request.h"
+ #include "lammps.h"
+@@ -228,7 +229,13 @@ void PairMLIAPKokkos<DeviceType>::settings(int narg, char ** arg)
+ 
+       {
+         int width = build.model->comm_width;
+-        if (width <= 0) width = MLIAP_UNIFIED_DEFAULT_COMM_WIDTH;
++        if (width <= 0) {
++          width = MLIAP_UNIFIED_DEFAULT_COMM_WIDTH;
++          if (comm->me == 0)
++            error->warning(FLERR, "MLIAPUnified model does not declare comm_width: using {}. The declaration "
++                           "will become mandatory in a future release; re-export the model with a version of "
++                           "its package that sets comm_width", width);
++        }
+         comm_forward = comm_reverse = width;
+       }
+ #else
+@@ -370,9 +377,11 @@ int PairMLIAPKokkos<DeviceType>::forward_comm(CommType* copy_from_, CommType* co
+   }
+   copy_to = copy_to_;
+   copy_from = copy_from_;
+-  if (vl > comm_forward)
++  // check against what Comm::init() actually allocated for, so that an exchange
++  // can never write past the comm buffers
++  if (vl > MIN(comm_forward, comm->get_maxforward()))
+     error->all(FLERR, "Pair mliap/kk forward exchange width {} exceeds the maximum {} set at init: "
+-               "declare comm_width in the MLIAPUnified model", vl, comm_forward);
++               "declare comm_width in the MLIAPUnified model", vl, MIN(comm_forward, comm->get_maxforward()));
+   vec_len = vl;
+ 
+   Kokkos::parallel_for(Kokkos::RangePolicy<DeviceType>(0,(atom->nlocal+atom->nghost)*vl), KOKKOS_LAMBDA (int i) {
+@@ -399,9 +408,9 @@ int PairMLIAPKokkos<DeviceType>::reverse_comm(CommType* copy_from_, CommType* co
+   }
+   copy_to = copy_to_;
+   copy_from = copy_from_;
+-  if (vl > comm_reverse)
++  if (vl > MIN(comm_reverse, comm->get_maxreverse()))
+     error->all(FLERR, "Pair mliap/kk reverse exchange width {} exceeds the maximum {} set at init: "
+-               "declare comm_width in the MLIAPUnified model", vl, comm_reverse);
++               "declare comm_width in the MLIAPUnified model", vl, MIN(comm_reverse, comm->get_maxreverse()));
+   vec_len = vl;
+ 
+   Kokkos::parallel_for(Kokkos::RangePolicy<DeviceType>(0,(atom->nlocal+atom->nghost)*vl), KOKKOS_LAMBDA (int i) {
+diff --git a/src/comm.h b/src/comm.h
+index 384d8937d8..49a9ecbfb3 100644
+--- a/src/comm.h
++++ b/src/comm.h
+@@ -111,6 +111,10 @@ class Comm : protected Pointers {
+ 
+   virtual double memory_usage() = 0;
+ 
++  // max # of datums per atom the forward/reverse comm buffers were sized for in init()
++  int get_maxforward() const { return maxforward; }
++  int get_maxreverse() const { return maxreverse; }
++
+   // non-virtual functions common to all Comm styles
+ 
+   void ring(int, int, void *, int, void (*)(int, char *, void *), void *, void *, int self = 1);
 -- 
 2.43.0
 

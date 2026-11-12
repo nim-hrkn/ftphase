@@ -1,17 +1,17 @@
 wrote exch.pkl
 == exchange test: width / declared / comm_style / ranks
 width 4 declared - brick np=1 rc=0 | EXCH k=4 nlocal=108 nghost=990 forward_ok=True ghost_col0_max=107 reverse_sum=4392 expect=4392 
-width 4 declared - brick np=4 rc=0 | EXCH k=4 nlocal=36 nghost=614 forward_ok=True ghost_col0_max=35 reverse_sum=3688 expect=2600 
+width 4 declared - brick np=4 rc=0 | EXCH k=4 nlocal=27 nghost=623 forward_ok=True ghost_col0_max=35 reverse_sum=2472 expect=2600 
 width 4 declared - tiled np=1 rc=0 | EXCH k=4 nlocal=108 nghost=990 forward_ok=True ghost_col0_max=107 reverse_sum=4392 expect=4392 
-width 4 declared - tiled np=4 rc=0 | EXCH k=4 nlocal=24 nghost=626 forward_ok=True ghost_col0_max=35 reverse_sum=2184 expect=2600 
+width 4 declared - tiled np=4 rc=0 | EXCH k=4 nlocal=27 nghost=623 forward_ok=True ghost_col0_max=35 reverse_sum=2472 expect=2600 
 width 128 declared - brick np=1 rc=0 | EXCH k=128 nlocal=108 nghost=990 forward_ok=True ghost_col0_max=107 reverse_sum=140544 expect=140544 
-width 128 declared - brick np=4 rc=0 | EXCH k=128 nlocal=24 nghost=626 forward_ok=True ghost_col0_max=35 reverse_sum=69888 expect=83200 
+width 128 declared - brick np=4 rc=0 | EXCH k=128 nlocal=36 nghost=614 forward_ok=True ghost_col0_max=35 reverse_sum=118016 expect=83200 
 width 128 declared - tiled np=1 rc=0 | EXCH k=128 nlocal=108 nghost=990 forward_ok=True ghost_col0_max=107 reverse_sum=140544 expect=140544 
 width 128 declared - tiled np=4 rc=0 | EXCH k=128 nlocal=36 nghost=614 forward_ok=True ghost_col0_max=35 reverse_sum=118016 expect=83200 
 width 256 declared - brick np=1 rc=0 | EXCH k=256 nlocal=108 nghost=990 forward_ok=True ghost_col0_max=107 reverse_sum=281088 expect=281088 
-width 256 declared - brick np=4 rc=0 | EXCH k=256 nlocal=24 nghost=626 forward_ok=True ghost_col0_max=35 reverse_sum=139776 expect=166400 
+width 256 declared - brick np=4 rc=0 | EXCH k=256 nlocal=21 nghost=629 forward_ok=True ghost_col0_max=35 reverse_sum=131584 expect=166400 
 width 256 declared - tiled np=1 rc=0 | EXCH k=256 nlocal=108 nghost=990 forward_ok=True ghost_col0_max=107 reverse_sum=281088 expect=281088 
-width 256 declared - tiled np=4 rc=0 | EXCH k=256 nlocal=36 nghost=614 forward_ok=True ghost_col0_max=35 reverse_sum=236032 expect=166400 
+width 256 declared - tiled np=4 rc=0 | EXCH k=256 nlocal=24 nghost=626 forward_ok=True ghost_col0_max=35 reverse_sum=139776 expect=166400 
 width 300 declared - brick np=1 rc=1 |  ERROR: Pair mliap/kk forward exchange width 300 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mli
 RuntimeError: ERROR: Pair mliap/kk forward exchange width 300 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/K
 width 300 declared - brick np=4 rc=1 |  ERROR: Pair mliap/kk forward exchange width 300 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mli
@@ -21,9 +21,9 @@ RuntimeError: ERROR: Pair mliap/kk forward exchange width 300 exceeds the maximu
 width 300 declared - tiled np=4 rc=1 |  ERROR: Pair mliap/kk forward exchange width 300 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mli
 RuntimeError: ERROR: Pair mliap/kk forward exchange width 300 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/K
 width 300 declared 512 brick np=1 rc=0 | EXCH k=300 nlocal=108 nghost=990 forward_ok=True ghost_col0_max=107 reverse_sum=329400 expect=329400 
-width 300 declared 512 brick np=4 rc=0 | EXCH k=300 nlocal=27 nghost=623 forward_ok=True ghost_col0_max=35 reverse_sum=185400 expect=195000 
+width 300 declared 512 brick np=4 rc=0 | EXCH k=300 nlocal=24 nghost=626 forward_ok=True ghost_col0_max=35 reverse_sum=163800 expect=195000 
 width 300 declared 512 tiled np=1 rc=0 | EXCH k=300 nlocal=108 nghost=990 forward_ok=True ghost_col0_max=107 reverse_sum=329400 expect=329400 
-width 300 declared 512 tiled np=4 rc=0 | EXCH k=300 nlocal=36 nghost=614 forward_ok=True ghost_col0_max=35 reverse_sum=276600 expect=195000 
+width 300 declared 512 tiled np=4 rc=0 | EXCH k=300 nlocal=21 nghost=629 forward_ok=True ghost_col0_max=35 reverse_sum=154200 expect=195000 
 width 64 declared 32 brick np=1 rc=1 |  ERROR: Pair mliap/kk forward exchange width 64 exceeds the maximum 32 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mliap
 RuntimeError: ERROR: Pair mliap/kk forward exchange width 64 exceeds the maximum 32 set at init: declare comm_width in the MLIAPUnified model (src/KOK
 width 64 declared 32 brick np=4 rc=1 |  ERROR: Pair mliap/kk forward exchange width 64 exceeds the maximum 32 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mliap
@@ -38,13 +38,13 @@ ms5M np=1 v3 pe=-281.68908 press=-1185.9804 | pe=-273.83012 press=-64496.024 | p
 ms5M np=4 v0 pe=-403.1757 press=-3403.4603 | pe=-391.66483 press=-93137.691 | pe=-391.66483 press=-88961.234 | pe=-389.43048 press=-82689.64 | 
 ms5M np=4 v3 pe=-281.6891 press=-1185.977 | pe=-273.83013 press=-64496.029 | pe=-273.83013 press=-60319.573 | pe=-272.18369 press=-55730.291 | 
 ms5M tiled np=4 pe=-403.1757
-FAILED nequip_undeclared np=1 v0: RuntimeError: ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mliap_kokkos.cpp:374)
+FAILED nequip_undeclared np=1 v0: RuntimeError: ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mliap_kokkos.cpp:383)
 nequip_undeclared np=1 v0 
-FAILED nequip_undeclared np=1 v3: RuntimeError: ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mliap_kokkos.cpp:374)
+FAILED nequip_undeclared np=1 v3: RuntimeError: ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mliap_kokkos.cpp:383)
 nequip_undeclared np=1 v3 
-FAILED nequip_undeclared np=4 v0: RuntimeError: ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mliap_kokkos.cpp:374)
+FAILED nequip_undeclared np=4 v0: RuntimeError: ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mliap_kokkos.cpp:383)
 nequip_undeclared np=4 v0 
-FAILED nequip_undeclared np=4 v3: RuntimeError: ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mliap_kokkos.cpp:374)
+FAILED nequip_undeclared np=4 v3: RuntimeError: ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKOS/pair_mliap_kokkos.cpp:383)
 nequip_undeclared np=4 v3 
 nequip_undeclared tiled np=4 
 nequip_declared704 np=1 v0 pe=-404.08091 press=2017.6658 | pe=-392.70495 press=-87851.351 | pe=-392.70495 press=-83674.894 | pe=-390.74184 press=-77025.77 | 
@@ -52,4 +52,5 @@ nequip_declared704 np=1 v3 pe=-282.32276 press=2608.8143 | pe=-274.55824 press=-
 nequip_declared704 np=4 v0 pe=-404.08096 press=2017.6694 | pe=-392.705 press=-87851.307 | pe=-392.705 press=-83674.85 | pe=-390.74185 press=-77025.772 | 
 nequip_declared704 np=4 v3 pe=-282.32279 press=2608.8153 | pe=-274.55827 press=-60795.563 | pe=-274.55827 press=-56619.107 | pe=-273.11872 press=-51800.352 | 
 nequip_declared704 tiled np=4 pe=-404.08096
-done 2026年 11月 12日 木曜日 11:52:29 JST
+done 2026年 11月 12日 木曜日 13:16:27 JST
+CPU_TESTS_DONE

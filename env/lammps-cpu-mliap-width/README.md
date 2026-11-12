@@ -27,3 +27,19 @@ provide the comm size at init.  This build tests that route on the unpatched rel
 Findings: the route works without touching Comm, including hybrid/scaled and tiled.  A default alone cannot cover existing
 models (NequIP-OAM-L needs 704), so either the default is raised (e.g. 1024) or the exporters must declare the width.
 Not tested here: the GPU device path (it grows its own buffers per call and never overflowed), MACE on the CPU, the develop branch.
+
+## Second step (2026-11-12 afternoon): warning, check against Comm's sizes, develop port
+
+* Commit 2 on both branches: an undeclared model prints one warning on rank 0 when it is loaded ("does not declare comm_width:
+  using 256 ... will become mandatory"), and `forward_comm()`/`reverse_comm()` compare the width with
+  `MIN(comm_forward, comm->get_maxforward())` (resp. reverse), i.e. with what `Comm::init()` really allocated for.
+  `maxforward`/`maxreverse` are protected in `Comm`, so `comm.h` gained two read-only accessors (4 lines; no change to the comm
+  loops or allocation).  Dropping this strengthening restores "Comm untouched".
+* develop port: `env/lammps-gpu/worktree-mliap-width-develop`, branch `mliap-declare-comm-width-develop` (from upstream develop
+  7dbed49448, the base of PR #5301); the release commit cherry-picked without conflicts.  Patch `env/patches/lammps-develop-mliap-declared-comm-width.patch`.
+  Build `env/lammps-cpu-mliap-width-develop/` (`lmp_cpumliapwd`).
+* `test/run_tests.sh` on both CPU builds after commit 2 (`run_tests.out` in each folder): identical outcome to the table above -
+  16 exchange cases pass, 8 stop with the width error, MatterSim-5M and NequIP-OAM-L (declared 704) reproduce the reference
+  energies on 1 / 4 ranks, plain, hybrid/scaled and tiled; undeclared NequIP-OAM-L stops with "width 704 exceeds the maximum 256".
+* GPU device path: `env/lammps-gpu-mliap-width/` (`lmp_gpumliapw`, same source as the release CPU build), comparison job
+  `test/gpu_width.sbatch` against the production `lmp_gpumliap` on mygarden6 (Slurm 31685).
