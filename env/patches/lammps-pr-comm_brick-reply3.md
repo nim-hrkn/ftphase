@@ -1,30 +1,42 @@
-<!-- Draft reply to sjplimp's comment of 2026-11-11 on lammps/lammps PR #5301.  Written 2026-11-12.
-     User's decision: ask for the current PR as an interim fix (admittedly awkward), show plan B at the same time, state the NequIP 704 fact.
-     Numbers: env/lammps-cpu-mliap-width/README.md (CPU, stable_30Sep2026).  GPU / develop results are added below when the runs finish. -->
+<!-- Draft reply to sjplimp's comment of 2026-11-11 on lammps/lammps PR #5301.  Written 2026-11-12 (third revision, with the GPU and develop results).
+     User's decisions: ask for the current PR as an interim fix (admittedly awkward); show plan B at the same time; state the NequIP 704 fact;
+     transition period with a warning for models that do not declare the width.
+     Numbers: env/lammps-cpu-mliap-width/README.md, env/lammps-cpu-mliap-width*/test/run_tests.out, env/lammps-gpu-mliap-width/test/gpu_width.31685.out.
+     Before posting: push the branch mliap-declare-comm-width-develop to the fork (not pushed yet). -->
 
 Thanks, I agree with the diagnosis: the comm size should come from pair mliap (ultimately from the model), not from extra logic in
-CommBrick/CommTiled. I tried that route to see what it takes, and I would like to propose doing it in two steps.
+CommBrick/CommTiled. I implemented that route to see what it takes, and I would like to propose getting there in steps.
 
-**What I tried (the "declare the width" route).** Branch `mliap-declare-comm-width` on my fork, one commit, 6 files, +42/−6,
-CommBrick/CommTiled untouched:
+**What I tried (the model declares its width).** Branch `mliap-declare-comm-width-develop` on my fork (2 commits on top of the
+base of this PR, 7 files, +55/−6; the same change on `stable_30Sep2026` for testing):
 
 - `MLIAPUnified.__init__()` gets an optional `comm_width`; `MLIAPDummyModel` carries it (0 = not declared); both Cython couplings
   read it with `getattr`, so models pickled before the change still load.
 - `PairMLIAPKokkos::settings()` sets `comm_forward = comm_reverse =` the declared width right after the unified model is built,
-  or a default (256, the value you suggested) when the model declares nothing. It has to be `settings()`, not `init_style()`:
-  `PairHybrid::flags()` collects the sub-styles' comm sizes when the hybrid style is created, and with `init_style()` a
-  `hybrid/scaled` run still overflowed.
+  or a default (256, the value you suggested) with a one-time warning when the model declares nothing. It has to be
+  `settings()`, not `init_style()`: `PairHybrid::flags()` collects the sub-styles' comm sizes when the hybrid style is created,
+  and with `init_style()` a `hybrid/scaled` run still overflowed.
 - `forward_comm()`/`reverse_comm()` no longer overwrite `comm_forward`; a larger width stops with an error that names
-  `comm_width`, and the actual width is passed as `isize`.
+  `comm_width`, and the actual width is passed as `isize`. The check is made against what `Comm::init()` allocated for; for that
+  I added two read-only accessors (`get_maxforward()`, `get_maxreverse()`) to `comm.h`, since the members are protected. The comm
+  loops and the allocation are untouched, and the accessors can go if you prefer the check against `comm_forward` only.
 
-On the unpatched `stable_30Sep2026` (Kokkos Serial, `-k on t 1 -sf kk`, 1 and 4 MPI ranks, brick and tiled) this works: an
-exchange-only test model passes for widths 4/128/256, 300 passes when the model declares 512, and an undeclared 300 gives the
-error instead of a segfault. MatterSim (undeclared, fits in 256) gives the same energies as with this PR, alone and under
-`hybrid/scaled` with `ufm`.
+Without this PR's CommBrick/CommTiled changes this works on the host path (Kokkos Serial, `-k on t 1 -sf kk`, 1 and 4 MPI
+ranks, brick and tiled, develop and `stable_30Sep2026`): an exchange-only test model passes for widths 4/128/256, 300 passes when
+the model declares 512, and an undeclared 300 or a declared-32-used-64 stops with the error instead of a segfault. On the GPU
+device path the energies are identical to the current build.
 
-**The problem with a default.** The width is not small for every model: NequIP-OAM-L exchanges **704** values per atom, so with
-a default of 256 it stops with the new error until its exporter declares the width (with `comm_width = 704` written into the
-pickle it runs and reproduces the energies of this PR, plain, `hybrid/scaled` and tiled). The exporters live in the MLIP
+**The problem with a default.** The exchange width is a property of each model, and for most of the models I can test it is
+above 256 (108-atom cell, energies compared with a build that has this PR):
+
+| model (unified export) | exchange width | undeclared, default 256 | with `comm_width` declared |
+|---|---|---|---|
+| MatterSim-v1-5M | ≤ 256 | runs (warning), same energy, CPU and GPU, plain and `hybrid/scaled` + `ufm` | — |
+| SevenNet-0 (OpenEquivariance export) | 480 | stops with the width error | not tried |
+| MACE-MPA-0 medium (cuEquivariance export) | 512 | stops with the width error | not tried |
+| NequIP-OAM-L | **704** | stops with the width error | 704: same energy, CPU (1/4 ranks, brick/tiled) and GPU, plain and `hybrid/scaled` |
+
+So with a default of 256 three of the four models stop until their exporters declare the width. The exporters live in the MLIP
 packages (mace, nequip, sevenn, mattersim), not in LAMMPS, and every existing `.pt` file would have to be re-exported. Any
 default is a guess about models LAMMPS cannot see: too small and existing models stop working, large enough for all of them
 and every run pays for buffers sized for the worst case.
@@ -33,15 +45,16 @@ and every run pays for buffers sized for the worst case.
 
 1. For the November release, take this PR as an interim fix. I know it is awkward — it puts a size check in a place that is
    designed not to need one — but it is the only variant that makes every existing unified model run on the host path without
-   touching the MLIP packages, and it costs one integer comparison per pair comm call when the width does not grow. At present
-   the host path of `pair mliap/kk` corrupts the heap for any width above what `Comm::init()` happened to allocate.
+   touching the MLIP packages. At present the host path of `pair mliap/kk` corrupts the heap for any width above what
+   `Comm::init()` happened to allocate, and a run does not always crash (in my test width 32 ran and 128 overflowed).
 2. Introduce `comm_width` in the `MLIAPUnified` interface as above, as the documented way for a model to state its width.
    A model that does not declare it keeps working, but pair mliap prints a warning once when the model is loaded, saying that
-   the declaration will become mandatory, so that users and the MLIP package maintainers (mace, nequip, sevenn, mattersim)
-   have a transition period. I can open the corresponding issues/PRs for the exporters.
+   the declaration will become mandatory, so that users and the MLIP package maintainers have a transition period. Exporters
+   should assign `self.comm_width = ...` rather than pass it to `super().__init__()`, so that the same exporter also works with
+   an older `lammps` Python package. I can open the corresponding issues/PRs for the exporters.
 3. After that period, make the declaration mandatory (the warning becomes an error) and remove the growth checks of this PR
    again. I can prepare that PR as well.
 
 If you would rather not carry the interim checks at all, I can replace this PR with the `comm_width` branch right away; in that
-case I would suggest a default of at least 1024 so that the NequIP models keep working until their exporter is updated, and I
-would appreciate your view on which default is acceptable.
+case the default would have to be at least 704 (I would suggest 1024) for the models above to keep working until their
+exporters are updated, and I would appreciate your view on which default is acceptable.

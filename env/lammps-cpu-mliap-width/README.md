@@ -43,3 +43,17 @@ Not tested here: the GPU device path (it grows its own buffers per call and neve
   energies on 1 / 4 ranks, plain, hybrid/scaled and tiled; undeclared NequIP-OAM-L stops with "width 704 exceeds the maximum 256".
 * GPU device path: `env/lammps-gpu-mliap-width/` (`lmp_gpumliapw`, same source as the release CPU build), comparison job
   `test/gpu_width.sbatch` against the production `lmp_gpumliap` on mygarden6 (Slurm 31685).
+
+## GPU device path (Slurm 31685 on mygarden6, `env/lammps-gpu-mliap-width/test/gpu_width.31685.out`)
+
+`lmp_gpumliapw` (declared-width build) against the production `lmp_gpumliap` (patched Comm), in.kk v0 (plain) / v3 (0.7 model + 0.3 ufm, hybrid/scaled/kk), 108 atoms:
+
+| model | production | declared-width build |
+|---|---|---|
+| MatterSim-5M (undeclared) | -403.17578 / -281.68916 | -403.17578 / -281.68916 (warning) |
+| MACE-MPA-0 cueq (undeclared) | -403.92018 / -282.21024 | error: width **512** > 256 |
+| SevenNet-0 OEQ (undeclared) | -401.71027 / -280.6633 | error: width **480** > 256 |
+| NequIP-OAM-L OEQ (undeclared) | -404.08095 / -282.32278 | error: width **704** > 256 |
+| NequIP-OAM-L OEQ, comm_width = 704 | -404.08096 / -282.32278 | -404.08095 / -282.32279 |
+
+A default of 256 covers only MatterSim among the four models; the default would have to be >= 704.

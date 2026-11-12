@@ -1,0 +1,20 @@
+host mygarden6 job 31685 Thu Nov 12 15:01:40 JST 2026
+NVIDIA GeForce RTX 3060, 9 MiB
+declared copy written
+ms5M v0  production(patched Comm) pe=-403.17578  declared-width build pe=-403.17578  
+ms5M v3  production(patched Comm) pe=-281.68916  declared-width build pe=-281.68916  
+mace_cueq v0  production(patched Comm) pe=-403.92018  declared-width build pe=  ERROR: Pair mliap/kk forward exchange width 512 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKO
+RuntimeError: ERROR: Pair mliap/kk forward exchange width 512 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified mo
+mace_cueq v3  production(patched Comm) pe=-282.21024  declared-width build pe=  ERROR: Pair mliap/kk forward exchange width 512 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKO
+RuntimeError: ERROR: Pair mliap/kk forward exchange width 512 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified mo
+sevenn0_oeq v0  production(patched Comm) pe=-401.71027  declared-width build pe=  ERROR: Pair mliap/kk forward exchange width 480 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKO
+RuntimeError: ERROR: Pair mliap/kk forward exchange width 480 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified mo
+sevenn0_oeq v3  production(patched Comm) pe=-280.6633  declared-width build pe=  ERROR: Pair mliap/kk forward exchange width 480 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKO
+RuntimeError: ERROR: Pair mliap/kk forward exchange width 480 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified mo
+nequipL_undeclared v0  production(patched Comm) pe=-404.08095  declared-width build pe=  ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKO
+RuntimeError: ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified mo
+nequipL_undeclared v3  production(patched Comm) pe=-282.32278  declared-width build pe=  ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified model (src/KOKKO
+RuntimeError: ERROR: Pair mliap/kk forward exchange width 704 exceeds the maximum 256 set at init: declare comm_width in the MLIAPUnified mo
+nequipL_declared704 v0  production(patched Comm) pe=-404.08096  declared-width build pe=-404.08095  
+nequipL_declared704 v3  production(patched Comm) pe=-282.32278  declared-width build pe=-282.32279  
+done Thu Nov 12 15:08:48 JST 2026
