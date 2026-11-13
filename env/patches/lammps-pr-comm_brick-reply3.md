@@ -34,8 +34,9 @@ tiled; 1 and 4 ranks): with the `comm_width` branch all 24 runs are clean; with 
 report a heap-buffer-overflow in `PairMLIAPKokkos` (everything from width 128 up, and width 32 with `comm_style tiled`), while
 width 4 and width 32 with brick happen to fit.
 
-**The problem with a default.** The width is the length of the per-atom node features exchanged in a message-passing layer,
-so it follows from the architecture of the model (number of channels, maximum angular momentum), not from the package. I
+**The problem with a default.** The width is the size of what a graph neural network exchanges in message passing (the
+per-atom node features of a layer), so it changes from model to model: it follows from the architecture of the model (number
+of channels, maximum angular momentum), not from the package. I
 measured the largest width of each unified model I have by declaring a width and raising it to the value named in the error
 until the run passed (GPU, 108-atom cell; with the final declaration every model reproduces the energies of a build that has
 this PR, plain and under `hybrid/scaled` with `ufm`):
@@ -55,7 +56,8 @@ one model (SevenNet-0 128 and 480); it did not change with the export variant of
 of these eight exports stop until their exporter declares the width, and a default that fits today's model of a package gives
 no guarantee for the next one. The exporters live in the MLIP packages (mace, nequip, sevenn, mattersim), not in LAMMPS, and
 every existing `.pt` file would have to be re-exported. Any default is a guess about models LAMMPS cannot see: too small and
-existing models stop working, large enough for all of them and every run pays for buffers sized for the worst case.
+existing models stop working, large enough for all of them and every run pays for buffers sized for the worst case. 704 is
+only the largest width among the models I tried; I have not tried larger models, and I cannot survey every MLIP.
 
 **Proposal.**
 
@@ -67,10 +69,12 @@ existing models stop working, large enough for all of them and every run pays fo
    A model that does not declare it keeps working, but pair mliap prints a warning once when the model is loaded, saying that
    the declaration will become mandatory, so that users and the MLIP package maintainers have a transition period. Exporters
    should assign `self.comm_width = ...` rather than pass it to `super().__init__()`, so that the same exporter also works with
-   an older `lammps` Python package. I can open the corresponding issues/PRs for the exporters.
+   an older `lammps` Python package. I expect some confusion during the transition, but I agree that from now on the width
+   should be stated on the MLIP side. I can open the corresponding issues/PRs for the exporters.
 3. After that period, make the declaration mandatory (the warning becomes an error) and remove the growth checks of this PR
    again. I can prepare that PR as well.
 
 If you would rather not carry the interim checks at all, I can replace this PR with the `comm_width` branch right away; in that
 case the default would have to be at least 704 (I would suggest 1024) for the models above to keep working until their
-exporters are updated, and I would appreciate your view on which default is acceptable.
+exporters are updated. That number covers only the models I tried, so a larger model would still stop until it declares its
+width, and I would appreciate your view on which default is acceptable.
