@@ -1,0 +1,4 @@
+2026年 11月 14日 土曜日 10:19:58 JST watching pk 16318
+2026年 11月 14日 土曜日 15:30:42 JST pk 16318 terminated: done 300
+2026年 11月 14日 土曜日 15:30:43 JST failed for another reason (no out-of-memory message in /home/kino/aiida_run/ftphase/12/73/f258-25f8-424b-9766-527ed472c852); not resubmitted:   --- log tail (/home/kino/aiida_run/ftphase/12/73/f258-25f8-424b-9766-527ed472c852/sol_s08_B2-ts-sol_s08_b2.data-solid-1300-0/calphy.seg0.log) --- LAMMPS (2 Aug 2023 - Update 3)  
+2026年 11月 14日 土曜日 21:06:12 JST reproduced on mygarden6 (mlip_bench/b2_oom_test): CUDA out of memory at 3456 atoms (calphy does not capture the LAMMPS stderr, so the watcher saw no message); resubmitted by hand with --min-atoms 1400

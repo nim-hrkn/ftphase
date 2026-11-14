@@ -48,7 +48,7 @@ def _rec_path(name):
     return os.path.join(OUT, name, "solids_ti.json")
 
 
-def submit(names, only=None, t_hi=None, t_lo=None):
+def submit(names, only=None, t_hi=None, t_lo=None, code=None):
     from aiida import orm
     from aiida.engine import submit as aiida_submit
     from aiida.plugins import CalculationFactory
@@ -76,12 +76,12 @@ def submit(names, only=None, t_hi=None, t_lo=None):
                       "n_switching_steps": [10000, 10000], "n_iterations": 1}
             params.update(extra)
             b = Calphy.get_builder()
-            b.code = wc.inputs.calphy_code; b.structure = big; b.potential = wc.inputs.potential; b.parameters = orm.Dict(dict=params)
+            b.code = orm.load_code(code) if code else wc.inputs.calphy_code; b.structure = big; b.potential = wc.inputs.potential; b.parameters = orm.Dict(dict=params)
             b.metadata.options = wc.inputs.calphy_options.get_dict()
             b.metadata.label = f"calphy solid ti {name} {key} {m['phase']} x={m['x']:.4f} ({len(big.sites)} atoms)"
             node = aiida_submit(b)
             rec["jobs"][key] = {"pk": node.pk, "phase": m["phase"], "x": m["x"], "n_atoms": len(big.sites), "T_sweep": T_sw}
-            print(name, key, node.pk, len(big.sites), "atoms", T_sw, wc.inputs.calphy_code.full_label)
+            print(name, key, node.pk, len(big.sites), "atoms", T_sw, b.code.full_label)
         with open(_rec_path(name), "w") as f:
             json.dump(rec, f, indent=1)
 
@@ -408,7 +408,11 @@ if __name__ == "__main__":
     ap.add_argument("--T-hi", dest="t_hi", default=None, help="sweep-end overrides key=T,key=T")
     ap.add_argument("--dry", action="store_true", help="submit2: print the cells and sweeps only")
     ap.add_argument("--T-lo", dest="t_lo", default=None, help="sweep-start overrides key=T,key=T")
+    ap.add_argument("--code", default=None, help="submit: calphy code label instead of the WorkChain's (e.g. calphy@mygarden6 to use the other GPU)")
+    ap.add_argument("--min-atoms", dest="min_atoms", type=int, default=None, help="override MIN_ATOMS (e.g. 1400 -> 3x3x3 of the 54-atom B2 cell = 1458 atoms when 3456 atoms do not fit the 12 GB GPU: SevenNet-MF-ompa uses 10.3 GB at 2048 atoms)")
     a = ap.parse_args()
+    if a.min_atoms:
+        MIN_ATOMS = a.min_atoms
     from aiida import load_profile
 
     load_profile(a.profile)
@@ -416,4 +420,4 @@ if __name__ == "__main__":
     only = set(a.only.split(",")) if a.only else None
     t_hi = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in a.t_hi.split(",")} if a.t_hi else None
     t_lo = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in a.t_lo.split(",")} if a.t_lo else None
-    {"submit": lambda: submit(names, only, t_hi, t_lo), "submit2": lambda: submit2(names, only, t_hi, t_lo, a.dry), "liqlow": lambda: submit_liq_low(names, a.dry), "liqext": lambda: submit_liq_ext(names, {float(t.split(":")[0]): [float(t.split(":")[1]), float(t.split(":")[2])] for t in a.liq.split(",")}, a.dry), "status": lambda: status(names), "melt": lambda: melt(names), "assemble": lambda: assemble(names)}[a.cmd]()
+    {"submit": lambda: submit(names, only, t_hi, t_lo, a.code), "submit2": lambda: submit2(names, only, t_hi, t_lo, a.dry), "liqlow": lambda: submit_liq_low(names, a.dry), "liqext": lambda: submit_liq_ext(names, {float(t.split(":")[0]): [float(t.split(":")[1]), float(t.split(":")[2])] for t in a.liq.split(",")}, a.dry), "status": lambda: status(names), "melt": lambda: melt(names), "assemble": lambda: assemble(names)}[a.cmd]()
