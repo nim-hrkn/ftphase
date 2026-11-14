@@ -1,0 +1,174 @@
+diff --git a/src/KOKKOS/pair_mliap_kokkos.cpp b/src/KOKKOS/pair_mliap_kokkos.cpp
+index c3a374d96f..c2172d5f43 100644
+--- a/src/KOKKOS/pair_mliap_kokkos.cpp
++++ b/src/KOKKOS/pair_mliap_kokkos.cpp
+@@ -358,8 +358,8 @@ int PairMLIAPKokkos<DeviceType>::forward_comm(CommType* copy_from_, CommType* co
+   Kokkos::parallel_for(Kokkos::RangePolicy<DeviceType>(0,(atom->nlocal+atom->nghost)*vl), KOKKOS_LAMBDA (int i) {
+     copy_to_[i] = copy_from_[i];
+   });
+-  //call comm
+-  comm->forward_comm(this);
++  // the model chooses vl at run time, after Comm::init() sized the buffers
++  comm->forward_comm_dynamic(this,vl);
+ 
+   return 0;
+ }
+@@ -385,7 +385,7 @@ int PairMLIAPKokkos<DeviceType>::reverse_comm(CommType* copy_from_, CommType* co
+     copy_to_[i] = copy_from_[i]; // Copy inputs
+   });
+ 
+-  comm->reverse_comm(this);
++  comm->reverse_comm_dynamic(this,vl);
+ 
+   Kokkos::parallel_for(
+     Kokkos::RangePolicy<DeviceType>( (atom->nlocal)*vl,(atom->nlocal + atom->nghost)*vl),
+diff --git a/src/comm.h b/src/comm.h
+index 384d8937d8..029214c444 100644
+--- a/src/comm.h
++++ b/src/comm.h
+@@ -98,6 +98,11 @@ class Comm : protected Pointers {
+   virtual void forward_comm(class Dump *, int size = 0) = 0;
+   virtual void reverse_comm(class Dump *, int size = 0) = 0;
+ 
++  // forward/reverse comm from a Pair with a size only known at call time
++
++  virtual void forward_comm_dynamic(class Pair *, int) = 0;
++  virtual void reverse_comm_dynamic(class Pair *, int) = 0;
++
+   // forward comm of an array
+ 
+   virtual void forward_comm_array(int, double **) = 0;
+diff --git a/src/comm_brick.cpp b/src/comm_brick.cpp
+index 425b96e87b..01f5eecf1b 100644
+--- a/src/comm_brick.cpp
++++ b/src/comm_brick.cpp
+@@ -982,6 +982,53 @@ void CommBrick::reverse_comm(Pair *pair, int size)
+   }
+ }
+ 
++/* ----------------------------------------------------------------------
++   forward communication invoked by a Pair with a size known only at call time
++   size = number of values per atom of this call, may exceed the
++     comm_forward of the Pair that Comm::init() sized the buffers for
++   grows the buffers if needed, then calls forward_comm(Pair *)
++   only for callers that cannot set comm_forward before init, e.g.
++     pair mliap/kk, where the model chooses the size at run time
++------------------------------------------------------------------------- */
++
++void CommBrick::forward_comm_dynamic(Pair *pair, int size)
++{
++  int nsend = 0;
++  int nrecv = 0;
++  for (int iswap = 0; iswap < nswap; iswap++) {
++    nsend = MAX(nsend,sendnum[iswap]);
++    nrecv = MAX(nrecv,recvnum[iswap]);
++  }
++
++  if (size*nsend > maxsend) grow_send(size*nsend,0);
++  if (size*nrecv > maxrecv) grow_recv(size*nrecv);
++
++  forward_comm(pair,size);
++}
++
++/* ----------------------------------------------------------------------
++   reverse communication invoked by a Pair with a size known only at call time
++   size = number of values per atom of this call, may exceed the
++     comm_reverse of the Pair that Comm::init() sized the buffers for
++   grows the buffers if needed, then calls reverse_comm(Pair *)
++   see forward_comm_dynamic() above
++------------------------------------------------------------------------- */
++
++void CommBrick::reverse_comm_dynamic(Pair *pair, int size)
++{
++  int nsend = 0;
++  int nrecv = 0;
++  for (int iswap = 0; iswap < nswap; iswap++) {
++    nsend = MAX(nsend,recvnum[iswap]);
++    nrecv = MAX(nrecv,sendnum[iswap]);
++  }
++
++  if (size*nsend > maxsend) grow_send(size*nsend,0);
++  if (size*nrecv > maxrecv) grow_recv(size*nrecv);
++
++  reverse_comm(pair,size);
++}
++
+ /* ----------------------------------------------------------------------
+    forward communication invoked by a Bond
+    size/nsize used only to set recv buffer limit
+diff --git a/src/comm_brick.h b/src/comm_brick.h
+index 81245306c5..39c129617e 100644
+--- a/src/comm_brick.h
++++ b/src/comm_brick.h
+@@ -44,6 +44,9 @@ class CommBrick : public Comm {
+   void forward_comm(class Dump *, int size = 0) override;     // forward comm from a Dump
+   void reverse_comm(class Dump *, int size = 0) override;     // reverse comm from a Dump
+ 
++  void forward_comm_dynamic(class Pair *, int) override;    // forward comm from a Pair, call-time size
++  void reverse_comm_dynamic(class Pair *, int) override;    // reverse comm from a Pair, call-time size
++
+   void forward_comm_array(int, double **) override;    // forward comm of array
+   void *extract(const char *, int &) override;
+   double memory_usage() override;
+diff --git a/src/comm_tiled.cpp b/src/comm_tiled.cpp
+index 2ddde79607..16da68d05f 100644
+--- a/src/comm_tiled.cpp
++++ b/src/comm_tiled.cpp
+@@ -1350,6 +1350,43 @@ void CommTiled::reverse_comm(Pair *pair, int size)
+   }
+ }
+ 
++/* ----------------------------------------------------------------------
++   forward communication invoked by a Pair with a size known only at call time
++   size = number of values per atom of this call, may exceed the
++     comm_forward of the Pair that Comm::init() sized the buffers for
++   grows the buffers if needed, then calls forward_comm(Pair *)
++   same bounds as in borders():
++     buf_send holds one message, buf_recv all messages of a swap
++   only for callers that cannot set comm_forward before init, e.g.
++     pair mliap/kk, where the model chooses the size at run time
++------------------------------------------------------------------------- */
++
++void CommTiled::forward_comm_dynamic(Pair *pair, int size)
++{
++  if (size*smaxone > maxsend) grow_send(size*smaxone,0);
++  if (size*rmaxall > maxrecv) grow_recv(size*rmaxall);
++
++  forward_comm(pair,size);
++}
++
++/* ----------------------------------------------------------------------
++   reverse communication invoked by a Pair with a size known only at call time
++   size = number of values per atom of this call, may exceed the
++     comm_reverse of the Pair that Comm::init() sized the buffers for
++   grows the buffers if needed, then calls reverse_comm(Pair *)
++   in the reverse direction buf_send holds one received message
++     and buf_recv all sent messages of a swap
++   see forward_comm_dynamic() above
++------------------------------------------------------------------------- */
++
++void CommTiled::reverse_comm_dynamic(Pair *pair, int size)
++{
++  if (size*rmaxone > maxsend) grow_send(size*rmaxone,0);
++  if (size*smaxall > maxrecv) grow_recv(size*smaxall);
++
++  reverse_comm(pair,size);
++}
++
+ /* ----------------------------------------------------------------------
+    forward communication invoked by a Bond
+    size/nsize used only to set recv buffer limit
+diff --git a/src/comm_tiled.h b/src/comm_tiled.h
+index bad28fe5d2..b3babbea83 100644
+--- a/src/comm_tiled.h
++++ b/src/comm_tiled.h
+@@ -44,6 +44,9 @@ class CommTiled : public Comm {
+   void forward_comm(class Dump *, int size = 0) override;     // forward comm from a Dump
+   void reverse_comm(class Dump *, int size = 0) override;     // reverse comm from a Dump
+ 
++  void forward_comm_dynamic(class Pair *, int) override;    // forward comm from a Pair, call-time size
++  void reverse_comm_dynamic(class Pair *, int) override;    // reverse comm from a Pair, call-time size
++
+   void forward_comm_array(int, double **) override;    // forward comm of array
+ 
+   void coord2proc_setup() override;

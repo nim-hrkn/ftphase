@@ -23,7 +23,7 @@ OUT = os.path.join(HERE, "out")
 MIN_ATOMS = 2000
 RUNS = {"nial_grace_fs": 4784, "nial_grace_1l": 4798, "nial_sevenn_0": 4813, "agcu_grace_fs": 4869, "agcu_grace_1l": 4900, "agcu_sevenn_0": 4928,
         "ptrh_grace_2l": 9105, "ptrh_nequip_oam_m": 9348, "ptrh_mace_mpa_0": 9585, "ptrh_sevenn_mf_ompa": 10792,
-        "nial_grace_1l_b2ext_solid": 15488, "nial_grace_1l_l12ext_solid": 15876}   # 2026-11-11 B2 extended defect sampling (vacancies 4-7, anti-sites 8-10), solids only   # Pt-Rh (2026-11-06): pure-end fcc cells only, 4x4x4 of 32 = 2048 atoms
+        "nial_grace_1l_b2ext_solid": 15488, "nial_grace_1l_l12ext_solid": 15876, "nial_sevenn_mf_ompa": 15891}   # 2026-11-11 B2 extended defect sampling (vacancies 4-7, anti-sites 8-10), solids only   # Pt-Rh (2026-11-06): pure-end fcc cells only, 4x4x4 of 32 = 2048 atoms
 #: (phase, x) -> sweep [T_lo, T_hi]; T_hi about 1.05 T_m(expt).  The first try with 1.2 T_m (pk 6503-6595) failed: GRACE-FS
 #: fcc Al melted at ~1000 K on the way to 1150 K (MeltedError, pk 6503), so the MLIP melting points are near the experimental
 #: ones and a superheated cell does not survive 1.2 T_m.  A crossing above T_hi is reported as "> T_hi" plus a linear extrapolation.

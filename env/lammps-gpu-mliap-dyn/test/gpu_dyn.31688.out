@@ -1,0 +1,15 @@
+host mygarden6 job 31688 Sat Nov 14 04:46:15 JST 2026
+NVIDIA GeForce RTX 3060, 9 MiB
+ms5M v0  production pe=-403.17578  dynamic build pe=-403.17578  
+ms5M v3  production pe=-281.68916  dynamic build pe=-281.68916  
+ms5M tiled  dynamic build pe=-403.17578  
+mace_cueq v0  production pe=-403.92018  dynamic build pe=-403.92018  
+mace_cueq v3  production pe=-282.21024  dynamic build pe=-282.21024  
+mace_cueq tiled  dynamic build pe=-403.92017  
+sevenn0_oeq v0  production pe=-401.71027  dynamic build pe=-401.71027  
+sevenn0_oeq v3  production pe=-280.6633  dynamic build pe=-280.6633  
+sevenn0_oeq tiled  dynamic build pe=-401.71027  
+nequipL v0  production pe=-404.08096  dynamic build pe=-404.08095  
+nequipL v3  production pe=-282.32278  dynamic build pe=-282.32278  
+nequipL tiled  dynamic build pe=-404.08095  
+done Sat Nov 14 04:52:15 JST 2026
