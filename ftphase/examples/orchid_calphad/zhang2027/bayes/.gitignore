@@ -1,0 +1,4 @@
+out/*_raw.pkl
+trace.npy
+lnprob.npy
+mcmc.log

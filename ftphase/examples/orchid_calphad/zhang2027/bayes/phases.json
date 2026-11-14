@@ -1,0 +1,166 @@
+{
+ "components": [
+  "RU",
+  "SI"
+ ],
+ "phases": {
+  "LIQUID": {
+   "sublattice_model": [
+    [
+     "RU",
+     "SI"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    1.0
+   ]
+  },
+  "HCP": {
+   "sublattice_model": [
+    [
+     "RU",
+     "SI"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    1.0
+   ]
+  },
+  "RUSI": {
+   "sublattice_model": [
+    [
+     "SI"
+    ],
+    [
+     "RU"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    4.0,
+    4.0
+   ]
+  },
+  "RU4SI3": {
+   "sublattice_model": [
+    [
+     "SI"
+    ],
+    [
+     "RU"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    12.0,
+    16.0
+   ]
+  },
+  "RU2SI": {
+   "sublattice_model": [
+    [
+     "SI"
+    ],
+    [
+     "RU"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    4.0,
+    8.0
+   ]
+  },
+  "SI": {
+   "sublattice_model": [
+    [
+     "SI"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    2.0
+   ]
+  },
+  "RU2SI3": {
+   "sublattice_model": [
+    [
+     "SI"
+    ],
+    [
+     "RU"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    24.0,
+    16.0
+   ]
+  },
+  "SIRU5": {
+   "sublattice_model": [
+    [
+     "SI"
+    ],
+    [
+     "RU"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    1.0,
+    5.0
+   ]
+  },
+  "SIRU4": {
+   "sublattice_model": [
+    [
+     "SI"
+    ],
+    [
+     "RU"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    1.0,
+    4.0
+   ]
+  },
+  "SIRU3": {
+   "sublattice_model": [
+    [
+     "SI"
+    ],
+    [
+     "RU"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    1.0,
+    3.0
+   ]
+  },
+  "SI3RU5": {
+   "sublattice_model": [
+    [
+     "SI"
+    ],
+    [
+     "RU"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    6.0,
+    10.0
+   ]
+  },
+  "SI3RU": {
+   "sublattice_model": [
+    [
+     "SI"
+    ],
+    [
+     "RU"
+    ]
+   ],
+   "sublattice_site_ratios": [
+    6.0,
+    2.0
+   ]
+  }
+ }
+}

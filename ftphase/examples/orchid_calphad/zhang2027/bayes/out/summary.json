@@ -1,0 +1,309 @@
+{
+ "iterations": 3000,
+ "walkers": 88,
+ "burn_in": 1500,
+ "lnprob_mean_first_last": [
+  -174.51290743727742,
+  -153.4054742127527
+ ],
+ "parameters": [
+  {
+   "phase": "HCP",
+   "dH_post_mean_std_J": [
+    151.06487785108246,
+    1405.8588853550964
+   ],
+   "dS_post_mean_std_J_K": [
+    -0.1339996842134869,
+    1.7038373820440196
+   ]
+  },
+  {
+   "phase": "RUSI",
+   "dH_post_mean_std_J": [
+    105.10679514317465,
+    1317.065439389499
+   ],
+   "dS_post_mean_std_J_K": [
+    -0.04063052259538685,
+    1.169676882289595
+   ]
+  },
+  {
+   "phase": "RU4SI3",
+   "dH_post_mean_std_J": [
+    11.761755034960458,
+    1217.5984730998039
+   ],
+   "dS_post_mean_std_J_K": [
+    -0.8483760729668248,
+    0.9364084978862046
+   ]
+  },
+  {
+   "phase": "RU2SI",
+   "dH_post_mean_std_J": [
+    -261.7919039107767,
+    1264.8652136653245
+   ],
+   "dS_post_mean_std_J_K": [
+    0.4996267536702991,
+    0.9893638777290754
+   ]
+  },
+  {
+   "phase": "RU2SI3",
+   "dH_post_mean_std_J": [
+    -39.91904182414302,
+    1416.8641539537532
+   ],
+   "dS_post_mean_std_J_K": [
+    -0.028170938961221397,
+    1.766422143166917
+   ]
+  },
+  {
+   "phase": "SIRU5",
+   "dH_post_mean_std_J": [
+    -25.63904039471191,
+    1412.4831640101754
+   ],
+   "dS_post_mean_std_J_K": [
+    0.05873348739821106,
+    1.7786741788318943
+   ]
+  },
+  {
+   "phase": "SIRU4",
+   "dH_post_mean_std_J": [
+    -30.31384978696464,
+    1398.796742568696
+   ],
+   "dS_post_mean_std_J_K": [
+    -0.008014381015605143,
+    1.7303893212775092
+   ]
+  },
+  {
+   "phase": "SIRU3",
+   "dH_post_mean_std_J": [
+    -54.9304774862532,
+    1372.0248756386086
+   ],
+   "dS_post_mean_std_J_K": [
+    -0.005468116905364558,
+    1.6785543220278059
+   ]
+  },
+  {
+   "phase": "SI3RU5",
+   "dH_post_mean_std_J": [
+    509.09862941719865,
+    1290.948781666684
+   ],
+   "dS_post_mean_std_J_K": [
+    -0.9980565816963834,
+    1.3394907972128745
+   ]
+  },
+  {
+   "phase": "SI3RU",
+   "dH_post_mean_std_J": [
+    4.25725523301753,
+    1373.1638200117525
+   ],
+   "dS_post_mean_std_J_K": [
+    0.03316178447960582,
+    1.7273591273131756
+   ]
+  }
+ ],
+ "prior_sigma": [
+  1410.0,
+  1.73
+ ],
+ "prior": {
+  "n": 1000,
+  "P_stable_anywhere": {
+   "HCP": 1.0,
+   "LIQUID": 1.0,
+   "RU2SI": 0.208,
+   "RU2SI3": 1.0,
+   "RU4SI3": 0.615,
+   "RUSI": 0.994,
+   "SI": 1.0,
+   "SI3RU": 0.003,
+   "SI3RU5": 0.347,
+   "SIRU3": 0.017,
+   "SIRU5": 0.011
+  },
+  "P_region_1250K_x0.22": {
+   "HCP+RU4SI3": 0.392
+  },
+  "P_region_1550K_x0.38": {
+   "RU2SI+RU4SI3": 0.073
+  },
+  "P_region_1900K_x0.44": {
+   "LIQUID+RUSI": 0.221
+  },
+  "hcp_solvus_1250K": [
+   0.035160000000000004,
+   0.009938531078585004
+  ],
+  "hcp_solvus_1550K": [
+   0.05387000000000002,
+   0.013035455496452741
+  ],
+  "RU2SI_T_range_when_present": {
+   "fraction": 0.208,
+   "T_low_mean_std": [
+    922.7163461538462,
+    395.79089676693235
+   ],
+   "T_high_mean_std": [
+    1922.3557692307693,
+    187.12842249422593
+   ]
+  },
+  "SI3RU5_T_range_when_present": {
+   "fraction": 0.347,
+   "T_low_mean_std": [
+    811.599423631124,
+    390.26403284325335
+   ],
+   "T_high_mean_std": [
+    1893.6599423631123,
+    291.4848297504288
+   ]
+  },
+  "RU4SI3_T_range_when_present": {
+   "fraction": 0.615,
+   "T_low_mean_std": [
+    615.9349593495934,
+    257.5370757060228
+   ],
+   "T_high_mean_std": [
+    1959.878048780488,
+    294.51797701742527
+   ]
+  },
+  "lowest_T_liquid_x<=0.33": [
+   1907.9,
+   77.31487567085651
+  ]
+ },
+ "posterior": {
+  "n": 1000,
+  "P_stable_anywhere": {
+   "HCP": 1.0,
+   "LIQUID": 1.0,
+   "RU2SI": 0.532,
+   "RU2SI3": 1.0,
+   "RU4SI3": 0.828,
+   "RUSI": 1.0,
+   "SI": 1.0,
+   "SI3RU": 0.001,
+   "SI3RU5": 0.156,
+   "SIRU3": 0.017,
+   "SIRU4": 0.003,
+   "SIRU5": 0.018
+  },
+  "P_region_1250K_x0.22": {
+   "HCP+RU4SI3": 0.464
+  },
+  "P_region_1550K_x0.38": {
+   "RU2SI+RU4SI3": 0.244
+  },
+  "P_region_1900K_x0.44": {
+   "LIQUID+RUSI": 0.627
+  },
+  "hcp_solvus_1250K": [
+   0.04548000000000001,
+   0.007332775736377051
+  ],
+  "hcp_solvus_1550K": [
+   0.06741000000000003,
+   0.00927318176248045
+  ],
+  "RU2SI_T_range_when_present": {
+   "fraction": 0.532,
+   "T_low_mean_std": [
+    1196.1466165413533,
+    340.9947868648483
+   ],
+   "T_high_mean_std": [
+    1795.4417293233082,
+    151.5401581656132
+   ]
+  },
+  "SI3RU5_T_range_when_present": {
+   "fraction": 0.156,
+   "T_low_mean_std": [
+    1073.878205128205,
+    392.3991678901486
+   ],
+   "T_high_mean_std": [
+    1638.1410256410256,
+    361.90212320244166
+   ]
+  },
+  "RU4SI3_T_range_when_present": {
+   "fraction": 0.828,
+   "T_low_mean_std": [
+    763.6171497584542,
+    354.45677229486324
+   ],
+   "T_high_mean_std": [
+    1775.6944444444443,
+    254.87155923771925
+   ]
+  },
+  "lowest_T_liquid_x<=0.33": [
+   1822.9,
+   43.32251146921194
+  ]
+ },
+ "point_mlip_phases": [
+  "HCP",
+  "LIQUID",
+  "RU2SI3",
+  "RU4SI3",
+  "RUSI",
+  "SI"
+ ],
+ "point_posterior_mean_phases": [
+  "HCP",
+  "LIQUID",
+  "RU2SI",
+  "RU2SI3",
+  "RU4SI3",
+  "RUSI",
+  "SI"
+ ],
+ "invariant_lines": {
+  "prior": {
+   "samples": 1000,
+   "invariants_per_sample": 6.699,
+   "Ru_side_invariants_below_1800K_per_sample": 0.595,
+   "their_T_percentiles_5_25_50_75_95": [
+    537.5,
+    687.5,
+    987.5,
+    1425.0,
+    1787.5
+   ]
+  },
+  "posterior": {
+   "samples": 1000,
+   "invariants_per_sample": 7.216,
+   "Ru_side_invariants_below_1800K_per_sample": 1.396,
+   "their_T_percentiles_5_25_50_75_95": [
+    612.5,
+    987.5,
+    1312.5,
+    1737.5,
+    1787.5
+   ]
+  }
+ }
+}
