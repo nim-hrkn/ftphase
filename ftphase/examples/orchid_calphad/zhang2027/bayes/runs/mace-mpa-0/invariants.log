@@ -1,0 +1,44 @@
+{
+ "prior": {
+  "samples": 1000,
+  "invariants_per_sample": 7.06,
+  "Ru_side_invariants_below_1800K_per_sample": 0.535,
+  "their_T_percentiles_5_25_50_75_95": [
+   537.5,
+   662.5,
+   862.5,
+   1087.5,
+   1437.5
+  ],
+  "reference_diagram_phases": [
+   "HCP",
+   "LIQUID",
+   "RU2SI3",
+   "RU4SI3",
+   "RUSI",
+   "SI",
+   "SI3RU5"
+  ]
+ },
+ "posterior": {
+  "samples": 1000,
+  "invariants_per_sample": 7.12,
+  "Ru_side_invariants_below_1800K_per_sample": 0.82,
+  "their_T_percentiles_5_25_50_75_95": [
+   587.5,
+   812.5,
+   1012.5,
+   1187.5,
+   1362.5
+  ],
+  "reference_diagram_phases": [
+   "HCP",
+   "LIQUID",
+   "RU2SI",
+   "RU2SI3",
+   "RU4SI3",
+   "RUSI",
+   "SI"
+  ]
+ }
+}

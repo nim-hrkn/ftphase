@@ -291,6 +291,14 @@
     987.5,
     1425.0,
     1787.5
+   ],
+   "reference_diagram_phases": [
+    "HCP",
+    "LIQUID",
+    "RU2SI3",
+    "RU4SI3",
+    "RUSI",
+    "SI"
    ]
   },
   "posterior": {
@@ -303,6 +311,15 @@
     1312.5,
     1737.5,
     1787.5
+   ],
+   "reference_diagram_phases": [
+    "HCP",
+    "LIQUID",
+    "RU2SI",
+    "RU2SI3",
+    "RU4SI3",
+    "RUSI",
+    "SI"
    ]
   }
  }

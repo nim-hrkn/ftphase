@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 
-HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "out"); T0, DT = 500.0, 25.0
+SRC = os.path.dirname(os.path.abspath(__file__)); HERE = os.environ.get("BAYES_DIR") or SRC; LABEL = os.environ.get("BAYES_LABEL", "eSEN TDB of Zhang et al. 2027"); OUT = os.path.join(HERE, "out"); T0, DT = 500.0, 25.0
 
 
 def regions(sets_row, comp_row):
@@ -54,36 +54,58 @@ def boundary_lines(regs):
     return [l for l in lines if len(l) > 1]
 
 
-def label_regions(ax, name):
-    """Names of the phases and phase fields.  Field names are those of the reference diagram of the panel (prior: eSEN point
-    estimate; posterior: posterior-mean parameters); in individual samples the fields differ, which is what the figure shows."""
-    box = dict(fc="w", ec="none", alpha=0.75, pad=0.6)
-    for x, lab in ((1 / 3, "Ru$_2$Si"), (3 / 8, "Ru$_5$Si$_3$"), (3 / 7, "Ru$_4$Si$_3$"), (0.5, "RuSi"), (0.6, "Ru$_2$Si$_3$")):
-        ax.text(x, 2560, lab, fontsize=6.5, rotation=90, ha="center", va="top", bbox=box)
-        ax.plot([x, x], [2290, 2330], "-", c="0.3", lw=0.5)
-    for x, lab in ((1 / 6, "Ru$_5$Si"), (0.2, "Ru$_4$Si"), (0.25, "Ru$_3$Si"), (0.75, "RuSi$_3$")):
-        ax.text(x, 2560, lab + " (rare)", fontsize=5.5, rotation=90, ha="center", va="top", color="0.35", bbox=box)
+PRETTY = {"RU2SI": "Ru$_2$Si", "SI3RU5": "Ru$_5$Si$_3$", "RU4SI3": "Ru$_4$Si$_3$", "RUSI": "RuSi", "RU2SI3": "Ru$_2$Si$_3$", "SIRU5": "Ru$_5$Si", "SIRU4": "Ru$_4$Si",
+          "SIRU3": "Ru$_3$Si", "SI3RU": "RuSi$_3$", "HCP": "hcp", "LIQUID": "liquid", "SI": "Si"}
+XCOMP = {"RU2SI": 1 / 3, "SI3RU5": 3 / 8, "RU4SI3": 3 / 7, "RUSI": 0.5, "RU2SI3": 0.6, "SIRU5": 1 / 6, "SIRU4": 0.2, "SIRU3": 0.25, "SI3RU": 0.75, "SI": 1.0}
+
+
+def reference_sets(name):
+    """Phase sets on the (T, x) grid of the panel's reference diagram: point estimate (prior) or posterior-mean parameters."""
+    import posterior as P
+    P.TEXT = open(os.path.join(HERE, "rusi-start.tdb")).read(); pr = json.load(open(os.path.join(HERE, "prior.json"))); P.SYMS = pr["symbols"]
+    S = json.load(open(os.path.join(OUT, "summary.json")))
+    theta = np.zeros(len(P.SYMS)) if name == "prior" else np.array([v for p in S["parameters"] for v in (p["dH_post_mean_std_J"][0], p["dS_post_mean_std_J_K"][0])])
+    return P.run_one((0, theta))[1]
+
+
+def label_regions(ax, name, p_any):
+    """Names of the phases and phase fields.  Compound names at the top (grey = stable somewhere in < 5 % of the samples); field names
+    are those of the reference diagram of the panel (prior: point estimate; posterior: posterior-mean parameters), placed at the
+    centre of each field; in individual samples the fields differ, which is what the figure shows."""
+    box = dict(fc="w", ec="none", alpha=0.75, pad=0.6); sets = reference_sets(name); nT, nx = len(sets), len(sets[0])
+    for ph, x in XCOMP.items():
+        if ph == "SI" or ph not in p_any:
+            continue
+        rare = p_any[ph] < 0.05
+        ax.text(x, 2575, PRETTY[ph] + (" (rare)" if rare else ""), fontsize=5.5 if rare else 6.5, rotation=90, ha="center", va="top", color="0.35" if rare else "k", bbox=box)
     ax.text(0.995, 1730, "Si", fontsize=7, ha="right", va="bottom", bbox=box)
-    ax.annotate("hcp (Ru)", (0.035, 1420), xytext=(0.105, 1485), fontsize=7, va="center", bbox=box, arrowprops=dict(arrowstyle="-", lw=0.5, color="0.3"))
-    ax.text(0.80, 2330, "liquid", fontsize=8, ha="center", bbox=box)
-    ax.text(0.15, 2130, "hcp + liquid", fontsize=7, ha="center", rotation=-52, bbox=box)
-    ax.text(0.80, 1000, "Ru$_2$Si$_3$ + Si", fontsize=7, ha="center", bbox=box)
-    ax.text(0.55, 1000, "RuSi + Ru$_2$Si$_3$", fontsize=6.5, ha="center", va="center", rotation=90, bbox=box)
-    ax.text(0.465, 1000, "Ru$_4$Si$_3$ + RuSi", fontsize=6, ha="center", va="center", rotation=90, bbox=box)
-    ax.text(0.70, 1790, "liquid + Ru$_2$Si$_3$", fontsize=6, ha="center", rotation=-38, bbox=box)
-    if name == "prior":
-        ax.text(0.22, 1050, "hcp + Ru$_4$Si$_3$", fontsize=7, ha="center", bbox=box)
-    else:
-        ax.text(0.19, 1050, "hcp + Ru$_4$Si$_3$", fontsize=7, ha="center", bbox=box)
-        ax.text(0.19, 615, "hcp + RuSi", fontsize=7, ha="center", bbox=box)   # posterior mean: Ru4Si3 is stable only above 725 K
-        ax.text(0.19, 1690, "hcp + Ru$_2$Si", fontsize=7, ha="center", bbox=box)
+    cells = {}
+    for i in range(nT):
+        for j in range(nx):
+            cells.setdefault(sets[i][j], []).append((T0 + DT * i, 0.01 * j))
+    stable = sorted({p for s_ in cells for p in s_})
+    for s_, c in cells.items():
+        c = np.array(c); T, x = c[:, 0], c[:, 1]
+        if len(s_) == 1:
+            (p,) = s_
+            if p == "LIQUID":
+                m = x > 0.6; ax.text(0.80, np.percentile(T[m], 80) if m.any() else 2350, "liquid", fontsize=8, ha="center", bbox=box)
+            elif p == "HCP":
+                k = int(np.argmin(abs(T - 1450))); ax.annotate("hcp (Ru)", (x[T == T[k]].mean(), T[k]), xytext=(0.105, 1485), fontsize=7, va="center", bbox=box, arrowprops=dict(arrowstyle="-", lw=0.5, color="0.3"))
+            continue
+        if len(s_) != 2 or len(c) < 60:
+            continue
+        a, b = sorted(s_, key=lambda p: {"HCP": 0.0, "LIQUID": 0.5}.get(p, XCOMP.get(p, 0.5))); lab = f"{PRETTY.get(a, a)} + {PRETTY.get(b, b)}"
+        Tm = np.median(T); xs = x[abs(T - T[np.argmin(abs(T - Tm))]) < 1]; xm = xs.mean(); w = xs.max() - xs.min()
+        ax.text(xm, Tm, lab, fontsize=6.5 if w > 0.14 else 5.8, ha="center", va="center", rotation=0 if w > 0.14 else 90, bbox=box)
+    return stable
 
 
 def main():
     D = json.load(open(os.path.join(HERE, "datasets", "zpf_fig4b.json"))); S = json.load(open(os.path.join(OUT, "summary.json")))
     XS = {"RU2SI": 1 / 3, "RU4SI3": 3 / 7, "RUSI": 0.5}
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.8), sharey=True); stats = {}
-    for ax, name, title in zip(axes, ("prior", "posterior"), ("(a) prior: UMLIP (eSEN) uncertainty only", "(b) posterior: + 3 tie-lines (1250, 1550, 1900 K)")):
+    for ax, name, title in zip(axes, ("prior", "posterior"), ("(a) prior: UMLIP uncertainty only", "(b) posterior: + 3 tie-lines (1250, 1550, 1900 K)")):
         res = pickle.load(open(os.path.join(OUT, f"{name}_raw.pkl"), "rb")); inv = []; bl = []; nbad = 0
         for _, sets, pts in res:
             segs, regs = sample_invariants(sets, pts)
@@ -102,10 +124,10 @@ def main():
             for T, region in zip(D["conditions"]["T"], D["values"]):
                 xs = [XS.get(v[0], v[2][0]) for v in region if v[0] != "__HYPERPLANE__"]
                 ax.plot(xs, [T, T], "-", c="k", lw=0.8); ax.plot(xs, [T, T], "o", mfc="none", mec="r", ms=6, mew=1.2)
-        label_regions(ax, name)
+        stats[name]["reference_diagram_phases"] = label_regions(ax, name, S[name]["P_stable_anywhere"])
         ax.set(xlim=(0, 1), ylim=(500, 2600), xlabel="x(Si)", title=title); ax.title.set_fontsize(9)
     axes[0].set_ylabel("T (K)")
-    fig.suptitle("Ru-Si (eSEN TDB of Zhang et al. 2027), 1000 samples each: phase boundaries (blue) and invariant-reaction lines (grey)", fontsize=8)
+    fig.suptitle(f"Ru-Si ({LABEL}), 1000 samples each: phase boundaries (blue) and invariant-reaction lines (grey)", fontsize=8)
     fig.tight_layout(); fig.savefig(os.path.join(OUT, "fig4_lines.png"), dpi=170)
     S["invariant_lines"] = stats; json.dump(S, open(os.path.join(OUT, "summary.json"), "w"), indent=1); print(json.dumps(stats, indent=1))
 

@@ -1,0 +1,113 @@
+{
+ "components": [
+  "RU",
+  "SI"
+ ],
+ "phases": [
+  "HCP",
+  "LIQUID",
+  "RU2SI",
+  "RU4SI3",
+  "RUSI"
+ ],
+ "conditions": {
+  "P": 101325,
+  "T": [
+   1250.0,
+   1550.0,
+   1900.0
+  ]
+ },
+ "output": "ZPF",
+ "values": [
+  [
+   [
+    "__HYPERPLANE__",
+    [
+     "SI"
+    ],
+    [
+     0.2203
+    ]
+   ],
+   [
+    "HCP",
+    [
+     "SI"
+    ],
+    [
+     0.011698
+    ]
+   ],
+   [
+    "RU4SI3",
+    [
+     "SI"
+    ],
+    [
+     null
+    ]
+   ]
+  ],
+  [
+   [
+    "__HYPERPLANE__",
+    [
+     "SI"
+    ],
+    [
+     0.381
+    ]
+   ],
+   [
+    "RU2SI",
+    [
+     "SI"
+    ],
+    [
+     null
+    ]
+   ],
+   [
+    "RU4SI3",
+    [
+     "SI"
+    ],
+    [
+     null
+    ]
+   ]
+  ],
+  [
+   [
+    "__HYPERPLANE__",
+    [
+     "SI"
+    ],
+    [
+     0.4394
+    ]
+   ],
+   [
+    "LIQUID",
+    [
+     "SI"
+    ],
+    [
+     0.378724
+    ]
+   ],
+   [
+    "RUSI",
+    [
+     "SI"
+    ],
+    [
+     null
+    ]
+   ]
+  ]
+ ],
+ "reference": "Zhang2027 Fig. 4b reference points = Modified_CPDDB Ru-Si assessment",
+ "comment": "three tie-lines at 1250, 1550, 1900 K"
+}

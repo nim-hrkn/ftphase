@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/orchid_calphad/zhang2027/bayes/../../../../../env/pycalphad/bin/espei", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/kino/kino/Claude/Projects/PhaseDiagram/env/pycalphad/lib/python3.12/site-packages/espei/espei_script.py", line 313, in main
+    run_espei(input_settings)
+  File "/home/kino/kino/Claude/Projects/PhaseDiagram/env/pycalphad/lib/python3.12/site-packages/espei/espei_script.py", line 191, in run_espei
+    raise OSError('Tracefile "%s" exists and would be overwritten by a new run. Use the ``output.tracefile`` setting to set a different name.', tracefile)
+OSError: [Errno Tracefile "%s" exists and would be overwritten by a new run. Use the ``output.tracefile`` setting to set a different name.] trace.npy

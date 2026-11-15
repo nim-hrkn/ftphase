@@ -1,0 +1,4 @@
+tie-line 1250.0 [['__HYPERPLANE__', ['SI'], [0.2203]], ['HCP', ['SI'], [0.011698]], ['RU4SI3', ['SI'], [None]]]
+tie-line 1550.0 [['__HYPERPLANE__', ['SI'], [0.381]], ['RU2SI', ['SI'], [None]], ['RU4SI3', ['SI'], [None]]]
+tie-line 1900.0 [['__HYPERPLANE__', ['SI'], [0.4394]], ['LIQUID', ['SI'], [0.378724]], ['RUSI', ['SI'], [None]]]
+10 phases -> 20 parameters; 88 walkers x 3000 iterations

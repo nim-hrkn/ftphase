@@ -10,7 +10,7 @@ import argparse, json, os, re, time
 from multiprocessing import Pool
 import numpy as np
 
-HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "out")
+SRC = os.path.dirname(os.path.abspath(__file__)); HERE = os.environ.get("BAYES_DIR") or SRC; LABEL = os.environ.get("BAYES_LABEL", "eSEN TDB of Zhang et al. 2027"); OUT = os.path.join(HERE, "out")
 TEXT = None; SYMS = None; GRID = ("SI", 0.01, 500.0, 2500.0, 25.0)
 
 
@@ -102,7 +102,7 @@ def main():
     np.savez_compressed(os.path.join(OUT, "points.npz"), **sets)
     json.dump(summary, open(os.path.join(OUT, "summary.json"), "w"), indent=1)
     import subprocess, sys
-    subprocess.run([sys.executable, os.path.join(HERE, "plot.py")], check=False)
+    subprocess.run([sys.executable, os.path.join(SRC, "plot.py")], check=False)
 
 
 if __name__ == "__main__":

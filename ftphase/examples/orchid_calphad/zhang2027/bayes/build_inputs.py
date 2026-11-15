@@ -11,8 +11,8 @@ the prior) and mcmc.yaml.      env/pycalphad/bin/python build_inputs.py [--walke
 import argparse, json, os, re, sys
 import numpy as np
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-DEP = os.path.abspath(os.path.join(HERE, "../../../../../data/Zhang2027/zenodo-phase-diagrams"))
+HERE = os.environ.get("BAYES_DIR") or os.path.dirname(os.path.abspath(__file__))   # work directory (inputs and outputs)
+DEP = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../../../data/Zhang2027/zenodo-phase-diagrams"))
 SIGMA_H, SIGMA_S = 1410.0, 1.73
 POINTS = [(1250.0, 0.20, ("HCP", "RU4SI3")), (1550.0, 0.38, ("RU2SI", "RU4SI3")), (1900.0, 0.44, ("LIQUID", "RUSI"))]
 
@@ -22,10 +22,10 @@ def site_counts(text):
 
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("--model", default="eSEN-uma-s-1p1"); ap.add_argument("--walkers", type=int, default=88)
+    ap = argparse.ArgumentParser(); ap.add_argument("--model", default="eSEN-uma-s-1p1"); ap.add_argument("--tdb", default=None, help="Ru-Si TDB to start from instead of the deposit's <model>/Ru-Si.tdb (e.g. mlip_runs/<mlip>/Ru-Si.tdb built from this project's MLIP runs)"); ap.add_argument("--walkers", type=int, default=88)
     ap.add_argument("--iterations", type=int, default=2000); ap.add_argument("--cores", type=int, default=16); ap.add_argument("--seed", type=int, default=0)
     a = ap.parse_args()
-    text = open(os.path.join(DEP, a.model, "Ru-Si.tdb")).read(); sc = site_counts(text); lines = text.split("\n"); params = []
+    os.makedirs(HERE, exist_ok=True); text = open(a.tdb or os.path.join(DEP, a.model, "Ru-Si.tdb")).read(); sc = site_counts(text); lines = text.split("\n"); params = []
     for i, l in enumerate(lines):
         m = re.match(r"\s*PARAMETER\s+([GL])\((\w+),([^;]+);(\d)\)", l)
         if not m:

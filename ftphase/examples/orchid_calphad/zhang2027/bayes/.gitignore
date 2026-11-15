@@ -2,3 +2,12 @@ out/*_raw.pkl
 trace.npy
 lnprob.npy
 mcmc.log
+runs/*/out/*_raw.pkl
+runs/*/trace*.npy
+runs/*/lnprob*.npy
+runs/*/mcmc.log
+runs/*/out/prior.npz
+runs/*/out/posterior.npz
+out/prior.npz
+out/posterior.npz
+inv_test.log

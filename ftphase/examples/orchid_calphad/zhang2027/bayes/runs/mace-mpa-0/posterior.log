@@ -1,0 +1,163 @@
+prior 100 102 s
+prior 200 199 s
+prior 300 291 s
+prior 400 386 s
+prior 500 483 s
+prior 600 576 s
+prior 700 666 s
+prior 800 762 s
+prior 900 859 s
+prior 1000 954 s
+prior {
+"n": 1000,
+"P_stable_anywhere": {
+"HCP": 1.0,
+"LIQUID": 1.0,
+"RU2SI": 0.365,
+"RU2SI3": 1.0,
+"RU4SI3": 0.631,
+"RUSI": 0.999,
+"SI": 1.0,
+"SI3RU": 0.01,
+"SI3RU5": 0.505,
+"SIRU3": 0.02,
+"SIRU4": 0.049,
+"SIRU5": 0.017
+},
+"P_region_1250K_x0.22": {
+"HCP+RU4SI3": 0.24
+},
+"P_region_1550K_x0.38": {
+"RU2SI+RU4SI3": 0.136
+},
+"P_region_1900K_x0.44": {
+"LIQUID+RUSI": 0.007
+},
+"hcp_solvus_1250K": [
+0.05627000000000001,
+0.012640692227880562
+],
+"hcp_solvus_1550K": [
+0.08480000000000001,
+0.01706341114783325
+],
+"RU2SI_T_range_when_present": {
+"fraction": 0.365,
+"T_low_mean_std": [
+755.068493150685,
+330.27851794852984
+],
+"T_high_mean_std": [
+2048.082191780822,
+291.90520855023766
+]
+},
+"SI3RU5_T_range_when_present": {
+"fraction": 0.505,
+"T_low_mean_std": [
+808.019801980198,
+381.6587553672464
+],
+"T_high_mean_std": [
+2116.5841584158416,
+221.0426806744283
+]
+},
+"RU4SI3_T_range_when_present": {
+"fraction": 0.631,
+"T_low_mean_std": [
+551.9017432646592,
+179.8274305192816
+],
+"T_high_mean_std": [
+1931.339144215531,
+436.54319131256597
+]
+},
+"lowest_T_liquid_x<=0.33": [
+2094.0,
+95.19847687857197
+]
+}
+posterior 100 109 s
+posterior 200 216 s
+posterior 300 316 s
+posterior 400 421 s
+posterior 500 520 s
+posterior 600 621 s
+posterior 700 727 s
+posterior 800 828 s
+posterior 900 926 s
+posterior 1000 1027 s
+posterior {
+"n": 1000,
+"P_stable_anywhere": {
+"HCP": 1.0,
+"LIQUID": 1.0,
+"RU2SI": 0.592,
+"RU2SI3": 1.0,
+"RU4SI3": 0.773,
+"RUSI": 1.0,
+"SI": 1.0,
+"SI3RU": 0.015,
+"SI3RU5": 0.257,
+"SIRU3": 0.023,
+"SIRU4": 0.047,
+"SIRU5": 0.018
+},
+"P_region_1250K_x0.22": {
+"HCP+RU4SI3": 0.338
+},
+"P_region_1550K_x0.38": {
+"RU2SI+RU4SI3": 0.267
+},
+"P_region_1900K_x0.44": {
+"LIQUID+RUSI": 0.302
+},
+"hcp_solvus_1250K": [
+0.07609000000000002,
+0.008137069497060964
+],
+"hcp_solvus_1550K": [
+0.11223000000000004,
+0.010522694521841828
+],
+"RU2SI_T_range_when_present": {
+"fraction": 0.592,
+"T_low_mean_std": [
+1073.8175675675675,
+284.1808174185546
+],
+"T_high_mean_std": [
+1842.6097972972973,
+163.12014134410586
+]
+},
+"SI3RU5_T_range_when_present": {
+"fraction": 0.257,
+"T_low_mean_std": [
+1296.5953307392997,
+373.8088522663324
+],
+"T_high_mean_std": [
+1828.4046692607003,
+214.99159258194666
+]
+},
+"RU4SI3_T_range_when_present": {
+"fraction": 0.773,
+"T_low_mean_std": [
+663.6804657179819,
+326.47011332823246
+],
+"T_high_mean_std": [
+1711.0284605433376,
+303.0923148556199
+]
+},
+"lowest_T_liquid_x<=0.33": [
+1916.475,
+37.505991188075534
+]
+}
+-> /home/kino/kino/Claude/Projects/PhaseDiagram/ftphase/examples/orchid_calphad/zhang2027/bayes/runs/mace-mpa-0/out/fig4.png
