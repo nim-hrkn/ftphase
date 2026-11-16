@@ -27,6 +27,8 @@ def main(out=os.path.join(HERE, "out", "mlip_compare", "panels.png")):
     fig, axes = plt.subplots((n + ncol - 1) // ncol, ncol, figsize=(4 * ncol, 3.6 * ((n + ncol - 1) // ncol)), squeeze=False)
     seen = {}
     for ax, (label, d) in zip(axes.flat, RUNS):
+        if os.path.exists(os.path.join(HERE, "out", d + "_sqs", "07_two_phase_regions.tsv")):   # fcc from 64-atom SQS (merge_fcc_sqs.py, 2026-11-16)
+            d = d + "_sqs"; label = label + " (fcc: SQS 64)"
         r = pd.read_csv(os.path.join(HERE, "out", d, "07_two_phase_regions.tsv"), sep="\t")
         r = r[r.phase_a != r.phase_b]
         dT = float(r["T"].diff().abs()[lambda s: s > 0].min() or 10.0) if len(r) > 1 else 10.0

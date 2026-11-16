@@ -110,6 +110,9 @@ def draw_sgte(ax, d, T_window, colors, seen):
 
 
 def draw_run(ax, run_dir, colors, seen, T_window):
+    base_dir = run_dir.rstrip("/")
+    if os.path.exists(os.path.join(base_dir + "_sqs", "07_two_phase_regions.tsv")):   # fcc from 64-atom SQS (aiida_txdiagram/merge_fcc_sqs.py, 2026-11-16)
+        run_dir = base_dir + "_sqs"
     f = os.path.join(run_dir, "07_two_phase_regions.tsv")
     if not os.path.exists(f):
         ax.text(0.5, 0.5, "no 07 output", ha="center", transform=ax.transAxes)
@@ -119,7 +122,7 @@ def draw_run(ax, run_dir, colors, seen, T_window):
     if os.path.exists(low):
         lr = pd.read_csv(low, sep="\t")
         r = pd.concat([lr[lr["T"] < r["T"].min() - 1e-6], r], ignore_index=True)
-    lis = os.path.join(run_dir.rstrip("/") + "_liside_solid", "07_two_phase_regions.tsv")   # Li-side solids (bcc Li series, Al2Li3, Al4Li9) from the --li-side --solid-only WorkChain (2026-11-11)
+    lis = os.path.join(base_dir + "_liside_solid", "07_two_phase_regions.tsv")   # Li-side solids (bcc Li series, Al2Li3, Al4Li9) from the --li-side --solid-only WorkChain (2026-11-11)
     if os.path.exists(lis):
         ls = pd.read_csv(lis, sep="\t")
         ls = ls[(ls["T"] < T_liq - 1e-6) & (ls[["x_a", "x_b"]].min(axis=1) >= 0.45)]

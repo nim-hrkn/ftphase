@@ -1,0 +1,115 @@
+{
+ "relaxed": [
+  {
+   "name": "fcc-Al",
+   "x": 0.0,
+   "e": -3.7331974506378,
+   "V": 16.374511860285,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "bcc-Li",
+   "x": 1.0,
+   "e": -1.9052965641022,
+   "V": 20.112993730126,
+   "sg_before": "Im-3m (229)",
+   "sg_after": "Im-3m (229)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "B32-AlLi",
+   "x": 0.5,
+   "e": -2.9970500469208,
+   "V": 16.053699311212,
+   "sg_before": "Fd-3m (227)",
+   "sg_after": "Fd-3m (227)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "L12-Al3Li",
+   "x": 0.25,
+   "e": -3.3573360443115,
+   "V": 16.317884560448,
+   "sg_before": "Pm-3m (221)",
+   "sg_after": "Pm-3m (221)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "fcc-Al-prim",
+   "x": 0.0,
+   "e": -3.7331988811493,
+   "V": 16.374466580522,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  }
+ ],
+ "hull": [
+  {
+   "name": "fcc-Al",
+   "x": 0.0,
+   "e": -3.7331974506378,
+   "e_form": 1.4305114746094e-06,
+   "on_hull": false,
+   "e_above_hull": 1.4305114746094e-06
+  },
+  {
+   "name": "fcc-Al-prim",
+   "x": 0.0,
+   "e": -3.7331988811493,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "L12-Al3Li",
+   "x": 0.25,
+   "e": -3.3573360443115,
+   "e_form": -0.081112742424011,
+   "on_hull": false,
+   "e_above_hull": 0.0077884197235107
+  },
+  {
+   "name": "B32-AlLi",
+   "x": 0.5,
+   "e": -2.9970500469208,
+   "e_form": -0.17780232429504,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "bcc-Li",
+   "x": 1.0,
+   "e": -1.9052965641022,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  }
+ ],
+ "ground_state_check": [
+  {
+   "name": "fcc-Al",
+   "status": "on hull",
+   "e_above_hull": 1.4305114746094e-06
+  },
+  {
+   "name": "bcc-Li",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "B32-AlLi",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  }
+ ],
+ "potential": "mattersim-v1.0.0-5M.pth",
+ "finished": "2026-11-15 19:32:30"
+}

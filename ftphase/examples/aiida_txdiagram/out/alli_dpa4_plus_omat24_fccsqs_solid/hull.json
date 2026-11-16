@@ -1,0 +1,120 @@
+{
+ "relaxed": [
+  {
+   "name": "fcc-Al",
+   "x": 0.0,
+   "e": -3.7475110542688,
+   "V": 16.43353894001,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "bcc-Li",
+   "x": 1.0,
+   "e": -1.9037194213485,
+   "V": 20.057529150824,
+   "sg_before": "Im-3m (229)",
+   "sg_after": "Im-3m (229)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "B32-AlLi",
+   "x": 0.5,
+   "e": -2.9964068824117,
+   "V": 16.00250644948,
+   "sg_before": "Fd-3m (227)",
+   "sg_after": "Fd-3m (227)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "L12-Al3Li",
+   "x": 0.25,
+   "e": -3.3764511040587,
+   "V": 16.257647242701,
+   "sg_before": "Pm-3m (221)",
+   "sg_after": "Pm-3m (221)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "fcc-Al-prim",
+   "x": 0.0,
+   "e": -3.7475109648618,
+   "V": 16.433505579544,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  }
+ ],
+ "hull": [
+  {
+   "name": "fcc-Al",
+   "x": 0.0,
+   "e": -3.7475110542688,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Al-prim",
+   "x": 0.0,
+   "e": -3.7475109648618,
+   "e_form": 8.9406967163086e-08,
+   "on_hull": false,
+   "e_above_hull": 8.9406967163086e-08
+  },
+  {
+   "name": "L12-Al3Li",
+   "x": 0.25,
+   "e": -3.3764511040587,
+   "e_form": -0.089887958019972,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "B32-AlLi",
+   "x": 0.5,
+   "e": -2.9964068824117,
+   "e_form": -0.17079164460301,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "bcc-Li",
+   "x": 1.0,
+   "e": -1.9037194213485,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  }
+ ],
+ "ground_state_check": [
+  {
+   "name": "fcc-Al",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "bcc-Li",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "B32-AlLi",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "L12-Al3Li",
+   "status": "MLIP ground state not in known list",
+   "e_above_hull": 0.0
+  }
+ ],
+ "potential": "DPA4-Plus-OMat24-v20260805.pt2",
+ "finished": "2026-11-15 19:34:22"
+}

@@ -1,0 +1,12 @@
+run	fccfcc_rows_high_random32	solvus700_random32	solvus760_random32	eutectic_random32	Al_Tm_random32	fccfcc_rows_low_random32	solvus500_random32	solvus650_random32	fccfcc_rows_high_sqs64	solvus700_sqs64	solvus760_sqs64	eutectic_sqs64	Al_Tm_sqs64	fccfcc_rows_low_sqs64	solvus500_sqs64	solvus650_sqs64
+alli_ace_m6	10	0.14	0.164	760-770	887.6	2	0.002	0.014	0	0.086	0.166	760-770	887.9	0	0.006	0.037
+alli_grace_fs	0	0.225		740-750		0	0.203	0.219	0	0.25		750-760		0	0.234	0.25
+alli_grace_1l	0	0.194		720-730	869.7	0	0.114	0.173	0	0.212		720-730	869.6	0	0.108	0.188
+alli_grace_2l	0	0.168		750-760	922.4	0	0.102	0.153	0	0.17		740-750	922.1	0	0.078	0.143
+alli_sevenn_0	10	0.25	0.25	930-940		0	0.25	0.25	39	0.25	0.25	930-940		0	0.25	0.25
+alli_mace_mpa_0	0	0.209	0.231	780-790	1032.3	0	0.134	0.191	0	0.228	0.247	780-790	1031.6	0	0.15	0.211
+alli_mattersim_1m	0			none	763.1	0	0.235	0.25	0			none	763.0	0	0.25	0.25
+alli_mattersim_5m	30	0.25		720-730	996.1	40	0.25	0.25	0	0.25		710-720	996.2	0	0.25	0.25
+alli_nequip_oam_m	0	0.151	0.164	800-810	930.6	0	0.108	0.141	0	0.159	0.196	800-810	929.9	0	0.088	0.137
+alli_nequip_oam_s	20	0.25	0.25	920-930		0	0.246	0.25	0	0.25	0.25	920-930		0	0.25	0.25
+alli_dpa4_plus_omat24	0	0.162		750-760	989.5	0	0.099	0.146	0	0.184		750-760	989.3	0	0.101	0.164

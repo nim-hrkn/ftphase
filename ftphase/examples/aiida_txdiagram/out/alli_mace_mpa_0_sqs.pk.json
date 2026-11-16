@@ -1,0 +1,12 @@
+{
+ "pk": 8481,
+ "uuid": "935637d5-c23e-4454-8e43-e3cd5a970737",
+ "name": "alli_mace_mpa_0",
+ "profile": "ftphase",
+ "submitted": "2026-11-03 22:55:58",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden5",
+ "qha_computer": "mygarden5",
+ "mlip": "mace-mpa-0"
+}

@@ -1,0 +1,6 @@
+{
+ "example": "alli_nequip_oam_m with fcc from 64-atom SQS",
+ "part": "low",
+ "fits": "{'fcc': 'poly', 'liquid': 'poly', 'B32': 'spline'}",
+ "hull": "{'min_width': 0.005, 'gap_tol': 2.5}"
+}

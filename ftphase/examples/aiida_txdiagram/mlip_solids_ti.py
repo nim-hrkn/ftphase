@@ -21,6 +21,15 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "out")
 MIN_ATOMS = 2000
+MAX_ATOMS = None   #: --max-atoms: cap of the TI cell (SevenNet-MF-ompa needs 10.3 GB of the 12 GB GPU at 2048 atoms; 3456 atoms ran out of memory)
+CODES = None       #: --code a,b: calphy codes used in turn instead of the WorkChain / HOST2 code (two GPUs)
+
+
+def _n_rep(n_atoms):
+    n = max(1, int(np.ceil((MIN_ATOMS / n_atoms) ** (1 / 3) - 1e-9)))
+    while MAX_ATOMS and n > 1 and n_atoms * n ** 3 > MAX_ATOMS:
+        n -= 1
+    return n
 RUNS = {"nial_grace_fs": 4784, "nial_grace_1l": 4798, "nial_sevenn_0": 4813, "agcu_grace_fs": 4869, "agcu_grace_1l": 4900, "agcu_sevenn_0": 4928,
         "ptrh_grace_2l": 9105, "ptrh_nequip_oam_m": 9348, "ptrh_mace_mpa_0": 9585, "ptrh_sevenn_mf_ompa": 10792,
         "nial_grace_1l_b2ext_solid": 15488, "nial_grace_1l_l12ext_solid": 15876, "nial_sevenn_mf_ompa": 15891}   # 2026-11-11 B2 extended defect sampling (vacancies 4-7, anti-sites 8-10), solids only   # Pt-Rh (2026-11-06): pure-end fcc cells only, 4x4x4 of 32 = 2048 atoms
@@ -68,7 +77,7 @@ def submit(names, only=None, t_hi=None, t_lo=None, code=None):
                 continue
             done.add(cell)
             structure = prep.outputs[f"solid_{key}"]
-            n_rep = max(1, int(np.ceil((MIN_ATOMS / m["n_atoms"]) ** (1 / 3) - 1e-9)))
+            n_rep = _n_rep(m["n_atoms"])
             big = repeat_structure(structure, orm.Int(n_rep))
             T_sw = list(CELLS[name[:4]][cell]); T_sw[1] = float((t_hi or {}).get(key, T_sw[1])); T_sw[0] = float((t_lo or {}).get(key, T_sw[0]))
             params = {"name": f"sol_{key}", "folder_prefix": f"sol_{key}", "mode": "ts", "elements": sp["elements"], "masses": sp["masses"], "pair_style": sp["pair_style"],
@@ -88,12 +97,12 @@ def submit(names, only=None, t_hi=None, t_lo=None, code=None):
 
 #: stage-1 solid(TI)-liquid crossings (K, melting_ti.tsv; "~" values extrapolated) -> sweep caps of the stage-2 alloy cells
 TM1 = {"nial_grace_fs": {"fccAl": 630, "fccNi": 1654, "B2": 1670, "L12": 1512}, "nial_grace_1l": {"fccAl": 874, "fccNi": 1715, "B2": 1797, "L12": 1615},
-       "nial_sevenn_0": {"fccAl": 784, "fccNi": 1461, "B2": 1964, "L12": 1567}, "nial_grace_1l_b2ext_solid": {"fccAl": 874, "fccNi": 1715, "B2": 1797, "L12": 1615}, "nial_grace_1l_l12ext_solid": {"fccAl": 874, "fccNi": 1715, "B2": 1797, "L12": 1615},
+       "nial_sevenn_0": {"fccAl": 784, "fccNi": 1461, "B2": 1964, "L12": 1567}, "nial_sevenn_mf_ompa": {"fccAl": 915, "fccNi": 1653, "B2": 1886, "L12": 1578}, "nial_grace_1l_b2ext_solid": {"fccAl": 874, "fccNi": 1715, "B2": 1797, "L12": 1615}, "nial_grace_1l_l12ext_solid": {"fccAl": 874, "fccNi": 1715, "B2": 1797, "L12": 1615},
        "agcu_grace_fs": {"Ag": 930, "Cu": 1190}, "agcu_grace_1l": {"Ag": 988, "Cu": 1310}, "agcu_sevenn_0": {"Ag": 949, "Cu": 1182}}
 #: where the stage-2 jobs of each run go (user 2026-11-01: laurel, mygardenx1/x2, mygarden5/6 GPUs allowed; mygardenx1 was full,
 #: laurel has no ftphase env): GRACE-FS on the mygardenx2 CPUs (grace/fs + hybrid/scaled in the conda LAMMPS), the rest on the GPUs
 HOST2 = {"nial_grace_fs": ("calphy@mygardenx2", 12), "agcu_grace_fs": ("calphy@mygardenx2", 12), "nial_grace_1l": ("calphy@mygarden6", None), "nial_grace_1l_b2ext_solid": ("calphy@mygarden6", None), "nial_grace_1l_l12ext_solid": ("calphy@mygarden6", None),
-         "agcu_grace_1l": ("calphy@mygarden5", None), "nial_sevenn_0": ("calphy@mygarden5", None), "agcu_sevenn_0": ("calphy@mygarden6", None)}
+         "agcu_grace_1l": ("calphy@mygarden5", None), "nial_sevenn_0": ("calphy@mygarden5", None), "nial_sevenn_mf_ompa": ("calphy@mygarden5", None), "agcu_sevenn_0": ("calphy@mygarden6", None)}
 
 
 NONCUBIC = ("NiAl3", "Ni2Al3")   #: phases calphy's melt detection cannot classify
@@ -106,7 +115,7 @@ def stage2_range(name, m):
     tm, ph, x = TM1[name], m["phase"], m["x"]
     if name.startswith("nial"):
         lo = {"fccAl": 600.0, "fccNi": 1200.0, "B2": 1300.0, "L12": 1200.0, "Ni2Al3": 900.0, "NiAl3": 900.0}[ph]
-        if "b2ext" in name and ph == "B2":
+        if ("b2ext" in name or name == "nial_sevenn_mf_ompa") and ph == "B2":   # the --b2-full run holds the extended defect cells too
             lo = 1000.0   # multi-vacancy B2 cells lose atoms in Frenkel-Ladd when started at 1300 K (stage-2 note): start the extended-defect cells at 1000 K
         if ph in tm:
             if (ph, x) in CELLS["nial"]:
@@ -164,7 +173,7 @@ def submit2(names, only=None, t_hi=None, t_lo=None, dry=False):
             if dry:
                 print(name, key, m["phase"], round(m["x"], 4), T_sw, code_label); continue
             structure = prep.outputs[f"solid_{key}"]
-            n_rep = max(1, int(np.ceil((MIN_ATOMS / m["n_atoms"]) ** (1 / 3) - 1e-9)))
+            n_rep = _n_rep(m["n_atoms"])
             big = repeat_structure(structure, orm.Int(n_rep))
             params = {"name": f"sol_{key}", "folder_prefix": f"sol_{key}", "mode": "ts", "elements": sp["elements"], "masses": sp["masses"], "pair_style": sp["pair_style"],
                       "pair_coeff": sp["pair_coeff"], "temperature": T_sw, "pressure": 0.0, "reference_phase": "solid", "n_equilibration_steps": 10000,
@@ -174,6 +183,8 @@ def submit2(names, only=None, t_hi=None, t_lo=None, dry=False):
                 # reported as melted right after equilibration (GRACE-FS pk 7666).  Switch it off; check the sweep volume for a jump instead.
                 params["extra"] = {**params.get("extra", {}), "tolerance": {"solid_fraction": 0.0}}
             b = Calphy.get_builder()
+            if CODES and not cores:
+                code_label = CODES[len(rec["jobs"]) % len(CODES)]; code = orm.load_code(code_label)
             b.code = code; b.structure = big; b.potential = wc.inputs.potential; b.parameters = orm.Dict(dict=params)
             b.metadata.options = opts
             b.metadata.label = f"calphy solid ti2 {name} {key} {m['phase']} x={m['x']:.4f} ({len(big.sites)} atoms)"
@@ -409,10 +420,14 @@ if __name__ == "__main__":
     ap.add_argument("--dry", action="store_true", help="submit2: print the cells and sweeps only")
     ap.add_argument("--T-lo", dest="t_lo", default=None, help="sweep-start overrides key=T,key=T")
     ap.add_argument("--code", default=None, help="submit: calphy code label instead of the WorkChain's (e.g. calphy@mygarden6 to use the other GPU)")
+    ap.add_argument("--max-atoms", dest="max_atoms", type=int, default=None, help="cap of the TI cell size (repeat reduced until it fits), e.g. 2100 for SevenNet-MF-ompa on a 12 GB GPU")
     ap.add_argument("--min-atoms", dest="min_atoms", type=int, default=None, help="override MIN_ATOMS (e.g. 1400 -> 3x3x3 of the 54-atom B2 cell = 1458 atoms when 3456 atoms do not fit the 12 GB GPU: SevenNet-MF-ompa uses 10.3 GB at 2048 atoms)")
     a = ap.parse_args()
     if a.min_atoms:
         MIN_ATOMS = a.min_atoms
+    MAX_ATOMS = a.max_atoms
+    if a.cmd == "submit2" and a.code:
+        CODES = a.code.split(","); a.code = None
     from aiida import load_profile
 
     load_profile(a.profile)

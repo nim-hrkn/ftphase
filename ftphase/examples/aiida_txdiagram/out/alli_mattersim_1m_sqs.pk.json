@@ -1,0 +1,12 @@
+{
+ "pk": 6910,
+ "uuid": "3d5aab0d-16d0-47a5-9897-ced660583371",
+ "name": "alli_mattersim_1m",
+ "profile": "ftphase",
+ "submitted": "2026-11-01 20:23:04",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden5",
+ "qha_computer": "mygarden5",
+ "mlip": "mattersim-1m"
+}

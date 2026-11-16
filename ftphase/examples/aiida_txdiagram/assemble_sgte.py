@@ -53,7 +53,10 @@ def main():
         except ValueError as e:
             print(name, "reference failed:", e); continue
         for tag, t in (("mlip", ti), ("sgte", tr)):
-            reg = scan(builder_from_table(t, **kw), Tg, **hull); r = reg[reg.phase_a != reg.phase_b]
+            reg = scan(builder_from_table(t, **kw), Tg, **hull); xl = float(t.df[t.df.phase == "liquid"]["x"].max())
+            if asm.get("drop_edge_beyond_liquid", True) and xl < 1.0 - 1e-6:   # as in the WorkChain assembly
+                reg = reg[~(reg["x_a"] >= xl - 1e-6)].reset_index(drop=True)
+            r = reg[reg.phase_a != reg.phase_b]
             fl = r[(r.phase_a == "fcc") & (r.phase_b == "liquid")]; eu = r[(r.phase_a == "fcc") & (r.phase_b == "B32")]
             g = t.df[(t.df.x < 1e-6)]; dG = (g[g.phase == "liquid"].set_index("T")["G"] - g[g.phase == "fcc"].set_index("T")["G"]).dropna().sort_index()
             k = np.where(np.diff(np.sign(dG.to_numpy())))[0]

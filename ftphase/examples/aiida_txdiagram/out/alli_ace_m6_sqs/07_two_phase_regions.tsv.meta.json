@@ -1,0 +1,6 @@
+{
+ "example": "alli_ace_m6 with fcc from 64-atom SQS",
+ "part": "high",
+ "fits": "{'fcc': 'poly', 'liquid': 'poly', 'B32': 'spline'}",
+ "hull": "{'min_width': 0.005, 'gap_tol': 2.5}"
+}
