@@ -477,7 +477,7 @@ def main():
     if a.li_side:
         name += "_liside"
     if a.fcc_sqs:
-        name += "_fccsqs"
+        name += "_fccsqsi"   # "i": SQS found on the ideal candidate lattice, identical for every MLIP (2026-11-16; "_fccsqs" = first runs, SQS per MLIP)
     if a.b2_extra:
         name += "_b2ext"
     if a.l12_extra:

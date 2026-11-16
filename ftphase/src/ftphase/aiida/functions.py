@@ -187,10 +187,27 @@ def prepare_cells(spec: orm.Dict, potential: orm.SinglefileData, **candidates: o
                 if x <= 0.0:
                     cells.append((0.0, 0, base.copy())); continue
                 n_b = int(round(x * len(base)))
-                prim = relaxed[s["base"]]
                 others = [e for e in sp["elements"] if e != xel]
-                at, info = sqs_icet(prim, [[others[0], xel]] * len(prim), ic.get("cutoffs", [7.0, 4.5]), {others[0]: 1 - n_b / len(base), xel: n_b / len(base)},
-                                    len(base), method="supercells", n_steps=ic.get("n_steps", 5000), seed=int(s.get("seed", 0)), supercells=[base.copy()])
+                if ic.get("ideal_lattice", True):
+                    # the occupation pattern is found on the unrelaxed candidate lattice (the same for every potential) and then put on
+                    # the relaxed cell.  With the relaxed lattice as parent, a cutoff close to a neighbour shell (7 A vs the 6th fcc
+                    # shell at 6.99-7.02 A) includes that shell or not depending on the potential's lattice constant, and each
+                    # potential gets a different SQS (found 2026-11-16).
+                    prim = candidates[_key(s["base"])].get_ase(); prim.calc = None; ideal = prim.repeat(tuple(s.get("repeat", [1, 1, 1])))
+                    at_i, info = sqs_icet(prim, [[others[0], xel]] * len(prim), ic.get("cutoffs", [7.0, 4.5]), {others[0]: 1 - n_b / len(base), xel: n_b / len(base)},
+                                          len(ideal), method="supercells", n_steps=ic.get("n_steps", 5000), seed=int(s.get("seed", 0)), supercells=[ideal.copy()])
+                    f_i = ideal.cell.scaled_positions(at_i.get_positions()) % 1.0; f_b = base.get_scaled_positions(wrap=True)
+                    at = base.copy(); sym = at.get_chemical_symbols(); src_sym = at_i.get_chemical_symbols()
+                    for i, f in enumerate(f_b):
+                        d = f_i - f; d -= np.round(d); j = int(np.argmin(np.linalg.norm(d, axis=1)))
+                        if np.linalg.norm(d[j]) > 0.02:
+                            raise ValueError("SQS site mapping failed: the relaxed cell is not a uniform scaling of the candidate lattice")
+                        sym[i] = src_sym[j]
+                    at.set_chemical_symbols(sym)
+                else:
+                    prim = relaxed[s["base"]]
+                    at, info = sqs_icet(prim, [[others[0], xel]] * len(prim), ic.get("cutoffs", [7.0, 4.5]), {others[0]: 1 - n_b / len(base), xel: n_b / len(base)},
+                                        len(base), method="supercells", n_steps=ic.get("n_steps", 5000), seed=int(s.get("seed", 0)), supercells=[base.copy()])
                 cells.append((n_b / len(base), 0, at))
         else:
             host_is_x = set(base.get_chemical_symbols()) == {xel}

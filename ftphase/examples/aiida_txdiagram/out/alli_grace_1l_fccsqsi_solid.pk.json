@@ -1,0 +1,12 @@
+{
+ "pk": 18051,
+ "uuid": "b2ea2b47-a6a4-4e3c-bc38-60df6a18c6ef",
+ "name": "alli_grace_1l_fccsqsi_solid",
+ "profile": "ftphase",
+ "submitted": "2026-11-16 13:14:21",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden6",
+ "qha_computer": "mygarden6",
+ "mlip": "grace-1l"
+}

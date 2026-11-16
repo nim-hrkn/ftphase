@@ -22,7 +22,8 @@ def main():
     from ftphase.records import FreeEnergyTable
     load_profile("ftphase"); here = os.path.dirname(os.path.abspath(__file__)); rows = []
     for run in sys.argv[1:]:
-        run = os.path.abspath(run); name = os.path.basename(run); base = run[:-3] if run.endswith("_m6") else run; sq = base + "_fccsqs_solid"
+        run = os.path.abspath(run); name = os.path.basename(run); base = run[:-3] if run.endswith("_m6") else run
+        sq = next((base + suf for suf in ("_fccsqsi_solid", "_fccsqs_solid") if os.path.exists(os.path.join(base + suf, "05_free_energies.tsv"))), base + "_fccsqs_solid")   # common SQS first
         if not os.path.exists(os.path.join(sq, "05_free_energies.tsv")):
             print(name, "no SQS run yet -> skipped"); continue
         asm = orm.load_node(json.load(open(run + ".pk.json"))["pk"]).inputs.spec.get_dict().get("assemble", {})

@@ -183,8 +183,9 @@ def sqs_icet(
         kw = {}
         if n_steps is not None:
             kw["n_steps"] = n_steps
-        if seed is not None:
-            np.random.seed(seed)
+        if seed is not None:      # icet's annealing takes its own random_seed; numpy's global seed alone left the result non-reproducible (found 2026-11-16)
+            import random
+            np.random.seed(seed); random.seed(seed); kw["random_seed"] = int(seed)
         sqs = generate_sqs(cs, max_size=max_size, target_concentrations=target_concentrations, include_smaller_cells=include_smaller_cells, **kw)
     elif method == "supercells":
         if not supercells:
@@ -193,7 +194,8 @@ def sqs_icet(
         if n_steps is not None:
             kw["n_steps"] = n_steps
         if seed is not None:
-            np.random.seed(seed)
+            import random
+            np.random.seed(seed); random.seed(seed); kw["random_seed"] = int(seed)
         sqs = generate_sqs_from_supercells(cs, supercells=list(supercells), target_concentrations=target_concentrations, **kw)
     else:
         raise ValueError("method must be 'enumeration', 'anneal' or 'supercells'")

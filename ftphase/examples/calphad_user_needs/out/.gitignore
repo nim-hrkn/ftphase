@@ -1,2 +1,6 @@
 1_full_range_table.tsv
 1_ext_run.log
+liquid_md/*/rdf.dat
+liquid_md/*/log.lammps
+liquid_md/*/conf.data
+liquid_md/run.log
