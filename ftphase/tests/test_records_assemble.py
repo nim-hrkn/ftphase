@@ -87,3 +87,33 @@ def test_builder_single_composition_becomes_point():
     b = builder_from_table(FreeEnergyTable.from_rows(rows, {}), fit="poly", poly_order=2)
     ph = {p.name: p for p in b(1000.0)}
     assert isinstance(ph["B2"], PointPhase) and isinstance(ph["liq"], PhaseCurve)
+
+
+def test_reference_pure_elements_moves_the_melting_point():
+    """Model: element A melts at 800 K, element B at 400 K; reference: 900 K and 450 K.  After the per-phase pure-element
+    shift the solid-liquid crossings of the pure ends are the reference ones and the mixing part is untouched."""
+    from ftphase.assemble import reference_pure_elements
+    S = 1e-4   # entropy of fusion, eV/K
+    gs = {0: lambda T: -3.0 - 2e-4 * T, 1: lambda T: -1.5 - 3e-4 * T}                      # model solids
+    gl = {0: lambda T: gs[0](T) + S * (800.0 - T), 1: lambda T: gs[1](T) + S * (400.0 - T)}   # model liquids
+    rows = []
+    for T in np.arange(300.0, 1001.0, 50.0):
+        for x in (0.0, 0.5, 1.0):
+            mix = -0.05 * x * (1 - x)
+            rows.append({"phase": "liquid", "kind": "solution", "x": x, "T": T, "P_GPa": 0.0, "G": (1 - x) * gl[0](T) + x * gl[1](T) + mix, "G_err": 0.0, "reference_state": "abs", "quantum": "classical"})
+        rows.append({"phase": "fcc", "kind": "solution", "x": 0.0, "T": T, "P_GPa": 0.0, "G": gs[0](T), "G_err": 0.0, "reference_state": "abs", "quantum": "classical"})
+        rows.append({"phase": "bcc", "kind": "solution", "x": 1.0, "T": T, "P_GPa": 0.0, "G": gs[1](T), "G_err": 0.0, "reference_state": "abs", "quantum": "classical"})
+        rows.append({"phase": "AB", "kind": "point", "x": 0.5, "T": T, "P_GPa": 0.0, "G": 0.5 * (gs[0](T) + gs[1](T)) - 0.08, "G_err": 0.0, "reference_state": "abs", "quantum": "classical"})
+    tab = FreeEnergyTable.from_rows(rows, {})
+    ref = {(0, "fcc"): lambda T: -1e-4 * T, (0, "liquid"): lambda T: -1e-4 * T + S * (900.0 - T), (1, "bcc"): lambda T: -2e-4 * T, (1, "liquid"): lambda T: -2e-4 * T + S * (450.0 - T)}
+    out = reference_pure_elements(tab, ref, ser=("fcc", "bcc"))
+    d = out.df
+    for ph, x0, Tm in (("fcc", 0.0, 900.0), ("bcc", 1.0, 450.0)):
+        s = d[(d.phase == ph)].set_index("T")["G"]; l = d[(d.phase == "liquid") & np.isclose(d.x, x0)].set_index("T")["G"]
+        diff = (l - s).dropna(); T = diff.index.to_numpy(); v = diff.to_numpy(); k = np.where(np.diff(np.sign(v)))[0][0]
+        assert abs(T[k] - v[k] * (T[k + 1] - T[k]) / (v[k + 1] - v[k]) - Tm) < 1e-6
+    # mixing free energy of the liquid and the formation free energy of the compound (relative to the stable elements) are unchanged
+    at = lambda ph, x: float(d[(d.phase == ph) & np.isclose(d.x, x) & np.isclose(d["T"], 600.0)]["G"].iloc[0])
+    assert abs(at("liquid", 0.5) - 0.5 * (at("liquid", 0.0) + at("liquid", 1.0)) - (-0.05 * 0.25)) < 1e-12
+    assert abs(at("AB", 0.5) - 0.5 * (at("fcc", 0.0) + at("bcc", 1.0)) - (-0.08)) < 1e-12
+    assert out.meta["pure_reference"]["lattice_used_per_phase"]["AB"] == ["fcc", "bcc"]

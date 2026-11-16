@@ -20,7 +20,7 @@
 
 from __future__ import annotations
 
-from typing import Callable, Dict, List, Optional, Sequence
+from typing import Callable, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
@@ -48,6 +48,55 @@ def relative_to_pure(table: FreeEnergyTable, ref_A: str, ref_B: str, label: Opti
     df["reference_state"] = label or f"pure {ref_A}(x=0) and {ref_B}(x=1) at same T,P"
     out = FreeEnergyTable.from_dataframe(df, table.meta)
     out.meta["reference"] = {"A": ref_A, "B": ref_B}
+    return out
+
+
+def reference_pure_elements(table: FreeEnergyTable, reference: Dict, ser: Tuple[str, str], lattice_of: Optional[Dict[str, str]] = None,
+                            extra_pure: Optional[Dict] = None, label: str = "SGTE pure elements (per phase)") -> FreeEnergyTable:
+    """Replace the pure-element part of every phase by an external reference (e.g. SGTE unary data), keeping the model's
+    mixing and formation quantities:
+
+        G_phi(x, T)  ->  G_phi(x, T) + (1 - x) d_A^phi(T) + x d_B^phi(T),      d_i^phi = G_i^ref(lattice of phi) - G_i^model(lattice of phi)
+
+    so that the pure-element transition temperatures (melting, allotropy) become those of the reference.  A shift that is the
+    same for every phase would leave the diagram unchanged; the point is that d differs between lattices (solid vs liquid).
+
+    ``reference``: {(element index 0|1, lattice): callable T -> G (eV/atom)}, element 0 = the x = 0 end.
+    ``ser``: lattices of the stable elements, e.g. ("fcc", "bcc"): used for a phase whose pure end is not in the table or in
+    ``extra_pure`` (compounds, a solution sampled on one side only), i.e. that end is assumed to have the reference's lattice
+    stability.  ``lattice_of``: table phase name -> lattice name (default: the phase name itself).
+    ``extra_pure``: {(element index, lattice): (T array, G array)} model values of pure elements computed elsewhere.
+    The applied shifts are stored in ``meta["pure_reference"]``.
+    """
+    df = table.df.copy(); lattice_of = lattice_of or {}; model = {}
+    for ph, g in df.groupby("phase"):
+        lat = lattice_of.get(ph, ph)
+        for i, x0 in ((0, 0.0), (1, 1.0)):
+            r = g[np.isclose(g["x"], x0)].sort_values("T")
+            if len(r) and (i, lat) in reference and (i, lat) not in model:
+                model[(i, lat)] = (r["T"].to_numpy(dtype=float), r["G"].to_numpy(dtype=float))
+    for k, v in (extra_pure or {}).items():
+        model.setdefault(k, (np.asarray(v[0], dtype=float), np.asarray(v[1], dtype=float)))
+    for i in (0, 1):
+        if (i, ser[i]) not in model or (i, ser[i]) not in reference:
+            raise ValueError(f"the stable pure element {i} ({ser[i]}) needs both a model value (table or extra_pure) and a reference")
+
+    def delta(i, lat, T):
+        key = (i, lat) if (i, lat) in model and (i, lat) in reference else (i, ser[i])
+        Tm, Gm = model[key]
+        if np.any(T < Tm.min() - 1e-6) or np.any(T > Tm.max() + 1e-6):
+            raise ValueError(f"temperature outside the model range of pure element {i} in {key[1]}: {Tm.min()}-{Tm.max()} K")
+        return np.asarray(reference[key](T), dtype=float) - np.interp(T, Tm, Gm), key
+
+    used = {}
+    for ph in df["phase"].unique():
+        m = df["phase"] == ph; lat = lattice_of.get(ph, ph); T = df.loc[m, "T"].to_numpy(dtype=float); x = df.loc[m, "x"].to_numpy(dtype=float)
+        dA, kA = delta(0, lat, T); dB, kB = delta(1, lat, T)
+        df.loc[m, "G"] = df.loc[m, "G"].to_numpy(dtype=float) + (1 - x) * dA + x * dB
+        used[ph] = [kA[1], kB[1]]
+    df["reference_state"] = label
+    out = FreeEnergyTable.from_dataframe(df, table.meta)
+    out.meta["pure_reference"] = {"label": label, "lattice_used_per_phase": used, "ser": list(ser)}
     return out
 
 

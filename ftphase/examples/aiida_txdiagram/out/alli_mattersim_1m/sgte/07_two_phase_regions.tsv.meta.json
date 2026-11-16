@@ -1,0 +1,4 @@
+{
+ "example": "alli_mattersim_1m with SGTE pure-element references",
+ "lattices": "{'label': 'SGTE pure elements (per phase)', 'lattice_used_per_phase': {'Al3Li': ['fcc', 'bcc'], 'B32': ['fcc', 'bcc'], 'fcc': ['fcc', 'bcc'], 'liquid': ['liquid', 'bcc']}, 'ser': ['fcc', 'bcc']}"
+}

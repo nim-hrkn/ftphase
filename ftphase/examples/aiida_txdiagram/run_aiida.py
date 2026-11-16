@@ -124,7 +124,7 @@ MLIPS.update({
 POT_AGCU = os.path.join(ROOT, "potentials/agcu/CuAg.eam.alloy")   # Williams, Mishin, Hamilton 2006 (NIST), setfl order Cu Ag
 
 
-def candidates(li_side: bool = False):
+def candidates(li_side: bool = False, fcc_prim: bool = False):
     from ase.build import bulk
     from ase import Atoms
     from ase.spacegroup import crystal
@@ -132,6 +132,8 @@ def candidates(li_side: bool = False):
     b32 = crystal(["Al", "Li"], [(0, 0, 0), (0.5, 0.5, 0.5)], spacegroup=227, cellpar=[6.37, 6.37, 6.37, 90, 90, 90])
     l12 = Atoms("LiAl3", scaled_positions=[(0, 0, 0), (0.5, 0.5, 0), (0.5, 0, 0.5), (0, 0.5, 0.5)], cell=[4.0, 4.0, 4.0], pbc=True)
     c = {"fcc-Al": (bulk("Al", "fcc", a=4.05, cubic=True), 0.0), "bcc-Li": (bulk("Li", "bcc", a=3.49, cubic=True), 1.0), "B32-AlLi": (b32, 0.5), "L12-Al3Li": (l12, 0.25)}
+    if fcc_prim:   # 1-atom fcc cell: 4x4x4 of it is the 64-atom rhombohedral cell of example 6 (--fcc-sqs)
+        c["fcc-Al-prim"] = (bulk("Al", "fcc", a=4.05), 0.0)
     if li_side:   # Li-rich intermetallics of example 6 (user-supplied Materials Project CIFs): Al2Li3 R-3m (15-atom hexagonal cell), Al4Li9 C2/m (26 atoms)
         from ase.io import read
         sd = os.path.join(ROOT, "ftphase", "examples", "alli_ace_txdiagram", "structures")
@@ -392,6 +394,9 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="build the inputs, print them, do not submit")
     ap.add_argument("--mlip", choices=sorted(MLIPS), default="ace", help="alli only: which potential (ace = AlLi-6gen ACE; grace-fs / grace-1l = GRACE foundation models, lmp_gpugrace)")
     ap.add_argument("--li-side", action="store_true", help="alli: add the Li side (bcc random series x_Li 0.75-1, Al2Li3, Al4Li9 point phases); use with --solid-only --t-window 300 1100")
+    ap.add_argument("--fcc-sqs", action="store_true", help="alli (2026-11-15): fcc solid solution as one 64-atom icet SQS per composition (4x4x4 of the primitive cell, cutoffs 7/5 A, "
+                    "20000 steps, phonon supercell 2x2x2 = 512 atoms) like example 6 instead of two 32-atom random cells, whose configuration noise makes an apparent fcc+fcc "
+                    "region and shifts the fcc solvus; use with --solid-only --T-window 300 1100 and merge with the liquids of the original run (merge_fcc_sqs.py); name gets _fccsqs")
     ap.add_argument("--solid-only", action="store_true", help="skip the liquids and assemble the solid phases alone over --T-window (spec assemble.allow_solid_only); name gets _solid")
     ap.add_argument("--T-window", dest="t_window", nargs=2, type=float, default=None, help="assembly T_min T_max for --solid-only (default ptrh: 100 2400)")
     ap.add_argument("--l12-extra", action="store_true", help="nial only: fcc Al, fcc Ni and L1_2 with wider anti-site sampling (name gets _l12ext)")
@@ -414,6 +419,12 @@ def main():
         assert a.system == "alli", "--li-side is for alli"
         spec = li_side_spec(spec)
         cand_fn = lambda: candidates(li_side=True)
+    if a.fcc_sqs:
+        assert a.system == "alli" and not a.li_side, "--fcc-sqs is for alli (x_Li <= 0.5)"
+        fcc = next(s_ for s_ in spec["solids"] if s_["phase"] == "fcc")
+        fcc.update({"base": "fcc-Al-prim", "repeat": [4, 4, 4], "series": "sqs", "n_configs": 1, "icet": {"cutoffs": [7.0, 5.0], "n_steps": 20000}, "supercell": [2, 2, 2]})
+        spec["candidates"]["fcc-Al-prim"] = 0.0
+        cand_fn = lambda: candidates(fcc_prim=True)
     if a.l12_extra:   # 2026-11-12: L1_2 defect cells beyond +-1 anti-site (32 sites: Ni->Al n=2,3,4 -> x_Ni 0.6875/0.656/0.625; Al->Ni n=2,3 -> 0.8125/0.844)
         assert a.system == "nial", "--l12-extra is for nial"
         sol = spec["solids"]; l12 = next(s_ for s_ in sol if s_["phase"] == "L12")
@@ -465,6 +476,8 @@ def main():
         name = (a.name or a.system + ml["tag"]) + ("_smoke" if a.smoke else "")
     if a.li_side:
         name += "_liside"
+    if a.fcc_sqs:
+        name += "_fccsqs"
     if a.b2_extra:
         name += "_b2ext"
     if a.l12_extra:

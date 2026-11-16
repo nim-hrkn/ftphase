@@ -112,3 +112,292 @@ ORCHID-Diagrams の評価 8 件（計算成功 7）。参照評価: `AlLi-20Lon`
 | NequIP-OAM-S | 920.0-930.0 |  |
 | DPA4-Plus-OMat24 | 750.0-760.0 |  |
 | DPA4-Plus-OMat24 | 810.0-820.0 |  |
+| DPA-4.1-Air-OAM | 820.0-830.0 |  |
+| DPA-4.1-Air-OAM | 880.0-890.0 |  |
+
+## Ni-Al (x = x_Ni)
+
+ORCHID-Diagrams の評価 13 件（計算成功 13）。参照評価: `AlNi-01Dup-4sl`。
+
+| assessment | status | phases | n_inv | source |
+|---|---|---|---|---|
+| AlNi-01Dup-4sl-old | ok | A1_FCC, A2_BCC, AL3NI2_D513, AL3NI5, AL3NI_D011, AL4NI3, B2_BCC, BCC_A2, FCC_4SL, FCC_A1, HCP_A3, LIQUID | 20 | N. Dupin, I. Ansara, B. Sundman, Calphad, 25, 279-98(2001). |
+| AlNi-01Dup-4sl | ok | A1_FCC, A2_BCC, AL3NI2_D513, AL3NI5, AL3NI_D011, AL4NI3, B2_BCC, BCC_A2, FCC_4SL, FCC_A1, HCP_A3, LIQUID | 17 | N. Dupin, I. Ansara, B. Sundman, Calphad, 25, 279-98(2001). |
+| AlNi-01Dup-LB | ok | A1_FCC, A2_BCC, AL3NI2_D513, AL3NI5, AL3NI_D011, AL4NI3, B2_BCC, BCC_A2, FCC_A1, HCP_A3, L12_FCC, LIQUID | 10 | N. Dupin, I. Ansara, B. Sundman, Calphad, 25, 279-98(2001). |
+| AlNi-01Dup-orig | ok | A1_FCC, A2_BCC, AL3NI2_D513, AL3NI5, AL3NI_D011, B2_BCC, BCC_A2, FCC_A1, HCP_A3, L12_FCC, LIQUID | 8 | N. Dupin, I. Ansara, B. Sundman, Calphad, 25, 279-98(2001). |
+| AlNi-03Sun | ok | A1_FCC, A2_BCC, AL3NI2_D513, AL3NI5, AL3NI_D011, B2_BCC, BCC_A2, FCC_4SL, FCC_A1, HCP_A3, LIQUID | 15 | B. Sundman, N. Dupin, JEEP 2003 Lyon. |
+| AlNi-04Oht | ok | AL3NI2_D513, AL3NI5, AL3NI_D011, B2_BCC, BCC_A2, FCC_A1, HCP_A3, L12_FCC, LIQUID | 8 | H. Ohtani, Y. Chen, M. Hasebe, Mater. Trans. (JIM), 45, 1489-98(2004). |
+| AlNi-05Mie | ok | AL3NI2_D513, AL3NI5, AL3NI_D011, ALNI3_L12, BCC_A2, FCC_A1, HCP_A3, LIQUID | 13 | J. Miettinen, Calphad, 29, 40-48(2005). |
+| AlNi-11Che | ok | A1_FCC, AL3NI2_D513, AL3NI5, AL3NI_D011, B2_BCC, BCC_A2, FCC_A1, HCP_A3, L12_FCC, LIQUID | 11 | H.-L. Chen, E. Doernberg, P. Svoboda, R. Schmid-Fetzer, Thermochim. Acta, 512, 189-95(2011). |
+| AlNi-14Zhu | ok | A1_FCC, AL3NI2_D513, AL3NI5, AL3NI_D011, B2_BCC, BCC_A2, FCC_A1, HCP_A3, L12_FCC, LIQUID | 8 | J. Zhu, M.S. Titus, T.M. Pollock, J. Phase Equilib. Diffus., 35, 595-611(2014). |
+| AlNi-22Yan | ok | A1_FCC, A2_BCC, AL3NI2_D513, AL3NI5, AL3NI_D011, AL4NI3, B2_BCC, BCC_A2, FCC_4SL, FCC_A1, HCP_A3, LIQUID | 15 | W. Yang, P. Wang, X. Huang, S. Zhang, Intermetallics, 149, 107647(2022). |
+| AlNi-88Ans | ok | AL3NI2_D513, AL3NI_D011, B2_BCC, HCP_A3, L12_FCC, LIQUID | 8 | I. Ansara, B. Sundman, P. Willemin, Acta Metall., 36, 977-82(1988). |
+| AlNi-97Ans | ok | A1_FCC, AL3NI2_D513, AL3NI5, AL3NI_D011, B2_BCC, BCC_A2, FCC_A1, HCP_A3, L12_FCC, LIQUID | 9 | I. Ansara, N. Dupin, H.L. Lukas, B. Sundman, J. Alloys Compd., 247, 20-30(1997). |
+| AlNi-98Hua | ok | A1_FCC, AL3NI2_D513, AL3NI5, AL3NI_D011, B2_BCC, BCC_A2, FCC_A1, HCP_A3, L12_FCC, LIQUID | 9 | W. Huang, Y.A. Chang, Intermet., 6, 487-98(1998). |
+
+図: `sgte_nial.png`, `overlay_nial.png`
+
+### 参照評価 `AlNi-01Dup-4sl` の不変反応（900-2010 K）
+
+| T (K) | phases (x ascending) | x |
+|---|---|---|
+| 1642.7 | LIQUID+FCC_4SL+FCC_4SL | 0.755, 0.760, 0.787 |
+| 1642.7 | LIQUID+FCC_4SL+FCC_A1 | 0.755, 0.760, 0.787 |
+| 1641.8 | B2_BCC+LIQUID+FCC_4SL | 0.710, 0.747, 0.752 |
+| 1638.2 | B2_BCC+LIQUID+FCC_4SL | 0.714, 0.751, 0.784 |
+| 1638.2 | B2_BCC+LIQUID+FCC_A1 | 0.714, 0.751, 0.784 |
+| 1400.7 | LIQUID+AL3NI2_D513+B2_BCC | 0.255, 0.400, 0.410 |
+| 1123.5 | LIQUID+AL3NI_D011+AL3NI2_D513 | 0.172, 0.250, 0.359 |
+| 975.2 | AL3NI2_D513+AL4NI3+B2_BCC | 0.407, 0.429, 0.460 |
+| 969.7 | B2_BCC+AL3NI5+FCC_4SL | 0.590, 0.625, 0.726 |
+| 914.8 | FCC_4SL+LIQUID+AL3NI_D011 | 0.002, 0.029, 0.250 |
+
+評価間のばらつき（全評価の不変反応、同じ温度窓）:
+
+| assessment | T (K) | phases |
+|---|---|---|
+| AlNi-01Dup-4sl-old | 1642.7 | LIQUID+FCC_4SL+FCC_4SL |
+| AlNi-01Dup-4sl-old | 1642.7 | LIQUID+FCC_4SL+FCC_A1 |
+| AlNi-01Dup-4sl-old | 1641.8 | B2_BCC+LIQUID+FCC_4SL |
+| AlNi-01Dup-4sl-old | 1638.2 | B2_BCC+LIQUID+FCC_4SL |
+| AlNi-01Dup-4sl-old | 1638.2 | B2_BCC+LIQUID+FCC_A1 |
+| AlNi-01Dup-4sl-old | 1400.7 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-01Dup-4sl-old | 1123.5 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-01Dup-4sl-old | 975.2 | AL3NI2_D513+AL4NI3+B2_BCC |
+| AlNi-01Dup-4sl-old | 914.8 | FCC_4SL+LIQUID+AL3NI_D011 |
+| AlNi-01Dup-4sl-old | 914.8 | FCC_A1+LIQUID+AL3NI_D011 |
+| AlNi-01Dup-4sl-old | 914.0 | B2_BCC+AL3NI5+FCC_4SL |
+| AlNi-01Dup-4sl | 1642.7 | LIQUID+FCC_4SL+FCC_4SL |
+| AlNi-01Dup-4sl | 1642.7 | LIQUID+FCC_4SL+FCC_A1 |
+| AlNi-01Dup-4sl | 1641.8 | B2_BCC+LIQUID+FCC_4SL |
+| AlNi-01Dup-4sl | 1638.2 | B2_BCC+LIQUID+FCC_4SL |
+| AlNi-01Dup-4sl | 1638.2 | B2_BCC+LIQUID+FCC_A1 |
+| AlNi-01Dup-4sl | 1400.7 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-01Dup-4sl | 1123.5 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-01Dup-4sl | 975.2 | AL3NI2_D513+AL4NI3+B2_BCC |
+| AlNi-01Dup-4sl | 969.7 | B2_BCC+AL3NI5+FCC_4SL |
+| AlNi-01Dup-4sl | 914.8 | FCC_4SL+LIQUID+AL3NI_D011 |
+| AlNi-01Dup-LB | 1642.7 | LIQUID+L12_FCC+FCC_A1 |
+| AlNi-01Dup-LB | 1641.8 | B2_BCC+LIQUID+L12_FCC |
+| AlNi-01Dup-LB | 1400.7 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-01Dup-LB | 1123.5 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-01Dup-LB | 975.2 | AL3NI2_D513+AL4NI3+B2_BCC |
+| AlNi-01Dup-LB | 914.8 | FCC_A1+LIQUID+AL3NI_D011 |
+| AlNi-01Dup-LB | 914.0 | B2_BCC+AL3NI5+L12_FCC |
+| AlNi-01Dup-orig | 1642.7 | LIQUID+L12_FCC+FCC_A1 |
+| AlNi-01Dup-orig | 1641.8 | B2_BCC+LIQUID+L12_FCC |
+| AlNi-01Dup-orig | 1400.7 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-01Dup-orig | 1123.5 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-01Dup-orig | 914.8 | FCC_A1+LIQUID+AL3NI_D011 |
+| AlNi-01Dup-orig | 914.0 | B2_BCC+AL3NI5+L12_FCC |
+| AlNi-03Sun | 1642.7 | LIQUID+FCC_4SL+FCC_4SL |
+| AlNi-03Sun | 1642.7 | LIQUID+FCC_4SL+FCC_A1 |
+| AlNi-03Sun | 1638.5 | B2_BCC+LIQUID+FCC_4SL |
+| AlNi-03Sun | 1563.5 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-03Sun | 1123.5 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-03Sun | 931.7 | B2_BCC+AL3NI5+FCC_4SL |
+| AlNi-03Sun | 914.8 | FCC_A1+LIQUID+AL3NI_D011 |
+| AlNi-03Sun | 914.8 | FCC_4SL+LIQUID+AL3NI_D011 |
+| AlNi-04Oht | 1616.8 | B2_BCC+LIQUID+FCC_A1 |
+| AlNi-04Oht | 1580.2 | B2_BCC+L12_FCC+FCC_A1 |
+| AlNi-04Oht | 1462.4 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-04Oht | 1110.1 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-04Oht | 1024.9 | B2_BCC+AL3NI5+L12_FCC |
+| AlNi-04Oht | 918.6 | FCC_A1+LIQUID+AL3NI_D011 |
+| AlNi-05Mie | 1643.1 | LIQUID+ALNI3_L12+FCC_A1 |
+| AlNi-05Mie | 1637.8 | BCC_A2+LIQUID+ALNI3_L12 |
+| AlNi-05Mie | 1407.1 | LIQUID+AL3NI2_D513+BCC_A2 |
+| AlNi-05Mie | 1124.8 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-05Mie | 972.5 | BCC_A2+AL3NI5+ALNI3_L12 |
+| AlNi-05Mie | 914.8 | FCC_A1+LIQUID+AL3NI_D011 |
+| AlNi-11Che | 1642.8 | LIQUID+L12_FCC+FCC_A1 |
+| AlNi-11Che | 1642.5 | B2_BCC+LIQUID+L12_FCC |
+| AlNi-11Che | 1407.3 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-11Che | 1134.8 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-11Che | 973.0 | B2_BCC+AL3NI5+L12_FCC |
+| AlNi-11Che | 915.1 | FCC_A1+LIQUID+AL3NI_D011 |
+| AlNi-11Che | 915.1 | L12_FCC+LIQUID+AL3NI_D011 |
+| AlNi-14Zhu | 1643.1 | LIQUID+L12_FCC+FCC_A1 |
+| AlNi-14Zhu | 1642.3 | B2_BCC+LIQUID+L12_FCC |
+| AlNi-14Zhu | 1412.2 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-14Zhu | 1127.0 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-14Zhu | 973.4 | B2_BCC+AL3NI5+L12_FCC |
+| AlNi-14Zhu | 924.4 | FCC_A1+LIQUID+AL3NI_D011 |
+| AlNi-22Yan | 1647.3 | LIQUID+FCC_4SL+FCC_4SL |
+| AlNi-22Yan | 1647.3 | LIQUID+FCC_4SL+FCC_A1 |
+| AlNi-22Yan | 1645.6 | B2_BCC+LIQUID+FCC_4SL |
+| AlNi-22Yan | 1642.0 | B2_BCC+LIQUID+FCC_4SL |
+| AlNi-22Yan | 1407.9 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-22Yan | 1137.0 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-22Yan | 972.5 | B2_BCC+AL3NI5+FCC_4SL |
+| AlNi-22Yan | 971.8 | AL3NI2_D513+AL4NI3+B2_BCC |
+| AlNi-22Yan | 916.5 | FCC_4SL+LIQUID+AL3NI_D011 |
+| AlNi-88Ans | 1662.2 | B2_BCC+L12_FCC+LIQUID |
+| AlNi-88Ans | 1657.8 | L12_FCC+LIQUID+L12_FCC |
+| AlNi-88Ans | 1434.8 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-88Ans | 1126.7 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-88Ans | 908.3 | L12_FCC+LIQUID+AL3NI_D011 |
+| AlNi-97Ans | 1643.4 | LIQUID+L12_FCC+FCC_A1 |
+| AlNi-97Ans | 1642.2 | B2_BCC+LIQUID+L12_FCC |
+| AlNi-97Ans | 1410.4 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-97Ans | 1123.5 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-97Ans | 972.5 | B2_BCC+AL3NI5+L12_FCC |
+| AlNi-97Ans | 914.8 | FCC_A1+LIQUID+AL3NI_D011 |
+| AlNi-97Ans | 914.8 | L12_FCC+LIQUID+AL3NI_D011 |
+| AlNi-98Hua | 1644.7 | LIQUID+L12_FCC+FCC_A1 |
+| AlNi-98Hua | 1642.3 | B2_BCC+LIQUID+L12_FCC |
+| AlNi-98Hua | 1417.0 | LIQUID+AL3NI2_D513+B2_BCC |
+| AlNi-98Hua | 1123.5 | LIQUID+AL3NI_D011+AL3NI2_D513 |
+| AlNi-98Hua | 995.4 | B2_BCC+AL3NI5+L12_FCC |
+| AlNi-98Hua | 919.2 | FCC_A1+LIQUID+AL3NI_D011 |
+
+### MLIP/EAM run の不変反応（07_invariants.tsv、同相区間の出入りを除く）
+
+| run | T bracket (K) | changed pairs |
+|---|---|---|
+| EAM Mishin 2009 (stage 5, solid TI) | 1030.0-1040.0 |  |
+| EAM Mishin 2009 (stage 5, solid TI) | 1640.0-1650.0 |  |
+| EAM Mishin 2009 (stage 5, solid TI) | 1690.0-1700.0 |  |
+| EAM Mishin 2009 (stage 5, solid TI) | 1790.0-1800.0 |  |
+| GRACE-FS-OAM (QHA solids) | 1040.0-1050.0 |  |
+| GRACE-FS-OAM (QHA solids) | 1090.0-1100.0 |  |
+| GRACE-FS-OAM (QHA solids) | 1180.0-1190.0 |  |
+| GRACE-FS-OAM (QHA solids) | 1290.0-1300.0 |  |
+| GRACE-FS-OAM (QHA solids) | 1530.0-1540.0 |  |
+| GRACE-FS-OAM (QHA solids) | 1670.0-1680.0 |  |
+| GRACE-FS-OAM (QHA solids) | 1730.0-1740.0 |  |
+| GRACE-FS-OAM (QHA solids) | 1800.0-1810.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1030.0-1040.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1090.0-1100.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1180.0-1190.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1280.0-1290.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1290.0-1300.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1440.0-1450.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1480.0-1490.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1510.0-1520.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1540.0-1550.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1590.0-1600.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1650.0-1660.0 |  |
+| GRACE-1L-OMAT (QHA solids) | 1040.0-1050.0 |  |
+| GRACE-1L-OMAT (QHA solids) | 1090.0-1100.0 |  |
+| GRACE-1L-OMAT (QHA solids) | 1630.0-1640.0 |  |
+| GRACE-1L-OMAT (QHA solids) | 1660.0-1670.0 |  |
+| GRACE-1L-OMAT (QHA solids) | 1690.0-1700.0 |  |
+| GRACE-1L-OMAT (QHA solids) | 1730.0-1740.0 |  |
+| GRACE-1L-OMAT (QHA solids) | 1760.0-1770.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1080.0-1090.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1090.0-1100.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1110.0-1120.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1370.0-1380.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1590.0-1600.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1610.0-1620.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1710.0-1720.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1790.0-1800.0 |  |
+| SevenNet-0 (QHA solids) | 1240.0-1250.0 |  |
+| SevenNet-0 (QHA solids) | 1250.0-1260.0 |  |
+| SevenNet-0 (QHA solids) | 1350.0-1360.0 |  |
+| SevenNet-0 (QHA solids) | 1440.0-1450.0 |  |
+| SevenNet-0 (QHA solids) | 1450.0-1460.0 |  |
+| SevenNet-0 (QHA solids) | 1490.0-1500.0 |  |
+| SevenNet-0 (QHA solids) | 1680.0-1690.0 |  |
+| SevenNet-0 (+TI ends) | 970.0-980.0 |  |
+| SevenNet-0 (+TI ends) | 980.0-990.0 |  |
+| SevenNet-0 (+TI ends) | 1010.0-1020.0 |  |
+| SevenNet-0 (+TI ends) | 1090.0-1100.0 |  |
+| SevenNet-0 (+TI ends) | 1280.0-1290.0 |  |
+| SevenNet-0 (+TI ends) | 1290.0-1300.0 |  |
+| SevenNet-0 (+TI ends) | 1310.0-1320.0 |  |
+| SevenNet-0 (+TI ends) | 1350.0-1360.0 |  |
+| SevenNet-0 (+TI ends) | 1460.0-1470.0 |  |
+| SevenNet-0 (+TI ends) | 1490.0-1500.0 |  |
+| SevenNet-0 (+TI ends) | 1560.0-1570.0 |  |
+
+## Pt-Rh (x = x_Rh)
+
+ORCHID-Diagrams の評価 3 件（計算成功 3）。参照評価: `PtRh-98Jac`。
+
+| assessment | status | phases | n_inv | source |
+|---|---|---|---|---|
+| PtRh-02Mam | ok | BCC_A2, FCC_A1, HCP_A3, LIQUID | 0 | M.N. Mamontov, Russ. J. Phys. Chem., 76, 20-23(2002). |
+| PtRh-98Jac | ok | BCC_A2, FCC_A1, HCP_A3, LIQUID | 0 | K.T. Jacob, S. Priya, Y. Waseda, Metall. Mater. Trans. A, 29, 1545-50(1998). |
+| PtRh-98Spe-LB | ok | BCC_A2, FCC_A1, HCP_A3, LIQUID | 0 | P.J. Spencer, unpublished work, 1998. |
+
+図: `sgte_ptrh.png`, `overlay_ptrh.png`
+
+### 参照評価 `PtRh-98Jac` の不変反応（1700-2410 K）
+
+| T (K) | phases (x ascending) | x |
+|---|---|---|
+
+評価間のばらつき（全評価の不変反応、同じ温度窓）:
+
+| assessment | T (K) | phases |
+|---|---|---|
+
+### MLIP/EAM run の不変反応（07_invariants.tsv、同相区間の出入りを除く）
+
+| run | T bracket (K) | changed pairs |
+|---|---|---|
+| GRACE-2L-OMAT (QHA solids, liquid 1910-2400 K) | 1990.0-2000.0 |  |
+| GRACE-2L-OMAT (QHA solids, liquid 1910-2400 K) | 2030.0-2040.0 |  |
+| GRACE-2L-OMAT (QHA solids, liquid 1910-2400 K) | 2090.0-2100.0 |  |
+| NequIP-OAM-M | 2220.0-2230.0 |  |
+| MACE-MPA-0 | 2090.0-2100.0 |  |
+| SevenNet-MF-ompa | 1930.0-1940.0 |  |
+| SevenNet-MF-ompa | 2090.0-2100.0 |  |
+| GRACE-2L-OMAT (+2048-atom TI ends) | 1970.0-1980.0 |  |
+| GRACE-2L-OMAT (+2048-atom TI ends) | 2160.0-2170.0 |  |
+| NequIP-OAM-M (+TI ends) | 2260.0-2270.0 |  |
+| MACE-MPA-0 (+TI ends) | 2040.0-2050.0 |  |
+
+## Ag-Cu
+
+ORCHID-Diagrams の評価 6 件（計算成功 6）。参照評価: `AgCu-04Wit-LB`。
+
+| assessment | status | phases | n_inv | source |
+|---|---|---|---|---|
+| AgCu-00Moo | ok | BCC_A2, FCC_A1, HCP_A3, LIQUID | 1 | K.-W. Moon, W.J. Boettinger, U.R. Kattner, F.S. Biancaniello, C.A. Handwerker, J. Electron. Mater., 29, 1122-36(2000). |
+| AgCu-04Wit-LB | ok | BCC_A2, FCC_A1, HCP_A3, LIQUID | 1 | V.T. Witusiewicz, U. Hecht, S.G. Fries, S. Rex, J. Alloys Compd. 385, 133-43(2004). |
+| AgCu-06He | ok | BCC_A2, FCC_A1, HCP_A3, LIQUID | 1 | X.C. He, H. Wang, H.S. Liu, Z.P. Jin, Calphad, 30, 367-74(2006). |
+| AgCu-86Hay | ok | BCC_A2, FCC_A1, HCP_A3, LIQUID | 1 | F.H. Hayes, H.L. Lukas, G. Effenberg, G. Petzow, Z. Metallkd., 77, 749-54(1986). |
+| AgCu-88Joe | ok | BCC_A2, FCC_A1, HCP_A3, LIQUID | 1 | B. Joensson, J. Agren, J. Less-Common Met., 145, 153-66(1988). |
+| AgCu-98Luk | ok | BCC_A2, FCC_A1, HCP_A3, LIQUID | 1 | H.L. Lukas, unpublished, 1998. |
+
+図: `sgte_agcu.png`, `overlay_agcu.png`
+
+### 参照評価 `AgCu-04Wit-LB` の不変反応（1000-1410 K）
+
+| T (K) | phases (x ascending) | x |
+|---|---|---|
+| 1053.4 | FCC_A1+LIQUID+FCC_A1 | 0.121, 0.398, 0.953 |
+
+評価間のばらつき（全評価の不変反応、同じ温度窓）:
+
+| assessment | T (K) | phases |
+|---|---|---|
+| AgCu-00Moo | 1052.3 | FCC_A1+LIQUID+FCC_A1 |
+| AgCu-04Wit-LB | 1053.4 | FCC_A1+LIQUID+FCC_A1 |
+| AgCu-06He | 1055.8 | FCC_A1+LIQUID+FCC_A1 |
+| AgCu-86Hay | 1056.0 | FCC_A1+LIQUID+FCC_A1 |
+| AgCu-88Joe | 1053.7 | FCC_A1+LIQUID+FCC_A1 |
+| AgCu-98Luk | 1053.0 | FCC_A1+LIQUID+FCC_A1 |
+
+### MLIP/EAM run の不変反応（07_invariants.tsv、同相区間の出入りを除く）
+
+| run | T bracket (K) | changed pairs |
+|---|---|---|
+| EAM WMH 2006 (2048-atom solid TI) | 1140.0-1150.0 |  |
+| EAM WMH 2006 (2048-atom solid TI) | 1150.0-1160.0 |  |
+| EAM WMH 2006 (2048-atom solid TI) | 1190.0-1200.0 |  |
+| EAM WMH 2006 (256-atom TI) | 1170.0-1180.0 |  |
+| GRACE-FS-OAM (QHA) | 1110.0-1120.0 |  |
+| GRACE-FS-OAM (QHA) | 1310.0-1320.0 |  |
+| GRACE-FS-OAM (+TI ends) | 890.0-900.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1010.0-1020.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1100.0-1110.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1140.0-1150.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1150.0-1160.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1180.0-1190.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 930.0-940.0 |  |
+| SevenNet-0 (QHA) | 1240.0-1250.0 |  |
+| SevenNet-0 (+TI ends) | 890.0-900.0 |  |

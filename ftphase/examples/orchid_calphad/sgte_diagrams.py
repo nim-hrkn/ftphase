@@ -73,7 +73,9 @@ SYSTEMS = OrderedDict(
 )
 
 PALETTE = ["#5b9bd5", "#70ad47", "#f4a259", "#a05195", "#d45087", "#888888", "#2f4b7c", "#ffa600", "#665191", "#003f5c",
-           "#8dd3c7", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9", "#bc80bd", "#ccebc5"]
+           "#8dd3c7", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9", "#bc80bd", "#ccebc5",
+           # 2026-11-15: the Al-Li overlay has more than 20 field names (CALPHAD + run names); without these the colours repeated
+           "#1b9e77", "#e7298a", "#7570b3", "#a6761d", "#17becf", "#b15928", "#6a3d9a", "#e31a1c", "#b2df8a", "#525252", "#f781bf", "#01665e"]
 
 
 def norm(name):

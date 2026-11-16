@@ -1,0 +1,12 @@
+{
+ "pk": 16577,
+ "uuid": "e5bf6386-7efb-4774-b9b5-6c2d81992465",
+ "name": "alli_dpa41_air_oam_fccsqs_solid",
+ "profile": "ftphase",
+ "submitted": "2026-11-15 19:30:57",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden5",
+ "qha_computer": "mygarden5",
+ "mlip": "dpa4.1-air-oam"
+}

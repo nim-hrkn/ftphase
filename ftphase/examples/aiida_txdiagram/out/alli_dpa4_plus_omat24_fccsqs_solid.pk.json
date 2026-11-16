@@ -1,0 +1,12 @@
+{
+ "pk": 16564,
+ "uuid": "8f604a08-e66c-40ae-978f-22f8489da00d",
+ "name": "alli_dpa4_plus_omat24_fccsqs_solid",
+ "profile": "ftphase",
+ "submitted": "2026-11-15 19:30:55",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden5",
+ "qha_computer": "mygarden5",
+ "mlip": "dpa4-plus-omat24"
+}

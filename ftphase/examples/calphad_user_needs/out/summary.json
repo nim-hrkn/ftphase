@@ -1,0 +1,244 @@
+{
+ "sgte": {
+  "MLIP references (example 6)": {
+   "fcc+liquid_highest_T_K": 890.0,
+   "fcc+B32_highest_T_K (eutectic below +10)": 760.0,
+   "B32+liquid_highest_T_K": 850.0,
+   "regions_800K": "fcc(0.095)+liquid(0.266); liquid(0.368)+B32(0.487); B32(0.562)+liquid(0.655)",
+   "regions_700K": "fcc(0.075)+B32(0.486); B32(0.562)+Al2Li3(0.600); Al2Li3(0.600)+liquid(0.723)",
+   "invariants": [
+    [
+     670.0,
+     680.0
+    ],
+    [
+     710.0,
+     720.0
+    ],
+    [
+     750.0,
+     760.0
+    ],
+    [
+     760.0,
+     770.0
+    ],
+    [
+     840.0,
+     850.0
+    ],
+    [
+     850.0,
+     860.0
+    ],
+    [
+     890.0,
+     900.0
+    ]
+   ]
+  },
+  "SGTE pure-element references": {
+   "fcc+liquid_highest_T_K": 920.0,
+   "fcc+B32_highest_T_K (eutectic below +10)": 800.0,
+   "B32+liquid_highest_T_K": 890.0,
+   "regions_800K": "fcc(0.186)+B32(0.480); B32(0.562)+liquid(0.690)",
+   "regions_700K": "fcc(0.075)+B32(0.486); B32(0.562)+Al2Li3(0.600); Al2Li3(0.600)+Al4Li9(0.692); Al4Li9(0.692)+liquid(0.753)",
+   "invariants": [
+    [
+     700.0,
+     710.0
+    ],
+    [
+     740.0,
+     750.0
+    ],
+    [
+     750.0,
+     760.0
+    ],
+    [
+     800.0,
+     810.0
+    ],
+    [
+     880.0,
+     890.0
+    ],
+    [
+     890.0,
+     900.0
+    ],
+    [
+     920.0,
+     930.0
+    ]
+   ]
+  },
+  "shift_SGTE_minus_MLIP_meV": {
+   "Al liquid": {
+    "700": 6.46,
+    "900": 4.48,
+    "1100": 3.84
+   },
+   "Li liquid": {
+    "700": 4.43,
+    "900": 7.01,
+    "1100": 9.06
+   }
+  },
+  "experiment": {
+   "Al melting": 933.5,
+   "eutectic": 875,
+   "B32 congruent": "about 970-990 (assessment 975)"
+  }
+ },
+ "fcc_solvus": {
+  "stable (all solids)": [
+   [
+    300.0,
+    0.0002,
+    "Al3Li"
+   ],
+   [
+    400.0,
+    0.0021,
+    "B32"
+   ],
+   [
+    500.0,
+    0.0084,
+    "B32"
+   ],
+   [
+    600.0,
+    0.0252,
+    "B32"
+   ],
+   [
+    700.0,
+    0.0754,
+    "B32"
+   ]
+  ],
+  "B32 suppressed: fcc + Al3Li": [
+   [
+    300.0,
+    0.0002,
+    "Al3Li"
+   ],
+   [
+    400.0,
+    0.0022,
+    "Al3Li"
+   ],
+   [
+    500.0,
+    0.0106,
+    "Al3Li"
+   ],
+   [
+    600.0,
+    0.044,
+    "Al3Li"
+   ]
+  ]
+ },
+ "no_compounds": {
+  "650": "fcc(0.250)+liquid(0.420)",
+  "700": "fcc(0.250)+liquid(0.390)",
+  "760": "fcc(0.170)+liquid(0.322)",
+  "800": "fcc(0.095)+liquid(0.266)",
+  "850": "fcc(0.040)+liquid(0.124)"
+ },
+ "curvature": {
+  "B32 (anti-site cells + sublattice entropy, example 6)": {
+   "300": {
+    "d2G_dx2_eV": 14.579,
+    "d2G_dx2_kJ_mol": 1406.6,
+    "dG_dx_eV": 1.4388,
+    "range": [
+     0.438,
+     0.562
+    ]
+   },
+   "500": {
+    "d2G_dx2_eV": 10.971,
+    "d2G_dx2_kJ_mol": 1058.5,
+    "dG_dx_eV": 1.4858,
+    "range": [
+     0.438,
+     0.562
+    ]
+   },
+   "700": {
+    "d2G_dx2_eV": 7.276,
+    "d2G_dx2_kJ_mol": 702.0,
+    "dG_dx_eV": 1.531,
+    "range": [
+     0.438,
+     0.562
+    ]
+   }
+  },
+  "Al3Li (L1_2), Wagner-Schottky from 4 static ACE defect cells (108 sites)": {
+   "defect_energies_raw_eV": {
+    "B_on_A": 1.6233,
+    "A_on_B": -1.1474,
+    "Va_on_A": 4.2612,
+    "Va_on_B": 2.7637
+   },
+   "cells": [
+    [
+     "perfect",
+     0.25,
+     -3.142258,
+     108
+    ],
+    [
+     "Li on Al site",
+     0.25926,
+     -3.127227,
+     108
+    ],
+    [
+     "Al on Li site",
+     0.24074,
+     -3.152882,
+     108
+    ],
+    [
+     "Al vacancy",
+     0.25234,
+     -3.131801,
+     107
+    ],
+    [
+     "Li vacancy",
+     0.24299,
+     -3.145796,
+     107
+    ]
+   ],
+   "T": {
+    "300": {
+     "d2G_dx2_eV": 19.16,
+     "d2G_dx2_kJ_mol": 1848.0,
+     "dG_dx_at_stoich_eV": 1.371,
+     "parabola_rms_meV_within_0.012": 0.083
+    },
+    "500": {
+     "d2G_dx2_eV": 8.82,
+     "d2G_dx2_kJ_mol": 851.0,
+     "dG_dx_at_stoich_eV": 1.3614,
+     "parabola_rms_meV_within_0.012": 0.014
+    },
+    "700": {
+     "d2G_dx2_eV": 3.64,
+     "d2G_dx2_kJ_mol": 351.0,
+     "dG_dx_at_stoich_eV": 1.3514,
+     "parabola_rms_meV_within_0.012": 0.001
+    }
+   }
+  }
+ }
+}

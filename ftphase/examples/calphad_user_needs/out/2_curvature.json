@@ -1,0 +1,221 @@
+{
+ "Al3Li (L1_2)": {
+  "sites": 108,
+  "x0": 0.25,
+  "inequivalent_sites": 2,
+  "defect_energies_raw_eV": {
+   "A_on_B": -1.1474,
+   "Va_on_B": 2.7637,
+   "B_on_A": 1.6233,
+   "Va_on_A": 4.2612
+  },
+  "cells": [
+   [
+    "Li site 0 (x1)",
+    "antisite",
+    -1.1474
+   ],
+   [
+    "Li site 0 (x1)",
+    "vacancy",
+    2.7637
+   ],
+   [
+    "Al site 1 (x3)",
+    "antisite",
+    1.6233
+   ],
+   [
+    "Al site 1 (x3)",
+    "vacancy",
+    4.2612
+   ]
+  ],
+  "T": {
+   "300": {
+    "d2G_dx2_eV": 19.16,
+    "d2G_dx2_kJ_mol": 1848.0,
+    "dG_dx_eV": 1.371,
+    "parabola_rms_meV_within_0.012": 0.083
+   },
+   "500": {
+    "d2G_dx2_eV": 8.82,
+    "d2G_dx2_kJ_mol": 851.0,
+    "dG_dx_eV": 1.3614,
+    "parabola_rms_meV_within_0.012": 0.014
+   },
+   "700": {
+    "d2G_dx2_eV": 3.64,
+    "d2G_dx2_kJ_mol": 351.0,
+    "dG_dx_eV": 1.3514,
+    "parabola_rms_meV_within_0.012": 0.001
+   }
+  }
+ },
+ "Al2Li3 (R-3m)": {
+  "sites": 135,
+  "x0": 0.6,
+  "inequivalent_sites": 3,
+  "defect_energies_raw_eV": {
+   "A_on_B": -1.2116,
+   "Va_on_B": 2.4906,
+   "B_on_A": 2.0441,
+   "Va_on_A": 4.4695
+  },
+  "cells": [
+   [
+    "Li site 0 (x6)",
+    "antisite",
+    -1.2116
+   ],
+   [
+    "Li site 0 (x6)",
+    "vacancy",
+    2.5095
+   ],
+   [
+    "Li site 6 (x3)",
+    "antisite",
+    -1.0903
+   ],
+   [
+    "Li site 6 (x3)",
+    "vacancy",
+    2.4906
+   ],
+   [
+    "Al site 9 (x6)",
+    "antisite",
+    2.0441
+   ],
+   [
+    "Al site 9 (x6)",
+    "vacancy",
+    4.4695
+   ]
+  ],
+  "T": {
+   "300": {
+    "d2G_dx2_eV": 45.53,
+    "d2G_dx2_kJ_mol": 4393.0,
+    "dG_dx_eV": 1.6331,
+    "parabola_rms_meV_within_0.012": 0.243
+   },
+   "500": {
+    "d2G_dx2_eV": 34.06,
+    "d2G_dx2_kJ_mol": 3286.0,
+    "dG_dx_eV": 1.6367,
+    "parabola_rms_meV_within_0.012": 0.152
+   },
+   "700": {
+    "d2G_dx2_eV": 22.78,
+    "d2G_dx2_kJ_mol": 2198.0,
+    "dG_dx_eV": 1.6402,
+    "parabola_rms_meV_within_0.012": 0.068
+   }
+  }
+ },
+ "Al4Li9 (C2/m)": {
+  "sites": 104,
+  "x0": 0.69231,
+  "inequivalent_sites": 7,
+  "defect_energies_raw_eV": {
+   "A_on_B": -1.7173,
+   "Va_on_B": 2.4608,
+   "B_on_A": 2.2944,
+   "Va_on_A": 4.6294
+  },
+  "cells": [
+   [
+    "Li site 0 (x4)",
+    "antisite",
+    -1.6063
+   ],
+   [
+    "Li site 0 (x4)",
+    "vacancy",
+    2.5332
+   ],
+   [
+    "Li site 4 (x4)",
+    "antisite",
+    -1.7173
+   ],
+   [
+    "Li site 4 (x4)",
+    "vacancy",
+    2.4608
+   ],
+   [
+    "Li site 8 (x4)",
+    "antisite",
+    -1.5885
+   ],
+   [
+    "Li site 8 (x4)",
+    "vacancy",
+    2.5596
+   ],
+   [
+    "Li site 12 (x4)",
+    "antisite",
+    -1.3693
+   ],
+   [
+    "Li site 12 (x4)",
+    "vacancy",
+    2.468
+   ],
+   [
+    "Li site 16 (x2)",
+    "antisite",
+    -1.5758
+   ],
+   [
+    "Li site 16 (x2)",
+    "vacancy",
+    2.5629
+   ],
+   [
+    "Al site 18 (x4)",
+    "antisite",
+    2.2944
+   ],
+   [
+    "Al site 18 (x4)",
+    "vacancy",
+    4.6294
+   ],
+   [
+    "Al site 22 (x4)",
+    "antisite",
+    2.3135
+   ],
+   [
+    "Al site 22 (x4)",
+    "vacancy",
+    4.7204
+   ]
+  ],
+  "T": {
+   "300": {
+    "d2G_dx2_eV": 26.53,
+    "d2G_dx2_kJ_mol": 2559.0,
+    "dG_dx_eV": 2.0165,
+    "parabola_rms_meV_within_0.012": 0.128
+   },
+   "500": {
+    "d2G_dx2_eV": 15.38,
+    "d2G_dx2_kJ_mol": 1484.0,
+    "dG_dx_eV": 2.0235,
+    "parabola_rms_meV_within_0.012": 0.044
+   },
+   "700": {
+    "d2G_dx2_eV": 7.01,
+    "d2G_dx2_kJ_mol": 676.0,
+    "dG_dx_eV": 2.0307,
+    "parabola_rms_meV_within_0.012": 0.005
+   }
+  }
+ }
+}
