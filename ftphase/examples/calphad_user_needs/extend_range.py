@@ -82,19 +82,32 @@ def report():
     S = {"cells": {k: {q: v[q] for q in ("phase", "x", "E0_eV_per_atom", "disp_rms_A", "disp_max_A", "n_imag_modes", "imag_weight_fraction") if q in v} for k, v in st.items()},
          "excluded_as_unstable": sorted(bad), "composition_range_after": rng}
     FITS = {"fcc": "poly", "bcc": "poly", "liquid": "rk", "B32": "spline"}; kw = dict(fit="spline", fits=FITS, poly_order=3, poly_orders={"liquid": 4, "fcc": 4, "bcc": 4})
+    cf = os.path.join(OUT, "2_curvature.json"); CURV = json.load(open(cf)) if os.path.exists(cf) else {}
+    WS = {k: v for k, v in {"Al3Li": ("Al3Li (L1_2)", (3, 1)), "Al2Li3": ("Al2Li3 (R-3m)", (2, 3)), "Al4Li9": ("Al4Li9 (C2/m)", (4, 9))}.items() if v[0] in CURV}
     fig, axes = plt.subplots(1, 3, figsize=(14, 4.4)); S["spinodal"] = {}
     for ax, T in zip(axes[:2], (500.0, 800.0)):
         Ts = np.array([T]); ti = interpolate_T(tab, Ts); ph = builder_from_table(ti, **kw)(T)
         gA = float(ti.df[(ti.df.phase == "fcc") & (ti.df.x < 1e-6)]["G"].iloc[0]); gB = float(ti.df[(ti.df.phase == "bcc") & (ti.df.x > 1 - 1e-6)]["G"].iloc[0]); ref = lambda x: (1 - x) * gA + x * gB
         for p in ph:
             if hasattr(p, "x0"):
-                ax.plot([p.x0], [(p.g0 - ref(p.x0)) * 1000], "o", ms=6, label=p.name); continue
+                (pt,) = ax.plot([p.x0], [(p.g0 - ref(p.x0)) * 1000], "o", ms=6, label=p.name)
+                if p.name in WS:      # the compound is not a point: G(x) around stoichiometry from its point defects (curvature_compounds.py, Fig. 18)
+                    from ftphase.configurational import wagner_schottky_curve
+                    key, sc = WS[p.name]; xw = np.linspace(p.x0 - 0.04, p.x0 + 0.04, 81)
+                    gw = np.array(wagner_schottky_curve(xw, T, sc, CURV[key]["defect_energies_raw_eV"], g0_atom=0.0)); g00 = float(np.interp(p.x0, xw, gw))
+                    ax.plot(xw, (p.g0 + gw - g00 - ref(xw)) * 1000, "-", color=pt.get_color(), lw=1.4)
+                continue
             xs, g = p.sample(); (ln,) = ax.plot(xs, (g - ref(xs)) * 1000, lw=1.7, label=f"{p.name} ({p.x_min:.2f}-{p.x_max:.2f})")
             pts = ti.df[ti.df.phase == p.name]; ax.plot(pts.x, (pts.G - ref(pts.x)) * 1000, ".", color=ln.get_color(), ms=5)
             if p.name in ("fcc", "bcc"):
                 h = 0.01; xx = np.linspace(p.x_min + h, p.x_max - h, 400); d2 = (p.g(xx + h) - 2 * p.g(xx) + p.g(xx - h)) / h ** 2; neg = xx[d2 < 0]
                 S["spinodal"].setdefault(p.name, {})[int(T)] = [round(float(neg.min()), 3), round(float(neg.max()), 3)] if len(neg) else None
-        ax.set(xlabel="x_Li", ylabel="G - [(1-x) G(fcc Al) + x G(bcc Li)]  (meV/atom)", title=f"{T:.0f} K: fcc and bcc now over the whole range (dots = computed cells)"); ax.legend(fontsize=7); ax.title.set_fontsize(9)
+        # equilibrium = lower convex hull of all G(x); not drawn (it made the figure hard to read), only its two-phase segments are recorded
+        from ftphase.equilibrium import lower_hull
+        pts, labs, idx = lower_hull(ph); hx = pts[idx, 0]; o = np.argsort(hx); hx = hx[o]; hl = [labs[i] for i in np.asarray(idx)[o]]
+        segs = [(hl[i], round(float(hx[i]), 3), hl[i + 1], round(float(hx[i + 1]), 3)) for i in range(len(hx) - 1) if hl[i] != hl[i + 1] or hx[i + 1] - hx[i] > 0.02]
+        S.setdefault("hull_two_phase_segments", {})[int(T)] = segs
+        ax.set(xlabel="x_Li", ylabel="G - [(1-x) G(fcc Al) + x G(bcc Li)]  (meV/atom)", title=f"{T:.0f} K: G(x) of every phase (dots = computed cells)"); ax.legend(fontsize=7); ax.title.set_fontsize(9)
     # metastable diagram of the solutions only (no compounds)
     Th = np.arange(300.0, 1100.1, 10.0); ti = interpolate_T(FreeEnergyTable.from_dataframe(df[df.phase.isin(["fcc", "bcc", "liquid"])], old.meta), Th)
     cov = ti.df[ti.df.phase == "liquid"].groupby("T")["x"].agg(["min", "max", "size"]); okT = set(cov[(cov["min"] < 1e-6) & (cov["max"] > 1 - 1e-6) & (cov["size"] >= 6)].index)
@@ -105,7 +118,7 @@ def report():
         key = "+".join(sorted([row.phase_a, row.phase_b])); c = cols.setdefault(key, f"C{len(cols)}")
         ax.fill_between([min(row.x_a, row.x_b), max(row.x_a, row.x_b)], row.T - 5, row.T + 5, color=c, lw=0, label=key)
     hl = dict(zip(*ax.get_legend_handles_labels()[::-1])); ax.legend(hl.values(), hl.keys(), fontsize=7)
-    ax.set(xlim=(0, 1), ylim=(300, 1100), xlabel="x_Li", ylabel="T (K)", title="metastable diagram of the solutions only (fcc, bcc, liquid; no compounds)"); ax.title.set_fontsize(9)
+    ax.set(xlim=(0, 1), ylim=(300, 1100), xlabel="x_Li", ylabel="T (K)", title="metastable diagram: solutions only (no compounds)"); ax.title.set_fontsize(8.5)
     S["solutions_only_regions"] = {int(T): "; ".join(f"{q.phase_a}({q.x_a:.3f})+{q.phase_b}({q.x_b:.3f})" for q in r[np.isclose(r["T"], T)].itertuples()) for T in (400.0, 600.0, 800.0)}
     fig.tight_layout(); fig.savefig(os.path.join(OUT, "1_full_range.png"), dpi=150); json.dump(S, open(os.path.join(OUT, "1_full_range.json"), "w"), indent=1, default=str)
     tab.to_tsv(os.path.join(OUT, "1_full_range_table.tsv")); print(json.dumps({k: S[k] for k in ("excluded_as_unstable", "composition_range_after", "spinodal", "solutions_only_regions")}, indent=1, default=str))
