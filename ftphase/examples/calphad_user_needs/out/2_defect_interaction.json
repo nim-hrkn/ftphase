@@ -1,0 +1,116 @@
+{
+ "Li on Al site (Li-rich side)": {
+  "single_defect_eV": 1.6233,
+  "cells": [
+   {
+    "n_defects": 1,
+    "x_Li": 0.2593,
+    "E_minus_perfect_eV": [
+     1.6233
+    ],
+    "mean_per_defect_eV": 1.6233,
+    "deviation_from_n_times_single_meV_per_atom": 0.0,
+    "spread_meV_per_atom": 0.0
+   },
+   {
+    "n_defects": 2,
+    "x_Li": 0.2685,
+    "E_minus_perfect_eV": [
+     3.2294,
+     3.2516,
+     3.2445,
+     3.2445,
+     3.2516
+    ],
+    "mean_per_defect_eV": 1.6222,
+    "deviation_from_n_times_single_meV_per_atom": -0.021,
+    "spread_meV_per_atom": 0.075
+   },
+   {
+    "n_defects": 3,
+    "x_Li": 0.2778,
+    "E_minus_perfect_eV": [
+     4.8623,
+     4.8679,
+     4.8715,
+     4.871,
+     4.8631
+    ],
+    "mean_per_defect_eV": 1.6224,
+    "deviation_from_n_times_single_meV_per_atom": -0.025,
+    "spread_meV_per_atom": 0.036
+   },
+   {
+    "n_defects": 4,
+    "x_Li": 0.287,
+    "E_minus_perfect_eV": [
+     6.4931,
+     6.5104,
+     6.4715,
+     6.5199,
+     6.4892
+    ],
+    "mean_per_defect_eV": 1.6242,
+    "deviation_from_n_times_single_meV_per_atom": 0.034,
+    "spread_meV_per_atom": 0.157
+   }
+  ]
+ },
+ "Al on Li site (Al-rich side)": {
+  "single_defect_eV": -1.1474,
+  "cells": [
+   {
+    "n_defects": 1,
+    "x_Li": 0.2407,
+    "E_minus_perfect_eV": [
+     -1.1474
+    ],
+    "mean_per_defect_eV": -1.1474,
+    "deviation_from_n_times_single_meV_per_atom": 0.0,
+    "spread_meV_per_atom": 0.0
+   },
+   {
+    "n_defects": 2,
+    "x_Li": 0.2315,
+    "E_minus_perfect_eV": [
+     -2.2992,
+     -2.3083,
+     -2.2992,
+     -2.3108,
+     -2.2992
+    ],
+    "mean_per_defect_eV": -1.1517,
+    "deviation_from_n_times_single_meV_per_atom": -0.079,
+    "spread_meV_per_atom": 0.048
+   },
+   {
+    "n_defects": 3,
+    "x_Li": 0.2222,
+    "E_minus_perfect_eV": [
+     -3.467,
+     -3.467,
+     -3.4761,
+     -3.4785,
+     -3.4644
+    ],
+    "mean_per_defect_eV": -1.1569,
+    "deviation_from_n_times_single_meV_per_atom": -0.263,
+    "spread_meV_per_atom": 0.052
+   },
+   {
+    "n_defects": 4,
+    "x_Li": 0.213,
+    "E_minus_perfect_eV": [
+     -4.6365,
+     -4.6365,
+     -4.6621,
+     -4.6497,
+     -4.6365
+    ],
+    "mean_per_defect_eV": -1.1611,
+    "deviation_from_n_times_single_meV_per_atom": -0.506,
+    "spread_meV_per_atom": 0.095
+   }
+  ]
+ }
+}
