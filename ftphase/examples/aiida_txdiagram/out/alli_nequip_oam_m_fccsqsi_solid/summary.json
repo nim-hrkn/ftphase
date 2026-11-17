@@ -1,0 +1,104 @@
+{
+ "started": "2026-11-17 00:53:29",
+ "solids_used": [
+  "s00_fcc",
+  "s01_fcc",
+  "s02_fcc",
+  "s03_fcc",
+  "s04_fcc",
+  "s05_Al3Li",
+  "s06_B32",
+  "s07_B32",
+  "s08_B32"
+ ],
+ "solids_missing": [],
+ "liquids_used": [],
+ "liquids_missing": [
+  "lqd_x0_00",
+  "lqd_x0_10",
+  "lqd_x0_20",
+  "lqd_x0_30",
+  "lqd_x0_40",
+  "lqd_x0_50"
+ ],
+ "liquid_x_available": [],
+ "liquid_runs_per_x": {},
+ "liquid_T_min_K": {},
+ "table_check": [],
+ "liquid_T_range_K": null,
+ "T_grid": [
+  300.0,
+  1100.0,
+  81
+ ],
+ "pure_A_melting_bracket_K": null,
+ "invariants": [
+  {
+   "T_low": 350.0,
+   "T_high": 360.0,
+   "pairs_below": [
+    "Al3Li+B32",
+    "Al3Li+fcc"
+   ],
+   "pairs_above": [
+    "B32+fcc"
+   ]
+  }
+ ],
+ "regions_at_700K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.15686406669911,
+   "phase_b": "B32",
+   "x_b": 0.49696099184743
+  }
+ ],
+ "regions_at_800K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.22727369405309,
+   "phase_b": "B32",
+   "x_b": 0.49767077896017
+  }
+ ],
+ "regions_at_900K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.25,
+   "phase_b": "B32",
+   "x_b": 0.4996875
+  }
+ ],
+ "regions_at_1000K": [
+  {
+   "phase_a": "fcc",
+   "x_a": 0.25,
+   "phase_b": "B32",
+   "x_b": 0.5625
+  }
+ ],
+ "same_phase_segments": [],
+ "fit_residuals": {
+  "T": 900.0,
+  "rows": [
+   {
+    "T": 900.0,
+    "phase": "B32",
+    "rmse_eV": 0.0,
+    "flag": false
+   },
+   {
+    "T": 900.0,
+    "phase": "fcc",
+    "rmse_eV": 2.5547267102365e-05,
+    "flag": false
+   }
+  ]
+ },
+ "sigma_used_eV": {
+  "B32": 0.002,
+  "Al3Li": 0.002,
+  "fcc": 0.002
+ },
+ "finished": "2026-11-17 00:53:33"
+}

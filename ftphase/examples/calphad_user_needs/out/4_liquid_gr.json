@@ -1,0 +1,131 @@
+{
+ "0.25": {
+  "T_K": 1000.0,
+  "first_minimum_A": 3.91,
+  "liquid_peak_A": {
+   "Al-Al": 2.74,
+   "Al-Li": 2.81,
+   "Li-Li": 2.89
+  },
+  "liquid_peak_height": {
+   "Al-Al": 2.94,
+   "Al-Li": 2.49,
+   "Li-Li": 1.84
+  },
+  "liquid_N": {
+   "Al-Al": 9.13,
+   "Al-Li": 3.29,
+   "Li-Li": 3.0,
+   "Li-Al": 9.87
+  },
+  "random_N": {
+   "Al-Al": 9.31,
+   "Al-Li": 3.1,
+   "Li-Li": 3.22,
+   "Li-Al": 9.65
+  },
+  "warren_cowley_alpha1_around_Al": -0.06,
+  "warren_cowley_alpha1_around_Li": -0.022,
+  "crystal": "Al3Li (L1_2)",
+  "crystal_x": 0.25,
+  "crystal_first_distance_A": {
+   "Al-Al": 2.84,
+   "Al-Li": 2.84,
+   "Li-Li": 4.02,
+   "Li-Al": 2.84
+  },
+  "crystal_N_within_cutoff": {
+   "Al-Al": 8.0,
+   "Al-Li": 4.0,
+   "Li-Li": 0.0,
+   "Li-Al": 12.0
+  },
+  "crystal_alpha1_around_Al": -0.333
+ },
+ "0.50": {
+  "T_K": 1000.0,
+  "first_minimum_A": 3.96,
+  "liquid_peak_A": {
+   "Al-Al": 2.74,
+   "Al-Li": 2.79,
+   "Li-Li": 2.91
+  },
+  "liquid_peak_height": {
+   "Al-Al": 3.09,
+   "Al-Li": 2.66,
+   "Li-Li": 1.82
+  },
+  "liquid_N": {
+   "Al-Al": 5.68,
+   "Al-Li": 6.91,
+   "Li-Li": 6.15,
+   "Li-Al": 6.91
+  },
+  "random_N": {
+   "Al-Al": 6.3,
+   "Al-Li": 6.3,
+   "Li-Li": 6.53,
+   "Li-Al": 6.53
+  },
+  "warren_cowley_alpha1_around_Al": -0.097,
+  "warren_cowley_alpha1_around_Li": -0.058,
+  "crystal": "B32 AlLi",
+  "crystal_x": 0.5,
+  "crystal_first_distance_A": {
+   "Al-Al": 2.76,
+   "Al-Li": 2.76,
+   "Li-Li": 2.76,
+   "Li-Al": 2.76
+  },
+  "crystal_N_within_cutoff": {
+   "Al-Al": 4.0,
+   "Al-Li": 10.0,
+   "Li-Li": 4.0,
+   "Li-Al": 10.0
+  },
+  "crystal_alpha1_around_Al": -0.429
+ },
+ "0.75": {
+  "T_K": 1000.0,
+  "first_minimum_A": 4.01,
+  "liquid_peak_A": {
+   "Al-Al": 2.69,
+   "Al-Li": 2.81,
+   "Li-Li": 2.86
+  },
+  "liquid_peak_height": {
+   "Al-Al": 3.53,
+   "Al-Li": 2.75,
+   "Li-Li": 1.84
+  },
+  "liquid_N": {
+   "Al-Al": 2.57,
+   "Al-Li": 9.99,
+   "Li-Li": 9.38,
+   "Li-Al": 3.33
+  },
+  "random_N": {
+   "Al-Al": 3.14,
+   "Al-Li": 9.42,
+   "Li-Li": 9.54,
+   "Li-Al": 3.18
+  },
+  "warren_cowley_alpha1_around_Al": -0.06,
+  "warren_cowley_alpha1_around_Li": -0.048,
+  "crystal": "Al4Li9 (x = 0.692)",
+  "crystal_x": 0.6923,
+  "crystal_first_distance_A": {
+   "Al-Al": 2.69,
+   "Al-Li": 2.69,
+   "Li-Li": 2.68,
+   "Li-Al": 2.69
+  },
+  "crystal_N_within_cutoff": {
+   "Al-Al": 2.0,
+   "Al-Li": 12.0,
+   "Li-Li": 8.67,
+   "Li-Al": 5.33
+  },
+  "crystal_alpha1_around_Al": -0.238
+ }
+}

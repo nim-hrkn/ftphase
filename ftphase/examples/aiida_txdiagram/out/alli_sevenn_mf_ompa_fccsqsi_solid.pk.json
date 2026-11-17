@@ -1,12 +1,12 @@
 {
- "pk": 18039,
- "uuid": "1ab493b6-8e72-46ae-83bb-71345b80542f",
+ "pk": 18996,
+ "uuid": "3e109128-dcef-49c5-b0c9-fb3d844ee0aa",
  "name": "alli_sevenn_mf_ompa_fccsqsi_solid",
  "profile": "ftphase",
- "submitted": "2026-11-16 13:14:17",
+ "submitted": "2026-11-17 08:53:37",
  "gpu": true,
  "smoke": false,
  "computer": "mygarden6",
- "qha_computer": "mygarden6",
+ "qha_computer": "mygardenx2",
  "mlip": "sevenn-mf-ompa"
 }

@@ -1,0 +1,115 @@
+{
+ "relaxed": [
+  {
+   "name": "fcc-Al",
+   "x": 0.0,
+   "e": -3.7400033473969,
+   "V": 16.468919344382,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "bcc-Li",
+   "x": 1.0,
+   "e": -1.9080448150635,
+   "V": 20.172582390713,
+   "sg_before": "Im-3m (229)",
+   "sg_after": "Im-3m (229)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "B32-AlLi",
+   "x": 0.5,
+   "e": -3.001528263092,
+   "V": 15.944918758534,
+   "sg_before": "Fd-3m (227)",
+   "sg_after": "Fd-3m (227)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "L12-Al3Li",
+   "x": 0.25,
+   "e": -3.3688261508942,
+   "V": 16.367036407077,
+   "sg_before": "Pm-3m (221)",
+   "sg_after": "Pm-3m (221)",
+   "converged": true,
+   "transformed": false
+  },
+  {
+   "name": "fcc-Al-prim",
+   "x": 0.0,
+   "e": -3.7400026321411,
+   "V": 16.468593876072,
+   "sg_before": "Fm-3m (225)",
+   "sg_after": "Fm-3m (225)",
+   "converged": true,
+   "transformed": false
+  }
+ ],
+ "hull": [
+  {
+   "name": "fcc-Al",
+   "x": 0.0,
+   "e": -3.7400033473969,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "fcc-Al-prim",
+   "x": 0.0,
+   "e": -3.7400026321411,
+   "e_form": 7.1525573730469e-07,
+   "on_hull": false,
+   "e_above_hull": 7.1525573730469e-07
+  },
+  {
+   "name": "L12-Al3Li",
+   "x": 0.25,
+   "e": -3.3688261508942,
+   "e_form": -0.086812436580658,
+   "on_hull": false,
+   "e_above_hull": 0.0019396543502808
+  },
+  {
+   "name": "B32-AlLi",
+   "x": 0.5,
+   "e": -3.001528263092,
+   "e_form": -0.17750418186188,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "bcc-Li",
+   "x": 1.0,
+   "e": -1.9080448150635,
+   "e_form": 0.0,
+   "on_hull": true,
+   "e_above_hull": 0.0
+  }
+ ],
+ "ground_state_check": [
+  {
+   "name": "fcc-Al",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "bcc-Li",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  },
+  {
+   "name": "B32-AlLi",
+   "status": "on hull",
+   "e_above_hull": 0.0
+  }
+ ],
+ "potential": "macempa0mediummodel.model",
+ "finished": "2026-11-16 13:15:10"
+}
