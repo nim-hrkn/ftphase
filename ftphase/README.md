@@ -16,6 +16,8 @@
 | 04B 量子固相と古典液相の整合 | `ftphase.quantum` | 同じ振動数から F_q − F_cl を計算し、calphy の古典 G を量子側へ、または QHA を古典側へそろえる。高温極限は Wigner–Kirkwood 項で検証 | — |
 | 05 基準統一 | `ftphase.records`, `ftphase.assemble` | 1 行 = (相, x, T, P, G) の表（単位 eV/atom、基準状態、方法、配置項・量子の有無、出典を必須列に）、純元素基準 (G1)、配置項の加算（二重計上は例外）、温度補間、calphy `PhaseDiagram.from_df` への受け渡しと TDB 出力、pycalphad での再計算 | calphy 2.3 `phase_diagram.py`、pycalphad |
 | 06 凸包・共通接線 | `ftphase.equilibrium` | 点相（line compound）と限定組成相を含む全相の下側凸包（単調鎖）、式 (H3) の共通接線を fsolve で精密化、混和ギャップ検出、化学ポテンシャル (H4)、てこの法則 (H5)、対称正則溶体の解析解 | pyiron workshop `helpers.find_common_tangent` の一般化、pymatgen の凸包と同じ考え方 |
+| 04A 化合物を同じ記述で扱う | `ftphase.compounds` | 線状化合物か幅のある相かを入力で決めない：点欠陥の自由エネルギー ε_d(T)、セルの大きさについての収束、複数欠陥のセルからの相互作用係数、`CompoundModel`（Wagner–Schottky + w(x−x₀)²）、`with_compound_models`（点相を曲線に置き換える）、`widths_from_regions` / `classify`（幅と分類を凸包から読む）。例 `examples/calphad_user_needs/uniform_diagram.py` |
+| 05 TDB の書き出し | `ftphase.tdb` | 自由エネルギーの表から CALPHAD のデータベース（TDB）を書く：固溶体・液相は端成分の関数 + Redlich–Kister（計算していない端成分は表の凸包より上に保つ）、化合物は基準相に対する生成量（ΔH, ΔS の 2 数 = [Zhang2027] 型）または 2 副格子モデル（欠陥の自由エネルギーから；[Saengdeejing2026] 型）。pycalphad で読み戻して確認（`examples/calphad_user_needs/tdb_export_alli.py`） |
 | 07 T–x 図・不変反応・誤差・記録 | `ftphase.diagram` | 温度走査、共存相の組の変化で不変反応を挟み込む、Monte Carlo による G の不確かさの伝播、温度ごとの帯で描画、TSV + JSON の記録 | — |
 
 式番号は `docs/obsolete_workflow.html` のラベルです。

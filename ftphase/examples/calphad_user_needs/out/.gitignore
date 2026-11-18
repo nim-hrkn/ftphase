@@ -9,3 +9,5 @@ liquid_md_lowT/*/*.data
 4_lowT_run.log
 7_defectF_*.log
 6_range_*.log
+9_interaction_*.log
+10_*_pycalphad.tsv
