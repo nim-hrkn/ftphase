@@ -1,0 +1,12 @@
+{
+ "pk": 3832,
+ "uuid": "de68724e-d832-45b0-a694-a21b59c8229f",
+ "name": "alli_sevenn_mf_ompa",
+ "profile": "ftphase",
+ "submitted": "2026-10-25 21:32:08",
+ "gpu": true,
+ "smoke": false,
+ "computer": "mygarden6",
+ "qha_computer": "mygardenx2",
+ "mlip": "sevenn-mf-ompa"
+}

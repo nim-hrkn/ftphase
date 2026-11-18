@@ -272,9 +272,10 @@ ORCHID-Diagrams の評価 13 件（計算成功 13）。参照評価: `AlNi-01Du
 | GRACE-FS-OAM (+TI ends) | 1180.0-1190.0 |  |
 | GRACE-FS-OAM (+TI ends) | 1280.0-1290.0 |  |
 | GRACE-FS-OAM (+TI ends) | 1290.0-1300.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1400.0-1410.0 |  |
 | GRACE-FS-OAM (+TI ends) | 1440.0-1450.0 |  |
+| GRACE-FS-OAM (+TI ends) | 1450.0-1460.0 |  |
 | GRACE-FS-OAM (+TI ends) | 1480.0-1490.0 |  |
-| GRACE-FS-OAM (+TI ends) | 1510.0-1520.0 |  |
 | GRACE-FS-OAM (+TI ends) | 1540.0-1550.0 |  |
 | GRACE-FS-OAM (+TI ends) | 1590.0-1600.0 |  |
 | GRACE-FS-OAM (+TI ends) | 1650.0-1660.0 |  |
@@ -288,9 +289,11 @@ ORCHID-Diagrams の評価 13 件（計算成功 13）。参照評価: `AlNi-01Du
 | GRACE-1L-OMAT (+TI ends) | 1080.0-1090.0 |  |
 | GRACE-1L-OMAT (+TI ends) | 1090.0-1100.0 |  |
 | GRACE-1L-OMAT (+TI ends) | 1110.0-1120.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1280.0-1290.0 |  |
 | GRACE-1L-OMAT (+TI ends) | 1370.0-1380.0 |  |
-| GRACE-1L-OMAT (+TI ends) | 1590.0-1600.0 |  |
-| GRACE-1L-OMAT (+TI ends) | 1610.0-1620.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1550.0-1560.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1570.0-1580.0 |  |
+| GRACE-1L-OMAT (+TI ends) | 1580.0-1590.0 |  |
 | GRACE-1L-OMAT (+TI ends) | 1710.0-1720.0 |  |
 | GRACE-1L-OMAT (+TI ends) | 1790.0-1800.0 |  |
 | SevenNet-0 (QHA solids) | 1240.0-1250.0 |  |
@@ -307,10 +310,11 @@ ORCHID-Diagrams の評価 13 件（計算成功 13）。参照評価: `AlNi-01Du
 | SevenNet-0 (+TI ends) | 1280.0-1290.0 |  |
 | SevenNet-0 (+TI ends) | 1290.0-1300.0 |  |
 | SevenNet-0 (+TI ends) | 1310.0-1320.0 |  |
+| SevenNet-0 (+TI ends) | 1330.0-1340.0 |  |
 | SevenNet-0 (+TI ends) | 1350.0-1360.0 |  |
 | SevenNet-0 (+TI ends) | 1460.0-1470.0 |  |
-| SevenNet-0 (+TI ends) | 1490.0-1500.0 |  |
-| SevenNet-0 (+TI ends) | 1560.0-1570.0 |  |
+| SevenNet-0 (+TI ends) | 1510.0-1520.0 |  |
+| SevenNet-0 (+TI ends) | 1520.0-1530.0 |  |
 
 ## Pt-Rh (x = x_Rh)
 

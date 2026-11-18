@@ -1,5 +1,5 @@
 source blocks 1320
-en ok 1320 bad 2
-id ok 1320 bad 2
--- en bad: 450(tag mismatch), 495(tag mismatch)
--- id bad: 450(tag mismatch), 495(tag mismatch)
+en ok 1320 bad 3
+id ok 1320 bad 3
+-- en bad: 349(tag mismatch), 450(tag mismatch), 495(tag mismatch)
+-- id bad: 349(tag mismatch), 450(tag mismatch), 495(tag mismatch)
