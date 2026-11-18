@@ -7,6 +7,9 @@ raw defect energy E(defect cell) - E(perfect cell); the Wagner-Schottky model (t
 then gives G(x, T) around stoichiometry, whose parabola fit yields d2G/dx2 and dG/dx.  Static energies only (no defect
 vibrational entropy).      ./env/ftphase/bin/python ftphase/examples/calphad_user_needs/curvature_compounds.py   -> out/2_curvature.*
 """
+# NOTE 2026-11-19: this early script calls the Wagner-Schottky model with g0_atom=0.0, which mis-weights vacancies (their cost per atom is
+# eps_Va + g0); harmless here because anti-sites dominate in ACE Al-Li, but use curvature_figure.py / ftphase.compounds for anything new.
+
 import json, os, sys
 import numpy as np
 

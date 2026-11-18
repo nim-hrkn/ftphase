@@ -10,6 +10,9 @@
 
     ./env/ftphase/bin/python ftphase/examples/calphad_user_needs/demo.py [metastable] [curvature] [sgte]     -> out/
 """
+# NOTE 2026-11-19: this early script calls the Wagner-Schottky model with g0_atom=0.0, which mis-weights vacancies (their cost per atom is
+# eps_Va + g0); harmless here because anti-sites dominate in ACE Al-Li, but use curvature_figure.py / ftphase.compounds for anything new.
+
 import json, os, sys
 import numpy as np
 import pandas as pd

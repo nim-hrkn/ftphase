@@ -32,8 +32,8 @@ def test_compound_model_reduces_to_wagner_schottky_and_adds_the_interaction():
     m = _model(); xs = np.linspace(0.23, 0.27, 9); T = 600.0
     e = m.energies(T)
     assert e["A_on_B"] == pytest.approx(-1.225)
-    ref = wagner_schottky_curve(xs, T, (3, 1), e, g0_atom=0.0); ref = ref - ref[4]
-    assert m.values(xs, T, g0=-3.0) == pytest.approx(-3.0 + ref)
+    assert m.values(xs, T, g0=-3.0) == pytest.approx(wagner_schottky_curve(xs, T, (3, 1), e, g0_atom=-3.0))
+    assert m.values(np.array([0.25]), T, g0=-3.0)[0] <= -3.0            # thermal defects can only lower G at stoichiometry
     mw = _model(w={"A_on_B": [-2.0, -2.0], "B_on_A": [4.0, 4.0]})
     d = mw.values(xs, T, g0=-3.0) - m.values(xs, T, g0=-3.0)
     assert d[0] == pytest.approx(-2.0 * 0.02 ** 2) and d[-1] == pytest.approx(4.0 * 0.02 ** 2) and d[4] == pytest.approx(0.0)
@@ -60,3 +60,22 @@ def test_width_is_read_from_the_hull_not_from_the_input():
         out[label] = (float(w.width.iloc[0]), classify(w)["AB"])
     assert out["expensive"][0] < 0.005 and out["expensive"][1] == "line compound"
     assert out["cheap"][0] > 0.02 and out["cheap"][1].startswith("range phase")
+
+
+def test_constitutional_defect_is_read_from_the_energies():
+    """Triple-defect type (B2 NiAl-like, B = Ni): the A-rich side is carried by vacancies on the B sublattice when the A anti-site is
+    expensive, by A anti-sites when it is cheap; the B-rich side by B anti-sites."""
+    T = [300.0, 2000.0]
+    g0 = -4.0          # eV/atom of the perfect compound; chemical potentials mu_A = -3.4, mu_B = -4.6 (mu_A + mu_B = 2 g0)
+    def model(a_on_b):
+        # raw energies (fixed number of sites): anti-site A_on_B = e_f + mu_A - mu_B, vacancy on B = e_f - mu_B, etc.
+        return CompoundModel("AB", 0.5, (1, 1), T, {"A_on_B": [a_on_b + 1.2] * 2, "B_on_A": [0.8 - 1.2] * 2, "Va_on_A": [2.3 + 3.4] * 2, "Va_on_B": [0.9 + 4.6] * 2})
+    assert model(3.0).constitutional_defects(1500.0, g0) == {"A_rich": "Va_on_B", "B_rich": "B_on_A"}
+    assert model(0.4).constitutional_defects(1500.0, g0) == {"A_rich": "A_on_B", "B_rich": "B_on_A"}
+    assert model(3.0).constitutional_defects(1500.0, 0.0)["A_rich"] == "A_on_B"      # with a wrong g0 the vacancy is mis-weighted (the error fixed on 2026-11-19)
+    m = model(3.0)
+    assert m.defect_concentration("A_on_B", [0.48])[0] == pytest.approx(0.02)
+    c = m.defect_concentration("Va_on_B", [0.48])[0]           # x = (0.5 - c) / (1 - c)
+    assert (0.5 - c) / (1 - c) == pytest.approx(0.48)
+    c = m.defect_concentration("Va_on_A", [0.52])[0]           # x = 0.5 / (1 - c)
+    assert 0.5 / (1 - c) == pytest.approx(0.52)

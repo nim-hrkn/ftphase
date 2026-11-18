@@ -11,7 +11,7 @@ import pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "out"); EX6 = os.path.join(HERE, "..", "alli_ace_txdiagram"); sys.path.insert(0, EX6); sys.path.insert(0, HERE)
 WS = {"Al3Li": (3, 1), "B32": (1, 1), "Al2Li3": (2, 3), "Al4Li9": (4, 9)}
 MODE = sys.argv[1] if len(sys.argv) > 1 else "interacting"      # interacting: + w (x - x0)^2 from the multi-defect cells, window +-0.06; noninteracting: window +-0.03
-HALF = 0.06 if MODE == "interacting" else 0.03; SUF = "" if MODE == "noninteracting" else "_interacting"
+HALF = {"interacting": 0.06, "extended": 0.12}.get(MODE, 0.03); SUF = "" if MODE == "noninteracting" else "_" + MODE
 MAP = {"A_on_B": "Al_on_Li", "B_on_A": "Li_on_Al", "Va_on_B": "Va_Li", "Va_on_A": "Va_Al"}
 
 
@@ -67,8 +67,13 @@ def main():
     low = os.path.join(EX6, "out_full", "lowT", "07_two_phase_regions.tsv")
     if os.path.exists(low):
         l = pd.read_csv(low, sep="\t", comment="#"); ref = pd.concat([l[(l.phase_a != l.phase_b) & (l["T"] < ref["T"].min())], ref], ignore_index=True)
-    plot_tx(ref, xlabel="x_Li", dT=10, ax=axes[0]); axes[0].set_title("example 6: Al$_3$Li, Al$_2$Li$_3$, Al$_4$Li$_9$ as points, B32 as a range phase (prior knowledge)", fontsize=9)
-    plot_tx(reg, xlabel="x_Li", dT=20, ax=axes[1]); axes[1].set_title(f"same free energies, every compound by defect free energies ({MODE}, x$_0$ ± {HALF})", fontsize=9)
+    keys = sorted(set("+".join(sorted((a_, b_))) for d_ in (ref, reg) for a_, b_ in zip(d_.phase_a, d_.phase_b)))
+    pal = ["#b0b0b0", "#f4a259", "#5b9bd5", "#a05195", "#70ad47", "#d45087", "#8dd3c7", "#ffa600", "#bc80bd", "#fb8072", "#665191", "#b3de69", "#80b1d3", "#fdb462"]
+    COL = {}
+    for n_, k_ in enumerate(keys):
+        a_, b_ = k_.split("+"); COL[f"{a_}+{b_}"] = COL[f"{b_}+{a_}"] = pal[n_ % len(pal)]
+    plot_tx(ref, xlabel="x_Li", dT=10, ax=axes[0], colors=COL); axes[0].set_title("example 6: Al$_3$Li, Al$_2$Li$_3$, Al$_4$Li$_9$ as points, B32 as a range phase (prior knowledge)", fontsize=9)
+    plot_tx(reg, xlabel="x_Li", dT=20, ax=axes[1], colors=COL); axes[1].set_title(f"same free energies, every compound by defect free energies ({MODE}, x$_0$ ± {HALF})", fontsize=9)
     for ax in axes: ax.set_ylim(300, 1100)
     fig.tight_layout(); fig.savefig(os.path.join(OUT, f"8_uniform_diagram{SUF}.png"), dpi=140)
     inv = invariants(reg); inv.to_csv(os.path.join(OUT, f"8_uniform_invariants{SUF}.tsv"), sep="\t", index=False)

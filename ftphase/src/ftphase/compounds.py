@@ -13,8 +13,10 @@ Every compound A_a B_b gets the same description and its width is read from the 
 Conventions: x = fraction of B; ``site_counts`` = (a, b) sites of the A and the B sublattice; defect keys as in
 :func:`ftphase.configurational.wagner_schottky_free_energy` ('A_on_B' = an A atom on a B site, 'B_on_A', 'Va_on_A', 'Va_on_B');
 energies in eV, 'raw' (the added / removed atom is not referenced: terms linear in x cancel in the common tangent as long as
-all phases use the same absolute free energies).  The interaction term assumes that the composition shift is carried by
-anti-sites (concentration per site = |x - x0|); a vacancy-compensated side needs its own relation and is not covered.
+all phases use the same absolute free energies).  Which defect carries the composition shift on each side (anti-site or
+vacancy, e.g. Ni vacancies on the Al-rich side of B2 NiAl) is not an input either: :meth:`CompoundModel.constitutional_defects`
+reads it from the defect free energies, and the interaction term w c^2 uses the concentration c of that defect per site
+(anti-site: |x - x0|; vacancy on the B sublattice: (b' - x) / (1 - x); vacancy on the A sublattice: 1 - b' / x).
 """
 
 from __future__ import annotations
@@ -60,8 +62,40 @@ class CompoundModel:
     site_counts: Sequence[int]
     T: Sequence[float]
     eps: Mapping[str, Sequence[float]]                       # defect key -> eps_d on the grid T
-    w: Mapping[str, Sequence[float]] = field(default_factory=dict)   # 'A_on_B' / 'B_on_A' -> w on the grid T (absent: 0)
+    w: Mapping[str, Sequence[float]] = field(default_factory=dict)   # defect key -> w on the grid T (absent: 0)
     half_width: float = 0.03
+    side_defects: Optional[Mapping[str, str]] = None                # {'A_rich': key, 'B_rich': key}; None: read from the energies
+
+    def defect_concentration(self, key: str, xs) -> np.ndarray:
+        """Concentration per lattice site of the defect ``key`` that alone carries the composition x."""
+        xs = np.asarray(xs, dtype=float)
+        bp = self.site_counts[1] / float(sum(self.site_counts))
+        if key in ("A_on_B", "B_on_A"):
+            return np.abs(xs - self.x0)
+        if key == "Va_on_B":                                         # B-poor side: x = (b' - c) / (1 - c)
+            return np.clip((bp - xs) / (1.0 - xs), 0.0, None)
+        if key == "Va_on_A":                                         # A-poor side: x = b' / (1 - c)
+            return np.clip(1.0 - bp / xs, 0.0, None)
+        raise ValueError(key)
+
+    def constitutional_defects(self, T: float, g0: float = 0.0, dx: float = 0.01) -> Dict[str, str]:
+        """Which defect carries the composition shift on the A-rich (x < x0) and on the B-rich side: the one whose removal from
+        the model raises G(x0 -+ dx, T) most (anti-site or vacancy; decided by the defect free energies, not by the user).
+        ``g0`` = free energy per atom of the perfect compound (needed to weigh vacancies against anti-sites)."""
+        from .configurational import wagner_schottky_curve
+
+        e = self.energies(T)
+        out = {}
+        for side, xq, cands in (("A_rich", self.x0 - dx, ("A_on_B", "Va_on_B")), ("B_rich", self.x0 + dx, ("B_on_A", "Va_on_A"))):
+            best, gain = cands[0], -np.inf
+            for c in cands:
+                e2 = dict(e)
+                e2[c] = e[c] + 20.0
+                g = float(wagner_schottky_curve(np.array([xq]), T, tuple(self.site_counts), e2, g0_atom=float(g0))[0])
+                if g > gain:
+                    best, gain = c, g
+            out[side] = best
+        return out
 
     def energies(self, T: float) -> Dict[str, float]:
         return {k: float(np.interp(T, self.T, v)) for k, v in self.eps.items()}
@@ -69,18 +103,22 @@ class CompoundModel:
     def interaction(self, T: float) -> Dict[str, float]:
         return {k: float(np.interp(T, self.T, v)) for k, v in self.w.items()}
 
-    def values(self, xs, T: float, g0: float = 0.0) -> np.ndarray:
-        """G(x, T) per atom with G(x0) = g0 (the free energy of the perfect compound, thermal defects included in the shape)."""
+    def values(self, xs, T: float, g0: float) -> np.ndarray:
+        """G(x, T) per atom; ``g0`` = free energy per atom of the PERFECT compound (the stoichiometric cell of the table).
+        g0 must be the true value, not 0 with a shift afterwards: a vacancy changes the number of atoms, so its cost per atom is
+        eps_Va + g0 and a wrong g0 mis-weights every vacancy (anti-sites are not affected).  Thermal defects lower G(x0) below g0."""
         from .configurational import wagner_schottky_curve
 
         xs = np.asarray(xs, dtype=float)
         e = self.energies(T)
-        g = np.asarray(wagner_schottky_curve(xs, T, tuple(self.site_counts), e, g0_atom=0.0), dtype=float)
-        gref = float(wagner_schottky_curve(np.array([self.x0]), T, tuple(self.site_counts), e, g0_atom=0.0)[0])
+        g = np.asarray(wagner_schottky_curve(xs, T, tuple(self.site_counts), e, g0_atom=float(g0)), dtype=float)
         wi = self.interaction(T)
-        d = xs - self.x0
-        g = g + np.where(d < 0, wi.get("A_on_B", 0.0), wi.get("B_on_A", 0.0)) * d ** 2
-        return g0 + g - gref
+        if wi:
+            sd = self.side_defects or self.constitutional_defects(T, g0)
+            lo, hi = sd["A_rich"], sd["B_rich"]
+            d = xs - self.x0
+            g = g + np.where(d < 0, wi.get(lo, 0.0) * self.defect_concentration(lo, xs) ** 2, wi.get(hi, 0.0) * self.defect_concentration(hi, xs) ** 2)
+        return g
 
     def phase(self, T: float, g0: float, n: int = 121, n_sample: int = 801):
         """A limited-range :class:`ftphase.equilibrium.PhaseCurve` over x0 +- half_width."""

@@ -94,8 +94,8 @@ def report():
                 if p.name in WS:      # the compound is not a point: G(x) around stoichiometry from its point defects (curvature_compounds.py, Fig. 18)
                     from ftphase.configurational import wagner_schottky_curve
                     key, sc = WS[p.name]; xw = np.linspace(p.x0 - 0.04, p.x0 + 0.04, 81)
-                    gw = np.array(wagner_schottky_curve(xw, T, sc, CURV[key]["defect_energies_raw_eV"], g0_atom=0.0)); g00 = float(np.interp(p.x0, xw, gw))
-                    ax.plot(xw, (p.g0 + gw - g00 - ref(xw)) * 1000, "-", color=pt.get_color(), lw=1.4)
+                    gw = np.array(wagner_schottky_curve(xw, T, sc, CURV[key]["defect_energies_raw_eV"], g0_atom=p.g0))     # true g0: vacancies change the atom count
+                    ax.plot(xw, (gw - ref(xw)) * 1000, "-", color=pt.get_color(), lw=1.4)
                 continue
             xs, g = p.sample(); (ln,) = ax.plot(xs, (g - ref(xs)) * 1000, lw=1.7, label=f"{p.name} ({p.x_min:.2f}-{p.x_max:.2f})")
             pts = ti.df[ti.df.phase == p.name]; ax.plot(pts.x, (pts.G - ref(pts.x)) * 1000, ".", color=ln.get_color(), ms=5)

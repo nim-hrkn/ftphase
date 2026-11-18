@@ -52,8 +52,8 @@ def main():
                 key, sc = WS[p.name]; xw = np.linspace(p.x0 - 0.08, p.x0 + 0.08, 3201)
                 DF = json.load(open(os.path.join(OUT, f"7_defectF_{p.name}.json")))["sizes"]; big = DF[str(max(int(q) for q in DF))]      # defect free energies eps_d(T) of the largest cell (defect_free_energy.py)
                 eT = {k: float(np.interp(T, big["T"], big["defects"][v]["eps_T_eV"])) for k, v in {"A_on_B": "Al_on_Li", "B_on_A": "Li_on_Al", "Va_on_B": "Va_Li", "Va_on_A": "Va_Al"}.items()}
-                gw = np.array(wagner_schottky_curve(xw, T, sc, eT if MODE == "free" else C[key]["defect_energies_raw_eV"], g0_atom=0.0))
-                gw = p.g0 + gw - gw[1600]; pts += list(zip(xw, gw)); lab += [p.name] * len(xw)
+                gw = np.array(wagner_schottky_curve(xw, T, sc, eT if MODE == "free" else C[key]["defect_energies_raw_eV"], g0_atom=p.g0))     # true g0 (vacancies change the atom count)
+                pts += list(zip(xw, gw)); lab += [p.name] * len(xw)
             else:
                 xs = np.linspace(p.x_min, p.x_max, 4001); pts += list(zip(xs, p.g(xs))); lab += [p.name] * len(xs)
         pts = np.array(pts); idx = lower_hull_2d(pts); hx = pts[idx, 0]; hl = np.array(lab)[idx]; row = {}

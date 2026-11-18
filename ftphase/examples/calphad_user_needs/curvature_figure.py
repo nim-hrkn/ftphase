@@ -36,12 +36,13 @@ for ax, (name, pretty, x0, sc, e, nws, nsm, half) in zip(axes.ravel(), PAN):
     MAP = {"A_on_B": "Al_on_Li", "B_on_A": "Li_on_Al", "Va_on_B": "Va_Li", "Va_on_A": "Va_Al"}
     for T, c in ((300, "#1f77b4"), (500, "#ff7f0e"), (700, "#2ca02c")):
         m = abs(xs - x0) <= 0.012
+        gp = old.df[(old.df.phase == name) & np.isclose(old.df.x, x0, atol=1e-3)].sort_values("T"); G0 = float(np.interp(T, gp["T"], gp["G"]))     # perfect compound: true g0 (vacancies change the atom count)
         # (a) static point-defect energies (thin solid): own tangent removed
-        g = np.array(wagner_schottky_curve(xs, float(T), sc, e, g0_atom=0.0)); pf0 = np.polyfit(xs[m] - x0, g[m], 2); g0 = float(np.interp(x0, xs, g))
+        g = np.array(wagner_schottky_curve(xs, float(T), sc, e, g0_atom=G0)); pf0 = np.polyfit(xs[m] - x0, g[m], 2); g0 = float(np.interp(x0, xs, g))
         ax.plot(xs, (g - g0 - pf0[1] * (xs - x0)) * 1000, color=c, lw=0.9, label=f"{T} K static ε: {2 * pf0[0]:.1f} eV")
         # (b) temperature-dependent defect free energies eps_d(T) of the largest cell (thick solid): own tangent removed; the dashed range-phase curve uses this tangent
         eT = {k: float(np.interp(T, TT, big["defects"][v]["eps_T_eV"])) for k, v in MAP.items()}
-        g = np.array(wagner_schottky_curve(xs, float(T), sc, eT, g0_atom=0.0)); pf = np.polyfit(xs[m] - x0, g[m], 2); slope = pf[1]; g0 = float(np.interp(x0, xs, g))
+        g = np.array(wagner_schottky_curve(xs, float(T), sc, eT, g0_atom=G0)); pf = np.polyfit(xs[m] - x0, g[m], 2); slope = pf[1]; g0 = float(np.interp(x0, xs, g))
         ax.plot(xs, (g - g0 - slope * (xs - x0)) * 1000, color=c, lw=2.0, label=f"{T} K ε(T): {2 * pf[0]:.1f} eV")
         ti = interpolate_T(tab, np.array([float(T)])); ph = [p for p in builder_from_table(ti, fit="spline", fits={name: "spline"})(float(T)) if p.name == name][0]
         xr = np.linspace(ph.x_min, ph.x_max, 201); gr = ph.g(xr); gr0 = float(ph.g(np.array([x0]))[0]); h = 0.004; c2 = float((ph.g(np.array([x0 + h]))[0] - 2 * gr0 + ph.g(np.array([x0 - h]))[0]) / h ** 2)
