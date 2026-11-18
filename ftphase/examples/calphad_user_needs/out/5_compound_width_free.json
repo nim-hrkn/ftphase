@@ -1,0 +1,140 @@
+{
+ "defect_energies_raw_eV": {
+  "Al3Li": {
+   "A_on_B": -1.1474,
+   "Va_on_B": 2.7637,
+   "B_on_A": 1.6233,
+   "Va_on_A": 4.2612
+  },
+  "B32": {
+   "A_on_B": -0.8672,
+   "Va_on_B": 2.4049,
+   "B_on_A": 1.8027,
+   "Va_on_A": 4.1827
+  },
+  "Al2Li3": {
+   "A_on_B": -1.2116,
+   "Va_on_B": 2.4906,
+   "B_on_A": 2.0441,
+   "Va_on_A": 4.4695
+  },
+  "Al4Li9": {
+   "A_on_B": -1.7173,
+   "Va_on_B": 2.4608,
+   "B_on_A": 2.2944,
+   "Va_on_A": 4.6294
+  }
+ },
+ "pair_energies_eV": {
+  "Al3Li": {
+   "antisite_pair": 0.476
+  },
+  "B32": {
+   "antisite_pair": 0.935
+  },
+  "Al2Li3": {
+   "antisite_pair": 0.832
+  },
+  "Al4Li9": {
+   "antisite_pair": 0.577
+  }
+ },
+ "T": {
+  "300": {
+   "Al3Li": {
+    "x_min": 0.2499,
+    "x_max": 0.2499,
+    "width": 0.0
+   },
+   "B32": {
+    "x_min": 0.5,
+    "x_max": 0.5066,
+    "width": 0.0066
+   },
+   "Al2Li3": {
+    "x_min": 0.6,
+    "x_max": 0.6263,
+    "width": 0.0263
+   },
+   "Al4Li9": {
+    "x_min": 0.6922,
+    "x_max": 0.7291,
+    "width": 0.0368
+   }
+  },
+  "400": {
+   "Al3Li": null,
+   "B32": {
+    "x_min": 0.5,
+    "x_max": 0.5237,
+    "width": 0.0237
+   },
+   "Al2Li3": {
+    "x_min": 0.6,
+    "x_max": 0.68,
+    "width": 0.0799
+   },
+   "Al4Li9": {
+    "x_min": 0.6932,
+    "x_max": 0.7461,
+    "width": 0.0529
+   }
+  },
+  "500": {
+   "Al3Li": null,
+   "B32": {
+    "x_min": 0.4998,
+    "x_max": 0.57,
+    "width": 0.0702
+   },
+   "Al2Li3": {
+    "x_min": 0.6008,
+    "x_max": 0.68,
+    "width": 0.0792
+   },
+   "Al4Li9": {
+    "x_min": 0.7152,
+    "x_max": 0.7358,
+    "width": 0.0206
+   }
+  },
+  "600": {
+   "Al3Li": null,
+   "B32": {
+    "x_min": 0.4984,
+    "x_max": 0.58,
+    "width": 0.0816
+   },
+   "Al2Li3": {
+    "x_min": 0.6114,
+    "x_max": 0.68,
+    "width": 0.0686
+   },
+   "Al4Li9": null
+  },
+  "700": {
+   "Al3Li": null,
+   "B32": {
+    "x_min": 0.4937,
+    "x_max": 0.58,
+    "width": 0.0862
+   },
+   "Al2Li3": {
+    "x_min": 0.6335,
+    "x_max": 0.68,
+    "width": 0.0465
+   },
+   "Al4Li9": null
+  },
+  "800": {
+   "Al3Li": null,
+   "B32": {
+    "x_min": 0.491,
+    "x_max": 0.58,
+    "width": 0.089
+   },
+   "Al2Li3": null,
+   "Al4Li9": null
+  }
+ }
+}

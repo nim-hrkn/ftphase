@@ -1,0 +1,54 @@
+{
+ "mlip": "mace-mpa-0",
+ "n_sites": 128,
+ "a0_B2_A": 2.884595259220616,
+ "fmax": 0.005,
+ "isolated_triple_defect_eV": 1.7085230256805417,
+ "configs": {
+  "<100> (a)": {
+   "d_VaVa_A": 2.885,
+   "d_Va_antisite_A": [
+    2.498,
+    2.498
+   ],
+   "raw_eV": 12.533981835016789,
+   "E_bind_eV": 0.019779296816977876,
+   "triple_defect_eV": 1.6887437288635638,
+   "bfgs_steps": 25
+  },
+  "<110> (a sqrt2)": {
+   "d_VaVa_A": 4.079,
+   "d_Va_antisite_A": [
+    2.498,
+    2.498
+   ],
+   "raw_eV": 12.41031099904842,
+   "E_bind_eV": 0.1434501327853468,
+   "triple_defect_eV": 1.565072892895195,
+   "bfgs_steps": 21
+  },
+  "<111> (a sqrt3)": {
+   "d_VaVa_A": 4.996,
+   "d_Va_antisite_A": [
+    2.498,
+    2.498
+   ],
+   "raw_eV": 12.412610606724115,
+   "E_bind_eV": 0.14115052510965143,
+   "triple_defect_eV": 1.5673725005708903,
+   "bfgs_steps": 17
+  },
+  "far apart": {
+   "d_VaVa_A": 6.45,
+   "d_Va_antisite_A": [
+    7.494,
+    6.287
+   ],
+   "raw_eV": 12.523288562397624,
+   "E_bind_eV": 0.030472569436142294,
+   "triple_defect_eV": 1.6780504562443994,
+   "bfgs_steps": 18
+  }
+ },
+ "seconds": 182.78127455711365
+}

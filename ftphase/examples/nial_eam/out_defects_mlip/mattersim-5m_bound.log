@@ -1,0 +1,5 @@
+[32m2026-11-17 10:46:55.289[0m | [1mINFO    [0m | [36mmattersim.forcefield.potential[0m:[36mfrom_checkpoint[0m:[36m938[0m - [1mLoading the model from /home/kino/kino/Claude/Projects/PhaseDiagram/potentials/mattersim/mattersim-v1.0.0-5M.pth[0m
+mattersim-5m <100> (a): E_bind -0.073 eV, triple defect 1.575 eV (isolated 1.503; 32 steps, 31 s)
+mattersim-5m <110> (a sqrt2): E_bind +0.054 eV, triple defect 1.448 eV (isolated 1.503; 22 steps, 51 s)
+mattersim-5m <111> (a sqrt3): E_bind +0.110 eV, triple defect 1.392 eV (isolated 1.503; 19 steps, 69 s)
+mattersim-5m far apart: E_bind -0.009 eV, triple defect 1.512 eV (isolated 1.503; 18 steps, 87 s)

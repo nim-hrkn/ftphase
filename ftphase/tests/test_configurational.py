@@ -182,3 +182,19 @@ def test_builder_wagner_schottky_curve_has_no_cusp():
         assert np.all(np.isfinite(gg)) and gg[20] <= g0 + 1e-4        # thermal defects lower G at stoichiometry (spline tolerance 0.1 meV)
         assert d2.max() < 1e4                                         # no cusp (a cusp gives a huge second difference)
         assert abs(pc.g(0.52) - ((g0 * 54 + 1.08 * e_anti) / 54)) < 0.02   # close to the dilute anti-site line
+
+
+def test_b32_antisite_model_reproduces_the_composition_off_one_to_one():
+    """AB3 / A3B phases: the B sublattice holds the fraction stoich_x of the sites (regression: the two site counts were swapped
+    until 2026-11-17, which gave the wrong composition and an anti-site entropy wrong by up to a factor of 3)."""
+    import numpy as np
+    from ftphase.configurational import sublattice_entropy
+    for st in (0.25, 0.6, 0.75):
+        for x in (st - 0.03, st, st + 0.03):
+            sf, nc = b32_antisite_site_fractions(x, stoich_x=st)
+            assert nc == pytest.approx([1 - st, st])
+            xb = sum(n * f["B"] for n, f in zip(nc, sf)) / sum(nc)
+            assert xb == pytest.approx(x)
+    # A3B (stoich 0.25), A-rich by 0.03: A on the B sublattice (1/4 of the sites) with y = 0.12
+    sf, nc = b32_antisite_site_fractions(0.22, stoich_x=0.25); y = 0.12
+    assert sublattice_entropy(sf, nc, basis="atom") == pytest.approx(-0.25 * 8.617333262e-5 * (y * np.log(y) + (1 - y) * np.log(1 - y)), rel=1e-6)

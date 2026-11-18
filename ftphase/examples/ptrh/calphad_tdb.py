@@ -52,7 +52,7 @@ def ordering_params(par, x, phases):
     return {nm: (float(ua[i]), float(ub[i]), float(rhs_a[i]), float(rhs_b[i])) for i, (nm, _, _) in enumerate(phases)}
 
 
-def write_tdb(par, path, liquid="ideal", model="partition"):
+def write_tdb(par, path, liquid="ideal", model="partition", sro=None):
     from espei.refdata import SGTE91, SGTE91Stable
     L = [f"$ Pt-Rh CALPHAD description built from the MLIP run {os.path.basename(par['run'])} ({par['model']}) by calphad_tdb.py",
          "$ Saengdeejing-type route: SGTE91 unaries, fcc RK from random cells (E0 + harmonic F_vib), ordered phases 2-sublattice CEF with Neumann-Kopp end-members, liquid " + liquid,
@@ -71,7 +71,14 @@ def write_tdb(par, path, liquid="ideal", model="partition"):
         L += [f"PARAMETER L(LIQUID,PT,RH;{r['k']})  1 {ab(r['a_J'], r['b_J_per_K'])}; 6000 N !" for r in rk]
     L += ["", "PHASE FCC_A1 %  1  1.0 !", "CONSTITUENT FCC_A1 :PT,RH :  !",
           "PARAMETER G(FCC_A1,PT;0)  1 +GHSERPT; 6000 N !", "PARAMETER G(FCC_A1,RH;0)  1 +GHSERRH; 6000 N !"]
-    L += [f"PARAMETER L(FCC_A1,PT,RH;{r['k']})  1 {ab(r['a_J'], r['b_J_per_K'])}; 6000 N !" for r in rk]
+    if sro:     # short-range order of the solution (sro_fit.py): extra RK terms c_k/T + d_k/T^2 on top of the random-cell + ideal-mixing description
+        sk = {r["k"]: r for r in sro["RK_J_per_mol"]}; rk_all = {r["k"]: r for r in rk}
+        for k in sorted(set(sk) | set(rk_all)):
+            base = ab(rk_all[k]["a_J"], rk_all[k]["b_J_per_K"]) if k in rk_all else "+0"
+            extra = f"{sk[k]['c_J_K']:+.4f}*T**(-1){sk[k]['d_J_K2']:+.3f}*T**(-2)" if k in sk else ""
+            L.append(f"PARAMETER L(FCC_A1,PT,RH;{k})  1 {base}{extra}; 6000 N !")
+    else:
+        L += [f"PARAMETER L(FCC_A1,PT,RH;{r['k']})  1 {ab(r['a_J'], r['b_J_per_K'])}; 6000 N !" for r in rk]
     if model == "plain":   # 2-sublattice CEF with Neumann-Kopp end-members (its disordered state competes with FCC_A1 at high T)
         if "PtRh" in od:
             c = od["PtRh"]
@@ -138,11 +145,12 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument("folder"); ap.add_argument("--liquid", default="ideal", choices=["ideal", "fcc"])
     ap.add_argument("--T", nargs=2, type=float, default=[100, 2400]); ap.add_argument("--dT", type=float, default=10); ap.add_argument("--dx", type=float, default=0.005)
     ap.add_argument("--model", default="partition", choices=["partition", "plain"]); ap.add_argument("--suffix", default="")
+    ap.add_argument("--sro", default=None, help="sro_fit.json (sro_fit.py): add the short-range-order terms c_k/T + d_k/T^2 to the fcc RK parameters")
     a = ap.parse_args()
     folder = a.folder if os.path.isabs(a.folder) else os.path.join(HERE, a.folder) if not os.path.exists(a.folder) else a.folder
     par = json.load(open(os.path.join(folder, "params.json"))); tag = os.path.basename(os.path.normpath(folder)).replace("calphad_", "")
     suf = ("" if a.liquid == "ideal" else "_liqfcc") + ("" if a.model == "partition" else "_plain") + a.suffix + ("_lowT" if a.T[1] <= 600 else "")
-    tdb = os.path.join(folder, f"ptrh_{tag}{suf.replace('_lowT', '')}.tdb"); write_tdb(par, tdb, a.liquid, a.model); print("wrote", tdb)
+    tdb = os.path.join(folder, f"ptrh_{tag}{suf.replace('_lowT', '')}.tdb"); write_tdb(par, tdb, a.liquid, a.model, json.load(open(a.sro)) if a.sro else None); print("wrote", tdb)
     from pycalphad import Database
     dbf = Database(tdb)
     Ts = np.arange(a.T[0], a.T[1] + 1e-6, a.dT); xs = np.arange(0, 1 + 1e-9, a.dx)

@@ -279,3 +279,76 @@ def dilute_solvus(ce, supercell, species: Tuple[str, str], temperature: float, d
     kT = KB_EV * temperature; mu = dmu_star - (eB - eA)
     xa = float(np.exp((mu - eBA) / kT)); xb = float(1.0 - np.exp((-mu - eAB) / kT))
     return {"x_alpha": min(xa, 1.0), "x_beta": max(xb, 0.0), "E_imp_B_in_A": eBA, "E_imp_A_in_B": eAB, "e_A": eA, "e_B": eB, "dmu_star_mix": mu}
+
+
+def canonical_free_energy(ce, supercell, x: float, species: Tuple[str, str], temperatures: Sequence[float], n_sweeps_eq: int = 20, n_sweeps_av: int = 40,
+                          n_random: int = 8, seed: int = 0) -> List[Dict]:
+    """Configurational free energy of a solid solution with short-range order, by canonical MC on the CE and integration
+    over the inverse temperature from the random state (beta = 0):
+
+        F_conf(x, T) = -T S_ideal(x) + k_B T * int_0^beta <E>(beta') dbeta'            (per atom; trapezoid on the given grid)
+
+    ``temperatures`` must be descending (a grid uniform in 1/T is best); beta = 0 is added from ``n_random`` random
+    configurations.  Each row gives T, E (<E> per atom, as the CE returns it), E_random, F_conf, F_ideal = E_random - T S_ideal
+    (what a random cell + ideal mixing assumes), dF_sro = F_conf - F_ideal (<= 0), S_conf (k_B per atom), Cv (k_B per atom) and the
+    Warren-Cowley parameter alpha1 of the first shell (< 0: unlike neighbours preferred).  Below an order-disorder transition of
+    the composition the cell orders and the numbers describe the ordered state, not the solution: check Cv / alpha1.
+    """
+    from mchammer.calculators import ClusterExpansionCalculator  # type: ignore
+    from mchammer.ensembles import CanonicalEnsemble  # type: ignore
+    from ase.neighborlist import neighbor_list
+
+    T = np.asarray(temperatures, float)
+    if np.any(np.diff(T) >= 0):
+        raise ValueError("temperatures must be strictly descending")
+    a, b = species
+    n = len(supercell)
+    nb = int(round(x * n))
+    xx = nb / n
+    s_id = 0.0 if nb in (0, n) else -KB_EV * (xx * np.log(xx) + (1 - xx) * np.log(1 - xx))
+    rng = np.random.default_rng(seed)
+    d = supercell.get_all_distances(mic=True)[0]
+    r1 = np.sort(d)[1]
+    i_nb, j_nb = neighbor_list("ij", supercell, 1.1 * r1)
+
+    def random_cell():
+        s = supercell.copy()
+        sym = np.array([a] * n, dtype=object)
+        sym[rng.choice(n, nb, replace=False)] = b
+        s.set_chemical_symbols(list(sym))
+        return s
+
+    def alpha1(s):
+        if nb in (0, n):
+            return 0.0
+        isb = np.array(s.get_chemical_symbols()) == b
+        p_ab = np.mean(isb[j_nb[~isb[i_nb]]])            # probability of a B neighbour around A
+        return float(1.0 - p_ab / xx)
+
+    e_rand = []
+    for _ in range(n_random):
+        s = random_cell()
+        e_rand.append(ClusterExpansionCalculator(s, ce).calculate_total(occupations=s.get_atomic_numbers()) / n)
+    e_rand = float(np.mean(e_rand))
+    s = random_cell()
+    calc = ClusterExpansionCalculator(s, ce)
+    rows, beta_prev, e_prev, integral = [], 0.0, e_rand, 0.0
+    for k, t in enumerate(T):
+        if nb in (0, n):
+            e, cv, al = e_rand, 0.0, 0.0
+        else:
+            mc = CanonicalEnsemble(s, calculator=calc, temperature=float(t), random_seed=seed + 1000 * (k + 1), ensemble_data_write_interval=max(n // 4, 1))
+            mc.run((n_sweeps_eq + n_sweeps_av) * n)
+            data = mc.data_container.data
+            E = data[data["mctrial"] > n_sweeps_eq * n]["potential"].to_numpy()
+            e, cv = float(E.mean()) / n, float(E.var()) / (KB_EV * t * t) / n / KB_EV
+            s = mc.structure
+            al = alpha1(s)
+        beta = 1.0 / (KB_EV * t)
+        integral += 0.5 * (e + e_prev) * (beta - beta_prev)
+        beta_prev, e_prev = beta, e
+        f = -t * s_id + KB_EV * t * integral
+        f_id = e_rand - t * s_id
+        rows.append({"x": xx, "T": float(t), "E": e, "E_random": e_rand, "F_conf": f, "F_ideal": f_id, "dF_sro": f - f_id, "S_conf_kB": (e - f) / t / KB_EV,
+                     "S_ideal_kB": s_id / KB_EV, "Cv_kB": cv, "alpha1": al})
+    return rows

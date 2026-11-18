@@ -1,46 +1,45 @@
-# ptrh_mace_mpa_0: low-T solids-only re-assembly (100-1900 K, 10 K)
+# ptrh_mace_mpa_0: low-T solids-only re-assembly (100-400 K, 2 K)
 
-Classical level, liquid rows dropped, same fits/entropy models as the WorkChain spec.
+Classical level Liquid rows dropped, same fits/entropy models as the WorkChain spec.
 
 ## Highest temperature with the ordered phase in a two-phase region
 
 * PtRh: 230.0
-* PtRh3: 910.0
-* Pt3Rh: 390.0
+* PtRh3: 400.0
+* Pt3Rh: 400.0
 
 ## Invariant reactions (pair-set changes)
 
-* 190-200 K: ['Pt3Rh+PtRh', 'Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+PtRh3', 'PtRh3+fcc'] -> ['Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+PtRh3', 'PtRh+fcc', 'PtRh3+fcc']
-* 210-220 K: ['Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+PtRh3', 'PtRh+fcc', 'PtRh3+fcc'] -> ['Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+fcc', 'PtRh3+fcc']
-* 220-230 K: ['Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+fcc', 'PtRh3+fcc'] -> ['Pt3Rh+fcc', 'PtRh+fcc', 'PtRh3+fcc', 'fcc+fcc']
-* 230-240 K: ['Pt3Rh+fcc', 'PtRh+fcc', 'PtRh3+fcc', 'fcc+fcc'] -> ['Pt3Rh+fcc', 'PtRh3+fcc', 'fcc+fcc']
-* 390-400 K: ['Pt3Rh+fcc', 'PtRh3+fcc', 'fcc+fcc'] -> ['PtRh3+fcc', 'fcc+fcc']
-* 910-920 K: ['PtRh3+fcc', 'fcc+fcc'] -> ['fcc+fcc']
+* 200-202 K: ['Pt3Rh+PtRh', 'Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+PtRh3', 'PtRh3+fcc'] -> ['Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+PtRh3', 'PtRh+fcc', 'PtRh3+fcc']
+* 212-214 K: ['Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+PtRh3', 'PtRh+fcc', 'PtRh3+fcc'] -> ['Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+fcc', 'PtRh3+fcc']
+* 224-226 K: ['Pt3Rh+fcc', 'PtRh+PtRh', 'PtRh+fcc', 'PtRh3+fcc'] -> ['Pt3Rh+fcc', 'PtRh+fcc', 'PtRh3+fcc']
+* 226-228 K: ['Pt3Rh+fcc', 'PtRh+fcc', 'PtRh3+fcc'] -> ['Pt3Rh+fcc', 'PtRh+fcc', 'PtRh3+fcc', 'fcc+fcc']
+* 230-232 K: ['Pt3Rh+fcc', 'PtRh+fcc', 'PtRh3+fcc', 'fcc+fcc'] -> ['Pt3Rh+fcc', 'PtRh3+fcc', 'fcc+fcc']
 
 ## Same-phase segments (fit noise)
 
 * PtRh+PtRh x = 0.438-0.562 at 100 K
+* PtRh+PtRh x = 0.438-0.562 at 102 K
+* PtRh+PtRh x = 0.438-0.562 at 104 K
+* PtRh+PtRh x = 0.438-0.562 at 106 K
+* PtRh+PtRh x = 0.438-0.562 at 108 K
 * PtRh+PtRh x = 0.438-0.562 at 110 K
+* PtRh+PtRh x = 0.438-0.562 at 112 K
+* PtRh+PtRh x = 0.438-0.562 at 114 K
+* PtRh+PtRh x = 0.438-0.562 at 116 K
+* PtRh+PtRh x = 0.438-0.562 at 118 K
 * PtRh+PtRh x = 0.438-0.562 at 120 K
+* PtRh+PtRh x = 0.438-0.562 at 122 K
+* PtRh+PtRh x = 0.438-0.562 at 124 K
+* PtRh+PtRh x = 0.438-0.562 at 126 K
+* PtRh+PtRh x = 0.438-0.562 at 128 K
 * PtRh+PtRh x = 0.438-0.562 at 130 K
-* PtRh+PtRh x = 0.438-0.562 at 140 K
-* PtRh+PtRh x = 0.438-0.562 at 150 K
-* PtRh+PtRh x = 0.438-0.562 at 160 K
-* PtRh+PtRh x = 0.438-0.562 at 170 K
-* PtRh+PtRh x = 0.438-0.562 at 180 K
-* PtRh+PtRh x = 0.438-0.562 at 190 K
-* PtRh+PtRh x = 0.438-0.562 at 200 K
-* PtRh+PtRh x = 0.438-0.562 at 210 K
-* PtRh+PtRh x = 0.438-0.562 at 220 K
-* fcc+fcc x = 0.473-0.480 at 230 K
-* fcc+fcc x = 0.473-0.480 at 240 K
-* fcc+fcc x = 0.473-0.480 at 250 K
-* fcc+fcc x = 0.473-0.480 at 260 K
-* fcc+fcc x = 0.473-0.480 at 270 K
-* fcc+fcc x = 0.473-0.480 at 280 K
-* fcc+fcc x = 0.473-0.480 at 290 K
-* two-phase regions at 150 K: fcc(0.103)-Pt3Rh(0.188); Pt3Rh(0.188)-PtRh(0.438); PtRh(0.438)-PtRh(0.562); PtRh(0.562)-PtRh3(0.812); PtRh3(0.812)-fcc(0.922)
-* two-phase regions at 200 K: fcc(0.110)-Pt3Rh(0.188); Pt3Rh(0.188)-fcc(0.290); fcc(0.297)-PtRh(0.438); PtRh(0.438)-PtRh(0.562); PtRh(0.562)-PtRh3(0.812); PtRh3(0.812)-fcc(0.917)
-* two-phase regions at 300 K: fcc(0.130)-Pt3Rh(0.188); Pt3Rh(0.188)-fcc(0.250); fcc(0.473)-fcc(0.480); fcc(0.675)-PtRh3(0.812); PtRh3(0.812)-fcc(0.907)
-* two-phase regions at 500 K: fcc(0.473)-fcc(0.480); fcc(0.698)-PtRh3(0.812); PtRh3(0.812)-fcc(0.890)
-* two-phase regions at 1000 K: fcc(0.001)-fcc(0.350); fcc(0.473)-fcc(0.480)
+* PtRh+PtRh x = 0.438-0.562 at 132 K
+* PtRh+PtRh x = 0.438-0.562 at 134 K
+* PtRh+PtRh x = 0.438-0.562 at 136 K
+* PtRh+PtRh x = 0.438-0.562 at 138 K
+* two-phase regions at 150 K: fcc(0.098)-Pt3Rh(0.188); Pt3Rh(0.188)-PtRh(0.438); PtRh(0.438)-PtRh(0.562); PtRh(0.562)-PtRh3(0.812); PtRh3(0.812)-fcc(0.925)
+* two-phase regions at 200 K: fcc(0.103)-Pt3Rh(0.188); Pt3Rh(0.188)-PtRh(0.438); PtRh(0.438)-PtRh(0.562); PtRh(0.562)-PtRh3(0.812); PtRh3(0.812)-fcc(0.920)
+* two-phase regions at 300 K: fcc(0.113)-Pt3Rh(0.188); Pt3Rh(0.188)-fcc(0.273); fcc(0.473)-fcc(0.480); fcc(0.665)-PtRh3(0.812); PtRh3(0.812)-fcc(0.912)
+* two-phase regions at 500 K: none
+* two-phase regions at 1000 K: none

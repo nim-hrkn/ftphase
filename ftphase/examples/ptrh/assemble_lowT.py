@@ -13,8 +13,12 @@ import argparse
 import json
 import os
 
+import sys
+
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 FITS = {"fcc": "rk", "PtRh": "poly", "PtRh3": "poly", "Pt3Rh": "poly"}
 POLY = {"fcc": 4, "PtRh": 1, "PtRh3": 1, "Pt3Rh": 1}
@@ -72,8 +76,9 @@ def main():
     ap.add_argument("--no-ordered", action="store_true", help="fcc only (reference: what the hull gives without the ordered phases)")
     ap.add_argument("--quantum", action="store_true", help="quantum (harmonic) level: take the QHA free energies straight from the AiiDA QHA nodes "
                     "instead of the classical-lowered 05 table (needs the profile; the WorkChain pk is read from <run>.pk.json)")
+    ap.add_argument("--sro", default=None, help="sro_fit.json (sro_fit.py): add the short-range-order free energy dF_sro(x, T) to the fcc rows (random cells + ideal mixing lack it)")
     a = ap.parse_args()
-    out = os.path.join(a.run, "lowT_quantum" if a.quantum else "lowT")
+    out = os.path.join(a.run, ("lowT_quantum" if a.quantum else "lowT") + ("_sro" if a.sro else ""))
     os.makedirs(out, exist_ok=True)
     if a.quantum:
         tab = quantum_table(a.run)
@@ -96,6 +101,10 @@ def main():
     Ts = np.arange(a.T[0], a.T[1] + 1e-6, a.step)
     ti = interpolate_T(tab, Ts)
     ent = {ph: (_site_model(v[0].partition("@")[0], float(v[0].partition("@")[2]) if "@" in v[0] else None), v[1]) for ph, v in ENTROPY.items() if ph in phases}
+    if a.sro:
+        from sro_fit import sro as sro_fn
+        coef = json.load(open(a.sro))["coef_eV"]; d2 = ti.df.copy(); m = (d2.phase == "fcc") & (d2.x > 1e-9) & (d2.x < 1 - 1e-9)
+        d2.loc[m, "G"] = d2.loc[m, "G"] + sro_fn(d2.loc[m, "x"].to_numpy(), d2.loc[m, "T"].to_numpy(), coef); ti = FreeEnergyTable.from_dataframe(d2, ti.meta)
     builder = builder_from_table(ti, fit="spline", fits={k: v for k, v in FITS.items() if k in phases}, poly_order=3, poly_orders=POLY, entropy_models=ent or None)
     reg = scan(builder, Ts, min_width=0.005, gap_tol=2.5)
     inv = invariants(reg)

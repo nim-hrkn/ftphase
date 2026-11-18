@@ -1,0 +1,245 @@
+{
+ "0.75@1000": {
+  "x_Li": 0.75,
+  "T_K": 1000,
+  "first_minimum_A": 4.06,
+  "N_AlAl": 2.64,
+  "N_AlLi": 10.16,
+  "N_LiLi": 9.64,
+  "N_LiAl": 3.39,
+  "random_N_AlAl": 3.2,
+  "alpha1_around_Al": -0.058,
+  "alpha1_around_Li": -0.04,
+  "peak_height": {
+   "Al-Al": 3.61,
+   "Al-Li": 2.73,
+   "Li-Li": 1.85
+  },
+  "peak_A": {
+   "Al-Al": 2.71,
+   "Al-Li": 2.79,
+   "Li-Li": 2.91
+  },
+  "D_Al_1e-5cm2_s": 7.67,
+  "D_Li_1e-5cm2_s": 14.25,
+  "msd_Li_20ps_A2": 165.2,
+  "total_g_peak": 2.23,
+  "g_min_over_max": 0.28
+ },
+ "0.75@700": {
+  "x_Li": 0.75,
+  "T_K": 700,
+  "first_minimum_A": 4.01,
+  "N_AlAl": 2.37,
+  "N_AlLi": 10.55,
+  "N_LiLi": 9.84,
+  "N_LiAl": 3.52,
+  "random_N_AlAl": 3.23,
+  "alpha1_around_Al": -0.089,
+  "alpha1_around_Li": -0.053,
+  "peak_height": {
+   "Al-Al": 3.87,
+   "Al-Li": 3.27,
+   "Li-Li": 2.11
+  },
+  "peak_A": {
+   "Al-Al": 2.71,
+   "Al-Li": 2.81,
+   "Li-Li": 2.89
+  },
+  "D_Al_1e-5cm2_s": 2.48,
+  "D_Li_1e-5cm2_s": 4.3,
+  "msd_Li_20ps_A2": 50.5,
+  "total_g_peak": 2.58,
+  "g_min_over_max": 0.195
+ },
+ "0.75@500": {
+  "x_Li": 0.75,
+  "T_K": 500,
+  "first_minimum_A": 3.94,
+  "N_AlAl": 2.19,
+  "N_AlLi": 10.6,
+  "N_LiLi": 9.76,
+  "N_LiAl": 3.53,
+  "random_N_AlAl": 3.2,
+  "alpha1_around_Al": -0.105,
+  "alpha1_around_Li": -0.064,
+  "peak_height": {
+   "Al-Al": 4.49,
+   "Al-Li": 3.9,
+   "Li-Li": 2.36
+  },
+  "peak_A": {
+   "Al-Al": 2.71,
+   "Al-Li": 2.84,
+   "Li-Li": 2.89
+  },
+  "D_Al_1e-5cm2_s": 0.17,
+  "D_Li_1e-5cm2_s": 0.68,
+  "msd_Li_20ps_A2": 9.7,
+  "total_g_peak": 2.98,
+  "g_min_over_max": 0.133
+ },
+ "0.90@1000": {
+  "x_Li": 0.9,
+  "T_K": 1000,
+  "first_minimum_A": 4.24,
+  "N_AlAl": 1.35,
+  "N_AlLi": 11.96,
+  "N_LiLi": 12.04,
+  "N_LiAl": 1.33,
+  "random_N_AlAl": 1.33,
+  "alpha1_around_Al": 0.002,
+  "alpha1_around_Li": 0.006,
+  "peak_height": {
+   "Al-Al": 5.56,
+   "Al-Li": 2.74,
+   "Li-Li": 1.87
+  },
+  "peak_A": {
+   "Al-Al": 2.69,
+   "Al-Li": 2.81,
+   "Li-Li": 2.96
+  },
+  "D_Al_1e-5cm2_s": 11.07,
+  "D_Li_1e-5cm2_s": 24.19,
+  "msd_Li_20ps_A2": 285.7,
+  "total_g_peak": 1.99,
+  "g_min_over_max": 0.346
+ },
+ "0.90@700": {
+  "x_Li": 0.9,
+  "T_K": 700,
+  "first_minimum_A": 4.14,
+  "N_AlAl": 1.19,
+  "N_AlLi": 11.96,
+  "N_LiLi": 12.02,
+  "N_LiAl": 1.33,
+  "random_N_AlAl": 1.31,
+  "alpha1_around_Al": -0.011,
+  "alpha1_around_Li": 0.005,
+  "peak_height": {
+   "Al-Al": 5.95,
+   "Al-Li": 3.27,
+   "Li-Li": 2.1
+  },
+  "peak_A": {
+   "Al-Al": 2.71,
+   "Al-Li": 2.81,
+   "Li-Li": 2.91
+  },
+  "D_Al_1e-5cm2_s": 4.85,
+  "D_Li_1e-5cm2_s": 9.83,
+  "msd_Li_20ps_A2": 123.3,
+  "total_g_peak": 2.28,
+  "g_min_over_max": 0.265
+ },
+ "0.90@500": {
+  "x_Li": 0.9,
+  "T_K": 500,
+  "first_minimum_A": 4.09,
+  "N_AlAl": 1.19,
+  "N_AlLi": 11.78,
+  "N_LiLi": 12.09,
+  "N_LiAl": 1.31,
+  "random_N_AlAl": 1.3,
+  "alpha1_around_Al": -0.009,
+  "alpha1_around_Li": 0.024,
+  "peak_height": {
+   "Al-Al": 7.07,
+   "Al-Li": 3.87,
+   "Li-Li": 2.39
+  },
+  "peak_A": {
+   "Al-Al": 2.71,
+   "Al-Li": 2.84,
+   "Li-Li": 2.96
+  },
+  "D_Al_1e-5cm2_s": 0.78,
+  "D_Li_1e-5cm2_s": 3.16,
+  "msd_Li_20ps_A2": 42.2,
+  "total_g_peak": 2.61,
+  "g_min_over_max": 0.191
+ },
+ "0.95@1000": {
+  "x_Li": 0.95,
+  "T_K": 1000,
+  "first_minimum_A": 4.31,
+  "N_AlAl": 0.65,
+  "N_AlLi": 12.88,
+  "N_LiLi": 12.94,
+  "N_LiAl": 0.68,
+  "random_N_AlAl": 0.68,
+  "alpha1_around_Al": -0.002,
+  "alpha1_around_Li": 0.004,
+  "peak_height": {
+   "Al-Al": 5.71,
+   "Al-Li": 2.82,
+   "Li-Li": 1.86
+  },
+  "peak_A": {
+   "Al-Al": 2.71,
+   "Al-Li": 2.79,
+   "Li-Li": 2.96
+  },
+  "D_Al_1e-5cm2_s": 12.32,
+  "D_Li_1e-5cm2_s": 26.92,
+  "msd_Li_20ps_A2": 335.0,
+  "total_g_peak": 1.93,
+  "g_min_over_max": 0.368
+ },
+ "0.95@700": {
+  "x_Li": 0.95,
+  "T_K": 700,
+  "first_minimum_A": 4.21,
+  "N_AlAl": 0.73,
+  "N_AlLi": 12.64,
+  "N_LiLi": 12.89,
+  "N_LiAl": 0.67,
+  "random_N_AlAl": 0.67,
+  "alpha1_around_Al": 0.005,
+  "alpha1_around_Li": 0.019,
+  "peak_height": {
+   "Al-Al": 8.0,
+   "Al-Li": 3.35,
+   "Li-Li": 2.12
+  },
+  "peak_A": {
+   "Al-Al": 2.69,
+   "Al-Li": 2.81,
+   "Li-Li": 2.96
+  },
+  "D_Al_1e-5cm2_s": 7.24,
+  "D_Li_1e-5cm2_s": 13.63,
+  "msd_Li_20ps_A2": 161.5,
+  "total_g_peak": 2.19,
+  "g_min_over_max": 0.285
+ },
+ "0.95@500": {
+  "x_Li": 0.95,
+  "T_K": 500,
+  "first_minimum_A": 4.14,
+  "N_AlAl": 0.83,
+  "N_AlLi": 12.28,
+  "N_LiLi": 12.8,
+  "N_LiAl": 0.65,
+  "random_N_AlAl": 0.66,
+  "alpha1_around_Al": 0.014,
+  "alpha1_around_Li": 0.039,
+  "peak_height": {
+   "Al-Al": 10.97,
+   "Al-Li": 3.82,
+   "Li-Li": 2.39
+  },
+  "peak_A": {
+   "Al-Al": 2.69,
+   "Al-Li": 2.81,
+   "Li-Li": 2.99
+  },
+  "D_Al_1e-5cm2_s": 1.96,
+  "D_Li_1e-5cm2_s": 5.21,
+  "msd_Li_20ps_A2": 65.1,
+  "total_g_peak": 2.49,
+  "g_min_over_max": 0.217
+ }
+}

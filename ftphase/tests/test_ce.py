@@ -70,3 +70,27 @@ def test_vcsgc_dilute_branch_gap_on_toy_model():
     h = solvus_from_vcsgc(hot)
     assert np.isnan(h["x_alpha"]) and np.isnan(h["x_beta"])
     x = np.linspace(0, 1, 11); assert lower_hull_gap(x, x * (1 - x), 0.05) == (0.0, 1.0) and np.isnan(lower_hull_gap(x, (x - 0.5) ** 2, 0.05)[0])
+
+
+def test_canonical_free_energy_high_temperature_limit():
+    """SRO lowers the free energy below random + ideal mixing; at high T the lowering is -Var(E)/(2 k_B T) (second cumulant)."""
+    pytest.importorskip("icet")
+    from ase.build import bulk
+    from icet import ClusterExpansion, ClusterSpace
+
+    from ftphase.ce import KB_EV, canonical_free_energy
+
+    prim = bulk("Ag", "fcc", a=4.0)
+    cs = ClusterSpace(prim, cutoffs=[3.0], chemical_symbols=["Ag", "Cu"])        # zerolet, singlet, nearest-neighbour pair
+    J = 0.02                                                                      # eV per atom per unit pair correlation: ordering tendency
+    ce = ClusterExpansion(cs, [0.0, 0.0, J])
+    sc = prim.repeat((6, 6, 6))
+    Ts = 1.0 / (KB_EV * np.linspace(2.0, 12.0, 6))                               # beta = 2..12 /eV, i.e. 5800 -> 970 K
+    rows = canonical_free_energy(ce, sc, 0.5, ("Ag", "Cu"), Ts, n_sweeps_eq=10, n_sweeps_av=30, seed=1)
+    assert all(r["dF_sro"] < 0 for r in rows)
+    assert rows[-1]["S_conf_kB"] < rows[-1]["S_ideal_kB"]
+    assert rows[-1]["alpha1"] < 0                                                 # unlike neighbours preferred for J > 0
+    # random alloy at x = 0.5: per-atom Var(E) N = J^2 / 6 for 6 independent pair correlations per atom (variance of the mean of 6 products)
+    r = rows[-1]
+    expect = -(J ** 2 / 6.0) / (2 * KB_EV * r["T"])
+    assert r["dF_sro"] == pytest.approx(expect, rel=0.3)

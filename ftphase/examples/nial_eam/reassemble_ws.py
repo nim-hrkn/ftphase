@@ -40,6 +40,17 @@ def main():
     df = tab.df.copy()
     # ---- recover raw cell free energies of the ordered phases (undo the analytic constitutional term)
     models = {"B2": b2_triple_defect_site_fractions, "L12": partial(b32_antisite_site_fractions, stoich_x=0.75)}
+    # Tables written before 2026-11-17 13:00 carry the L1_2 anti-site term with the two sublattice weights interchanged (bug in
+    # b32_antisite_site_fractions for stoich_x != 1/2, fixed that day).  The term must be removed exactly as it was added, so for
+    # those tables the old weights are used here; the Wagner-Schottky model below does not depend on it.
+    import datetime
+    legacy = os.path.getmtime(os.path.join(IN, "05_free_energies.tsv")) < datetime.datetime(2026, 11, 17, 13, 0).timestamp()
+    if legacy:
+        def _l12_legacy(x):
+            sf, nc = b32_antisite_site_fractions(x, stoich_x=0.75)
+            return sf, nc[::-1]
+        models["L12"] = _l12_legacy
+    print("L1_2 constitutional term removed with the", "pre-fix (interchanged)" if legacy else "corrected", "sublattice weights")
     for ph, sm in models.items():
         m = (df.phase == ph) & (df.config_entropy == "sublattice")
         s = np.array([sublattice_entropy(*sm(x), basis="atom") for x in df.loc[m, "x"]])

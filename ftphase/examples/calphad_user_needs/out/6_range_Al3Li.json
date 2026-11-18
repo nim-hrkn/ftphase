@@ -1,0 +1,38 @@
+{
+ "n_atoms": 32,
+ "x0": 0.25,
+ "static": {
+  "Al_on_Li": {
+   "raw_eV_fixed_cell": -1.1447,
+   "site": 0
+  },
+  "Li_on_Al": {
+   "raw_eV_fixed_cell": 1.6381,
+   "site": 1
+  }
+ },
+ "stoich": {
+  "x": 0.25,
+  "E0_eV_per_atom": -3.142257924647604,
+  "n_imag_modes": 0,
+  "imag_weight_fraction": 0.0,
+  "sg": "Pm-3m (221)->Pm-3m (221)",
+  "seconds": 4.68464469909668
+ },
+ "Al_on_Li": {
+  "x": 0.21875,
+  "E0_eV_per_atom": -3.1780691254000395,
+  "n_imag_modes": 0,
+  "imag_weight_fraction": 0.0,
+  "sg": "Pm-3m (221)->Pm-3m (221)",
+  "seconds": 2.5516538619995117
+ },
+ "Li_on_Al": {
+  "x": 0.28125,
+  "E0_eV_per_atom": -3.0911092677015777,
+  "n_imag_modes": 0,
+  "imag_weight_fraction": 0.0,
+  "sg": "P4/mmm (123)->P4/mmm (123)",
+  "seconds": 3.290766716003418
+ }
+}

@@ -70,8 +70,8 @@ def report():
     from pipeline import ace, b32_alli, l12_al3li
     calc = ace(); sd = os.path.join(HERE, "..", "alli_ace_txdiagram", "structures")
     cry = {0.25: ("Al3Li (L1_2)", l12_al3li()), 0.5: ("B32 AlLi", b32_alli()), 0.75: ("Al4Li9 (x = 0.692)", read(os.path.join(sd, "mp-568404-Li9Al4.cif")))}
-    res = {}; fig, axes = plt.subplots(1, len(XS), figsize=(4.9 * len(XS), 4.1), sharey=True); col = {"Al-Al": "#1f77b4", "Al-Li": "#d62728", "Li-Li": "#2ca02c"}
-    for ax, x in zip(axes, XS):
+    res = {}; PAIRS = ("Al-Al", "Al-Li", "Li-Li"); fig, axes = plt.subplots(3, len(XS), figsize=(4.9 * len(XS), 7.6), sharex=True, sharey=True, squeeze=False); col = {"Al-Al": "#1f77b4", "Al-Li": "#d62728", "Li-Li": "#2ca02c"}
+    for j, x in enumerate(XS):
         d = os.path.join(OUT, f"x{x:.2f}"); a = np.loadtxt(os.path.join(d, "rdf.dat"), skiprows=4); r = a[:, 1]
         g = {"Al-Al": a[:, 2], "Al-Li": a[:, 4], "Li-Li": a[:, 6]}; cn = {"Al-Al": a[:, 3], "Al-Li": a[:, 5], "Li-Li": a[:, 7]}
         gt = (1 - x) ** 2 * g["Al-Al"] + 2 * x * (1 - x) * g["Al-Li"] + x ** 2 * g["Li-Li"]; ip = int(np.argmax(gt)); rc = float(r[ip + int(np.argmin(gt[ip:ip + 120]))])
@@ -85,13 +85,21 @@ def report():
                            "random_N": {"Al-Al": round((1 - x) * (n_aa + n_ab), 2), "Al-Li": round(x * (n_aa + n_ab), 2), "Li-Li": round(x * (n_bb + n_ba), 2), "Li-Al": round((1 - x) * (n_bb + n_ba), 2)},
                            "warren_cowley_alpha1_around_Al": round(alpha, 3), "warren_cowley_alpha1_around_Li": round(alpha_b, 3),
                            "crystal": cname, "crystal_x": round(xc, 4), "crystal_first_distance_A": first, "crystal_N_within_cutoff": {p: round(v, 2) for p, v in cn_c.items()}, "crystal_alpha1_around_Al": None if a_c is None else round(a_c, 3)}
-        for p, v in g.items():
-            ax.plot(r, v, color=col[p], lw=1.5, label=p + " liquid")
-            u, c = sh[p]; m = u <= 6.0
-            ax.vlines(u[m], 0, 0.12 * c[m], color=col[p], lw=2.2, alpha=0.55)
-        ax.axvline(rc, color="0.6", lw=0.6, ls="--"); ax.set(xlabel="r (Å)", xlim=(2.0, 6), title=f"x_Li = {x:.2f}, {T:.0f} K, α₁ = {alpha:+.2f}; sticks: {cname}"); ax.title.set_fontsize(8.5); ax.legend(fontsize=7.5)
-    axes[0].set_ylabel("partial g(r)   (sticks: 0.12 × number of crystal neighbours)")
-    fig.suptitle("ACE Al-Li liquid (1024 atoms, NPT): partial pair distribution functions against the neighbour shells of the nearest compound; α₁ = Warren-Cowley parameter around Al (< 0 = unlike neighbours preferred)", fontsize=8)
+        for i, p in enumerate(PAIRS):       # one panel per pair, stacked vertically: sticks of different pairs at the same distance no longer hide each other
+            ax = axes[i, j]; ax.plot(r, g[p], color=col[p], lw=1.5, label=p + " liquid"); u, c = sh[p]; m = u <= 6.0; u, c = u[m], c[m]
+            if len(u):                      # low-symmetry crystals have many slightly different distances: sum the neighbours in 0.15 A bins (weighted mean distance)
+                kb = np.floor(u / 0.15).astype(int); u, c = np.array([np.average(u[kb == q], weights=c[kb == q]) for q in np.unique(kb)]), np.array([c[kb == q].sum() for q in np.unique(kb)])
+            ax.vlines(u, 0, 0.12 * c, color=col[p], lw=2.6, alpha=0.6, label=p + " crystal (number of neighbours)")
+            for uu, cc in zip(u, c):
+                ax.text(uu, 0.12 * cc + 0.06, f"{cc:.0f}" if abs(cc - round(cc)) < 0.05 else f"{cc:.1f}", ha="center", va="bottom", fontsize=6.5, color=col[p])
+            ax.axvline(rc, color="0.6", lw=0.6, ls="--"); ax.set(xlim=(2.0, 6)); ax.legend(fontsize=7, loc="upper right")
+            if i == 0:
+                ax.set_title(f"x_Li = {x:.2f}, {T:.0f} K, α₁ = {alpha:+.2f}; crystal: {cname}", fontsize=8.5)
+            if i == 2:
+                ax.set_xlabel("r (Å)")
+            if j == 0:
+                ax.set_ylabel(f"{p}:  g(r)")
+    fig.suptitle("ACE Al-Li liquid (1024 atoms, NPT): partial pair distribution functions (curves) against the neighbour shells of the nearest compound (sticks, height 0.12 × number of neighbours, number written above; distances within 0.15 Å are summed);\nrows = pair, columns = composition; dashed = first minimum of the total g(r); α₁ = Warren-Cowley parameter around Al (< 0 = unlike neighbours preferred)", fontsize=8)
     fig.tight_layout(); fig.savefig(os.path.join(HERE, "out", "4_liquid_gr.png"), dpi=150); json.dump(res, open(os.path.join(HERE, "out", "4_liquid_gr.json"), "w"), indent=1); print(json.dumps(res, indent=1))
 
 

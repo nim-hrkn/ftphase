@@ -1,0 +1,94 @@
+{
+ "T_grid": [
+  100.0,
+  400.0,
+  151
+ ],
+ "ordered_top_T": {
+  "PtRh": 204.0,
+  "PtRh3": 400.0,
+  "Pt3Rh": 400.0
+ },
+ "invariants": [
+  {
+   "T_low": 146.0,
+   "T_high": 148.0,
+   "pairs_below": [
+    "Pt3Rh+PtRh",
+    "Pt3Rh+fcc",
+    "PtRh+PtRh",
+    "PtRh+PtRh3",
+    "PtRh3+fcc"
+   ],
+   "pairs_above": [
+    "Pt3Rh+PtRh",
+    "Pt3Rh+fcc",
+    "PtRh+PtRh",
+    "PtRh+fcc",
+    "PtRh3+fcc"
+   ]
+  },
+  {
+   "T_low": 170.0,
+   "T_high": 172.0,
+   "pairs_below": [
+    "Pt3Rh+PtRh",
+    "Pt3Rh+fcc",
+    "PtRh+PtRh",
+    "PtRh+fcc",
+    "PtRh3+fcc"
+   ],
+   "pairs_above": [
+    "Pt3Rh+fcc",
+    "PtRh+PtRh",
+    "PtRh+fcc",
+    "PtRh3+fcc"
+   ]
+  },
+  {
+   "T_low": 196.0,
+   "T_high": 198.0,
+   "pairs_below": [
+    "Pt3Rh+fcc",
+    "PtRh+PtRh",
+    "PtRh+fcc",
+    "PtRh3+fcc"
+   ],
+   "pairs_above": [
+    "Pt3Rh+fcc",
+    "PtRh+fcc",
+    "PtRh3+fcc"
+   ]
+  },
+  {
+   "T_low": 202.0,
+   "T_high": 204.0,
+   "pairs_below": [
+    "Pt3Rh+fcc",
+    "PtRh+fcc",
+    "PtRh3+fcc"
+   ],
+   "pairs_above": [
+    "Pt3Rh+fcc",
+    "PtRh+fcc",
+    "PtRh3+fcc",
+    "fcc+fcc"
+   ]
+  },
+  {
+   "T_low": 204.0,
+   "T_high": 206.0,
+   "pairs_below": [
+    "Pt3Rh+fcc",
+    "PtRh+fcc",
+    "PtRh3+fcc",
+    "fcc+fcc"
+   ],
+   "pairs_above": [
+    "Pt3Rh+fcc",
+    "PtRh3+fcc",
+    "fcc+fcc"
+   ]
+  }
+ ]
+}

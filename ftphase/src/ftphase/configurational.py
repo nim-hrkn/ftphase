@@ -167,9 +167,16 @@ def sublattice_mixing_free_energy(site_fractions, site_counts, T, basis="atom", 
 def b32_antisite_site_fractions(x_B: float, stoich_x: float = 0.5):
     """Helper for an AB ordered phase (e.g. B32 AlLi) made off-stoichiometric
     by anti-site atoms only.  Returns (site_fractions, site_counts) for a
-    two-sublattice model (A)(B) with n_s = 1/2 each, so that the overall
-    B fraction equals ``x_B``.  For x_B < 1/2, A sits on the B sublattice;
-    for x_B > 1/2, B on the A sublattice.  No vacancies.
+    two-sublattice model (A)(B), so that the overall B fraction equals ``x_B``.
+    The B sublattice holds the fraction ``stoich_x`` of the sites and the A
+    sublattice 1 - ``stoich_x`` (1/2 each for an AB phase; 3/4 and 1/4 for
+    AB3 with stoich_x = 0.75).  For x_B < stoich_x, A sits on the B sublattice;
+    for x_B > stoich_x, B on the A sublattice.  No vacancies.
+
+    Until 2026-11-17 the two site counts were returned in the wrong order
+    (B-sublattice weight on the A sublattice), which is harmless for
+    stoich_x = 1/2 but made the anti-site entropy of AB3 / A3B phases wrong by
+    up to a factor of 3 (too large on the minority-sublattice side).
     """
     if not 0.0 <= x_B <= 1.0:
         raise ValueError("x_B must be in [0,1]")
@@ -179,7 +186,7 @@ def b32_antisite_site_fractions(x_B: float, stoich_x: float = 0.5):
     else:
         yA_on_A = (1.0 - x_B) / (1.0 - stoich_x)
         sf = [{"A": yA_on_A, "B": 1.0 - yA_on_A}, {"A": 0.0, "B": 1.0}]
-    return sf, [stoich_x, 1.0 - stoich_x]
+    return sf, [1.0 - stoich_x, stoich_x]      # sites of the A sublattice, of the B sublattice
 
 
 def b2_triple_defect_site_fractions(x_B: float, stoich_x: float = 0.5):
@@ -196,7 +203,7 @@ def b2_triple_defect_site_fractions(x_B: float, stoich_x: float = 0.5):
         return b32_antisite_site_fractions(x_B, stoich_x)
     y_va = (1.0 - 2.0 * x_B) / (1.0 - x_B)          # vacancies on the B sublattice
     sf = [{"A": 1.0, "B": 0.0}, {"B": 1.0 - y_va, "Va": y_va}]
-    return sf, [stoich_x, 1.0 - stoich_x]
+    return sf, [1.0 - stoich_x, stoich_x]
 
 
 def free_energy_from_density_of_states(energies, ln_dos, T, per_atoms: int = 1):

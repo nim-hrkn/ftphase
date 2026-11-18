@@ -7,7 +7,7 @@
  "ordered_top_T": {
   "PtRh": 240.0,
   "PtRh3": 1900.0,
-  "Pt3Rh": 630.0
+  "Pt3Rh": 740.0
  },
  "invariants": [
   {
@@ -30,8 +30,8 @@
    ]
   },
   {
-   "T_low": 200.0,
-   "T_high": 210.0,
+   "T_low": 190.0,
+   "T_high": 200.0,
    "pairs_below": [
     "Pt3Rh+fcc",
     "PtRh+PtRh3",
@@ -92,33 +92,11 @@
    ]
   },
   {
-   "T_low": 630.0,
-   "T_high": 640.0,
+   "T_low": 740.0,
+   "T_high": 750.0,
    "pairs_below": [
     "Pt3Rh+fcc",
     "PtRh3+fcc",
-    "fcc+fcc"
-   ],
-   "pairs_above": [
-    "PtRh3+fcc",
-    "fcc+fcc"
-   ]
-  },
-  {
-   "T_low": 920.0,
-   "T_high": 930.0,
-   "pairs_below": [
-    "PtRh3+fcc",
-    "fcc+fcc"
-   ],
-   "pairs_above": [
-    "fcc+fcc"
-   ]
-  },
-  {
-   "T_low": 1680.0,
-   "T_high": 1690.0,
-   "pairs_below": [
     "fcc+fcc"
    ],
    "pairs_above": [

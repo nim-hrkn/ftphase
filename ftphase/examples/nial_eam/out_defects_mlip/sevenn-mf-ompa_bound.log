@@ -1,0 +1,6 @@
+/home/kino/kino/Claude/Projects/PhaseDiagram/env/torch/lib/python3.12/site-packages/sevenn/calculator.py:93: UserWarning: No tensor product accelerator is enabled for SevenNetCalculator. SevenNet may run much slower without a TP accelerator. Please refer to the accelerator section of the documentation.
+  util.warn_no_tp_accelerator('SevenNetCalculator')
+sevenn-mf-ompa <100> (a): E_bind -0.009 eV, triple defect 1.933 eV (isolated 1.924; 25 steps, 131 s)
+sevenn-mf-ompa <110> (a sqrt2): E_bind +0.126 eV, triple defect 1.799 eV (isolated 1.924; 18 steps, 239 s)
+sevenn-mf-ompa <111> (a sqrt3): E_bind +0.172 eV, triple defect 1.752 eV (isolated 1.924; 16 steps, 348 s)
+sevenn-mf-ompa far apart: E_bind +0.057 eV, triple defect 1.867 eV (isolated 1.924; 15 steps, 460 s)

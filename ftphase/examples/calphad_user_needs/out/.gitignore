@@ -4,3 +4,8 @@ liquid_md/*/rdf.dat
 liquid_md/*/log.lammps
 liquid_md/*/conf.data
 liquid_md/run.log
+liquid_md_lowT/*/log.lammps
+liquid_md_lowT/*/*.data
+4_lowT_run.log
+7_defectF_*.log
+6_range_*.log

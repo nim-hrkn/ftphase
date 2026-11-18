@@ -1,0 +1,72 @@
+{
+ "MACE-MPA-0": {
+  "label": "MACE-MPA-0",
+  "fcc<->PtRh_K": 176.0,
+  "top_of_fields_K": {
+   "Pt3Rh": 106.0,
+   "PtRh": 176.0,
+   "PtRh3": 146.0
+  },
+  "fcc<->PtRh3_K": 146,
+  "fcc<->Pt3Rh_K": 106
+ },
+ "MACE-MPA-0 + SRO in fcc": {
+  "label": "MACE-MPA-0 + SRO in fcc",
+  "fcc<->PtRh_K": 132.0,
+  "top_of_fields_K": {
+   "Pt3Rh": 74.0,
+   "PtRh3": 78.0,
+   "PtRh": 132.0
+  },
+  "fcc<->PtRh3_K": null,
+  "fcc<->Pt3Rh_K": 74,
+  "sro_valid_above_K_at_x0.5": 197.1428555,
+  "ordered_phase_above_validity_line": true
+ },
+ "SevenNet-MF-ompa": {
+  "label": "SevenNet-MF-ompa",
+  "fcc<->PtRh_K": 178.0,
+  "top_of_fields_K": {
+   "Pt3Rh": 112.0,
+   "PtRh": 178.0,
+   "PtRh3": 134.0
+  },
+  "fcc<->PtRh3_K": 134,
+  "fcc<->Pt3Rh_K": 106
+ },
+ "SevenNet-MF-ompa + SRO in fcc": {
+  "label": "SevenNet-MF-ompa + SRO in fcc",
+  "fcc<->PtRh_K": 122.0,
+  "top_of_fields_K": {
+   "Pt3Rh": 102.0,
+   "PtRh3": 66.0,
+   "PtRh": 124.0
+  },
+  "fcc<->PtRh3_K": null,
+  "fcc<->Pt3Rh_K": null,
+  "sro_valid_above_K_at_x0.5": 212.30768699999996,
+  "ordered_phase_above_validity_line": true
+ },
+ "GRACE-2L-OMAT": {
+  "label": "GRACE-2L-OMAT",
+  "fcc<->PtRh_K": 134.0,
+  "top_of_fields_K": {
+   "Pt3Rh": 80.0,
+   "PtRh": 134.0,
+   "PtRh3": 164.0
+  },
+  "fcc<->PtRh3_K": 164,
+  "fcc<->Pt3Rh_K": 80
+ },
+ "NequIP-OAM-M": {
+  "label": "NequIP-OAM-M",
+  "fcc<->PtRh_K": 138.0,
+  "top_of_fields_K": {
+   "Pt3Rh": 88.0,
+   "PtRh": 138.0,
+   "PtRh3": 118.0
+  },
+  "fcc<->PtRh3_K": 106,
+  "fcc<->Pt3Rh_K": 86
+ }
+}

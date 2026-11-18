@@ -1,0 +1,6 @@
+Kokkos::Cuda::initialize WARNING: running kernels compiled for compute capability 5.0 on device with compute capability 8.6 , this will likely reduce potential performance.
+grace-1l <100> (a): E_bind -0.156 eV, triple defect 1.557 eV (isolated 1.400; 25 steps, 60 s)
+grace-1l <110> (a sqrt2): E_bind +0.016 eV, triple defect 1.385 eV (isolated 1.400; 19 steps, 97 s)
+grace-1l <111> (a sqrt3): E_bind +0.060 eV, triple defect 1.340 eV (isolated 1.400; 17 steps, 131 s)
+grace-1l far apart: E_bind +0.015 eV, triple defect 1.386 eV (isolated 1.400; 16 steps, 163 s)
+Kokkos::Cuda ERROR: Failed to call Kokkos::Cuda::finalize()
