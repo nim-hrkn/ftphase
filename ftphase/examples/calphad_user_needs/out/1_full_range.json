@@ -171,6 +171,92 @@
    "800": null
   }
  },
+ "compound_lines": {
+  "500": {
+   "Al2Li3": {
+    "defect_model_range": [
+     0.52,
+     0.68
+    ],
+    "small_cells_minus_defect_model_meV_at_ends": [
+     -0.7,
+     0.6
+    ]
+   },
+   "Al3Li": {
+    "defect_model_range": [
+     0.219,
+     0.281
+    ],
+    "small_cells_minus_defect_model_meV_at_ends": [
+     0.5,
+     0.4
+    ]
+   },
+   "Al4Li9": {
+    "defect_model_range": [
+     0.612,
+     0.772
+    ],
+    "small_cells_minus_defect_model_meV_at_ends": [
+     -2.0,
+     0.7
+    ]
+   },
+   "B32": {
+    "defect_model_range": [
+     0.42,
+     0.58
+    ],
+    "small_cells_minus_defect_model_meV_at_ends": [
+     0.5,
+     -2.5
+    ]
+   }
+  },
+  "800": {
+   "Al2Li3": {
+    "defect_model_range": [
+     0.52,
+     0.68
+    ],
+    "small_cells_minus_defect_model_meV_at_ends": [
+     -0.7,
+     0.6
+    ]
+   },
+   "Al3Li": {
+    "defect_model_range": [
+     0.219,
+     0.281
+    ],
+    "small_cells_minus_defect_model_meV_at_ends": [
+     2.1,
+     2.2
+    ]
+   },
+   "Al4Li9": {
+    "defect_model_range": [
+     0.612,
+     0.772
+    ],
+    "small_cells_minus_defect_model_meV_at_ends": [
+     -0.8,
+     2.0
+    ]
+   },
+   "B32": {
+    "defect_model_range": [
+     0.42,
+     0.58
+    ],
+    "small_cells_minus_defect_model_meV_at_ends": [
+     -0.6,
+     -2.2
+    ]
+   }
+  }
+ },
  "hull_two_phase_segments": {
   "500": [
    [

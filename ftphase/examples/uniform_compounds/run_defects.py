@@ -25,7 +25,27 @@ def _nial_eam():
                           "L12": {"atoms": st["L12-Ni3Al"][0], "site_counts": (1, 3), "sizes": [((2, 2, 2), [2, 2, 2]), ((3, 3, 3), [1, 1, 1]), ((4, 4, 4), [1, 1, 1])]}}}
 
 
-SYSTEMS = {"nial_eam": _nial_eam}
+def _alli(pair_style, pair_coeff, label):
+    """Al-Li with any LAMMPS pair style (A = Al, B = Li); structures as in examples/alli_ace_txdiagram (B32, L1_2, Materials Project CIFs)."""
+    def make():
+        sys.path.insert(0, os.path.join(EXA, "alli_ace_txdiagram")); import pipeline as p
+        from ase.io import read
+        from ase.calculators.lammpslib import LAMMPSlib
+        sd = os.path.join(EXA, "alli_ace_txdiagram", "structures")
+        calc = lambda: LAMMPSlib(lmpcmds=[f"pair_style {pair_style}", f"pair_coeff {pair_coeff}"], atom_types={"Al": 1, "Li": 2}, keep_alive=True, log_file=None)
+        return {"elements": ("Al", "Li"), "calc": calc, "T": np.arange(0.0, 1101.0, 50.0), "scales": (0.97, 0.98, 0.99, 1.0, 1.01, 1.02, 1.03, 1.04, 1.05), "scales_wide": (0.96, 0.98, 1.0, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12, 1.14),
+                "mesh": 60.0, "T_decide": 500.0, "label": label,
+                "compounds": {"Al3Li": {"atoms": p.l12_al3li(), "site_counts": (3, 1), "sizes": [((2, 2, 2), [2, 2, 2]), ((3, 3, 3), [1, 1, 1]), ((3, 3, 4), [1, 1, 1])]},
+                              "B32": {"atoms": p.b32_alli(), "site_counts": (1, 1), "sizes": [((1, 1, 1), [2, 2, 2]), ((2, 1, 1), [1, 2, 2]), ((2, 2, 2), [1, 1, 1])]},
+                              "Al2Li3": {"atoms": read(os.path.join(sd, "mp-16506-Li3Al2.cif")), "site_counts": (2, 3), "sizes": [((2, 1, 1), [2, 3, 1]), ((2, 2, 1), [2, 2, 1]), ((3, 3, 1), [1, 1, 1])]},
+                              "Al4Li9": {"atoms": read(os.path.join(sd, "mp-568404-Li9Al4.cif")), "site_counts": (4, 9), "sizes": [((1, 1, 1), [1, 3, 2]), ((1, 2, 1), [1, 2, 2]), ((1, 2, 2), [1, 1, 1])]}}}
+    return make
+
+
+ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+SYSTEMS = {"nial_eam": _nial_eam,
+           "alli_grace_fs": _alli("grace/fs", f"* * {os.path.join(ROOT, 'potentials/grace/GRACE-FS-OAM.yaml')} Al Li", "GRACE-FS-OAM"),
+           "alli_ace": _alli("pace", f"* * {os.path.join(ROOT, 'pyiron-examples/workshop2022-phase-diagram/resources/lammps/potentials/ace/AlLi-6gen-18May.yace')} Al Li", "ACE (Menon 2021)")}
 
 
 def qha(at, calc, psc, cfg):
@@ -33,7 +53,13 @@ def qha(at, calc, psc, cfg):
     from ftphase.qha import phonopy_volume_scan
     from ftphase.quantum import quantum_minus_classical
     r = relax(at, calc, fmax=1e-3, cell=True); a0 = r.atoms.copy(); a0.calc = None; sc = tuple(cfg["scales"]); T = np.asarray(cfg["T"], dtype=float)
-    res, data = phonopy_volume_scan(a0, calc, np.diag(psc), T, scales=sc, mesh=cfg["mesh"], imaginary="drop", eos="vinet")
+    try:
+        res, data = phonopy_volume_scan(a0, calc, np.diag(psc), T, scales=sc, mesh=cfg["mesh"], imaginary="drop", eos="vinet")
+    except ValueError as e:             # the EOS minimum left the volume scan (cells rich in the larger / softer element expand more): wider scan
+        if "EOS minimum" not in str(e) or "scales_wide" not in cfg:
+            raise
+        sc = tuple(cfg["scales_wide"])
+        res, data = phonopy_volume_scan(a0, calc, np.diag(psc), T, scales=sc, mesh=cfg["mesh"], imaginary="drop", eos="vinet")
     G, V = res.per_atom(); i1 = int(np.argmin(np.abs(np.asarray(sc) - 1.0))); hw, w = data["frequencies"][i1]; dF = np.zeros(len(T)); pos = T > 0
     dF[pos] = quantum_minus_classical(hw, T[pos], weights=w, imaginary="drop") / len(a0)
     return (G - dF) * len(a0), float(r.energy_per_atom * len(a0)), int(np.sum(hw < -1e-4)), float(np.sum(w[hw < -1e-4]) / np.sum(w))
@@ -65,7 +91,8 @@ def single(system, name):
     cfg, c, calc, base, eq, f, res = _setup(system, name); el = cfg["elements"]; nb = len(base)
     for rep, psc in c["sizes"]:
         sc = base.repeat(rep); N = len(sc); key = str(N)
-        if res["sizes"].get(key, {}).get("done"):
+        prev = res["sizes"].get(key, {})
+        if prev.get("done") and all("eps_T_eV" in v for v in prev.get("defects", {}).values()):
             continue
         t0 = time.time(); e0s = relax(sc, calc, fmax=2e-3, cell=False).energy_per_atom * N; out = {"n_sites": N, "phonon_supercell": psc, "defects": {}, "T": [float(v) for v in cfg["T"]]}
         try:
@@ -90,14 +117,14 @@ def single(system, name):
         out["done"] = True; out["seconds"] = time.time() - t0; res["sizes"][key] = out; json.dump(res, open(f, "w"), indent=1)
 
 
-def multi(system, name, ks=(2, 4, 8, 12), nconf=3):
+def multi(system, name, ks=(2, 4, 8, 12), nconf=3, sides=("A_rich", "B_rich")):
     from ftphase.compounds import CompoundModel
     cfg, c, calc, base, eq, f, res = _setup(system, name); el = cfg["elements"]; nb = len(base); rep, psc = c["sizes"][-1]; sc = base.repeat(rep); N = len(sc)
     big = res["sizes"][str(N)]; T = np.array(big["T"]); ok = {k: v["eps_T_eV"] for k, v in big["defects"].items() if "eps_T_eV" in v}
     m = CompoundModel(name, res["x0"], tuple(c["site_counts"]), T, ok); g0 = float(np.interp(cfg["T_decide"], T, big["g_perfect_per_atom"])); sd = m.constitutional_defects(cfg["T_decide"], g0)
     mu = res.setdefault("multi", {"n_sites": N, "cells": {}}); mu["constitutional_defects"] = sd; mu["T_decide"] = cfg["T_decide"]; print(name, "constitutional defects", sd, flush=True)
-    Gp, E0p, ni, fr = qha(sc.copy(), calc, psc, cfg); rng = np.random.default_rng(20261119)
-    for side in ("A_rich", "B_rich"):
+    Gp, E0p, ni, fr = qha(sc.copy(), calc, psc, cfg); rng = np.random.default_rng(20261119 + sum(ks))
+    for side in sides:
         dk = sd[side]; host, kind = {k: (h, kd) for k, h, kd in KEYS}[dk]; cls = eq[big["defects"][dk]["site"]]
         sites = [i for i in range(N) if eq[i % nb] == cls]
         if len(sites) < 3 * max(ks):
@@ -105,7 +132,7 @@ def multi(system, name, ks=(2, 4, 8, 12), nconf=3):
         for k in ks:
             for cc in range(nconf):
                 key = f"{dk}_k{k}_c{cc}"; pick = rng.choice(sites, k, replace=False)
-                if key in mu["cells"]:
+                if key in mu["cells"] and "dG_T_eV" in mu["cells"][key]:
                     continue
                 at = _defect(sc, pick, kind, el[1 - host]); t0 = time.time(); x = at.get_chemical_symbols().count(el[1]) / len(at)
                 try:
@@ -117,4 +144,8 @@ def multi(system, name, ks=(2, 4, 8, 12), nconf=3):
 
 
 if __name__ == "__main__":
-    {"single": single, "multi": multi}[sys.argv[2]](sys.argv[1], sys.argv[3])
+    # extension: python run_defects.py <system> multi <compound> 20,30,40 B_rich     (more defects per cell on one side)
+    if sys.argv[2] == "multi" and len(sys.argv) > 4:
+        multi(sys.argv[1], sys.argv[3], ks=tuple(int(v) for v in sys.argv[4].split(",")), sides=tuple(sys.argv[5].split(",")) if len(sys.argv) > 5 else ("A_rich", "B_rich"))
+    else:
+        {"single": single, "multi": multi}[sys.argv[2]](sys.argv[1], sys.argv[3])

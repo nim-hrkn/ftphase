@@ -125,7 +125,11 @@ class CompoundModel:
         from .equilibrium import PhaseCurve
 
         xs = np.linspace(max(self.x0 - self.half_width, 1e-6), min(self.x0 + self.half_width, 1 - 1e-6), n)
-        return PhaseCurve.from_points(self.name, xs, self.values(xs, T, g0), fit="spline", limited=True, n_sample=n_sample)
+        g = self.values(xs, T, g0)
+        ok = np.isfinite(g) & (np.abs(g - g0) < 5.0)        # a side without an allowed defect is infeasible (the model returns a huge number): leave it out
+        if ok.sum() < 4:
+            raise ValueError(f"{self.name}: no feasible composition around x0 = {self.x0:.4f} with the defects {sorted(self.eps)}")
+        return PhaseCurve.from_points(self.name, xs[ok], g[ok], fit="spline", limited=True, n_sample=n_sample)
 
 
 def with_compound_models(builder: Callable, models: Mapping[str, CompoundModel]) -> Callable:

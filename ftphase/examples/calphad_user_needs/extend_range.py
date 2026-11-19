@@ -84,18 +84,52 @@ def report():
     FITS = {"fcc": "poly", "bcc": "poly", "liquid": "rk", "B32": "spline"}; kw = dict(fit="spline", fits=FITS, poly_order=3, poly_orders={"liquid": 4, "fcc": 4, "bcc": 4})
     cf = os.path.join(OUT, "2_curvature.json"); CURV = json.load(open(cf)) if os.path.exists(cf) else {}
     WS = {k: v for k, v in {"Al3Li": ("Al3Li (L1_2)", (3, 1)), "Al2Li3": ("Al2Li3 (R-3m)", (2, 3)), "Al4Li9": ("Al4Li9 (C2/m)", (4, 9))}.items() if v[0] in CURV}
-    fig, axes = plt.subplots(1, 3, figsize=(14, 4.4)); S["spinodal"] = {}
+    fig, axes = plt.subplots(1, 3, figsize=(17, 5.2)); S["spinodal"] = {}
     for ax, T in zip(axes[:2], (500.0, 800.0)):
         Ts = np.array([T]); ti = interpolate_T(tab, Ts); ph = builder_from_table(ti, **kw)(T)
         gA = float(ti.df[(ti.df.phase == "fcc") & (ti.df.x < 1e-6)]["G"].iloc[0]); gB = float(ti.df[(ti.df.phase == "bcc") & (ti.df.x > 1 - 1e-6)]["G"].iloc[0]); ref = lambda x: (1 - x) * gA + x * gB
+        # compounds in the two treatments of Fig. 18 at this temperature:
+        #   thick solid = point defects: Wagner-Schottky with the defect free energies eps_d(T) of the largest cell + the interaction term
+        #                 from the multi-defect cells (ftphase.compounds.CompoundModel), drawn over the composition range that was sampled
+        #   dashed + open circles = small cells with one anti-site on each side treated as a phase with a range (spline through 3 cells)
+        from ftphase.compounds import CompoundModel, interaction_coefficient
+        from ftphase.aiida.functions import _site_model
+        MAPD = {"A_on_B": "Al_on_Li", "B_on_A": "Li_on_Al", "Va_on_B": "Va_Li", "Va_on_A": "Va_Al"}; SCN = {"Al3Li": (3, 1), "B32": (1, 1), "Al2Li3": (2, 3), "Al4Li9": (4, 9)}
+
+        def model(name):
+            d = json.load(open(os.path.join(OUT, f"7_defectF_{name}.json")))["sizes"]; N = max(int(q) for q in d); big = d[str(N)]; Tg = np.array(big["T"])
+            eps = {a: np.array(big["defects"][b]["eps_T_eV"]) for a, b in MAPD.items()}; w = {}; lo = hi = 0.03; r9 = json.load(open(os.path.join(OUT, f"9_interaction_{name}.json")))
+            for a, b in (("A_on_B", "Al_on_Li"), ("B_on_A", "Li_on_Al")):
+                cells = [c for c in r9["cells"].values() if c["side"] == b and "dG_T_eV" in c and c.get("n_imag", 0) == 0]
+                if len(cells) >= 6:
+                    kk = np.array([c["k"] for c in cells]); dG = np.array([c["dG_T_eV"] for c in cells]); w[a] = np.array([interaction_coefficient(dG[:, i], kk, eps[a][i], N) for i in range(len(Tg))])
+                    ext = max(abs(c["x"] - SCN[name][1] / sum(SCN[name])) for c in cells)
+                    lo, hi = (max(lo, ext), hi) if a == "A_on_B" else (lo, max(hi, ext))
+            return CompoundModel(name, SCN[name][1] / sum(SCN[name]), SCN[name], Tg, eps, w), min(lo, 0.08), min(hi, 0.08)
+
+        def small_cells(name, x0):
+            if name == "B32":
+                return None
+            tr_ = FreeEnergyTable.from_rows(pd.read_csv(os.path.join(OUT, f"6_range_{name}.tsv"), sep="\t").to_dict("records"), {})
+            tr_ = add_configurational_term(tr_, name, "sublattice", site_model=_site_model("b32_antisite", x0)); tq = interpolate_T(tr_, Ts)
+            return [q for q in builder_from_table(tq, fit="spline", fits={name: "spline"})(T) if q.name == name][0], tq.df[tq.df.phase == name].sort_values("x")
+
+        S.setdefault("compound_lines", {})[int(T)] = {}
         for p in ph:
-            if hasattr(p, "x0"):
-                (pt,) = ax.plot([p.x0], [(p.g0 - ref(p.x0)) * 1000], "o", ms=6, label=p.name)
-                if p.name in WS:      # the compound is not a point: G(x) around stoichiometry from its point defects (curvature_compounds.py, Fig. 18)
-                    from ftphase.configurational import wagner_schottky_curve
-                    key, sc = WS[p.name]; xw = np.linspace(p.x0 - 0.04, p.x0 + 0.04, 81)
-                    gw = np.array(wagner_schottky_curve(xw, T, sc, CURV[key]["defect_energies_raw_eV"], g0_atom=p.g0))     # true g0: vacancies change the atom count
-                    ax.plot(xw, (gw - ref(xw)) * 1000, "-", color=pt.get_color(), lw=1.4)
+            if hasattr(p, "x0") or p.name == "B32":
+                x0 = p.x0 if hasattr(p, "x0") else 0.5; g0 = p.g0 if hasattr(p, "x0") else float(ti.df[(ti.df.phase == "B32") & np.isclose(ti.df.x, 0.5)]["G"].iloc[0])
+                (pt,) = ax.plot([x0], [(g0 - ref(x0)) * 1000], "o", ms=5, label=p.name); col = pt.get_color()
+                m, lo, hi = model(p.name); xw = np.linspace(x0 - lo, x0 + hi, 161); gw = m.values(xw, T, g0)
+                ax.plot(xw, (gw - ref(xw)) * 1000, "-", color=col, lw=2.2)
+                if p.name == "B32":            # the range-phase treatment of B32 is the curve of the table (16-atom cells, example 6)
+                    xs, g = p.sample(); ax.plot(xs, (g - ref(xs)) * 1000, "--", color=col, lw=1.3); pts = ti.df[ti.df.phase == "B32"]; ax.plot(pts.x, (pts.G - ref(pts.x)) * 1000, "o", color=col, ms=4.5, mfc="none")
+                    sm = (xs, g)
+                else:
+                    q, pts = small_cells(p.name, x0); xs = np.linspace(q.x_min, q.x_max, 121); g = q.g(xs) + (g0 - float(q.g(np.array([x0]))[0]))     # aligned at stoichiometry (the small stoichiometric cell and the table cell differ by < 1 meV)
+                    ax.plot(xs, (g - ref(xs)) * 1000, "--", color=col, lw=1.3); ax.plot(pts.x, (pts.G + (g0 - float(q.g(np.array([x0]))[0])) - ref(pts.x)) * 1000, "o", color=col, ms=4.5, mfc="none")
+                    sm = (xs, g)
+                S["compound_lines"][int(T)][p.name] = {"defect_model_range": [round(float(x0 - lo), 3), round(float(x0 + hi), 3)],
+                                                        "small_cells_minus_defect_model_meV_at_ends": [round(float((np.interp(xq, sm[0], sm[1]) - np.interp(xq, xw, gw)) * 1000), 1) for xq in (max(sm[0].min(), xw.min()), min(sm[0].max(), xw.max()))]}
                 continue
             xs, g = p.sample(); (ln,) = ax.plot(xs, (g - ref(xs)) * 1000, lw=1.7, label=f"{p.name} ({p.x_min:.2f}-{p.x_max:.2f})")
             pts = ti.df[ti.df.phase == p.name]; ax.plot(pts.x, (pts.G - ref(pts.x)) * 1000, ".", color=ln.get_color(), ms=5)
@@ -107,7 +141,9 @@ def report():
         pts, labs, idx = lower_hull(ph); hx = pts[idx, 0]; o = np.argsort(hx); hx = hx[o]; hl = [labs[i] for i in np.asarray(idx)[o]]
         segs = [(hl[i], round(float(hx[i]), 3), hl[i + 1], round(float(hx[i + 1]), 3)) for i in range(len(hx) - 1) if hl[i] != hl[i + 1] or hx[i + 1] - hx[i] > 0.02]
         S.setdefault("hull_two_phase_segments", {})[int(T)] = segs
-        ax.set(xlabel="x_Li", ylabel="G - [(1-x) G(fcc Al) + x G(bcc Li)]  (meV/atom)", title=f"{T:.0f} K: G(x) of every phase (dots = computed cells)"); ax.legend(fontsize=7); ax.title.set_fontsize(9)
+        ax.set(xlabel="x_Li", ylabel="G - [(1-x) G(fcc Al) + x G(bcc Li)]  (meV/atom)", title=f"{T:.0f} K: G(x) of every phase (dots = computed cells)"); ax.title.set_fontsize(9)
+        from matplotlib.lines import Line2D
+        hd, lb = ax.get_legend_handles_labels(); hd += [Line2D([], [], color="0.3", lw=2.2), Line2D([], [], color="0.3", lw=1.3, ls="--", marker="o", mfc="none", ms=4.5)]; lb += ["compound: point defects ε$_d$(T) + interaction", "compound: small anti-site cells (range phase)"]; ax.legend(hd, lb, fontsize=6.3)
     # metastable diagram of the solutions only (no compounds)
     Th = np.arange(300.0, 1100.1, 10.0); ti = interpolate_T(FreeEnergyTable.from_dataframe(df[df.phase.isin(["fcc", "bcc", "liquid"])], old.meta), Th)
     cov = ti.df[ti.df.phase == "liquid"].groupby("T")["x"].agg(["min", "max", "size"]); okT = set(cov[(cov["min"] < 1e-6) & (cov["max"] > 1 - 1e-6) & (cov["size"] >= 6)].index)
