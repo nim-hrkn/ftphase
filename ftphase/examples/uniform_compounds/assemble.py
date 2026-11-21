@@ -29,13 +29,13 @@ def main(system):
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
     from ftphase.records import FreeEnergyTable
     from ftphase.assemble import interpolate_T, builder_from_table
-    from ftphase.compounds import CompoundModel, with_compound_models, widths_from_regions, classify, interaction_coefficient, size_convergence
+    from ftphase.compounds import CompoundModel, with_compound_models, widths_from_regions, classify, interaction_polynomial, size_convergence
     from ftphase.diagram import scan, plot_tx, write_records, invariants
     c = CFG[system]; out = os.path.join(HERE, "out", system); tab = FreeEnergyTable.from_tsv(c["table"]); df = tab.df; models, info = {}, {}
     keep = []
     for name in c["compounds"]:
         r = json.load(open(os.path.join(out, f"defects_{name}.json"))); x0 = r["x0"]; sizes = sorted(int(k) for k, v in r["sizes"].items() if v.get("done")); N = sizes[-1]; big = r["sizes"][str(N)]; T = np.array(big["T"])
-        eps = {k: np.array(v["eps_T_eV"]) for k, v in big["defects"].items() if "eps_T_eV" in v}; w = {}; inf = {"n_sites": N, "sizes": sizes, "defects_ok": sorted(eps), "defects_failed": sorted(k for k in big["defects"] if k not in eps)}
+        eps = {k: np.array(v["eps_T_eV"]) for k, v in big["defects"].items() if "eps_T_eV" in v}; w = {}; w3 = {}; ext = {}; inf = {"n_sites": N, "sizes": sizes, "defects_ok": sorted(eps), "defects_failed": sorted(k for k in big["defects"] if k not in eps)}
         iT = int(np.argmin(abs(T - c.get("T_conv", 1200.0 if T.max() > 1500 else 500.0))))
         if "A_on_B" in eps and "B_on_A" in eps:      # convergence with cell size: anti-site pair free energy at 1200 K
             pair = {n: r["sizes"][str(n)]["defects"]["A_on_B"]["eps_T_eV"][iT] + r["sizes"][str(n)]["defects"]["B_on_A"]["eps_T_eV"][iT] for n in sizes if all("eps_T_eV" in r["sizes"][str(n)]["defects"].get(q, {}) for q in ("A_on_B", "B_on_A"))}
@@ -47,11 +47,11 @@ def main(system):
                 cells = [v for v in mu["cells"].values() if v["side"] == side and "dG_T_eV" in v and v.get("n_imag", 0) == 0]
                 inf[f"cells_{side}"] = f"{len(cells)}/{sum(1 for v in mu['cells'].values() if v['side'] == side)}"
                 if len(cells) >= 6 and dk in eps:
-                    kk = np.array([v["k"] for v in cells]); dG = np.array([v["dG_T_eV"] for v in cells]); w[dk] = np.array([interaction_coefficient(dG[:, i], kk, eps[dk][i], N) for i in range(len(T))])
+                    kk = np.array([v["k"] for v in cells]); dG = np.array([v["dG_T_eV"] for v in cells]); ww = np.array([interaction_polynomial(dG[:, i], kk, eps[dk][i], N) for i in range(len(T))]); w[dk] = ww[:, 0]; w3[dk] = ww[:, 1]
+                    ext[side] = min(max(abs(v["x"] - x0) for v in cells), 0.15)
                     inf[f"w_{dk}_at_T_eV"] = {int(t): round(float(np.interp(t, T, w[dk])), 2) for t in (c.get("T_report", (1000.0, 1400.0, 1800.0))[0], c.get("T_report", (1000.0, 1400.0, 1800.0))[-1])}; xs += [abs(v["x"] - x0) for v in cells]
-            if xs:
-                half = float(min(max(xs), 0.12))
-        models[name] = CompoundModel(name, x0, tuple(r["site_counts"]), T, eps, w, half_width=half, side_defects=sd); inf["half_width"] = round(half, 3); info[name] = inf
+        half = (ext.get("A_rich", 0.03), ext.get("B_rich", 0.03))            # window = the compositions sampled on each side
+        models[name] = CompoundModel(name, x0, tuple(r["site_counts"]), T, eps, w, half_width=half, side_defects=sd, w3=w3); inf["window"] = [round(x0 - half[0], 3), round(x0 + half[1], 3)]; info[name] = inf
         keep.append(df[(df.phase == name) & np.isclose(df.x, x0, atol=2e-4)])
     d2 = pd.concat([df[~df.phase.isin(c["compounds"])]] + keep, ignore_index=True); ti = interpolate_T(FreeEnergyTable.from_dataframe(d2, tab.meta), c["T"])
     if (ti.df.phase == "liquid").any():

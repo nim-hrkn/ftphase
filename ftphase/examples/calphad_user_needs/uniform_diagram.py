@@ -15,8 +15,14 @@ HALF = {"interacting": 0.06, "extended": 0.12}.get(MODE, 0.03); SUF = "" if MODE
 MAP = {"A_on_B": "Al_on_Li", "B_on_A": "Li_on_Al", "Va_on_B": "Va_Li", "Va_on_A": "Va_Al"}
 
 
-def main():
+def setup(half=None):
+    """(builder, models, table df, example-6 table): phases of ACE Al-Li with every compound as a defect-model curve."""
+    return main(_only_setup=True, _half=half)
+
+
+def main(_only_setup=False, _half=None):
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
+    HALF_ = _half if _half is not None else HALF
     from ftphase.records import FreeEnergyTable
     from ftphase.assemble import add_configurational_term, interpolate_T, builder_from_table
     from ftphase.configurational import wagner_schottky_curve
@@ -30,21 +36,22 @@ def main():
             tabn = add_configurational_term(tabn, ph, "ideal")
     old = FreeEnergyTable.from_tsv(os.path.join(EX6, "out_full", "05_free_energies.tsv")); df = pd.concat([old.df, tabn.df], ignore_index=True)
     b32pt = df[(df.phase == "B32") & np.isclose(df.x, 0.5)].copy(); df = pd.concat([df[df.phase != "B32"], b32pt], ignore_index=True)       # B32: its stoichiometric cell only, like the others
-    from ftphase.compounds import CompoundModel, with_compound_models, widths_from_regions, classify, interaction_coefficient
+    from ftphase.compounds import CompoundModel, with_compound_models, widths_from_regions, classify, interaction_coefficient, interaction_polynomial
     models = {}; winfo = {}
     for k, sc in WS.items():           # defect free energies of the largest cell + interaction coefficients of the multi-defect cells
         d = json.load(open(os.path.join(OUT, f"7_defectF_{k}.json")))["sizes"]; N = max(int(q) for q in d); big = d[str(N)]; Tg = np.array(big["T"])
-        eps = {a: np.array(big["defects"][b]["eps_T_eV"]) for a, b in MAP.items()}; w = {}; winfo[k] = {}
+        eps = {a: np.array(big["defects"][b]["eps_T_eV"]) for a, b in MAP.items()}; w = {}; w3 = {}; ext = {}; winfo[k] = {}
         f9 = os.path.join(OUT, f"9_interaction_{k}.json")
-        if MODE != "noninteracting" and os.path.exists(f9):
+        if (MODE != "noninteracting" or _only_setup) and os.path.exists(f9):
             r9 = json.load(open(f9))
             for a, b in (("A_on_B", "Al_on_Li"), ("B_on_A", "Li_on_Al")):
                 cells = [c for c in r9["cells"].values() if c["side"] == b and "dG_T_eV" in c and c.get("n_imag", 0) == 0]
                 if len(cells) >= 6:
                     kk = np.array([c["k"] for c in cells]); dG = np.array([c["dG_T_eV"] for c in cells])
-                    w[a] = np.array([interaction_coefficient(dG[:, i], kk, eps[a][i], N) for i in range(len(Tg))])
-                    winfo[k][b] = {"n_cells": len(cells), "x_sampled": [min(c["x"] for c in cells), max(c["x"] for c in cells)], "w_300_500_700_eV": [float(np.interp(t, Tg, w[a])) for t in (300, 500, 700)]}
-        models[k] = CompoundModel(k, sc[1] / (sc[0] + sc[1]), sc, Tg, eps, w, half_width=HALF)
+                    ww = np.array([interaction_polynomial(dG[:, i], kk, eps[a][i], N) for i in range(len(Tg))]); w[a] = ww[:, 0]; w3[a] = ww[:, 1]
+                    ext[a] = max(abs(c["x"] - sc[1] / (sc[0] + sc[1])) for c in cells)
+                    winfo[k][b] = {"n_cells": len(cells), "x_sampled": [min(c["x"] for c in cells), max(c["x"] for c in cells)], "w2_300_500_700_eV": [float(np.interp(t, Tg, w[a])) for t in (300, 500, 700)], "w3_300_500_700_eV": [float(np.interp(t, Tg, w3[a])) for t in (300, 500, 700)]}
+        models[k] = CompoundModel(k, sc[1] / (sc[0] + sc[1]), sc, Tg, eps, w, half_width=(min(HALF_, ext.get("A_on_B", 0.03)), min(HALF_, ext.get("B_on_A", 0.03))), w3=w3)      # window = sampled compositions (per side)
     kw = dict(fit="spline", fits={"fcc": "poly", "bcc": "poly", "liquid": "rk"}, poly_order=3, poly_orders={"liquid": 4, "fcc": 4, "bcc": 4})
     Ts = np.arange(300.0, 1100.1, 20.0); cache = {}
 
@@ -59,6 +66,8 @@ def main():
             cache[T] = full(T)
         return cache[T]
 
+    if _only_setup:
+        return builder, models, df, old
     reg = scan(builder, Ts, min_width=0.002, gap_tol=2.5); reg = reg[reg.phase_a != reg.phase_b]
     write_records(os.path.join(OUT, f"8_uniform_two_phase_regions{SUF}.tsv"), reg, {"example": "ACE Al-Li, every compound by point defects + eps_d(T) + Wagner-Schottky (uniform_diagram.py)", "x_window": HALF, "mode": MODE})
     w = widths_from_regions(reg, models); w.to_csv(os.path.join(OUT, f"8_uniform_widths{SUF}.tsv"), sep="\t", index=False, float_format="%.4f"); cls = classify(w)

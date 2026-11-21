@@ -7,7 +7,8 @@ Every compound A_a B_b gets the same description and its width is read from the 
      energies are not enough: the vibrational part changes an anti-site pair by 0.1-0.2 eV between 0 K and 700 K in ACE Al-Li)
   3. the same in several cell sizes until eps_d(T) stops changing (:func:`size_convergence`)
   4. cells with several constitutional anti-sites -> interaction coefficient w_side(T) (:func:`interaction_coefficient`)
-  5. G(x, T) = Wagner-Schottky(eps_d(T)) + w_side(T) (x - x0)^2   (:class:`CompoundModel`), put into the hull with all other
+  5. G(x, T) = Wagner-Schottky(eps_d(T)) + w2_side(T) c^2 + w3_side(T) c^3  (c = concentration of the constitutional defect;
+     :func:`interaction_polynomial`, :class:`CompoundModel`), put into the hull with all other
      phases (:func:`with_compound_models`); the composition range on the hull is the width (:func:`widths_from_regions`)
 
 Conventions: x = fraction of B; ``site_counts`` = (a, b) sites of the A and the B sublattice; defect keys as in
@@ -53,6 +54,22 @@ def interaction_coefficient(dG, k, eps: float, n_sites: int) -> float:
     return float(n_sites * np.sum(k ** 2 * r) / np.sum(k ** 4))
 
 
+def interaction_polynomial(dG, k, eps: float, n_sites: int):
+    """(w2, w3) of  dG_i = k_i eps + N (w2 c_i^2 + w3 c_i^3),  c_i = k_i / N, fitted to the excess PER DEFECT (dG_i / k_i - eps), so
+    that cells with few and with many defects weigh alike.  One quadratic term fitted to the total excess is dominated by the cells
+    with many defects and missed the Al-rich side of B32 and Al4Li9 (ACE) by 5-11 meV/atom at 4-8 defects per ~100 sites; the cubic
+    term removes that.  With fewer than three different k only w2 is fitted (w3 = 0)."""
+    dG = np.asarray(dG, dtype=float)
+    k = np.asarray(k, dtype=float)
+    c = k / float(n_sites)
+    y = dG / k - float(eps)
+    if len(np.unique(k)) < 3:
+        return float(np.sum(c * y) / np.sum(c ** 2)), 0.0
+    A = np.array([c, c ** 2]).T
+    (w2, w3), *_ = np.linalg.lstsq(A, y, rcond=None)
+    return float(w2), float(w3)
+
+
 @dataclass
 class CompoundModel:
     """G(x, T) of one compound from its defect free energies (and, optionally, the interaction coefficients of the two sides)."""
@@ -63,8 +80,9 @@ class CompoundModel:
     T: Sequence[float]
     eps: Mapping[str, Sequence[float]]                       # defect key -> eps_d on the grid T
     w: Mapping[str, Sequence[float]] = field(default_factory=dict)   # defect key -> w on the grid T (absent: 0)
-    half_width: float = 0.03
+    half_width: object = 0.03                                        # float, or (A-rich side, B-rich side): never wider than the sampled compositions
     side_defects: Optional[Mapping[str, str]] = None                # {'A_rich': key, 'B_rich': key}; None: read from the energies
+    w3: Mapping[str, Sequence[float]] = field(default_factory=dict)  # defect key -> cubic interaction coefficient on the grid T (absent: 0)
 
     def defect_concentration(self, key: str, xs) -> np.ndarray:
         """Concentration per lattice site of the defect ``key`` that alone carries the composition x."""
@@ -97,6 +115,13 @@ class CompoundModel:
             out[side] = best
         return out
 
+    @property
+    def window(self):
+        """(x_low, x_high) of the composition window; the interaction polynomial is a fit and must not be used beyond the cells it was
+        fitted to (a cubic term extrapolated outside made Al3Li spuriously stable at the window edge)."""
+        lo, hi = (self.half_width if isinstance(self.half_width, (tuple, list)) else (self.half_width, self.half_width))
+        return max(self.x0 - float(lo), 1e-6), min(self.x0 + float(hi), 1 - 1e-6)
+
     def energies(self, T: float) -> Dict[str, float]:
         return {k: float(np.interp(T, self.T, v)) for k, v in self.eps.items()}
 
@@ -117,14 +142,16 @@ class CompoundModel:
             sd = self.side_defects or self.constitutional_defects(T, g0)
             lo, hi = sd["A_rich"], sd["B_rich"]
             d = xs - self.x0
-            g = g + np.where(d < 0, wi.get(lo, 0.0) * self.defect_concentration(lo, xs) ** 2, wi.get(hi, 0.0) * self.defect_concentration(hi, xs) ** 2)
+            w3 = {k: float(np.interp(T, self.T, v)) for k, v in self.w3.items()}
+            cl, ch = self.defect_concentration(lo, xs), self.defect_concentration(hi, xs)
+            g = g + np.where(d < 0, wi.get(lo, 0.0) * cl ** 2 + w3.get(lo, 0.0) * cl ** 3, wi.get(hi, 0.0) * ch ** 2 + w3.get(hi, 0.0) * ch ** 3)
         return g
 
     def phase(self, T: float, g0: float, n: int = 121, n_sample: int = 801):
         """A limited-range :class:`ftphase.equilibrium.PhaseCurve` over x0 +- half_width."""
         from .equilibrium import PhaseCurve
 
-        xs = np.linspace(max(self.x0 - self.half_width, 1e-6), min(self.x0 + self.half_width, 1 - 1e-6), n)
+        xs = np.unique(np.concatenate([np.linspace(*self.window, n), [self.x0]]))
         g = self.values(xs, T, g0)
         ok = np.isfinite(g) & (np.abs(g - g0) < 5.0)        # a side without an allowed defect is infeasible (the model returns a huge number): leave it out
         if ok.sum() < 4:
@@ -158,7 +185,7 @@ def widths_from_regions(regions, models: Mapping[str, CompoundModel], edge_tol: 
             xs = [c.x_a for c in r.itertuples() if c.phase_a == name] + [c.x_b for c in r.itertuples() if c.phase_b == name]
             lo, hi = (min(xs), max(xs)) if xs else (np.nan, np.nan)
             rows.append({"T": float(T), "phase": name, "stable": bool(xs), "x_min": lo, "x_max": hi, "width": hi - lo,
-                         "at_window_edge": bool(xs) and (lo < m.x0 - m.half_width + edge_tol or hi > m.x0 + m.half_width - edge_tol)})
+                         "at_window_edge": bool(xs) and (lo < m.window[0] + edge_tol or hi > m.window[1] - edge_tol)})
     return pd.DataFrame(rows)
 
 

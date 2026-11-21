@@ -92,20 +92,20 @@ def report():
         #   thick solid = point defects: Wagner-Schottky with the defect free energies eps_d(T) of the largest cell + the interaction term
         #                 from the multi-defect cells (ftphase.compounds.CompoundModel), drawn over the composition range that was sampled
         #   dashed + open circles = small cells with one anti-site on each side treated as a phase with a range (spline through 3 cells)
-        from ftphase.compounds import CompoundModel, interaction_coefficient
+        from ftphase.compounds import CompoundModel, interaction_polynomial
         from ftphase.aiida.functions import _site_model
         MAPD = {"A_on_B": "Al_on_Li", "B_on_A": "Li_on_Al", "Va_on_B": "Va_Li", "Va_on_A": "Va_Al"}; SCN = {"Al3Li": (3, 1), "B32": (1, 1), "Al2Li3": (2, 3), "Al4Li9": (4, 9)}
 
         def model(name):
             d = json.load(open(os.path.join(OUT, f"7_defectF_{name}.json")))["sizes"]; N = max(int(q) for q in d); big = d[str(N)]; Tg = np.array(big["T"])
-            eps = {a: np.array(big["defects"][b]["eps_T_eV"]) for a, b in MAPD.items()}; w = {}; lo = hi = 0.03; r9 = json.load(open(os.path.join(OUT, f"9_interaction_{name}.json")))
+            eps = {a: np.array(big["defects"][b]["eps_T_eV"]) for a, b in MAPD.items()}; w = {}; w3 = {}; lo = hi = 0.03; r9 = json.load(open(os.path.join(OUT, f"9_interaction_{name}.json")))
             for a, b in (("A_on_B", "Al_on_Li"), ("B_on_A", "Li_on_Al")):
                 cells = [c for c in r9["cells"].values() if c["side"] == b and "dG_T_eV" in c and c.get("n_imag", 0) == 0]
                 if len(cells) >= 6:
-                    kk = np.array([c["k"] for c in cells]); dG = np.array([c["dG_T_eV"] for c in cells]); w[a] = np.array([interaction_coefficient(dG[:, i], kk, eps[a][i], N) for i in range(len(Tg))])
+                    kk = np.array([c["k"] for c in cells]); dG = np.array([c["dG_T_eV"] for c in cells]); ww = np.array([interaction_polynomial(dG[:, i], kk, eps[a][i], N) for i in range(len(Tg))]); w[a] = ww[:, 0]; w3[a] = ww[:, 1]
                     ext = max(abs(c["x"] - SCN[name][1] / sum(SCN[name])) for c in cells)
                     lo, hi = (max(lo, ext), hi) if a == "A_on_B" else (lo, max(hi, ext))
-            return CompoundModel(name, SCN[name][1] / sum(SCN[name]), SCN[name], Tg, eps, w), min(lo, 0.08), min(hi, 0.08)
+            return CompoundModel(name, SCN[name][1] / sum(SCN[name]), SCN[name], Tg, eps, w, w3=w3), min(lo, 0.08), min(hi, 0.08)
 
         def small_cells(name, x0):
             if name == "B32":

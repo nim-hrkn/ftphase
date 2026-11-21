@@ -1,0 +1,50 @@
+{
+ "n_parameters": 14,
+ "cutoffs": [
+  7.5,
+  5.0
+ ],
+ "n_structures": 53,
+ "excluded_left_parent": [
+  "mixed_2_8_c1",
+  "rand_A_on_B_k12_c0",
+  "rand_A_on_B_k12_c1",
+  "rand_A_on_B_k12_c2",
+  "rand_A_on_B_k16_c0",
+  "rand_A_on_B_k16_c1",
+  "rand_A_on_B_k16_c2",
+  "rand_A_on_B_k6_c0",
+  "rand_A_on_B_k6_c1",
+  "rand_A_on_B_k6_c2",
+  "rand_A_on_B_k8_c0",
+  "rand_A_on_B_k8_c1",
+  "rand_A_on_B_k8_c2",
+  "regular_A_on_B_23"
+ ],
+ "excluded_imaginary": [
+  "rand_A_on_B_k3_c0",
+  "rand_A_on_B_k4_c0"
+ ],
+ "x_range_of_training": [
+  0.453125,
+  0.6875
+ ],
+ "300": {
+  "rmse_train_meV": 0.15884140884855466,
+  "rmse_cv_meV": 0.27221636279477374,
+  "n_nonzero": 14,
+  "max_abs_error_meV": 0.6995637637623453
+ },
+ "500": {
+  "rmse_train_meV": 0.222746401920162,
+  "rmse_cv_meV": 0.41040822717860437,
+  "n_nonzero": 14,
+  "max_abs_error_meV": 0.9725661523107831
+ },
+ "700": {
+  "rmse_train_meV": 0.34275860090715576,
+  "rmse_cv_meV": 0.6662506270261441,
+  "n_nonzero": 14,
+  "max_abs_error_meV": 1.2449356852193283
+ }
+}

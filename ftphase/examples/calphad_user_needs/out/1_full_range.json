@@ -179,8 +179,8 @@
      0.68
     ],
     "small_cells_minus_defect_model_meV_at_ends": [
-     -0.7,
-     0.6
+     -1.0,
+     0.4
     ]
    },
    "Al3Li": {
@@ -199,8 +199,8 @@
      0.772
     ],
     "small_cells_minus_defect_model_meV_at_ends": [
-     -2.0,
-     0.7
+     -4.3,
+     0.6
     ]
    },
    "B32": {
@@ -209,8 +209,8 @@
      0.58
     ],
     "small_cells_minus_defect_model_meV_at_ends": [
-     0.5,
-     -2.5
+     -5.0,
+     -2.3
     ]
    }
   },
@@ -221,8 +221,8 @@
      0.68
     ],
     "small_cells_minus_defect_model_meV_at_ends": [
-     -0.7,
-     0.6
+     -0.8,
+     0.5
     ]
    },
    "Al3Li": {
@@ -231,7 +231,7 @@
      0.281
     ],
     "small_cells_minus_defect_model_meV_at_ends": [
-     2.1,
+     2.2,
      2.2
     ]
    },
@@ -241,8 +241,8 @@
      0.772
     ],
     "small_cells_minus_defect_model_meV_at_ends": [
-     -0.8,
-     2.0
+     -2.8,
+     1.9
     ]
    },
    "B32": {
@@ -251,8 +251,8 @@
      0.58
     ],
     "small_cells_minus_defect_model_meV_at_ends": [
-     -0.6,
-     -2.2
+     -9.4,
+     -2.0
     ]
    }
   }

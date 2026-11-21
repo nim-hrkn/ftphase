@@ -1,141 +1,141 @@
 {
  "Al3Li": {
   "300": {
-   "d2G_dx2_static_eV": 19.772452509378216,
-   "tangent_slope_static_eV": 1.3709918994657389,
-   "d2G_dx2_point_defects_eV": 16.36509871236705,
+   "d2G_dx2_static_eV": 19.772591383671607,
+   "tangent_slope_static_eV": 1.3709918772628642,
+   "d2G_dx2_point_defects_eV": 16.365187578670685,
    "d2G_dx2_range_phase_eV": 11.996716225176618,
-   "tangent_slope_eV": 1.40726564037455,
+   "tangent_slope_eV": 1.4072657936408677,
    "range_phase_minus_point_defects_meV": {
-    "0.2188": 0.017063458626953576,
-    "0.2812": 0.4137503557264388
+    "0.2188": 0.01706860003825028,
+    "0.2812": 0.4137541349855667
    }
   },
   "500": {
-   "d2G_dx2_static_eV": 8.95421123807759,
-   "tangent_slope_static_eV": 1.3614020463797851,
-   "d2G_dx2_point_defects_eV": 4.745771379776552,
+   "d2G_dx2_static_eV": 8.95422186051364,
+   "tangent_slope_static_eV": 1.3614024256349293,
+   "d2G_dx2_point_defects_eV": 4.745733652905788,
    "d2G_dx2_range_phase_eV": 4.870128796075068,
-   "tangent_slope_eV": 1.4231001172947257,
+   "tangent_slope_eV": 1.4231002686966638,
    "range_phase_minus_point_defects_meV": {
-    "0.2188": -0.30015169544661546,
-    "0.2812": 0.09756793741688696
+    "0.2188": -0.3001427677746804,
+    "0.2812": 0.09756616425171671
    }
   },
   "700": {
-   "d2G_dx2_static_eV": 3.635957280017236,
-   "tangent_slope_static_eV": 1.3516285237488104,
-   "d2G_dx2_point_defects_eV": 1.5840071610546733,
+   "d2G_dx2_static_eV": 3.636211389864452,
+   "tangent_slope_static_eV": 1.3516276559100902,
+   "d2G_dx2_point_defects_eV": 1.5837387089215504,
    "d2G_dx2_range_phase_eV": -2.3536797151280098,
-   "tangent_slope_eV": 1.4388552646102928,
+   "tangent_slope_eV": 1.438857134909665,
    "range_phase_minus_point_defects_meV": {
-    "0.2188": -1.7716709895907456,
-    "0.2812": -1.3307694366093692
+    "0.2188": -1.7715896157368682,
+    "0.2812": -1.3307690286055163
    }
   }
  },
  "B32": {
   "300": {
-   "d2G_dx2_static_eV": 54.0902505542665,
-   "tangent_slope_static_eV": 1.3482551325131185,
-   "d2G_dx2_point_defects_eV": 48.415657381884664,
+   "d2G_dx2_static_eV": 54.09030692530981,
+   "tangent_slope_static_eV": 1.3482554499686314,
+   "d2G_dx2_point_defects_eV": 48.415652446999815,
    "d2G_dx2_range_phase_eV": 15.071587349285709,
-   "tangent_slope_eV": 1.4181139614141023,
+   "tangent_slope_eV": 1.418114312529732,
    "range_phase_minus_point_defects_meV": {
-    "0.4375": -2.8480175913481176,
-    "0.5625": -0.14820435038620516
+    "0.4375": -2.8480435947222382,
+    "0.5625": -0.14823148766263117
    }
   },
   "500": {
-   "d2G_dx2_static_eV": 30.436467173526715,
-   "tangent_slope_static_eV": 1.4293034752939315,
-   "d2G_dx2_point_defects_eV": 30.683931344255015,
+   "d2G_dx2_static_eV": 30.448948946411768,
+   "tangent_slope_static_eV": 1.4293289045784277,
+   "d2G_dx2_point_defects_eV": 30.683900630048207,
    "d2G_dx2_range_phase_eV": 11.341496829353481,
-   "tangent_slope_eV": 1.475520781573833,
+   "tangent_slope_eV": 1.475520649454482,
    "range_phase_minus_point_defects_meV": {
-    "0.4375": -1.8880122105744412,
-    "0.5625": -0.2651739959800281
+    "0.4375": -1.88801210028533,
+    "0.5625": -0.26516635644080466
    }
   },
   "700": {
-   "d2G_dx2_static_eV": 12.898807880815138,
-   "tangent_slope_static_eV": 1.4681719294755644,
-   "d2G_dx2_point_defects_eV": 13.506090421077147,
+   "d2G_dx2_static_eV": 7.3829535303553975,
+   "tangent_slope_static_eV": 1.5235762102470989,
+   "d2G_dx2_point_defects_eV": 13.506088077398722,
    "d2G_dx2_range_phase_eV": 7.522111455937619,
-   "tangent_slope_eV": 1.5322056310168017,
+   "tangent_slope_eV": 1.5322056412481126,
    "range_phase_minus_point_defects_meV": {
-    "0.4375": -0.8549109464133231,
-    "0.5625": -0.5849579612973166
+    "0.4375": -0.8549108870190558,
+    "0.5625": -0.5849579812351458
    }
   }
  },
  "Al2Li3": {
   "300": {
-   "d2G_dx2_static_eV": 47.18127517527157,
-   "tangent_slope_static_eV": 1.6331400730019519,
-   "d2G_dx2_point_defects_eV": 40.979652938682875,
+   "d2G_dx2_static_eV": 47.18126451073357,
+   "tangent_slope_static_eV": 1.6331402220950149,
+   "d2G_dx2_point_defects_eV": 40.979644550095074,
    "d2G_dx2_range_phase_eV": 25.390783834178254,
-   "tangent_slope_eV": 1.675797250374334,
+   "tangent_slope_eV": 1.675797548746519,
    "range_phase_minus_point_defects_meV": {
-    "0.5667": -0.47280605625443783,
-    "0.6333": 1.248397975095461
+    "0.5667": -0.47281183971792373,
+    "0.6333": 1.2483859882421733
    }
   },
   "500": {
-   "d2G_dx2_static_eV": 35.1515135109614,
-   "tangent_slope_static_eV": 1.6369460273538625,
-   "d2G_dx2_point_defects_eV": 24.639204276942213,
+   "d2G_dx2_static_eV": 35.15152620145366,
+   "tangent_slope_static_eV": 1.6369454761871731,
+   "d2G_dx2_point_defects_eV": 24.63912603521933,
    "d2G_dx2_range_phase_eV": 17.307003232047702,
-   "tangent_slope_eV": 1.708210030663014,
+   "tangent_slope_eV": 1.7082100981086716,
    "range_phase_minus_point_defects_meV": {
-    "0.5667": -0.4413670294294292,
-    "0.6333": 1.0000979935722576
+    "0.5667": -0.44136545224393586,
+    "0.6333": 1.0001017636289689
    }
   },
   "700": {
-   "d2G_dx2_static_eV": 22.578077244423813,
-   "tangent_slope_static_eV": 1.6498308712001115,
-   "d2G_dx2_point_defects_eV": 9.859465248139603,
+   "d2G_dx2_static_eV": 22.5780559389199,
+   "tangent_slope_static_eV": 1.6498311483100747,
+   "d2G_dx2_point_defects_eV": 9.859293970741483,
    "d2G_dx2_range_phase_eV": 9.258433404130129,
-   "tangent_slope_eV": 1.7412520918858276,
+   "tangent_slope_eV": 1.741252834979701,
    "range_phase_minus_point_defects_meV": {
-    "0.5667": -0.5614517858800738,
-    "0.6333": 0.5414224022755043
+    "0.5667": -0.5614158133195879,
+    "0.6333": 0.5414215062025107
    }
   }
  },
  "Al4Li9": {
   "300": {
-   "d2G_dx2_static_eV": 27.42937767627357,
-   "tangent_slope_static_eV": 2.016438468283977,
-   "d2G_dx2_point_defects_eV": 21.40712004036005,
+   "d2G_dx2_static_eV": 27.429395542059837,
+   "tangent_slope_static_eV": 2.0164384688096497,
+   "d2G_dx2_point_defects_eV": 21.407213778871085,
    "d2G_dx2_range_phase_eV": 12.615554892347891,
-   "tangent_slope_eV": 2.006659720934086,
+   "tangent_slope_eV": 2.006659704694742,
    "range_phase_minus_point_defects_meV": {
-    "0.6538": -0.16109435447475562,
-    "0.7308": 0.645356052402235
+    "0.6538": -0.16113033902920293,
+    "0.7308": 0.6453203434784172
    }
   },
   "500": {
-   "d2G_dx2_static_eV": 15.744547172626804,
-   "tangent_slope_static_eV": 2.0235026107865592,
-   "d2G_dx2_point_defects_eV": 7.177641770737237,
+   "d2G_dx2_static_eV": 15.744591617752873,
+   "tangent_slope_static_eV": 2.023502744639161,
+   "d2G_dx2_point_defects_eV": 7.17771872070003,
    "d2G_dx2_range_phase_eV": 6.438001426301021,
-   "tangent_slope_eV": 2.009142680121021,
+   "tangent_slope_eV": 2.009142262880364,
    "range_phase_minus_point_defects_meV": {
-    "0.6538": -0.3388544266700322,
-    "0.7308": 0.49525589053311947
+    "0.6538": -0.3388738379510592,
+    "0.7308": 0.4952375492894845
    }
   },
   "700": {
-   "d2G_dx2_static_eV": 7.047375493704277,
-   "tangent_slope_static_eV": 2.030926993091811,
-   "d2G_dx2_point_defects_eV": 2.002242832914023,
+   "d2G_dx2_static_eV": 7.0473716324973985,
+   "tangent_slope_static_eV": 2.030927038009633,
+   "d2G_dx2_point_defects_eV": 2.0076049469627186,
    "d2G_dx2_range_phase_eV": 0.3471524706311069,
-   "tangent_slope_eV": 2.0140852154827273,
+   "tangent_slope_eV": 2.014088465143422,
    "range_phase_minus_point_defects_meV": {
-    "0.6538": -1.6426412390075917,
-    "0.7308": -0.7604956003386398
+    "0.6538": -1.6426412551062697,
+    "0.7308": -0.7604956101041616
    }
   }
  }

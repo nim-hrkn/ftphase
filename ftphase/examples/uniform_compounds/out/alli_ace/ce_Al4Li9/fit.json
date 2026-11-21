@@ -1,0 +1,138 @@
+{
+ "n_structures": 132,
+ "excluded_left_parent": [
+  "rand_A_on_B_k12_c0",
+  "rand_A_on_B_k12_c2",
+  "rand_A_on_B_k16_c0",
+  "rand_A_on_B_k16_c1",
+  "rand_A_on_B_k16_c2",
+  "rand_A_on_B_k8_c1",
+  "regular_A_on_B_8"
+ ],
+ "excluded_imaginary": [
+  "rand_A_on_B_k16_c2"
+ ],
+ "x_range_of_training": [
+  0.5769230769230769,
+  0.8461538461538461
+ ],
+ "candidates": [
+  {
+   "cutoffs": [
+    4.0
+   ],
+   "method": "least-squares",
+   "n_parameters": 43,
+   "rmse_cv_meV": 1600273039.4204206
+  },
+  {
+   "cutoffs": [
+    4.0
+   ],
+   "method": "ardr",
+   "n_parameters": 43,
+   "rmse_cv_meV": 3.155121047614487
+  },
+  {
+   "cutoffs": [
+    5.0
+   ],
+   "method": "ardr",
+   "n_parameters": 71,
+   "rmse_cv_meV": 5.267945385026902
+  },
+  {
+   "cutoffs": [
+    6.5
+   ],
+   "method": "ardr",
+   "n_parameters": 154,
+   "rmse_cv_meV": 492.0692048604578
+  },
+  {
+   "cutoffs": [
+    7.5
+   ],
+   "method": "ardr",
+   "n_parameters": 246,
+   "rmse_cv_meV": 232.3181910992466
+  },
+  {
+   "cutoffs": [
+    5.0,
+    4.0
+   ],
+   "method": "ardr",
+   "n_parameters": 117,
+   "rmse_cv_meV": 3.6252207590077217
+  },
+  {
+   "cutoffs": [
+    5.0,
+    5.0
+   ],
+   "method": "ardr",
+   "n_parameters": 254,
+   "rmse_cv_meV": 13.083858932676709
+  },
+  {
+   "cutoffs": [
+    6.5,
+    4.0
+   ],
+   "method": "ardr",
+   "n_parameters": 200,
+   "rmse_cv_meV": 667.2188021148353
+  },
+  {
+   "cutoffs": [
+    6.5,
+    5.0
+   ],
+   "method": "ardr",
+   "n_parameters": 337,
+   "rmse_cv_meV": 208.69917503095658
+  },
+  {
+   "cutoffs": [
+    7.5,
+    4.0
+   ],
+   "method": "ardr",
+   "n_parameters": 292,
+   "rmse_cv_meV": 39.70455562894255
+  },
+  {
+   "cutoffs": [
+    7.5,
+    5.0
+   ],
+   "method": "ardr",
+   "n_parameters": 429,
+   "rmse_cv_meV": 100.15410569397217
+  }
+ ],
+ "n_parameters": 43,
+ "cutoffs": [
+  4.0
+ ],
+ "fit_method": "ardr",
+ "300": {
+  "rmse_train_meV": 0.6554878833391663,
+  "rmse_cv_meV": 3.2708435381425294,
+  "n_nonzero": 21,
+  "max_abs_error_meV": 2.1254846425216023
+ },
+ "500": {
+  "rmse_train_meV": 0.615835448626944,
+  "rmse_cv_meV": 3.155121047614487,
+  "n_nonzero": 16,
+  "max_abs_error_meV": 2.077537447987332
+ },
+ "700": {
+  "rmse_train_meV": 0.5793194012488186,
+  "rmse_cv_meV": 3.1541542835489698,
+  "n_nonzero": 16,
+  "max_abs_error_meV": 1.9119294328437952
+ }
+}

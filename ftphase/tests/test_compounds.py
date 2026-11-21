@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 
-from ftphase.compounds import CompoundModel, classify, defect_free_energy, interaction_coefficient, size_convergence, widths_from_regions, with_compound_models
+from ftphase.compounds import CompoundModel, classify, defect_free_energy, interaction_coefficient, interaction_polynomial, size_convergence, widths_from_regions, with_compound_models
 from ftphase.configurational import wagner_schottky_curve
 from ftphase.equilibrium import PhaseCurve, PointPhase
 
@@ -79,3 +79,16 @@ def test_constitutional_defect_is_read_from_the_energies():
     assert (0.5 - c) / (1 - c) == pytest.approx(0.48)
     c = m.defect_concentration("Va_on_A", [0.52])[0]           # x = 0.5 / (1 - c)
     assert 0.5 / (1 - c) == pytest.approx(0.52)
+
+
+def test_interaction_polynomial_recovers_quadratic_and_cubic_terms():
+    N, eps, w2, w3 = 128, 1.5, 2.0, -30.0
+    k = np.array([2, 4, 6, 8, 12, 16, 20, 2, 8]); c = k / N
+    dG = k * eps + N * (w2 * c ** 2 + w3 * c ** 3)
+    a, b = interaction_polynomial(dG, k, eps, N)
+    assert a == pytest.approx(w2) and b == pytest.approx(w3)
+    m = CompoundModel("AB", 0.5, (1, 1), [300.0, 900.0], {"A_on_B": [0.5, 0.5], "B_on_A": [0.5, 0.5], "Va_on_A": [5.0, 5.0], "Va_on_B": [5.0, 5.0]},
+                      w={"B_on_A": [w2, w2]}, w3={"B_on_A": [w3, w3]})
+    m0 = CompoundModel("AB", 0.5, (1, 1), [300.0, 900.0], dict(m.eps))
+    d = m.values(np.array([0.56]), 600.0, g0=-3.0)[0] - m0.values(np.array([0.56]), 600.0, g0=-3.0)[0]
+    assert d == pytest.approx(w2 * 0.06 ** 2 + w3 * 0.06 ** 3)

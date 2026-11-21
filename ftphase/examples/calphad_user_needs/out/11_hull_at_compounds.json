@@ -1,0 +1,349 @@
+{
+ "300": {
+  "Al3Li_fit_rms_meV": {
+   "A_rich": 0.17,
+   "B_rich": 0.17
+  },
+  "Al3Li_cells_minus_A_meV": {
+   "rms": 22.02,
+   "max_abs": 81.56,
+   "n": 16,
+   "small_cell_stoichiometric_offset_meV": -0.03,
+   "thermal_defect_lowering_at_x0_meV": -0.01
+  },
+  "Al3Li": [
+   0.2498,
+   0.2498
+  ],
+  "Al3Li_MC_minus_model_meV": {},
+  "Al3Li_MC_range": [
+   0.2312,
+   0.2765
+  ],
+  "B32_left_parent_x": [
+   0.4375,
+   0.4531
+  ],
+  "B32_fit_rms_meV": {
+   "A_rich": 0.32,
+   "B_rich": 0.84
+  },
+  "B32_cells_minus_A_meV": {
+   "rms": 0.95,
+   "max_abs": 2.55,
+   "n": 12,
+   "small_cell_stoichiometric_offset_meV": -0.0,
+   "thermal_defect_lowering_at_x0_meV": -0.0
+  },
+  "B32": [
+   0.5,
+   0.5048
+  ],
+  "B32_MC_minus_model_meV": {
+   "0.510": -0.13,
+   "0.520": -0.33,
+   "0.540": -1.0,
+   "0.560": -2.01,
+   "0.580": -3.3,
+   "0.600": -4.86
+  },
+  "B32_MC_range": [
+   0.4904,
+   0.6263
+  ],
+  "Al2Li3_left_parent_x": [
+   0.5111,
+   0.5407
+  ],
+  "Al2Li3_fit_rms_meV": {
+   "A_rich": 0.55,
+   "B_rich": 0.31
+  },
+  "Al2Li3_cells_minus_A_meV": {
+   "rms": 0.69,
+   "max_abs": 1.56,
+   "n": 15,
+   "small_cell_stoichiometric_offset_meV": 0.02,
+   "thermal_defect_lowering_at_x0_meV": -0.0
+  },
+  "Al2Li3": [
+   0.6003,
+   0.6126
+  ],
+  "Al2Li3_MC_minus_model_meV": {
+   "0.600": -0.0
+  },
+  "Al2Li3_MC_range": [
+   0.5911,
+   0.6882
+  ],
+  "Al4Li9_left_parent_x": [
+   0.6154,
+   0.6154
+  ],
+  "Al4Li9_fit_rms_meV": {
+   "A_rich": 2.08,
+   "B_rich": 0.12
+  },
+  "Al4Li9_cells_minus_A_meV": {
+   "rms": 2.04,
+   "max_abs": 5.13,
+   "n": 14,
+   "small_cell_stoichiometric_offset_meV": 0.02,
+   "thermal_defect_lowering_at_x0_meV": -0.0
+  },
+  "Al4Li9": [
+   0.692,
+   0.7214
+  ],
+  "Al3Li_stable_by_fit": [
+   0.2498,
+   0.2498
+  ],
+  "B32_stable_by_fit": [
+   0.5,
+   0.5045
+  ],
+  "Al2Li3_stable_by_fit": [
+   0.6,
+   0.6107
+  ],
+  "Al4Li9_stable_by_fit": [
+   0.6921,
+   0.714
+  ],
+  "Al3Li_stable_by_MC": [
+   0.25,
+   0.25
+  ],
+  "B32_stable_by_MC": [
+   0.4999,
+   0.5084
+  ],
+  "Al2Li3_stable_by_MC": [
+   0.6001,
+   0.6186
+  ]
+ },
+ "500": {
+  "Al3Li_fit_rms_meV": {
+   "A_rich": 0.15,
+   "B_rich": 0.16
+  },
+  "Al3Li_cells_minus_A_meV": {
+   "rms": 19.64,
+   "max_abs": 57.01,
+   "n": 16,
+   "small_cell_stoichiometric_offset_meV": -0.04,
+   "thermal_defect_lowering_at_x0_meV": -0.36
+  },
+  "Al3Li": null,
+  "Al3Li_MC_minus_model_meV": {},
+  "Al3Li_MC_range": [
+   0.2373,
+   0.308
+  ],
+  "B32_left_parent_x": [
+   0.4375,
+   0.4531
+  ],
+  "B32_fit_rms_meV": {
+   "A_rich": 0.62,
+   "B_rich": 0.77
+  },
+  "B32_cells_minus_A_meV": {
+   "rms": 1.67,
+   "max_abs": 5.03,
+   "n": 12,
+   "small_cell_stoichiometric_offset_meV": -0.0,
+   "thermal_defect_lowering_at_x0_meV": -0.01
+  },
+  "B32": [
+   0.4994,
+   0.5273
+  ],
+  "B32_MC_minus_model_meV": {
+   "0.490": -0.12,
+   "0.510": -0.03,
+   "0.520": -0.11,
+   "0.540": -0.47,
+   "0.560": -1.1,
+   "0.580": -1.98,
+   "0.600": -3.05
+  },
+  "B32_MC_range": [
+   0.4854,
+   0.6267
+  ],
+  "Al2Li3_left_parent_x": [
+   0.5111,
+   0.5407
+  ],
+  "Al2Li3_fit_rms_meV": {
+   "A_rich": 0.51,
+   "B_rich": 0.28
+  },
+  "Al2Li3_cells_minus_A_meV": {
+   "rms": 0.63,
+   "max_abs": 1.37,
+   "n": 15,
+   "small_cell_stoichiometric_offset_meV": 0.03,
+   "thermal_defect_lowering_at_x0_meV": -0.01
+  },
+  "Al2Li3": [
+   0.6006,
+   0.6432
+  ],
+  "Al2Li3_MC_minus_model_meV": {
+   "0.600": 0.0
+  },
+  "Al2Li3_MC_range": [
+   0.5916,
+   0.6518
+  ],
+  "Al4Li9_left_parent_x": [
+   0.6154,
+   0.6154
+  ],
+  "Al4Li9_fit_rms_meV": {
+   "A_rich": 1.93,
+   "B_rich": 0.14
+  },
+  "Al4Li9_cells_minus_A_meV": {
+   "rms": 1.94,
+   "max_abs": 5.0,
+   "n": 14,
+   "small_cell_stoichiometric_offset_meV": 0.04,
+   "thermal_defect_lowering_at_x0_meV": -0.21
+  },
+  "Al4Li9": [
+   0.6917,
+   0.7511
+  ],
+  "Al3Li_stable_by_fit": null,
+  "B32_stable_by_fit": [
+   0.4997,
+   0.5261
+  ],
+  "Al2Li3_stable_by_fit": [
+   0.6007,
+   0.6457
+  ],
+  "Al4Li9_stable_by_fit": [
+   0.6904,
+   0.7379
+  ],
+  "Al3Li_stable_by_MC": null,
+  "B32_stable_by_MC": [
+   0.4995,
+   0.5391
+  ],
+  "Al2Li3_stable_by_MC": [
+   0.6003,
+   0.6518
+  ]
+ },
+ "700": {
+  "Al3Li_fit_rms_meV": {
+   "A_rich": 0.14,
+   "B_rich": 0.16
+  },
+  "Al3Li_cells_minus_A_meV": {
+   "rms": 20.08,
+   "max_abs": 69.0,
+   "n": 16,
+   "small_cell_stoichiometric_offset_meV": -0.06,
+   "thermal_defect_lowering_at_x0_meV": -2.48
+  },
+  "Al3Li": null,
+  "B32_left_parent_x": [
+   0.4375,
+   0.4531
+  ],
+  "B32_fit_rms_meV": {
+   "A_rich": 0.95,
+   "B_rich": 0.7
+  },
+  "B32_cells_minus_A_meV": {
+   "rms": 2.5,
+   "max_abs": 8.07,
+   "n": 12,
+   "small_cell_stoichiometric_offset_meV": -0.0,
+   "thermal_defect_lowering_at_x0_meV": -0.23
+  },
+  "B32": [
+   0.4958,
+   0.5675
+  ],
+  "B32_MC_minus_model_meV": {
+   "0.490": -0.08,
+   "0.510": 0.03,
+   "0.520": 0.04,
+   "0.540": -0.14,
+   "0.560": -0.59,
+   "0.580": -1.32,
+   "0.600": -2.3
+  },
+  "B32_MC_range": [
+   0.4852,
+   0.6224
+  ],
+  "Al2Li3_left_parent_x": [
+   0.5111,
+   0.5407
+  ],
+  "Al2Li3_fit_rms_meV": {
+   "A_rich": 0.49,
+   "B_rich": 0.25
+  },
+  "Al2Li3_cells_minus_A_meV": {
+   "rms": 0.63,
+   "max_abs": 1.49,
+   "n": 15,
+   "small_cell_stoichiometric_offset_meV": 0.04,
+   "thermal_defect_lowering_at_x0_meV": -0.31
+  },
+  "Al2Li3": [
+   0.6087,
+   0.6501
+  ],
+  "Al2Li3_MC_minus_model_meV": {
+   "0.600": 0.0
+  },
+  "Al2Li3_MC_range": [
+   0.5929,
+   0.6171
+  ],
+  "Al4Li9_left_parent_x": [
+   0.6154,
+   0.6154
+  ],
+  "Al4Li9_fit_rms_meV": {
+   "A_rich": 1.81,
+   "B_rich": 0.18
+  },
+  "Al4Li9_cells_minus_A_meV": {
+   "rms": 1.97,
+   "max_abs": 4.78,
+   "n": 14,
+   "small_cell_stoichiometric_offset_meV": 0.05,
+   "thermal_defect_lowering_at_x0_meV": -1.91
+  },
+  "Al4Li9": null,
+  "Al3Li_stable_by_fit": null,
+  "B32_stable_by_fit": [
+   0.4955,
+   0.5625
+  ],
+  "Al2Li3_stable_by_fit": [
+   0.6117,
+   0.6889
+  ],
+  "Al4Li9_stable_by_fit": null,
+  "B32_stable_by_MC": [
+   0.4957,
+   0.6224
+  ],
+  "Al2Li3_stable_by_MC": null
+ }
+}

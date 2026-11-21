@@ -336,12 +336,22 @@ def wagner_schottky_free_energy(x_B, T, site_counts, defect_energies, g0_atom=0.
             r = minimize_scalar(lambda z: f(np.array([z])), bounds=(zl, zh), method="bounded", options={"xatol": 1e-12, "maxiter": 500})
             z_best = np.array([r.x]) if r.fun <= vals[i] else np.array([zz[i]])
         else:
-            best = None
-            for z_init in (np.full(len(free), np.log(1e-6)), np.full(len(free), np.log(1e-3)), np.full(len(free), np.log(1e-10))):
-                r = minimize(f, z_init, method="L-BFGS-B", bounds=[(lo, hi)] * len(free), options={"ftol": 1e-15, "gtol": 1e-12, "maxiter": 1000})
-                if best is None or r.fun < best.fun:
-                    best = r
-            z_best = best.x
+            # The feasible region (all site fractions in [0, 1]) is bounded by a flat penalty, on which a gradient method started
+            # from a fixed guess can stall (seen 2026-11-19 as spikes in G(x) of B32 when vacancies and anti-sites compete).
+            # Coarse grid over the free fractions -> best feasible start -> Nelder-Mead (tolerates the penalty edge) -> L-BFGS-B.
+            import itertools
+
+            grid = np.linspace(np.log(1e-14), np.log(0.3), 9)
+            cand = sorted(((f(np.array(z)), z) for z in itertools.product(grid, repeat=len(free))), key=lambda t_: t_[0])[:3]
+            best_f, z_best = np.inf, None
+            for f0_, z0 in cand:
+                r = minimize(f, np.array(z0), method="Nelder-Mead", options={"xatol": 1e-10, "fatol": 1e-15, "maxiter": 4000, "maxfev": 8000})
+                z1, f1 = (r.x, r.fun) if r.fun <= f0_ else (np.array(z0), f0_)
+                r2 = minimize(f, np.clip(z1, lo, hi), method="L-BFGS-B", bounds=[(lo, hi)] * len(free), options={"ftol": 1e-15, "gtol": 1e-12, "maxiter": 1000})
+                if r2.fun < f1:
+                    z1, f1 = r2.x, r2.fun
+                if f1 < best_f:
+                    best_f, z_best = f1, np.asarray(z1)
         y = all_fractions(np.exp(z_best))
         G = gibbs_from(y)
     if not np.isfinite(G):
