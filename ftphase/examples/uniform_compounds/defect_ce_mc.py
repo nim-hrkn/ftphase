@@ -24,7 +24,7 @@ def _dirs(system, name):
     d = os.path.join(HERE, "out", system, f"ce_{name}"); os.makedirs(d, exist_ok=True); return d
 
 
-def cells(system, name):
+def cells(system, name, rpair=4.0):
     from ase.io import write
     import run_defects as rd
     cfg, c, calc, base, eq, f, res = rd._setup(system, name); A, B = cfg["elements"]; rep, psc = c["sizes"][-1]; sc = base.repeat(rep); N = len(sc); out = _dirs(system, name)
@@ -39,6 +39,24 @@ def cells(system, name):
     for r, j in shells(a0, iA): plan.append((f"pair_BA_BA_{r:.2f}", [a0, j], []))
     for r, j in shells(b0, iB): plan.append((f"pair_AB_AB_{r:.2f}", [], [b0, j]))
     for r, j in shells(a0, iB): plan.append((f"pair_BA_AB_{r:.2f}", [a0], [j]))
+    # Every inequivalent site, not only the first one of each element: a compound with several inequivalent sites (Al4Li9: 7) has many kinds of
+    # neighbour pair, and a pair interaction whose two sites are never both exchanged in the training set is exactly a linear combination of
+    # the point terms (rank-deficient fit: the Al4Li9 expansion had rank 34 for 43 parameters and a cross-validation error of 3 meV/atom).
+    import spglib
+    cls = np.array(spglib.get_symmetry_dataset((sc.cell[:], sc.get_scaled_positions(), sc.numbers), symprec=1e-3).equivalent_atoms); seen = set(); kind = lambda i: "BA" if sym[i] == A else "AB"
+    for i0 in sorted(set(cls)):
+        i0 = int(i0)
+        if i0 not in (a0, b0):
+            plan.append((f"single_{kind(i0)}_s{i0}", [i0] if sym[i0] == A else [], [i0] if sym[i0] == B else []))
+        d = np.round(D[i0], 2)
+        for j in np.argsort(d):
+            j = int(j); key = (min(cls[i0], cls[j]), max(cls[i0], cls[j]), float(d[j]))
+            if j == i0 or d[j] > rpair or key in seen:
+                continue
+            seen.add(key); la = [k for k in (i0, j) if sym[k] == A]; lb = [k for k in (i0, j) if sym[k] == B]
+            if any(set(la) == set(q[1]) and set(lb) == set(q[2]) for q in plan):
+                continue
+            plan.append((f"pairs_{kind(i0)}_{kind(j)}_s{i0}_{j}_{d[j]:.2f}", la, lb))
     frac = sc.get_scaled_positions()                                         # regular arrays: one anti-site per original conventional/small block
     for tag, pool in (("B_on_A", iA), ("A_on_B", iB)):
         blk = np.floor(frac[pool] * np.array(rep) + 1e-6).astype(int); first = {}
@@ -120,6 +138,9 @@ def fit(system, name, cutoffs=(7.5, 5.0)):
         sc_ = StructureContainer(cs_)
         for s_, r in use:
             sc_.add_structure(s_, properties={"g": r["G_T_eV"][im] / len(s_)})
+        A_, _y = sc_.get_fit_data(key="g"); rk = int(np.linalg.matrix_rank(A_, tol=1e-8))
+        if rk < A_.shape[1]:            # some interactions are not sampled by the training cells: the fit is not determined (add cells; `cells` samples every inequivalent site)
+            info["candidates"].append({"cutoffs": cut, "n_parameters": len(cs_), "rank": rk, "skipped": "rank deficient"}); print(info["candidates"][-1], flush=True); continue
         for fm in ("least-squares", "ardr"):
             if fm == "least-squares" and len(cs_) > 0.5 * len(use):
                 continue
@@ -127,6 +148,8 @@ def fit(system, name, cutoffs=(7.5, 5.0)):
             info["candidates"].append({"cutoffs": cut, "method": fm, "n_parameters": len(cs_), "rmse_cv_meV": float(cv_.rmse_validation * 1000)}); print(info["candidates"][-1], flush=True)
             if best is None or cv_.rmse_validation < best[0]:
                 best = (cv_.rmse_validation, cut, fm, cs_)
+    if best is None:
+        json.dump(info, open(os.path.join(out, "fit.json"), "w"), indent=1); raise SystemExit("no candidate has a full-rank training set: add training cells")
     _, cut, fm, cs = best; info["n_parameters"] = len(cs); info["cutoffs"] = cut; info["fit_method"] = fm
     for Tq in TS:
         i = int(np.argmin(abs(T - Tq))); scn = StructureContainer(cs)
