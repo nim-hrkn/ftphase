@@ -144,21 +144,31 @@ def fit(system, name, cutoffs=(7.5, 5.0)):
         for fm in ("least-squares", "ardr"):
             if fm == "least-squares" and len(cs_) > 0.5 * len(use):
                 continue
-            cv_ = CrossValidationEstimator(sc_.get_fit_data(key="g"), fit_method=fm, validation_method="k-fold", n_splits=10, seed=1); cv_.validate()
-            info["candidates"].append({"cutoffs": cut, "method": fm, "n_parameters": len(cs_), "rmse_cv_meV": float(cv_.rmse_validation * 1000)}); print(info["candidates"][-1], flush=True)
-            if best is None or cv_.rmse_validation < best[0]:
-                best = (cv_.rmse_validation, cut, fm, cs_)
+            if fm == "least-squares":
+                # leave-one-out from the hat matrix.  A k-fold split is not usable when an interaction is fixed by a single training cell (a compound
+                # with many inequivalent sites: one cell per kind of pair): taking that cell out leaves the parameter undetermined and the fold error
+                # explodes.  Such cells (leverage ~ 1) cannot be validated; they are counted and reported instead.
+                H_ = A_ @ np.linalg.pinv(A_); lev = np.diag(H_); r_ = _y - H_ @ _y; okl = lev < 0.99; rcv = float(np.sqrt(np.mean((r_[okl] / (1 - lev[okl])) ** 2))); nsingle = int((~okl).sum())
+            else:
+                cv_ = CrossValidationEstimator((A_, _y), fit_method=fm, validation_method="k-fold", n_splits=10, seed=1); cv_.validate(); rcv = float(cv_.rmse_validation); nsingle = None
+            info["candidates"].append({"cutoffs": cut, "method": fm, "n_parameters": len(cs_), "rmse_cv_meV": rcv * 1000, "cells_that_alone_fix_a_parameter": nsingle}); print(info["candidates"][-1], flush=True)
+            if best is None or rcv < best[0]:
+                best = (rcv, cut, fm, cs_, nsingle)
     if best is None:
         json.dump(info, open(os.path.join(out, "fit.json"), "w"), indent=1); raise SystemExit("no candidate has a full-rank training set: add training cells")
-    _, cut, fm, cs = best; info["n_parameters"] = len(cs); info["cutoffs"] = cut; info["fit_method"] = fm
+    rbest, cut, fm, cs, info["cells_that_alone_fix_a_parameter"] = best; info["n_parameters"] = len(cs); info["cutoffs"] = cut; info["fit_method"] = fm
     for Tq in TS:
         i = int(np.argmin(abs(T - Tq))); scn = StructureContainer(cs)
         for s, r in use:
             scn.add_structure(s, properties={"g": r["G_T_eV"][i] / len(s)})
-        cve = CrossValidationEstimator(scn.get_fit_data(key="g"), fit_method=fm, validation_method="k-fold", n_splits=10, seed=1); cve.validate(); cve.train()
+        cve = CrossValidationEstimator(scn.get_fit_data(key="g"), fit_method=fm, validation_method="k-fold", n_splits=10, seed=1); cve.train()
+        if fm == "least-squares":
+            A_, y_ = scn.get_fit_data(key="g"); H_ = A_ @ np.linalg.pinv(A_); lev = np.diag(H_); okl = lev < 0.99; rcvT = float(np.sqrt(np.mean((((y_ - H_ @ y_)[okl]) / (1 - lev[okl])) ** 2)))
+        else:
+            cve.validate(); rcvT = float(cve.rmse_validation)
         ce = ClusterExpansion(cs, cve.parameters); ce.write(os.path.join(out, f"ce_{int(Tq)}.icet"))
         pred = np.array([ce.predict(s) for s, _ in use]); ref = np.array([r["G_T_eV"][i] / len(s) for s, r in use])
-        info[int(Tq)] = {"rmse_train_meV": float(cve.rmse_train * 1000), "rmse_cv_meV": float(cve.rmse_validation * 1000), "n_nonzero": int(np.count_nonzero(cve.parameters)), "max_abs_error_meV": float(np.abs(pred - ref).max() * 1000)}
+        info[int(Tq)] = {"rmse_train_meV": float(np.sqrt(np.mean((pred - ref) ** 2)) * 1000), "rmse_cv_meV": rcvT * 1000, "n_nonzero": int(np.count_nonzero(cve.parameters)), "max_abs_error_meV": float(np.abs(pred - ref).max() * 1000)}
         print(Tq, info[int(Tq)], flush=True)
     json.dump(info, open(os.path.join(out, "fit.json"), "w"), indent=1)
 

@@ -128,7 +128,7 @@ def main():
                         q_["G_minus_Gx0"] = q_.G_minus_Gx0 - q_.G_minus_Gx0.iloc[0] + q_.dmu.iloc[0] * (q_.x.iloc[0] - m.x0)
                     keep.append(q_)
                 gm = pd.concat(keep).sort_values("x").drop_duplicates("x")
-            if os.path.exists(fmc) and json.load(open(os.path.join(os.path.dirname(fmc), "fit.json")))[str(int(T))]["rmse_cv_meV"] < 1.0 and len(gm) >= 4:
+            if os.path.exists(fmc) and json.load(open(os.path.join(os.path.dirname(fmc), "fit.json")))[str(int(T))]["rmse_cv_meV"] < 1.0 and len(gm) >= 4 and gm.x.max() - gm.x.min() >= 0.02:      # a branch that leaves the ordered compound at once (the expansion puts a far-away state lower) gives no curve: the model line is kept
                 xm = gm.x.to_numpy(); ym = g0 + gm.G_minus_Gx0.to_numpy()
                 ax.plot(xm, f(xm, ym), color="#2ca02c", lw=1.8, label="cluster expansion of the defects + Monte Carlo")
                 mcph[name] = PhaseCurve.from_points(name, xm, ym, fit="spline", limited=True, n_sample=801)
