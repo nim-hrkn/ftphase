@@ -10,7 +10,8 @@ import pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "out")
 ROWS = [("Ni-Al", "x_Ni", (100, 2000), [("EAM Mishin 2009 (solid TI; low T not sampled)", os.path.join(HERE, "..", "nial_eam", "out_mygardenx1_stage5")),
                                         ("GRACE-FS-OAM (solid TI)", os.path.join(OUT, "nial_grace_fs_ti")), ("GRACE-1L-OMAT fp32 (solid TI)", os.path.join(OUT, "nial_grace_1l_ti")),
-                                        ("SevenNet-0 (solid TI)", os.path.join(OUT, "nial_sevenn_0_ti"))]),
+                                        ("SevenNet-0 (solid TI)", os.path.join(OUT, "nial_sevenn_0_ti")),
+                                        ("SevenNet-MF-ompa (solid TI, Wagner-Schottky)", os.path.join(OUT, "nial_sevenn_mf_ompa_ti", "ws"))]),
         ("Ag-Cu", "x_Cu", (100, 1400), [("EAM WMH 2006 (2048-atom solid TI)", os.path.join(OUT, "agcu_eam_2048")),
                                         ("GRACE-FS-OAM (solid TI)", os.path.join(OUT, "agcu_grace_fs_ti")), ("GRACE-1L-OMAT fp32 (solid TI)", os.path.join(OUT, "agcu_grace_1l_ti")),
                                         ("SevenNet-0 (solid TI)", os.path.join(OUT, "agcu_sevenn_0_ti"))])]
@@ -28,7 +29,10 @@ def load(run):
 
 def main():
     colors, seen = {}, {}
-    fig, axes = plt.subplots(2, 4, figsize=(18, 9))
+    nc = max(len(r[3]) for r in ROWS); fig, axes = plt.subplots(2, nc, figsize=(4.5 * nc, 9))
+    for (_, _, _, runs), axrow in zip(ROWS, axes):
+        for ax in axrow[len(runs):]:
+            ax.axis("off")
     for (sysname, xl, Tw, runs), axrow in zip(ROWS, axes):
         for ax, (label, run) in zip(axrow, runs):
             r = load(run)

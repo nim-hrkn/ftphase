@@ -7,6 +7,7 @@ below the curve, the alloy is a two-phase mixture with a neighbouring phase.  'L
 """
 import json, os, sys
 import numpy as np
+CV_MAX = float(__import__("os").environ.get("CE_CV_MAX", 1.0))   # cluster expansions with a larger cross-validation error (meV/atom) are not used
 HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "out"); sys.path.insert(0, HERE)
 sys.argv = [sys.argv[0], "extended"]
 
@@ -116,7 +117,7 @@ def main():
                 ax.text(0.98, 0.04, f"two-phase with {right[0][1]} (x = {right[0][0]:.3f}) →", transform=ax.transAxes, fontsize=7.5, color="0.2", ha="right")
             ax.axvline(m.x0, color="0.7", lw=0.6); ax.set_xlim(m.x0 - w, m.x0 + w); lo = min(float(f(xd, hd).min()), -1.0); ax.set_ylim(lo * 1.35 - 1, max(13.0, -lo * 1.5))
             fmc = os.path.join(HERE, "..", "uniform_compounds", "out", "alli_ace", f"ce_{name}", f"G_{int(T)}.tsv")
-            if os.path.exists(fmc) and json.load(open(os.path.join(os.path.dirname(fmc), "fit.json")))[str(int(T))]["rmse_cv_meV"] < 1.0:         # (an expansion with a cross-validation error above 1 meV/atom is not used)  # cluster expansion of the defect configurations + semi-grand-canonical MC: G(x) - G(x0) = integral of (mu_B - mu_A) dx
+            if os.path.exists(fmc) and json.load(open(os.path.join(os.path.dirname(fmc), "fit.json")))[str(int(T))]["rmse_cv_meV"] < CV_MAX:         # (an expansion with a cross-validation error above 1 meV/atom is not used)  # cluster expansion of the defect configurations + semi-grand-canonical MC: G(x) - G(x0) = integral of (mu_B - mu_A) dx
                 gm = pd.read_csv(fmc, sep="\t"); fit_ = json.load(open(os.path.join(os.path.dirname(fmc), "fit.json"))); keep = []
                 for br, q_ in gm.groupby("branch"):
                     q_ = q_.sort_values("dmu", ascending=(br == "B_rich")).reset_index(drop=True); stop = len(q_)        # in the order of the scan, away from the stoichiometric plateau
@@ -128,7 +129,7 @@ def main():
                         q_["G_minus_Gx0"] = q_.G_minus_Gx0 - q_.G_minus_Gx0.iloc[0] + q_.dmu.iloc[0] * (q_.x.iloc[0] - m.x0)
                     keep.append(q_)
                 gm = pd.concat(keep).sort_values("x").drop_duplicates("x")
-            if os.path.exists(fmc) and json.load(open(os.path.join(os.path.dirname(fmc), "fit.json")))[str(int(T))]["rmse_cv_meV"] < 1.0 and len(gm) >= 4 and gm.x.max() - gm.x.min() >= 0.02:      # a branch that leaves the ordered compound at once (the expansion puts a far-away state lower) gives no curve: the model line is kept
+            if os.path.exists(fmc) and json.load(open(os.path.join(os.path.dirname(fmc), "fit.json")))[str(int(T))]["rmse_cv_meV"] < CV_MAX and len(gm) >= 4 and gm.x.max() - gm.x.min() >= 0.02:      # a branch that leaves the ordered compound at once (the expansion puts a far-away state lower) gives no curve: the model line is kept
                 xm = gm.x.to_numpy(); ym = g0 + gm.G_minus_Gx0.to_numpy()
                 ax.plot(xm, f(xm, ym), color="#2ca02c", lw=1.8, label="cluster expansion of the defects + Monte Carlo")
                 mcph[name] = PhaseCurve.from_points(name, xm, ym, fit="spline", limited=True, n_sample=801)

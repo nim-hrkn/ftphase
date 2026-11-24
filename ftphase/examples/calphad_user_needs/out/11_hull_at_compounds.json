@@ -82,19 +82,26 @@
    0.6154
   ],
   "Al4Li9_fit_rms_meV": {
-   "A_rich": 2.11,
-   "B_rich": 0.12
+   "A_rich": 2.75,
+   "B_rich": 0.24
   },
   "Al4Li9_cells_minus_A_meV": {
-   "rms": 2.06,
-   "max_abs": 5.13,
-   "n": 14,
+   "rms": 3.45,
+   "max_abs": 10.43,
+   "n": 16,
    "small_cell_stoichiometric_offset_meV": 0.02,
    "thermal_defect_lowering_at_x0_meV": -0.0
   },
   "Al4Li9": [
    0.692,
    0.7214
+  ],
+  "Al4Li9_MC_minus_model_meV": {
+   "0.600": -14.82
+  },
+  "Al4Li9_MC_range": [
+   0.588,
+   0.7274
   ],
   "Al3Li_stable_by_fit": [
    0.2498,
@@ -110,7 +117,7 @@
   ],
   "Al4Li9_stable_by_fit": [
    0.6921,
-   0.714
+   0.7169
   ],
   "Al3Li_stable_by_MC": [
    0.25,
@@ -123,6 +130,10 @@
   "Al2Li3_stable_by_MC": [
    0.6001,
    0.6186
+  ],
+  "Al4Li9_stable_by_MC": [
+   0.6924,
+   0.7274
   ]
  },
  "500": {
@@ -206,19 +217,24 @@
    0.6154
   ],
   "Al4Li9_fit_rms_meV": {
-   "A_rich": 1.96,
-   "B_rich": 0.14
+   "A_rich": 2.58,
+   "B_rich": 0.25
   },
   "Al4Li9_cells_minus_A_meV": {
-   "rms": 1.96,
-   "max_abs": 5.0,
-   "n": 14,
+   "rms": 3.28,
+   "max_abs": 9.99,
+   "n": 16,
    "small_cell_stoichiometric_offset_meV": 0.04,
    "thermal_defect_lowering_at_x0_meV": -0.21
   },
   "Al4Li9": [
    0.6917,
    0.7511
+  ],
+  "Al4Li9_MC_minus_model_meV": {},
+  "Al4Li9_MC_range": [
+   0.638,
+   0.7185
   ],
   "Al3Li_stable_by_fit": null,
   "B32_stable_by_fit": [
@@ -227,11 +243,11 @@
   ],
   "Al2Li3_stable_by_fit": [
    0.6007,
-   0.6457
+   0.6456
   ],
   "Al4Li9_stable_by_fit": [
-   0.6904,
-   0.7379
+   0.6902,
+   0.74
   ],
   "Al3Li_stable_by_MC": null,
   "B32_stable_by_MC": [
@@ -241,6 +257,10 @@
   "Al2Li3_stable_by_MC": [
    0.6003,
    0.6518
+  ],
+  "Al4Li9_stable_by_MC": [
+   0.6964,
+   0.7185
   ]
  },
  "700": {
@@ -319,13 +339,13 @@
    0.6154
   ],
   "Al4Li9_fit_rms_meV": {
-   "A_rich": 1.84,
-   "B_rich": 0.18
+   "A_rich": 2.45,
+   "B_rich": 0.29
   },
   "Al4Li9_cells_minus_A_meV": {
-   "rms": 1.99,
-   "max_abs": 4.78,
-   "n": 14,
+   "rms": 3.13,
+   "max_abs": 9.5,
+   "n": 16,
    "small_cell_stoichiometric_offset_meV": 0.05,
    "thermal_defect_lowering_at_x0_meV": -1.91
   },

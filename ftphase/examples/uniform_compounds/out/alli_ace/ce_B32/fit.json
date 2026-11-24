@@ -24,6 +24,13 @@
   0.453125,
   0.6875
  ],
+ "cutoffs": [
+  6.5,
+  5.0
+ ],
+ "fit_method": "least-squares",
+ "n_parameters": 12,
+ "cells_that_alone_fix_a_parameter": 1,
  "candidates": [
   {
    "cutoffs": [
@@ -31,8 +38,8 @@
    ],
    "method": "least-squares",
    "n_parameters": 4,
-   "rmse_cv_meV": 2.4037032203228854,
-   "cells_that_alone_fix_a_parameter": 0
+   "rmse_cv": 2.4037032203228854,
+   "n_single_cell_parameters": 0
   },
   {
    "cutoffs": [
@@ -40,8 +47,8 @@
    ],
    "method": "ardr",
    "n_parameters": 4,
-   "rmse_cv_meV": 1.7799623120184036,
-   "cells_that_alone_fix_a_parameter": null
+   "rmse_cv": 1.7799623120184036,
+   "n_single_cell_parameters": null
   },
   {
    "cutoffs": [
@@ -49,8 +56,8 @@
    ],
    "method": "least-squares",
    "n_parameters": 5,
-   "rmse_cv_meV": 1.6453623825526176,
-   "cells_that_alone_fix_a_parameter": 0
+   "rmse_cv": 1.6453623825526176,
+   "n_single_cell_parameters": 0
   },
   {
    "cutoffs": [
@@ -58,8 +65,8 @@
    ],
    "method": "ardr",
    "n_parameters": 5,
-   "rmse_cv_meV": 1.4262980754418975,
-   "cells_that_alone_fix_a_parameter": null
+   "rmse_cv": 1.4262980754418975,
+   "n_single_cell_parameters": null
   },
   {
    "cutoffs": [
@@ -67,8 +74,8 @@
    ],
    "method": "least-squares",
    "n_parameters": 8,
-   "rmse_cv_meV": 1.2921821712963055,
-   "cells_that_alone_fix_a_parameter": 0
+   "rmse_cv": 1.2921821712963055,
+   "n_single_cell_parameters": 0
   },
   {
    "cutoffs": [
@@ -76,8 +83,8 @@
    ],
    "method": "ardr",
    "n_parameters": 8,
-   "rmse_cv_meV": 1.1518272735998274,
-   "cells_that_alone_fix_a_parameter": null
+   "rmse_cv": 1.1518272735998274,
+   "n_single_cell_parameters": null
   },
   {
    "cutoffs": [
@@ -85,8 +92,8 @@
    ],
    "method": "least-squares",
    "n_parameters": 10,
-   "rmse_cv_meV": 0.9339711393843078,
-   "cells_that_alone_fix_a_parameter": 0
+   "rmse_cv": 0.9339711393843078,
+   "n_single_cell_parameters": 0
   },
   {
    "cutoffs": [
@@ -94,8 +101,8 @@
    ],
    "method": "ardr",
    "n_parameters": 10,
-   "rmse_cv_meV": 1.4913068851716627,
-   "cells_that_alone_fix_a_parameter": null
+   "rmse_cv": 1.4913068851716627,
+   "n_single_cell_parameters": null
   },
   {
    "cutoffs": [
@@ -104,8 +111,8 @@
    ],
    "method": "least-squares",
    "n_parameters": 6,
-   "rmse_cv_meV": 1.6772096770178342,
-   "cells_that_alone_fix_a_parameter": 0
+   "rmse_cv": 1.6772096770178342,
+   "n_single_cell_parameters": 0
   },
   {
    "cutoffs": [
@@ -114,8 +121,8 @@
    ],
    "method": "ardr",
    "n_parameters": 6,
-   "rmse_cv_meV": 1.9542250073267464,
-   "cells_that_alone_fix_a_parameter": null
+   "rmse_cv": 1.9542250073267464,
+   "n_single_cell_parameters": null
   },
   {
    "cutoffs": [
@@ -124,8 +131,8 @@
    ],
    "method": "least-squares",
    "n_parameters": 9,
-   "rmse_cv_meV": 0.33492726256438954,
-   "cells_that_alone_fix_a_parameter": 1
+   "rmse_cv": 0.33492726256438954,
+   "n_single_cell_parameters": 1
   },
   {
    "cutoffs": [
@@ -134,8 +141,8 @@
    ],
    "method": "ardr",
    "n_parameters": 9,
-   "rmse_cv_meV": 0.9647473866014166,
-   "cells_that_alone_fix_a_parameter": null
+   "rmse_cv": 0.9647473866014166,
+   "n_single_cell_parameters": null
   },
   {
    "cutoffs": [
@@ -144,8 +151,8 @@
    ],
    "method": "least-squares",
    "n_parameters": 9,
-   "rmse_cv_meV": 1.3399832751455678,
-   "cells_that_alone_fix_a_parameter": 0
+   "rmse_cv": 1.3399832751455678,
+   "n_single_cell_parameters": 0
   },
   {
    "cutoffs": [
@@ -154,8 +161,8 @@
    ],
    "method": "ardr",
    "n_parameters": 9,
-   "rmse_cv_meV": 0.7924743808839941,
-   "cells_that_alone_fix_a_parameter": null
+   "rmse_cv": 0.7924743808839941,
+   "n_single_cell_parameters": null
   },
   {
    "cutoffs": [
@@ -164,8 +171,8 @@
    ],
    "method": "least-squares",
    "n_parameters": 12,
-   "rmse_cv_meV": 0.3133044646889893,
-   "cells_that_alone_fix_a_parameter": 1
+   "rmse_cv": 0.3133044646889893,
+   "n_single_cell_parameters": 1
   },
   {
    "cutoffs": [
@@ -174,8 +181,8 @@
    ],
    "method": "ardr",
    "n_parameters": 12,
-   "rmse_cv_meV": 0.39372404109266956,
-   "cells_that_alone_fix_a_parameter": null
+   "rmse_cv": 0.39372404109266956,
+   "n_single_cell_parameters": null
   },
   {
    "cutoffs": [
@@ -184,8 +191,8 @@
    ],
    "method": "least-squares",
    "n_parameters": 11,
-   "rmse_cv_meV": 0.3870084245663533,
-   "cells_that_alone_fix_a_parameter": 1
+   "rmse_cv": 0.3870084245663533,
+   "n_single_cell_parameters": 1
   },
   {
    "cutoffs": [
@@ -194,8 +201,8 @@
    ],
    "method": "ardr",
    "n_parameters": 11,
-   "rmse_cv_meV": 1.192659662305862,
-   "cells_that_alone_fix_a_parameter": null
+   "rmse_cv": 1.192659662305862,
+   "n_single_cell_parameters": null
   },
   {
    "cutoffs": [
@@ -204,8 +211,8 @@
    ],
    "method": "least-squares",
    "n_parameters": 14,
-   "rmse_cv_meV": 0.32711681512091356,
-   "cells_that_alone_fix_a_parameter": 1
+   "rmse_cv": 0.32711681512091356,
+   "n_single_cell_parameters": 1
   },
   {
    "cutoffs": [
@@ -214,33 +221,26 @@
    ],
    "method": "ardr",
    "n_parameters": 14,
-   "rmse_cv_meV": 0.9502163859746221,
-   "cells_that_alone_fix_a_parameter": null
+   "rmse_cv": 0.9502163859746221,
+   "n_single_cell_parameters": null
   }
  ],
- "cells_that_alone_fix_a_parameter": 1,
- "n_parameters": 12,
- "cutoffs": [
-  6.5,
-  5.0
- ],
- "fit_method": "least-squares",
  "300": {
-  "rmse_train_meV": 0.17872173925566842,
+  "rmse_train_meV": 0.17872173925561075,
   "rmse_cv_meV": 0.27284789412995647,
   "n_nonzero": 12,
-  "max_abs_error_meV": 0.6783906407643592
+  "max_abs_error_meV": 0.6783906407923368
  },
  "500": {
-  "rmse_train_meV": 0.22978849983276003,
+  "rmse_train_meV": 0.22978849983272398,
   "rmse_cv_meV": 0.3133044646889893,
   "n_nonzero": 12,
-  "max_abs_error_meV": 0.9630749280709061
+  "max_abs_error_meV": 0.9630749280740147
  },
  "700": {
-  "rmse_train_meV": 0.35147289278753396,
+  "rmse_train_meV": 0.3514728927874519,
   "rmse_cv_meV": 0.4843112853289704,
   "n_nonzero": 12,
-  "max_abs_error_meV": 1.2474628410572564
+  "max_abs_error_meV": 1.247462841051039
  }
 }

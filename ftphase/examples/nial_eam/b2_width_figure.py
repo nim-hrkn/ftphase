@@ -16,8 +16,10 @@ cases = [("(a) WorkChain assembly\nconstitutional sublattice, cells <= 3 Va / 6 
          ("(b) same table, Wagner-Schottky\nthermal defects", os.path.join(OUT, a.base + "_ti", "ws")),
          ("(c) + extended B2 cells (Va 4-7, anti-sites 8-10)\nand L1_2 cells (anti-sites 2-4), TI, Wagner-Schottky",
           os.path.join(OUT, a.base + ("_b2l12ext_merged" if os.path.isdir(os.path.join(OUT, a.base + "_b2l12ext_merged")) else "_b2ext_merged"), "ws"))]
+if not os.path.isdir(cases[2][1]):      # a --b2-full run (e.g. nial_sevenn_mf_ompa) already holds the extended cells: two panels only
+    cases = [("(a) WorkChain assembly\nconstitutional sublattice (all B2 cells incl. Va 4-7, anti-sites 8-10)", cases[0][1]), ("(b) same table, Wagner-Schottky\nthermal defects", cases[1][1])]
 S = SYSTEMS["nial"]; ref = next(d for d in load_sgte(S["prefix"]) if d["name"] == S["ref"])
-fig, axes = plt.subplots(1, 3, figsize=(13.5, 4.4), sharey=True); colors, seen = {}, {}
+fig, axes = plt.subplots(1, len(cases), figsize=(4.5 * len(cases), 4.4), sharey=True); colors, seen = {}, {}
 rows = []; rows_l12 = []
 for ax, (title, d) in zip(axes, cases):
     r = draw_run(ax, d, colors, seen, (900, 2000)); draw_ref_boundaries(ax, ref)
@@ -32,7 +34,7 @@ for ax, (title, d) in zip(axes, cases):
 axes[0].set_ylabel("T (K)")
 h = {k: v for k, v in seen.items() if "B2" in k or "liquid" in k}
 fig.legend(h.values(), h.keys(), loc="lower center", ncol=min(6, len(h)), fontsize=8, frameon=False, bbox_to_anchor=(0.5, -0.02))
-fig.suptitle(f"{a.base}: B2 NiAl composition range (black = SGTE AlNi-01Dup-4sl boundaries; experiment: B2 reaches x_Ni ~ 0.45 at 1600 K on the Al side)", fontsize=9)
+fig.suptitle(f"{a.base}: B2 NiAl composition range (black = SGTE AlNi-01Dup-4sl boundaries; experiment: B2 reaches x_Ni ~ 0.45 at 1600 K on the Al side)", fontsize=9 if len(cases) > 2 else 6.5)
 fig.tight_layout(rect=(0, 0.06, 1, 0.95)); out = os.path.join(HERE, "out_defects_mlip", f"b2_width_{a.base}.png"); fig.savefig(out, dpi=130); print("wrote", out)
 # SGTE B2 range for reference: read the assessment's B2 phase boundaries at the same temperatures
 sg = {}; sg_l12 = {}

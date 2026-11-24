@@ -12,6 +12,7 @@ x = fraction of B.  Free energies at the classical level (QHA lowered by F_q - F
 import json, os, sys, time
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); EXA = os.path.join(HERE, "..")
+ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 KEYS = (("A_on_B", 1, "sub"), ("B_on_A", 0, "sub"), ("Va_on_A", 0, "vac"), ("Va_on_B", 1, "vac"))      # key, host element index, kind
 
 
@@ -23,6 +24,19 @@ def _nial_eam():
                           "Ni2Al3": {"atoms": st["Ni2Al3"][0], "site_counts": (3, 2), "sizes": [((2, 2, 2), [2, 2, 2]), ((3, 3, 2), [1, 1, 1]), ((3, 3, 3), [1, 1, 1])]},
                           "B2": {"atoms": st["B2-NiAl"][0], "site_counts": (1, 1), "sizes": [((3, 3, 3), [2, 2, 2]), ((4, 4, 4), [1, 1, 1]), ((5, 5, 5), [1, 1, 1])]},
                           "L12": {"atoms": st["L12-Ni3Al"][0], "site_counts": (1, 3), "sizes": [((2, 2, 2), [2, 2, 2]), ((3, 3, 3), [1, 1, 1]), ((4, 4, 4), [1, 1, 1])]}}}
+
+
+def _nial_sevenn(name, modal, label):
+    """Ni-Al with a SevenNet checkpoint through the ASE calculator on the GPU (run with env/torch/bin/python); same structures, cell sizes and
+    volume scan as the EAM entry."""
+    def make():
+        import glob
+        cfg = _nial_eam(); ck = glob.glob(os.path.join(ROOT, "env/torch/lib/python3.12/site-packages/sevenn/pretrained_potentials", name, "*.pth"))[0]
+        def calc():
+            from sevenn.calculator import SevenNetCalculator
+            return SevenNetCalculator(model=ck, device="auto", modal=modal)
+        cfg.update({"calc": calc, "label": label}); return cfg
+    return make
 
 
 def _alli(pair_style, pair_coeff, label):
@@ -42,8 +56,7 @@ def _alli(pair_style, pair_coeff, label):
     return make
 
 
-ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-SYSTEMS = {"nial_eam": _nial_eam,
+SYSTEMS = {"nial_eam": _nial_eam, "nial_sevenn_mf_ompa": _nial_sevenn("SevenNet_MF_ompa", "mpa", "SevenNet-MF-ompa"),
            "alli_grace_fs": _alli("grace/fs", f"* * {os.path.join(ROOT, 'potentials/grace/GRACE-FS-OAM.yaml')} Al Li", "GRACE-FS-OAM"),
            "alli_ace": _alli("pace", f"* * {os.path.join(ROOT, 'pyiron-examples/workshop2022-phase-diagram/resources/lammps/potentials/ace/AlLi-6gen-18May.yace')} Al Li", "ACE (Menon 2021)")}
 
