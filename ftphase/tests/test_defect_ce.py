@@ -108,3 +108,33 @@ def test_harvest_returns_configurations_beyond_the_thresholds():
     assert 1 <= len(got) <= 4 and all(h.info["antisite_fraction"] >= 0.05 and np.isfinite(h.info["predicted"]) for h in got)
     again = dc.harvest(ce, small, 1500.0, mid, half, thresholds=(0.05, 0.15), n_steps=10, chunks=3, known=got)
     assert len(again) == 0                                         # same seeds, same path: nothing new
+
+
+def test_run_does_the_whole_chain_and_agrees_with_the_closed_form():
+    """compute = the known ordering model at two 'temperatures' (the second column twice as stiff); no relaxation data."""
+    ce = _ordering_model(); small = _b2((3, 3, 3)); N = len(small); calls = []
+    def compute(at):
+        calls.append(1); e = N * ce.predict(at); return {"values": [e, e]}
+    kw = dict(blocks=(3, 3, 3), rpair=3.0, cutoffs=([3.0],), methods=("least-squares",), mc_supercell=_b2((4, 4, 4)), max_iterations=1,
+              plan_kwargs={"rshell": 3.0, "n_random": (3, 4, 6, 8)}, scan_kwargs={"n_steps": 8, "extent": 0.5, "n_eq": 20, "n_av": 40}, harvest_kwargs={"thresholds": (0.05,), "n_steps": 6, "chunks": 2})
+    res = dc.run(small, ("Al", "Ni"), compute, [900.0, 1200.0], **kw)
+    assert res.x0 == 0.5 and res.fit.cutoffs == [3.0] and all(res.usable.values()) and np.allclose(res.fit.rmse_cv, 0.0, atol=1e-8)
+    assert res.history and not res.excluded["left_parent"] and not res.excluded["rejected"]
+    x, g = res.curves[900.0]; assert x.min() < 0.5 < x.max() and len(x) >= 10
+    one = lambda la, lb: N * (ce.predict(_cells(small, [("t", la, lb)])[0]) - ce.predict(small)); g_ba, g_ab = one([0], []), one([], [1]); mid, half = dc.plateau(g_ba, g_ab)
+    mu = np.linspace(mid - 0.5 * half, mid + 0.5 * half, 4001); xe = 0.5 * (1 / (1 + np.exp((g_ba - mu) / (KB * 900.0))) + 1 - 1 / (1 + np.exp((g_ab + mu) / (KB * 900.0))))
+    ge = np.concatenate([[0.0], np.cumsum(0.5 * (mu[1:] + mu[:-1]) * np.diff(xe))]); ge -= np.interp(0.5, xe, ge)
+    assert np.allclose(g, np.interp(x, xe, ge), atol=2e-3)
+    v = res.values(900.0, [0.5, x.max() + 0.1], g0=-1.0); assert v[0] == pytest.approx(-1.0, abs=2e-3) and np.isnan(v[1])
+    n1 = len(calls); res2 = dc.run(small, ("Al", "Ni"), compute, [900.0, 1200.0], cache=res.cells, **kw)        # resumed: nothing is computed again
+    assert len(calls) == n1 and np.allclose(res2.curves[900.0][1], g)
+    # a rejected cell and a cell that left the parent structure are excluded from the fit
+    def compute2(at):
+        e = N * ce.predict(at); rel = at.copy(); k = int(np.sum(np.array(at.get_chemical_symbols()) != np.array(small.get_chemical_symbols())))
+        if k == 8:
+            rel.set_cell(at.cell[:] @ np.diag([1.05, 1.05, 0.9]), scale_atoms=True)
+        return {"values": [e, e], "relaxed": rel, "ok": k != 6}
+    res3 = dc.run(small, ("Al", "Ni"), compute2, [900.0, 1200.0], **{**kw, "max_iterations": 0})
+    nd = lambda t: len(res3.cells[t]["values"]) and int(round(abs(res3.cells[t]["x"] - 0.5) * N)) if not t.startswith("mixed") else sum(int(v) for v in t.split("_")[1:3])
+    assert res3.excluded["left_parent"] and all(nd(t) == 8 for t in res3.excluded["left_parent"]) and res3.excluded["rejected"] and all(nd(t) == 6 for t in res3.excluded["rejected"])
+    assert not set(res3.excluded["left_parent"]) & set(res3.excluded["rejected"]) and all(res3.usable.values())

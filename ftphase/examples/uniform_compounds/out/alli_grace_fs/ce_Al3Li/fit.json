@@ -1,0 +1,232 @@
+{
+ "n_structures": 98,
+ "excluded_left_parent": [
+  "harvest_i2_T300_B_2",
+  "harvest_i2_T300_B_3",
+  "harvest_i2_T300_B_4"
+ ],
+ "excluded_imaginary": [],
+ "x_range_of_training": [
+  0.0,
+  0.5
+ ],
+ "cutoffs": [
+  7.5,
+  5.0
+ ],
+ "fit_method": "ardr",
+ "n_parameters": 16,
+ "cells_that_alone_fix_a_parameter": null,
+ "candidates": [
+  {
+   "cutoffs": [
+    4.0
+   ],
+   "method": "least-squares",
+   "n_parameters": 4,
+   "rmse_cv": 2.155482239654163,
+   "n_single_cell_parameters": 0
+  },
+  {
+   "cutoffs": [
+    4.0
+   ],
+   "method": "ardr",
+   "n_parameters": 4,
+   "rmse_cv": 1.702546707186342,
+   "n_single_cell_parameters": null
+  },
+  {
+   "cutoffs": [
+    5.0
+   ],
+   "method": "least-squares",
+   "n_parameters": 5,
+   "rmse_cv": 2.6286015569478165,
+   "n_single_cell_parameters": 0
+  },
+  {
+   "cutoffs": [
+    5.0
+   ],
+   "method": "ardr",
+   "n_parameters": 5,
+   "rmse_cv": 1.907706049478705,
+   "n_single_cell_parameters": null
+  },
+  {
+   "cutoffs": [
+    6.5
+   ],
+   "method": "least-squares",
+   "n_parameters": 7,
+   "rmse_cv": 2.7864218028986634,
+   "n_single_cell_parameters": 0
+  },
+  {
+   "cutoffs": [
+    6.5
+   ],
+   "method": "ardr",
+   "n_parameters": 7,
+   "rmse_cv": 2.1499835563022613,
+   "n_single_cell_parameters": null
+  },
+  {
+   "cutoffs": [
+    7.5
+   ],
+   "method": "least-squares",
+   "n_parameters": 9,
+   "rmse_cv": 2.852506877486204,
+   "n_single_cell_parameters": 0
+  },
+  {
+   "cutoffs": [
+    7.5
+   ],
+   "method": "ardr",
+   "n_parameters": 9,
+   "rmse_cv": 2.0144015314971138,
+   "n_single_cell_parameters": null
+  },
+  {
+   "cutoffs": [
+    5.0,
+    4.0
+   ],
+   "method": "least-squares",
+   "n_parameters": 7,
+   "rmse_cv": 1.154288344063694,
+   "n_single_cell_parameters": 0
+  },
+  {
+   "cutoffs": [
+    5.0,
+    4.0
+   ],
+   "method": "ardr",
+   "n_parameters": 7,
+   "rmse_cv": 1.4583834525227166,
+   "n_single_cell_parameters": null
+  },
+  {
+   "cutoffs": [
+    5.0,
+    5.0
+   ],
+   "method": "least-squares",
+   "n_parameters": 12,
+   "rmse_cv": 1.1947941053279834,
+   "n_single_cell_parameters": 0
+  },
+  {
+   "cutoffs": [
+    5.0,
+    5.0
+   ],
+   "method": "ardr",
+   "n_parameters": 12,
+   "rmse_cv": 0.8519400693150099,
+   "n_single_cell_parameters": null
+  },
+  {
+   "cutoffs": [
+    6.5,
+    4.0
+   ],
+   "method": "least-squares",
+   "n_parameters": 9,
+   "rmse_cv": 0.637336368145985,
+   "n_single_cell_parameters": 0
+  },
+  {
+   "cutoffs": [
+    6.5,
+    4.0
+   ],
+   "method": "ardr",
+   "n_parameters": 9,
+   "rmse_cv": 0.47605626468662116,
+   "n_single_cell_parameters": null
+  },
+  {
+   "cutoffs": [
+    6.5,
+    5.0
+   ],
+   "method": "least-squares",
+   "n_parameters": 14,
+   "rmse_cv": 0.7774873702670034,
+   "n_single_cell_parameters": 0
+  },
+  {
+   "cutoffs": [
+    6.5,
+    5.0
+   ],
+   "method": "ardr",
+   "n_parameters": 14,
+   "rmse_cv": 0.46810785067109306,
+   "n_single_cell_parameters": null
+  },
+  {
+   "cutoffs": [
+    7.5,
+    4.0
+   ],
+   "method": "least-squares",
+   "n_parameters": 11,
+   "rmse_cv": 0.6498664347226171,
+   "n_single_cell_parameters": 0
+  },
+  {
+   "cutoffs": [
+    7.5,
+    4.0
+   ],
+   "method": "ardr",
+   "n_parameters": 11,
+   "rmse_cv": 0.6011895019386313,
+   "n_single_cell_parameters": null
+  },
+  {
+   "cutoffs": [
+    7.5,
+    5.0
+   ],
+   "method": "least-squares",
+   "n_parameters": 16,
+   "rmse_cv": 0.7743277445591445,
+   "n_single_cell_parameters": 0
+  },
+  {
+   "cutoffs": [
+    7.5,
+    5.0
+   ],
+   "method": "ardr",
+   "n_parameters": 16,
+   "rmse_cv": 0.40822527624469945,
+   "n_single_cell_parameters": null
+  }
+ ],
+ "300": {
+  "rmse_train_meV": 0.24555945969098597,
+  "rmse_cv_meV": 0.30879250721037427,
+  "n_nonzero": 7,
+  "max_abs_error_meV": 0.9173148971077794
+ },
+ "500": {
+  "rmse_train_meV": 0.2909827246724911,
+  "rmse_cv_meV": 0.40822527624469945,
+  "n_nonzero": 6,
+  "max_abs_error_meV": 1.180083218436323
+ },
+ "700": {
+  "rmse_train_meV": 0.3965286762070703,
+  "rmse_cv_meV": 0.9596678932666722,
+  "n_nonzero": 10,
+  "max_abs_error_meV": 1.6173565125723322
+ }
+}

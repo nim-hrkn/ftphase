@@ -1,0 +1,12 @@
+{
+ "n_structures": 160,
+ "excluded_left_parent": [
+  "rand_A_on_B_k12_c0",
+  "rand_A_on_B_k12_c1",
+  "rand_A_on_B_k16_c0",
+  "rand_A_on_B_k16_c2",
+  "rand_A_on_B_k4_c1",
+  "rand_A_on_B_k8_c1"
+ ],
+ "excluded_imaginary": []
+}

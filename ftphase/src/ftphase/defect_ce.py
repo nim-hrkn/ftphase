@@ -4,7 +4,8 @@ Option of the uniform compound procedure (:mod:`ftphase.compounds`) for the case
 non-interacting or polynomial interaction) is not enough because the anti-sites attract or avoid each other.  Only anti-sites:
 both sublattices are open to both species; vacancies are not in the lattice model.
 
-Steps (each is a function here; the worked driver is ``examples/uniform_compounds/defect_ce_mc.py``)::
+The whole chain in one call: :func:`run` (you supply ``compute(atoms)`` = the free energies of one cell with your calculator).
+The steps it performs (each is a function here; a file-based driver is ``examples/uniform_compounds/defect_ce_mc.py``)::
 
     plan      = training_plan(supercell, A, B)                 # which cells to compute: every inequivalent site and pair
     ...compute G_cell(T) of every cell with your calculator (QHA), relax it...
@@ -32,7 +33,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-__all__ = ["training_plan", "structure_check", "ExpansionFit", "fit_expansion", "plateau", "sgc_scan", "harvest", "branch_free_energy"]
+__all__ = ["training_plan", "structure_check", "ExpansionFit", "fit_expansion", "plateau", "sgc_scan", "harvest", "branch_free_energy", "DefectCEResult", "run"]
 
 DEFAULT_CUTOFFS = tuple([[c2] for c2 in (4.0, 5.0, 6.5, 7.5)] + [[c2, c3] for c2 in (5.0, 6.5, 7.5) for c3 in (4.0, 5.0) if c3 <= c2])
 
@@ -289,3 +290,103 @@ def branch_free_energy(scan, x0, x_range=None, max_exchanged=0.25, jump=0.02, mi
     if len(x) < min_points or x.max() - x.min() < min_span:
         return np.array([]), np.array([])
     return x, g
+
+
+@dataclass
+class DefectCEResult:
+    """Result of :func:`run`.  ``curves[T] = (x, dG)``: G(x) - G(x0) per site of the compound (empty arrays when not usable);
+    ``usable[T]``: validation error below the limit AND the Monte Carlo followed the compound; ``cells``: tag -> record of every
+    computed cell (pass it back as ``cache`` to resume); ``history``: one entry per harvest iteration."""
+    fit: ExpansionFit
+    temperatures: np.ndarray
+    scans: dict
+    curves: dict
+    usable: dict
+    x0: float
+    cells: dict
+    excluded: dict
+    history: list
+
+    def values(self, T, xs, g0=0.0):
+        """G per site at compositions ``xs`` (nan outside the curve): ``g0`` (the perfect compound) + the Monte Carlo difference."""
+        x, g = self.curves[float(T)]; xs = np.asarray(xs, dtype=float)
+        if x.size == 0:
+            return np.full(xs.shape, np.nan)
+        return np.where((xs >= x.min()) & (xs <= x.max()), g0 + np.interp(xs, x, g), np.nan)
+
+
+def run(supercell, species, compute, temperatures, mc_supercell=None, blocks=None, rpair=4.0, strain_max=0.02, cv_limit=1e-3, max_iterations=4, cutoffs=DEFAULT_CUTOFFS,
+        methods=("least-squares", "ardr"), plan_kwargs=None, scan_kwargs=None, harvest_kwargs=None, curve_kwargs=None, cache=None, verbose=False):
+    """Defect-configuration free energy of one compound in one call: plan -> compute -> check -> fit -> (harvest -> compute -> check -> fit)* ->
+    Monte Carlo -> G(x) - G(x0).  Use it for a compound that the point-defect model puts on (or within a few meV/atom of) the hull; when
+    several compounds are treated, replace all of them before taking the hull again.
+
+    ``supercell``     the perfect compound (training cell, two elements ``species`` = (A, B); x = fraction of B)
+    ``compute(atoms)`` your calculator: returns ``{"values": free energy of the CELL at each of ``temperatures`` (eV), "relaxed": the
+                      relaxed atoms (optional; needed for the structure check), "ok": False to reject the cell (e.g. imaginary modes)}``;
+                      called once per cell on the ideal lattice sites
+    ``mc_supercell``  cell of the production Monte Carlo (default: 2x2x2 of ``supercell``)
+    ``cv_limit``      largest validation error (eV/site) of an expansion that is used
+    ``max_iterations`` harvest iterations (0 = none); stops early when the Monte Carlo finds nothing new
+    ``cache``         ``result.cells`` of an earlier call: those cells are not computed again
+
+    Raises ``ValueError`` when no cluster space is determined by the cells (see :func:`fit_expansion`)."""
+    A, B = species; T = np.atleast_1d(np.asarray(temperatures, dtype=float)); n = len(supercell); cells = dict(cache or {}); structs = {}; say = print if verbose else (lambda *a, **k: None)
+
+    def build(la, lb):
+        at = supercell.copy()
+        for i in la:
+            at[i].symbol = B
+        for i in lb:
+            at[i].symbol = A
+        return at
+
+    def do(tag, at):
+        structs[tag] = at
+        if tag in cells:
+            return
+        r = compute(at.copy()); rec = {"x": float(np.mean(np.array(at.get_chemical_symbols()) == B)), "ok": bool(r.get("ok", True)), "values": [float(v) for v in np.atleast_1d(r["values"])]}
+        if r.get("relaxed") is not None:
+            rec["_relaxed_cell"] = np.asarray(r["relaxed"].cell[:]).tolist(); rec["_relaxed"] = r["relaxed"]
+        cells[tag] = rec; say("computed", tag, "x = %.4f" % rec["x"])
+
+    def check_all():
+        ref = cells["perfect"].get("_relaxed")
+        for tag, rec in cells.items():
+            if ref is not None and rec.get("_relaxed") is not None and "left_parent" not in rec and tag in structs:
+                rec.update(structure_check(structs[tag], rec["_relaxed"], ref.cell[:], strain_max))
+
+    def fit_now():
+        use = [t for t in structs if cells[t]["ok"] and not cells[t].get("left_parent", False)]
+        f = fit_expansion([structs[t] for t in use], np.array([cells[t]["values"] for t in use]) / n, species, cutoffs=cutoffs, methods=methods, verbose=verbose)
+        return f, use
+
+    for tag, la, lb in training_plan(supercell, A, B, rpair=rpair, blocks=blocks, **(plan_kwargs or {})):
+        do(tag, build(la, lb))
+    for tag in [t for t in cells if t.startswith("harvest_") and t not in structs and "_symbols" in cells[t]]:     # harvested cells of a cached run
+        at = supercell.copy(); at.set_chemical_symbols(cells[tag]["_symbols"]); structs[tag] = at
+    check_all(); fit, use = fit_now(); history = []
+    g1 = lambda tag, k: cells[tag]["values"][k] - cells["perfect"]["values"][k]
+    win = lambda k: plateau(g1("single_B_on_A", k), g1("single_A_on_B", k))
+    for it in range(1, max_iterations + 1):
+        new = []
+        for k in sorted({0, len(T) - 1}):
+            mid, half = win(k)
+            new += harvest(fit.expansion(k), supercell, T[k], mid, half, species=species, known=list(structs.values()) + new, **(harvest_kwargs or {}))
+        if not new:
+            history.append({"iteration": it, "harvested": 0}); break
+        for j, h in enumerate(new):
+            tag = f"harvest_i{it}_{j}"; pred = h.info["predicted"]; at = h.copy(); at.info = {}
+            do(tag, at); cells[tag]["_symbols"] = at.get_chemical_symbols(); cells[tag]["exchanged"] = h.info["antisite_fraction"]; cells[tag]["predicted_per_site"] = pred
+        check_all(); fit, use = fit_now()
+        history.append({"iteration": it, "harvested": len(new), "left_parent": int(sum(bool(cells[f"harvest_i{it}_{j}"].get("left_parent")) for j in range(len(new)))),
+                        "rmse_cv": [float(v) for v in fit.rmse_cv]}); say("harvest iteration", history[-1])
+    big = mc_supercell if mc_supercell is not None else supercell.repeat((2, 2, 2)); x0 = float(np.mean(np.array(supercell.get_chemical_symbols()) == B)); scans, curves, usable = {}, {}, {}
+    for k, Tk in enumerate(T):
+        mid, half = win(k); scans[float(Tk)] = sgc_scan(fit.expansion(k), big, Tk, mid, half, species=species, x_range=fit.x_range, **(scan_kwargs or {}))
+        x, g = branch_free_energy(scans[float(Tk)], x0, x_range=fit.x_range, **(curve_kwargs or {}))
+        ok = fit.usable(k, cv_limit) and x.size > 0; curves[float(Tk)] = (x, g) if ok else (np.array([]), np.array([])); usable[float(Tk)] = bool(ok)
+    excluded = {"left_parent": sorted(t for t, r in cells.items() if r.get("left_parent")), "rejected": sorted(t for t, r in cells.items() if not r["ok"])}
+    for r in cells.values():
+        r.pop("_relaxed", None)
+    return DefectCEResult(fit, T, scans, curves, usable, x0, cells, excluded, history)

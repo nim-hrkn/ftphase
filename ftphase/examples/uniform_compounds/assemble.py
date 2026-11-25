@@ -12,6 +12,12 @@ CFG = {"nial_eam": {"table": os.path.join(EXA, "nial_eam", "out_mygardenx1_stage
                     "kw": dict(fit="spline", fits={"fccAl": "poly", "fccNi": "poly", "liquid": "rk"}, poly_order=3, poly_orders={"liquid": 4, "fccAl": 2})}}
 
 
+_G1 = os.path.join(EXA, "aiida_txdiagram", "out", "nial_grace_1l_b2l12ext_merged")
+CFG["nial_grace_1l"] = {"table": os.path.join(_G1, "05_free_energies.tsv"), "reference": os.path.join(_G1, "ws", "07_two_phase_regions.tsv"),
+                        "reference_label": "GRACE-1L: B2 / L1$_2$ from sampled defect cells (solid TI, Wagner-Schottky), Ni$_2$Al$_3$, NiAl$_3$ as points",
+                        "compounds": ["NiAl3", "Ni2Al3", "B2", "L12"], "T": np.arange(960.0, 2000.1, 20.0), "xlabel": "x_Ni", "kw": CFG["nial_eam"]["kw"]}
+
+
 def _alli(run, label):
     """Al-Li, solids only (300-700 K): the Li-side solid run of the MLIP (fcc, bcc, B32 and the three compounds; no liquid on the Li side)."""
     d = os.path.join(EXA, "aiida_txdiagram", "out", run)

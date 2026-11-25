@@ -39,6 +39,16 @@ def _nial_sevenn(name, modal, label):
     return make
 
 
+def _nial_lammps_kk(pair_style, potential, label):
+    """Ni-Al with a Kokkos-only LAMMPS pair style on the GPU (GRACE-1L/2L: env/ftphase python, conda LAMMPS, one GPU per process); same
+    structures, cell sizes and volume scan as the EAM entry."""
+    def make():
+        from ftphase.aiida.runners import lammps_calculator
+        cfg = _nial_eam(); kk = ["-k", "on", "g", "1", "-sf", "kk", "-pk", "kokkos", "newton", "on", "neigh", "half"]
+        cfg.update({"calc": lambda: lammps_calculator(pair_style, f"* * {potential} Al Ni", {"Al": 1, "Ni": 2}, kk), "label": label}); return cfg
+    return make
+
+
 def _alli(pair_style, pair_coeff, label):
     """Al-Li with any LAMMPS pair style (A = Al, B = Li); structures as in examples/alli_ace_txdiagram (B32, L1_2, Materials Project CIFs)."""
     def make():
@@ -56,7 +66,7 @@ def _alli(pair_style, pair_coeff, label):
     return make
 
 
-SYSTEMS = {"nial_eam": _nial_eam, "nial_sevenn_mf_ompa": _nial_sevenn("SevenNet_MF_ompa", "mpa", "SevenNet-MF-ompa"),
+SYSTEMS = {"nial_eam": _nial_eam, "nial_grace_1l": _nial_lammps_kk("grace/1l/kk/fp32", os.path.join(ROOT, "potentials/grace/GRACE-1L-OMAT-medium-base-fp64-kokkos.npz"), "GRACE-1L-OMAT (fp32)"), "nial_sevenn_mf_ompa": _nial_sevenn("SevenNet_MF_ompa", "mpa", "SevenNet-MF-ompa"),
            "alli_grace_fs": _alli("grace/fs", f"* * {os.path.join(ROOT, 'potentials/grace/GRACE-FS-OAM.yaml')} Al Li", "GRACE-FS-OAM"),
            "alli_ace": _alli("pace", f"* * {os.path.join(ROOT, 'pyiron-examples/workshop2022-phase-diagram/resources/lammps/potentials/ace/AlLi-6gen-18May.yace')} Al Li", "ACE (Menon 2021)")}
 
