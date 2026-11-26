@@ -1,0 +1,33 @@
+{
+ "extend": {
+  "Al2Li3": [
+   "A_rich",
+   "B_rich"
+  ],
+  "Al3Li": [
+   "A_rich",
+   "B_rich"
+  ],
+  "B32": [
+   "A_rich"
+  ]
+ },
+ "k_max": {
+  "Al3Li": {
+   "A_rich": 12,
+   "B_rich": 12
+  },
+  "B32": {
+   "A_rich": 12,
+   "B_rich": 12
+  },
+  "Al2Li3": {
+   "A_rich": 12,
+   "B_rich": 12
+  },
+  "Al4Li9": {
+   "A_rich": 12,
+   "B_rich": 12
+  }
+ }
+}

@@ -1,0 +1,21 @@
+{
+ "extend": {},
+ "k_max": {
+  "NiAl3": {
+   "A_rich": 12,
+   "B_rich": 12
+  },
+  "Ni2Al3": {
+   "A_rich": 12,
+   "B_rich": 12
+  },
+  "B2": {
+   "A_rich": 40,
+   "B_rich": 40
+  },
+  "L12": {
+   "A_rich": 30,
+   "B_rich": 30
+  }
+ }
+}

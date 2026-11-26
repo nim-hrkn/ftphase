@@ -138,3 +138,18 @@ def test_run_does_the_whole_chain_and_agrees_with_the_closed_form():
     nd = lambda t: len(res3.cells[t]["values"]) and int(round(abs(res3.cells[t]["x"] - 0.5) * N)) if not t.startswith("mixed") else sum(int(v) for v in t.split("_")[1:3])
     assert res3.excluded["left_parent"] and all(nd(t) == 8 for t in res3.excluded["left_parent"]) and res3.excluded["rejected"] and all(nd(t) == 6 for t in res3.excluded["rejected"])
     assert not set(res3.excluded["left_parent"]) & set(res3.excluded["rejected"]) and all(res3.usable.values())
+
+
+def test_lattice_free_energy_limits():
+    """No interaction: G = E(x) - T S_ideal exactly.  Ordering interaction: lower than random mixing, and at the stoichiometric
+    composition equal to the ordered compound with its thermal anti-sites (the closed form of the independent two-level systems)."""
+    from icet import ClusterExpansion
+    ce = _ordering_model(); cs = ce.get_cluster_space_copy(); big = _b2((4, 4, 4)); T = 900.0
+    free = ClusterExpansion(cs, [0.1, 0.05, 0.0, 0.0]); d = dc.lattice_free_energy(free, big, [0.25, 0.5], T, n_grid=4, n_sweeps_eq=2, n_sweeps_av=4)
+    s_id = lambda x: -KB * (x * np.log(x) + (1 - x) * np.log(1 - x))
+    assert np.allclose(d.dF_sro, 0.0, atol=1e-9) and np.allclose(d.G, d.E_random - T * s_id(d.x.to_numpy()), atol=1e-12)
+    d = dc.lattice_free_energy(ce, big, [0.5], T, n_grid=24, n_sweeps_eq=20, n_sweeps_av=40); assert d.dF_sro[0] < -0.03 and d.alpha1[0] < -0.9      # B2 order
+    small = _b2((2, 2, 2)); N = len(small); one = lambda la, lb: N * (ce.predict(_cells(small, [("t", la, lb)])[0]) - ce.predict(small)); g_ba, g_ab = one([0], []), one([], [1])
+    mid, _ = dc.plateau(g_ba, g_ab); p = 1 / (1 + np.exp((g_ba - mid) / (KB * T))); q = 1 / (1 + np.exp((g_ab + mid) / (KB * T)))       # thermal anti-site pairs at stoichiometry
+    g_exact = ce.predict(small) + 0.5 * KB * T * (np.log(1 - p) + np.log(1 - q))                                                           # per site: -kT ln Z of the two sublattices at mu = mid, minus mu * (x - 1/2) = 0
+    assert d.G[0] == pytest.approx(g_exact, abs=4e-3)

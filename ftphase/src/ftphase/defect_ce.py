@@ -24,6 +24,9 @@ Rules that the data taught (ACE Al-Li, 2026-11-19..23):
   :func:`training_plan` samples every inequivalent site, :func:`fit_expansion` refuses rank-deficient candidates.
 * A small validation error inside the trained configurations says nothing about the states the Monte Carlo visits: harvest
   them, compute them and refit until nothing new is found (:func:`harvest`).
+* When the Monte Carlo cannot keep the ordered compound even at the centre of its chemical-potential plateau (GRACE-FS Al3Li at 300 K:
+  a quarter of the sites exchanged at the first step), the phase on that lattice is not "the compound with defects" and its free energy
+  is LOWER than the compound's: use :func:`lattice_free_energy` (the lattice as a solution, order or disorder as the Monte Carlo finds it).
 * An expansion whose validation error exceeds ~1 meV/atom, or a Monte Carlo branch that leaves the compound at once, is not
   used; the point-defect line is kept (:func:`branch_free_energy` returns an empty curve in the second case).
 """
@@ -33,7 +36,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-__all__ = ["training_plan", "structure_check", "ExpansionFit", "fit_expansion", "plateau", "sgc_scan", "harvest", "branch_free_energy", "DefectCEResult", "run"]
+__all__ = ["training_plan", "structure_check", "ExpansionFit", "fit_expansion", "plateau", "sgc_scan", "harvest", "branch_free_energy", "DefectCEResult", "run", "lattice_free_energy"]
 
 DEFAULT_CUTOFFS = tuple([[c2] for c2 in (4.0, 5.0, 6.5, 7.5)] + [[c2, c3] for c2 in (5.0, 6.5, 7.5) for c3 in (4.0, 5.0) if c3 <= c2])
 
@@ -139,7 +142,7 @@ def _loo(A, y):
 
 
 def fit_expansion(cells, values, species, cutoffs=DEFAULT_CUTOFFS, methods=("least-squares", "ardr"), select=None, symprec=1e-3, position_tolerance=1e-2,
-                  n_splits=10, seed=1, verbose=False):
+                  n_splits=10, seed=1, verbose=False, allow_rank_deficit=0):
     """Cluster expansion of ``values`` (per SITE; shape (n_cells,) or (n_cells, n_columns), e.g. one column per temperature of
     the cell free energies) on the lattice of ``cells`` (ASE atoms on ideal lattice sites, the first one the perfect compound).
 
@@ -147,7 +150,12 @@ def fit_expansion(cells, values, species, cutoffs=DEFAULT_CUTOFFS, methods=("lea
     middle one) and the best is used for all columns.  Candidates whose design matrix is rank-deficient are refused (the
     training set does not determine them).  Least squares is validated by leave-one-out (a k-fold split explodes when one cell
     alone fixes a parameter; the number of such cells is reported); other trainstation methods by k-fold.
-    Raises ``ValueError`` if no candidate is determined by the training set."""
+    Raises ``ValueError`` if no candidate is determined by the training set.
+
+    ``allow_rank_deficit`` = n accepts candidates that miss up to n independent directions and fits them by minimum-norm least squares
+    (the undetermined combinations get no weight).  Use it only when the missing cells cannot be supplied: e.g. the only cell with a
+    certain pair of anti-sites leaves the parent structure on relaxation, so that pair cannot be sampled inside this phase (GRACE-FS
+    Al4Li9: rank 42 of 43).  The deficit is recorded in ``candidates`` / ``rank_deficit``; follow with the harvest loop."""
     import spglib
     from ase import Atoms
     from icet import ClusterSpace, StructureContainer
@@ -169,10 +177,10 @@ def fit_expansion(cells, values, species, cutoffs=DEFAULT_CUTOFFS, methods=("lea
         except Exception:
             continue
         M = design(cs); rk = int(np.linalg.matrix_rank(M, tol=1e-8))
-        if rk < M.shape[1]:
+        if rk < M.shape[1] - allow_rank_deficit:
             cands.append({"cutoffs": list(cut), "n_parameters": len(cs), "rank": rk, "skipped": "rank deficient"})
         else:
-            for fm in methods:
+            for fm in (methods if rk == M.shape[1] else ("least-squares",)):
                 if fm == "least-squares":
                     if len(cs) > 0.5 * len(cells):
                         continue
@@ -180,7 +188,7 @@ def fit_expansion(cells, values, species, cutoffs=DEFAULT_CUTOFFS, methods=("lea
                 else:
                     cv = CrossValidationEstimator((M, Y[:, ks]), fit_method=fm, validation_method="k-fold", n_splits=min(n_splits, len(cells)), seed=seed); cv.validate()
                     rcv, nsingle = float(cv.rmse_validation), None
-                cands.append({"cutoffs": list(cut), "method": fm, "n_parameters": len(cs), "rmse_cv": rcv, "n_single_cell_parameters": nsingle})
+                cands.append({"cutoffs": list(cut), "method": fm, "n_parameters": len(cs), "rmse_cv": rcv, "n_single_cell_parameters": nsingle, "rank_deficit": int(M.shape[1] - rk)})
                 if best is None or rcv < best[0]:
                     best = (rcv, list(cut), fm, cs, M, nsingle)
         if verbose:
@@ -390,3 +398,24 @@ def run(supercell, species, compute, temperatures, mc_supercell=None, blocks=Non
     for r in cells.values():
         r.pop("_relaxed", None)
     return DefectCEResult(fit, T, scans, curves, usable, x0, cells, excluded, history)
+
+
+def lattice_free_energy(expansion, supercell, xs, temperature, species=None, n_grid=14, n_sweeps_eq=20, n_sweeps_av=40, seed=0):
+    """Free energy per site of the phase on this lattice at compositions ``xs`` and one temperature, whatever its state of order:
+    canonical Monte Carlo on ``expansion`` (the Hamiltonian of THAT temperature, vibrations included in its ECIs) integrated over a
+    fictitious inverse temperature from the random state,  F = -T S_ideal(x) + k_B T * int_0^{1/k_B T} <E> dbeta'
+    (:func:`ftphase.ce.canonical_free_energy`, grid uniform in beta with ``n_grid`` points).
+
+    For lattices on which the ordered compound does not survive (see the module notes), and as a check of :func:`branch_free_energy`
+    where it does: both must give the same G(x).  The integration passes through any ordering transition on the way; a peak of ``Cv_kB``
+    along the path (not returned here: call ``ftphase.ce.canonical_free_energy`` for the path) marks it, and a strongly first-order
+    one makes the result an upper bound.  Returns a DataFrame x, G (eV per site, same reference as the expansion), E, E_random,
+    dF_sro (G minus the random-mixing value E_random - T S_ideal), S_conf_kB, Cv_kB, alpha1."""
+    import pandas as pd
+    from ftphase.ce import canonical_free_energy
+    A, B = species or _species(supercell); base = supercell.copy(); base.set_chemical_symbols([A] * len(base)); T = float(temperature)
+    temps = [T * n_grid / k for k in range(1, n_grid + 1)]; rows = []
+    for j, x in enumerate(np.atleast_1d(xs)):
+        r = canonical_free_energy(expansion, base, float(x), (A, B), temps, n_sweeps_eq=n_sweeps_eq, n_sweeps_av=n_sweeps_av, seed=seed + 17 * j)[-1]
+        rows.append({"x": r["x"], "T": T, "G": r["F_conf"], "E": r["E"], "E_random": r["E_random"], "dF_sro": r["dF_sro"], "S_conf_kB": r["S_conf_kB"], "Cv_kB": r["Cv_kB"], "alpha1": r["alpha1"]})
+    return pd.DataFrame(rows)

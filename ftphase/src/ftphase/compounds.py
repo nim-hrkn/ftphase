@@ -189,6 +189,38 @@ def widths_from_regions(regions, models: Mapping[str, CompoundModel], edge_tol: 
     return pd.DataFrame(rows)
 
 
+def window_extensions(widths, models: Mapping[str, CompoundModel], edge_tol: float = 0.002, edge_fraction: float = 0.75):
+    """Which sides of which compounds need more sampling: ``{name: ["A_rich", "B_rich"]}`` for every compound whose range on the hull
+    reaches, at some temperature, beyond ``edge_fraction`` of the way from stoichiometry to the edge of its window (the compositions
+    covered by the multi-defect cells) or within ``edge_tol`` of the edge.  "A_rich" = the low-x side.  The fraction matters: the
+    interaction terms fitted to the cells are least reliable near the last sampled composition (Ni-Al GRACE-1L B2: with cells up to
+    12 defects the Al-side end was 0.480 inside a window ending at 0.475, with cells up to 40 defects it is 0.458).  Compute cells
+    with more defects on those sides (:func:`next_defect_counts`), rebuild the models and take the hull again; repeat until this
+    returns an empty dict (or the cells cannot hold more defects)."""
+    out = {}
+    for name, g in widths[widths.stable].groupby("phase"):
+        m = models[name]; lo, hi = m.window; sides = []
+        if (g.x_min < max(lo + edge_tol, m.x0 - edge_fraction * (m.x0 - lo))).any():
+            sides.append("A_rich")
+        if (g.x_max > min(hi - edge_tol, m.x0 + edge_fraction * (hi - m.x0))).any():
+            sides.append("B_rich")
+        if sides:
+            out[name] = sides
+    return out
+
+
+def next_defect_counts(k_max: int, n_sites: int, factor: float = 1.7, n: int = 3, max_fraction: float = 0.5):
+    """Numbers of defects per cell for the next round on one side: ``n`` values growing by ``factor`` from the largest one computed so far
+    (``k_max``), not above ``max_fraction`` of the ``n_sites`` candidate sites.  Empty when the cell cannot hold more."""
+    out, k = [], max(int(k_max), 1)
+    for _ in range(n):
+        k = max(k + 1, int(round(k * factor)))
+        if k > max_fraction * n_sites:
+            break
+        out.append(k)
+    return out
+
+
 def classify(widths, line_tol: float = 0.005):
     """{'phase': 'line compound' | 'range phase' | 'range phase (lower bound: window edge)' | 'not stable'} from the largest width
     over the temperatures at which the phase is on the hull."""

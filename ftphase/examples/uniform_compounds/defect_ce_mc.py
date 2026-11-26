@@ -94,7 +94,7 @@ def fit(system, name):
     Y = np.array([[r["G_T_eV"][i] / len(s) for i in idx] for s, r in use]); info = {"n_structures": len(use)}
     info["excluded_left_parent"] = sorted(k for k, v in data["cells"].items() if v.get("left_parent")); info["excluded_imaginary"] = sorted(k for k, v in data["cells"].items() if v.get("n_imag", 0) > 0)
     try:
-        f = fit_expansion([s for s, _ in use], Y, cfg["elements"], verbose=True)
+        f = fit_expansion([s for s, _ in use], Y, cfg["elements"], verbose=True, allow_rank_deficit=int(os.environ.get("CE_RANK_DEFICIT", 0)))   # CE_RANK_DEFICIT=n: see fit_expansion
     except ValueError as e:
         json.dump(info, open(os.path.join(out, "fit.json"), "w"), indent=1); raise SystemExit(str(e)[:300])
     info.update({"x_range_of_training": list(f.x_range), "cutoffs": f.cutoffs, "fit_method": f.method, "n_parameters": len(f.cluster_space), "cells_that_alone_fix_a_parameter": f.n_single_cell_parameters,
@@ -137,5 +137,21 @@ def mc(system, name, cell=4):
         print(Tq, "x range", round(df.x.min(), 4), round(df.x.max(), 4), "points", len(df), flush=True)
 
 
+def lattice(system, name, cell=3, dx=0.08, step=0.02):
+    """G(x) per site of the phase on this compound's lattice in whatever state of order the Monte Carlo finds (integration from the random
+    state; ftphase.defect_ce.lattice_free_energy), around the stoichiometric composition and inside the trained range -> lattice_<T>.tsv.
+    For compounds whose ordered state does not survive in `mc`, and as a check of `mc` where it does."""
+    from icet import ClusterExpansion
+    import ftphase.defect_ce as dc
+    cfg, out, data, ideal, T = _load(system, name); A, B = cfg["elements"]; at0 = ideal[0]; reps = max(1, round((cell ** 3 * 16 / len(at0)) ** (1 / 3))); sc = at0.repeat((reps,) * 3)
+    xr = json.load(open(os.path.join(out, "fit.json")))["x_range_of_training"]; x0 = float(np.mean(np.array(at0.get_chemical_symbols()) == B))
+    xs = [x for x in x0 + np.arange(-dx, dx + 1e-9, step) if xr[0] <= x <= xr[1]]
+    for Tq in TS:
+        ce = ClusterExpansion.read(os.path.join(out, f"ce_{int(Tq)}.icet")); i = int(np.argmin(abs(T - Tq)))
+        df = dc.lattice_free_energy(ce, sc, xs, Tq, species=(A, B), n_grid=16); df["G_perfect_compound"] = data["cells"]["perfect"]["G_T_eV"][i] / len(at0)
+        df.to_csv(os.path.join(out, f"lattice_{int(Tq)}.tsv"), sep="\t", index=False, float_format="%.8g")
+        j = int(np.argmin(abs(df.x - x0))); print(Tq, "sites", len(sc), "| at x0: G_lattice - G_perfect = %+.1f meV/site, alpha1 %.2f, S_conf %.2f k_B" % (1000 * (df.G[j] - df.G_perfect_compound[j]), df.alpha1[j], df.S_conf_kB[j]), flush=True)
+
+
 if __name__ == "__main__":
-    {"cells": cells, "check": check, "fit": fit, "harvest": harvest, "mc": mc}[sys.argv[3]](sys.argv[1], sys.argv[2])
+    {"cells": cells, "check": check, "fit": fit, "harvest": harvest, "mc": mc, "lattice": lattice}[sys.argv[3]](sys.argv[1], sys.argv[2])

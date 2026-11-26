@@ -92,3 +92,18 @@ def test_interaction_polynomial_recovers_quadratic_and_cubic_terms():
     m0 = CompoundModel("AB", 0.5, (1, 1), [300.0, 900.0], dict(m.eps))
     d = m.values(np.array([0.56]), 600.0, g0=-3.0)[0] - m0.values(np.array([0.56]), 600.0, g0=-3.0)[0]
     assert d == pytest.approx(w2 * 0.06 ** 2 + w3 * 0.06 ** 3)
+
+
+def test_window_extensions_and_next_defect_counts():
+    import pandas as pd
+    from ftphase.compounds import CompoundModel, next_defect_counts, window_extensions
+    T = np.array([500.0, 1000.0]); eps = {"A_on_B": np.array([0.5, 0.5]), "B_on_A": np.array([0.5, 0.5])}
+    models = {"P": CompoundModel("P", 0.5, (1, 1), T, eps, half_width=(0.02, 0.05)), "Q": CompoundModel("Q", 0.25, (3, 1), T, eps, half_width=(0.03, 0.03))}
+    w = pd.DataFrame([{"T": 500.0, "phase": "P", "stable": True, "x_min": 0.495, "x_max": 0.52}, {"T": 1000.0, "phase": "P", "stable": True, "x_min": 0.481, "x_max": 0.549},
+                      {"T": 500.0, "phase": "Q", "stable": True, "x_min": 0.249, "x_max": 0.251}, {"T": 1000.0, "phase": "Q", "stable": False, "x_min": 0.22, "x_max": 0.28}])
+    assert window_extensions(w, models) == {"P": ["A_rich", "B_rich"]}          # P touches both edges at 1000 K; Q's unstable row is ignored
+    w.loc[1, "x_min"] = 0.49; assert window_extensions(w, models) == {"P": ["B_rich"]}
+    w.loc[1, "x_min"] = 0.484                                                  # 80 % of the way to the edge: not at the edge, but in the unreliable part
+    assert window_extensions(w, models) == {"P": ["A_rich", "B_rich"]} and window_extensions(w, models, edge_fraction=1.0) == {"P": ["B_rich"]}
+    assert next_defect_counts(12, 125) == [20, 34, 58] and next_defect_counts(40, 125) == [] + [k for k in (68,) if k <= 62.5] and next_defect_counts(1, 8) == [2, 3]
+    assert next_defect_counts(30, 125, n=2) == [51] and next_defect_counts(60, 125) == []
