@@ -36,7 +36,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-__all__ = ["training_plan", "structure_check", "ExpansionFit", "fit_expansion", "plateau", "sgc_scan", "harvest", "branch_free_energy", "DefectCEResult", "run", "lattice_free_energy"]
+__all__ = ["training_plan", "structure_check", "ExpansionFit", "fit_expansion", "plateau", "sgc_scan", "harvest", "branch_free_energy", "DefectCEResult", "run", "lattice_free_energy", "canonical_snapshots"]
 
 DEFAULT_CUTOFFS = tuple([[c2] for c2 in (4.0, 5.0, 6.5, 7.5)] + [[c2, c3] for c2 in (5.0, 6.5, 7.5) for c3 in (4.0, 5.0) if c3 <= c2])
 
@@ -419,3 +419,23 @@ def lattice_free_energy(expansion, supercell, xs, temperature, species=None, n_g
         r = canonical_free_energy(expansion, base, float(x), (A, B), temps, n_sweeps_eq=n_sweeps_eq, n_sweeps_av=n_sweeps_av, seed=seed + 17 * j)[-1]
         rows.append({"x": r["x"], "T": T, "G": r["F_conf"], "E": r["E"], "E_random": r["E_random"], "dF_sro": r["dF_sro"], "S_conf_kB": r["S_conf_kB"], "Cv_kB": r["Cv_kB"], "alpha1": r["alpha1"]})
     return pd.DataFrame(rows)
+
+
+def canonical_snapshots(expansion, supercell, xs, temperature, species=None, n_sweeps=40, known=(), seed=0):
+    """Configurations that :func:`lattice_free_energy` relies on: one equilibrated canonical Monte Carlo configuration per composition in
+    the (training) ``supercell``, started from a random arrangement.  The harvest step of the lattice route: compute them with the real
+    calculator, compare with ``info["predicted"]`` (per site), add them to the training set and refit; the composition range of
+    :func:`lattice_free_energy` is only as good as this comparison (GRACE-FS Al2Li3 lattice: unvalidated ends took the hull from
+    x = 0.44 to 0.74).  Configurations already in ``known`` are skipped."""
+    from mchammer.calculators import ClusterExpansionCalculator
+    from mchammer.ensembles import CanonicalEnsemble
+    A, B = species or _species(supercell); n = len(supercell); rng = np.random.default_rng(seed); have = {tuple(k.get_chemical_symbols()) for k in known}; out = []
+    for j, x in enumerate(np.atleast_1d(xs)):
+        nb = int(round(float(x) * n))
+        if nb in (0, n):
+            continue
+        s = supercell.copy(); sym = np.array([A] * n, dtype=object); sym[rng.choice(n, nb, replace=False)] = B; s.set_chemical_symbols(list(sym))
+        mc = CanonicalEnsemble(s, calculator=ClusterExpansionCalculator(s, expansion), temperature=float(temperature), random_seed=seed + 31 * (j + 1)); mc.run(n_sweeps * n); h = mc.structure
+        if tuple(h.get_chemical_symbols()) not in have:
+            h.calc = None; h.info = {"x": nb / n, "predicted": float(expansion.predict(h))}; out.append(h); have.add(tuple(h.get_chemical_symbols()))
+    return out

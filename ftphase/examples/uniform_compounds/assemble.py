@@ -68,13 +68,14 @@ def main(system, kmax=None, quiet=False, use_lattice=None):
 
     # Compounds whose ordered state does not survive in the defect Monte Carlo (defect_ce_mc.py: `mc` gives no branch) are replaced by the
     # phase on their lattice in whatever state of order it takes (`lattice` step: G(x) at 3 temperatures, interpolated quadratically in T).
-    lat = {}
+    lat = {}; alias = {}          # lattice=Al3Li:fcc -> the Al3Li lattice IS the fcc lattice: its curve is called fcc and competes with (replaces, where lower) the fcc solution of the table
     for name in (use_lattice or []):
+        name, alias[name.split(":")[0]] = name.split(":")[0], name.split(":")[-1]
         d_ = os.path.join(out, f"ce_{name}"); fs = sorted(glob.glob(os.path.join(d_, "lattice_*.tsv")))
         if not fs:
             continue
         tb = [pd.read_csv(f_, sep="\t") for f_ in fs]; Tl = np.array([t_["T"].iloc[0] for t_ in tb]); o = np.argsort(Tl); tb = [tb[k_] for k_ in o]; Tl = Tl[o]
-        dG = np.array([(t_.G - t_.G_perfect_compound).to_numpy() for t_ in tb]); lat[name] = (tb[0].x.to_numpy(), Tl, dG); info[name]["lattice_phase_T"] = [float(v) for v in Tl]
+        dG = np.array([(t_.G - t_.G_perfect_compound).to_numpy() for t_ in tb]); lat[name] = (tb[0].x.to_numpy(), Tl, dG); info[name]["lattice_phase_T"] = [float(v) for v in Tl]; info[name]["lattice_phase_name"] = alias[name]; info[name]["lattice_x_range"] = [round(float(tb[0].x.min()), 3), round(float(tb[0].x.max()), 3)]
         info[name]["lattice_minus_perfect_at_x0_meV"] = [round(float(1000 * np.interp(models[name].x0, tb[0].x, r_)), 1) for r_ in dG]
 
     def builder(T):
@@ -84,7 +85,7 @@ def main(system, kmax=None, quiet=False, use_lattice=None):
                 if Tl.min() - 1 <= T <= Tl.max() + 1:
                     from ftphase.equilibrium import PhaseCurve
                     g0 = float(np.interp(T, *[v_.to_numpy() for v_ in (keep_T[name]["T"], keep_T[name]["G"])])); dg = np.array([np.polyval(np.polyfit(Tl, dG[:, j_], min(2, len(Tl) - 1)), T) for j_ in range(len(xl))])
-                    ph = [p_ for p_ in ph if p_.name != name] + [PhaseCurve.from_points(name, xl, g0 + dg, fit="spline", limited=True, n_sample=401)]
+                    ph = [p_ for p_ in ph if p_.name != name] + [PhaseCurve.from_points(alias[name], xl, g0 + dg, fit="spline", limited=True, n_sample=401)]
             cache[T] = ph
         return cache[T]
 

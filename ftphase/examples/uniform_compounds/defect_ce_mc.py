@@ -137,7 +137,37 @@ def mc(system, name, cell=4):
         print(Tq, "x range", round(df.x.min(), 4), round(df.x.max(), 4), "points", len(df), flush=True)
 
 
-def lattice(system, name, cell=3, dx=0.08, step=0.02):
+def harvest_lattice(system, name, step=0.025):
+    """Harvest for the lattice route: equilibrated canonical configurations over the whole trained composition range (training supercell,
+    lowest and highest temperature) -> harvest.extxyz; then cells -> check -> fit -> lattice.  The printed comparison of an earlier
+    iteration (prediction - computed) says how far the range of `lattice` can be trusted."""
+    from ase.io import read, write
+    from icet import ClusterExpansion
+    import ftphase.defect_ce as dc
+    cfg, out, data, ideal, T = _load(system, name); A, B = cfg["elements"]; fh = os.path.join(out, "harvest.extxyz"); old = read(fh, ":") if os.path.exists(fh) else []
+    it = 1 + max([int(h.info["tag"].split("_")[1][1:]) for h in old], default=0); new = []; xr = json.load(open(os.path.join(out, "fit.json")))["x_range_of_training"]
+    xs = np.arange(xr[0] + 0.02, xr[1] - 0.02 + 1e-9, step)
+    for Tq in (TS[0], TS[-1]):
+        ce = ClusterExpansion.read(os.path.join(out, f"ce_{int(Tq)}.icet"))
+        for h in dc.canonical_snapshots(ce, ideal[0], xs, Tq, species=(A, B), known=old + new, seed=it):
+            h.info = {"tag": f"harvest_i{it}_T{int(Tq)}_L_{len(new)}", "ce_G_per_site": h.info["predicted"], "x_lattice": h.info["x"]}; new.append(h)
+    write(fh, old + new); print("harvested", len(new), "canonical configurations (iteration %d)" % it)
+
+
+def compare(system, name):
+    """prediction (stored when a configuration was harvested) minus computed free energy of the harvested cells, per iteration and composition."""
+    from ase.io import read
+    cfg, out, data, ideal, T = _load(system, name); N = len(ideal[0]); rows = {}
+    for h in read(os.path.join(out, "harvest.extxyz"), ":"):
+        t = h.info["tag"]; r = data["cells"].get(t, {})
+        if "G_T_eV" in r and "_T" in t:
+            i = int(np.argmin(abs(T - int(t.split("_T")[1].split("_")[0])))); rows.setdefault(t.split("_")[1] + ("L" if "_L_" in t else ""), []).append((r["x"], 1000 * (h.info["ce_G_per_site"] - r["G_T_eV"][i] / N), bool(r.get("left_parent"))))
+    for k, v in rows.items():
+        v = np.array(v, dtype=float); print(f"{name} {k}: {len(v)} cells, prediction - computed rms {np.sqrt(np.mean(v[:, 1] ** 2)):.1f} meV/site, max |.| {np.abs(v[:, 1]).max():.1f} at x = {v[np.argmax(np.abs(v[:, 1])), 0]:.3f}, left parent {int(v[:, 2].sum())}; by x: "
+              + " ".join(f"{x:.2f}:{e:+.0f}" for x, e, _ in v[np.argsort(v[:, 0])][::max(1, len(v) // 10)]), flush=True)
+
+
+def lattice(system, name, cell=2, dx=None, step=0.025):
     """G(x) per site of the phase on this compound's lattice in whatever state of order the Monte Carlo finds (integration from the random
     state; ftphase.defect_ce.lattice_free_energy), around the stoichiometric composition and inside the trained range -> lattice_<T>.tsv.
     For compounds whose ordered state does not survive in `mc`, and as a check of `mc` where it does."""
@@ -145,7 +175,8 @@ def lattice(system, name, cell=3, dx=0.08, step=0.02):
     import ftphase.defect_ce as dc
     cfg, out, data, ideal, T = _load(system, name); A, B = cfg["elements"]; at0 = ideal[0]; reps = max(1, round((cell ** 3 * 16 / len(at0)) ** (1 / 3))); sc = at0.repeat((reps,) * 3)
     xr = json.load(open(os.path.join(out, "fit.json")))["x_range_of_training"]; x0 = float(np.mean(np.array(at0.get_chemical_symbols()) == B))
-    xs = [x for x in x0 + np.arange(-dx, dx + 1e-9, step) if xr[0] <= x <= xr[1]]
+    # default: the whole trained composition range (2 % inside its ends); dx limits it to x0 +- dx
+    lo, hi = (xr[0] + 0.02, xr[1] - 0.02) if dx is None else (max(xr[0], x0 - dx), min(xr[1], x0 + dx)); xs = sorted(set([round(float(x), 6) for x in np.arange(lo, hi + 1e-9, step)] + [x0]))
     for Tq in TS:
         ce = ClusterExpansion.read(os.path.join(out, f"ce_{int(Tq)}.icet")); i = int(np.argmin(abs(T - Tq)))
         df = dc.lattice_free_energy(ce, sc, xs, Tq, species=(A, B), n_grid=16); df["G_perfect_compound"] = data["cells"]["perfect"]["G_T_eV"][i] / len(at0)
@@ -154,4 +185,4 @@ def lattice(system, name, cell=3, dx=0.08, step=0.02):
 
 
 if __name__ == "__main__":
-    {"cells": cells, "check": check, "fit": fit, "harvest": harvest, "mc": mc, "lattice": lattice}[sys.argv[3]](sys.argv[1], sys.argv[2])
+    {"cells": cells, "check": check, "fit": fit, "harvest": harvest, "mc": mc, "lattice": lattice, "harvest_lattice": harvest_lattice, "compare": compare}[sys.argv[3]](sys.argv[1], sys.argv[2])

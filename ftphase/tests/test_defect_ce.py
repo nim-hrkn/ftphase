@@ -153,3 +153,11 @@ def test_lattice_free_energy_limits():
     mid, _ = dc.plateau(g_ba, g_ab); p = 1 / (1 + np.exp((g_ba - mid) / (KB * T))); q = 1 / (1 + np.exp((g_ab + mid) / (KB * T)))       # thermal anti-site pairs at stoichiometry
     g_exact = ce.predict(small) + 0.5 * KB * T * (np.log(1 - p) + np.log(1 - q))                                                           # per site: -kT ln Z of the two sublattices at mu = mid, minus mu * (x - 1/2) = 0
     assert d.G[0] == pytest.approx(g_exact, abs=4e-3)
+
+
+def test_canonical_snapshots_have_the_requested_compositions_and_order():
+    ce = _ordering_model(); small = _b2((3, 3, 3)); got = dc.canonical_snapshots(ce, small, [0.25, 0.5, 1.0], 300.0, n_sweeps=60)
+    assert [round(h.info["x"], 3) for h in got] == [round(round(0.25 * 54) / 54, 3), 0.5]            # x = 1 has no configuration
+    half = got[1]; sym = np.array(half.get_chemical_symbols()); ref = np.array(small.get_chemical_symbols())
+    assert min(np.mean(sym == ref), np.mean(sym != ref)) < 0.1                                           # ordered B2 (either sublattice assignment) at low T
+    assert half.info["predicted"] == pytest.approx(ce.predict(half)) and not dc.canonical_snapshots(ce, small, [0.25, 0.5], 300.0, n_sweeps=60, known=got)
